@@ -12,9 +12,22 @@ public class KFunction {
     public static KField avg(
         final KField kField
     ) {
-        kField.sb.insert(0, "AVG(").append(")");
+        final KField avgKField = new KField(kField.sb);
         
-        return kField;
+        avgKField.sb.insert(0, "AVG(").append(")");
+        
+        return avgKField;
+    }
+    
+    public static KField cast(
+        final KField kField,
+        final KDataType kDataType    
+    ) {
+        final KField castKField = new KField(kField.sb);
+        
+        castKField.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+        
+        return castKField;
     }
     
     public static KField count() {
@@ -24,13 +37,13 @@ public class KFunction {
     public static KField concat(
         final KField... kFields
     ) {
-        final KField concatField = new KField();
+        final KField concatKField = new KField();
         
         boolean first = true;
         
         for (final KField kField : kFields) {
             if (!first) {
-                concatField.sb.append(" || ");
+                concatKField.sb.append(" || ");
             }
             
             if (first) {
@@ -38,15 +51,15 @@ public class KFunction {
             }
             
             if (kField instanceof KInlineField) {
-                concatField.sb.append("'").append(kField.sb).append("'");
+                concatKField.sb.append("'").append(kField.sb).append("'");
                 
                 continue;
             }
             
-            concatField.sb.append(kField.sb);
+            concatKField.sb.append(kField.sb);
         }
         
-        return concatField;
+        return concatKField;
     }
     
     public static KInlineField inline(
@@ -64,16 +77,89 @@ public class KFunction {
     public static KInlineField isolate(
         final KInlineField kInlineField
     ) {
-        kInlineField.sb.insert(0, "(").append(")");
+        final KInlineField isolateKInlineField = kInlineField.cloneMe();
         
-        return kInlineField;
+        isolateKInlineField.sb.insert(0, "(").append(")");
+        
+        return isolateKInlineField;
     }
     
     public static KField isolate(
         final KField kField
     ) {
-        kField.sb.insert(0, "(").append(")");
+        final KField isolateKField = kField.cloneMe();
         
-        return kField;
+        isolateKField.sb.insert(0, "(").append(")");
+        
+        return isolateKField;
+    }
+    
+    public static KField getJsonArray(
+        final KField kField,
+        final int index
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("->").append(index);
+        
+        return jsonKField;
+    }
+    
+    public static KField getJsonArrayAsText(
+        final KField kField,
+        final int index
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("->>").append(index);
+        
+        return jsonKField;
+    }
+    
+    public static KField getJsonObject(
+        final KField kField,
+        final String name
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("->'").append(name).append("'");
+        
+        return jsonKField;
+    }
+    
+    public static KField getJsonObjectAsText(
+        final KField kField,
+        final String name
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("->>'").append(name).append("'");
+        
+        return jsonKField;
+    }
+    
+    public static KField getJsonObjectAtPath(
+        final KField kField,
+        final String path
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("#>'{").append(path).append("}'");
+        
+        return jsonKField;
+    }
+    
+    public static KField getJsonObjectAtPathAsText(
+        final KField kField,
+        final String path
+    ) {
+        final KField jsonKField = new KField(kField.sb);
+        
+        jsonKField.sb.append("#>>'{").append(path).append("}'");
+        
+        return jsonKField;
     }
 }
+/*//#>
+ //Get JSON object at specified path--#>
+*/

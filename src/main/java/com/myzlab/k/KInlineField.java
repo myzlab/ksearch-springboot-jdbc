@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KInlineField<T> extends KField<T> {
+public class KInlineField<T> extends KField<T> implements Cloneable {
     
     private boolean isNumber = false;
     
@@ -89,5 +89,14 @@ public class KInlineField<T> extends KField<T> {
         }
         
         return new KInlineField(this.sb.append(" ").append(operation).append(" ").append(kInlineField.sb).toString(), true);
+    }
+    
+    @Override
+    protected KInlineField cloneMe() {
+        try {
+            return (KInlineField) super.clone();
+        } catch (Exception e) {
+            throw KExceptionHelper.internalServerError("An error has occurred while cloning KInlineField object");
+        }
     }
 }
