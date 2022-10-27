@@ -122,18 +122,6 @@ public class KFunction {
         return concatKField;
     }
     
-    public static KValField val(
-        final String val
-    ) {
-        return new KValField(val);
-    }
-    
-    public static KValField val(
-        final Number val
-    ) {
-        return new KValField(val);
-    }
-    
     public static KValField isolate(
         final KValField kValField
     ) {
@@ -219,7 +207,20 @@ public class KFunction {
         
         return jsonKField;
     }
+    
+    public static KField now() {
+        return new KField("NOW()");
+    }
+    
+    public static KValField val(
+        final String val
+    ) {
+        return new KValField(val);
+    }
+    
+    public static KValField val(
+        final Number val
+    ) {
+        return new KValField(val);
+    }
 }
-/*//#>
- //Get JSON object at specified path--#>
-*/

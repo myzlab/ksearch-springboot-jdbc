@@ -61,7 +61,8 @@ public class Ksearch {
                 data.cast(jsonb()).getJsonObjectAsText("attr").as("getJsonObjectAsText"),
                 data.cast(jsonb()).getJsonObjectAtPath("a,b,c").as("getJsonObjectAtPath"),
                 data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText"),
-                coalesce(name, val(" "), val(3).add(5), lastName).as("coal")
+                coalesce(name, val(" "), val(3).add(5), lastName).as("coal"),
+                now().as("now_")
             )
             .single();
 //            .select(new KColumn().as())
