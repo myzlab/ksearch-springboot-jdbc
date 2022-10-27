@@ -18,11 +18,11 @@ public class Ksearch {
         
         new KInitializer()
             .select(
-                as(isolate(concat(name, inline(" "), lastName)), "FullName"),
+                as(isolate(concat(name, val(" "), lastName)), "FullName"),
                 avg(age).cast(bigint()).as("average"),
-                concat(name, inline(" "), lastName).as("Full2Name"),
+                concat(name, val(" "), val("3 + 2"), lastName).as("Full2Name"),
                 count().as("total"),
-                isolate(inline(1).multiply(inline(2))).plus(inline(3)).minus(isolate(inline(8).divide(4))).as("inlines"),
+                val(7).mul(val(2).add(val(3))).sub(val(8).div(val(4).mod(2))).as("values__"),
                 cast(name, varchar(255)).as("nameCasted"),
                 name.cast(varchar(255)).as("varchar_255"),
                 name.cast(varchar()).as("varchar_"),
@@ -50,7 +50,7 @@ public class Ksearch {
                 name.cast(uuid()).as("uuid_"),
                 name.cast(json()).as("json_"),
                 name.cast(jsonb()).as("jsonb_"),
-                age.multiply(ageWorking).avg().isolate().minus(2).as("theaqvgp2"),
+                age.mul(ageWorking).avg().isolate().sub(2).as("theaqvgp2"),
                 getJsonArray(data.cast(jsonb()), 0).as("getJsonArrayElement"),
                 getJsonArrayAsText(data.cast(jsonb()), 0).as("getJsonArrayElementAsText"),
                 getJsonObject(data.cast(jsonb()), "attr").as("getJsonObjectElement"),
@@ -60,7 +60,8 @@ public class Ksearch {
                 data.cast(jsonb()).getJsonObject("attr").as("getJsonObject"),
                 data.cast(jsonb()).getJsonObjectAsText("attr").as("getJsonObjectAsText"),
                 data.cast(jsonb()).getJsonObjectAtPath("a,b,c").as("getJsonObjectAtPath"),
-                data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText")
+                data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText"),
+                coalesce(name, val(" "), val(3).add(5), lastName).as("coal")
             )
             .single();
 //            .select(new KColumn().as())

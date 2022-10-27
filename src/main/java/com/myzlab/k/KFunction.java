@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import com.myzlab.k.helper.KExceptionHelper;
+
 public class KFunction {
 
     public static KAliasedField<?> as(
@@ -30,6 +32,46 @@ public class KFunction {
         return castKField;
     }
     
+    public static KField coalesce(
+        final KField... kFields
+    ) {
+        if (kFields.length < 2) {
+            throw KExceptionHelper.internalServerError("'COALESCE' method requires at least two KFields");
+        }
+        
+        final KField coalesceKField = new KField();
+        
+        boolean first = true;
+        
+        coalesceKField.sb.append("COALESCE(");
+        
+        for (final KField kField : kFields) {
+            if (kField == null) {
+                continue;
+            }
+            
+            if (!first) {
+                coalesceKField.sb.append(", ");
+            }
+            
+            if (first) {
+                first = false;
+            }
+            
+            if (kField instanceof KValField) {
+                coalesceKField.sb.append("'").append(kField.sb).append("'");
+                
+                continue;
+            }
+            
+            coalesceKField.sb.append(kField.sb);
+        }
+        
+        coalesceKField.sb.append(")");
+        
+        return coalesceKField;
+    }
+    
     public static KField count() {
         return new KField("COUNT(*)");
     }
@@ -37,11 +79,19 @@ public class KFunction {
     public static KField concat(
         final KField... kFields
     ) {
+        if (kFields.length < 2) {
+            throw KExceptionHelper.internalServerError("'CONCAT' method requires at least two KFields");
+        }
+        
         final KField concatKField = new KField();
         
         boolean first = true;
         
         for (final KField kField : kFields) {
+            if (kField == null) {
+                continue;
+            }
+            
             if (!first) {
                 concatKField.sb.append(" || ");
             }
@@ -50,8 +100,18 @@ public class KFunction {
                 first = false;
             }
             
-            if (kField instanceof KInlineField) {
-                concatKField.sb.append("'").append(kField.sb).append("'");
+            if (kField instanceof KValField) {
+                final boolean isNumber = ((KValField) kField).isNumber;
+                
+                if (!isNumber) {
+                    concatKField.sb.append("'");
+                }
+                
+                concatKField.sb.append(kField.sb);
+                
+                if (!isNumber) {
+                    concatKField.sb.append("'");
+                }
                 
                 continue;
             }
@@ -62,26 +122,26 @@ public class KFunction {
         return concatKField;
     }
     
-    public static KInlineField inline(
-        final String inline
+    public static KValField val(
+        final String val
     ) {
-        return new KInlineField(inline);
+        return new KValField(val);
     }
     
-    public static KInlineField inline(
-        final Number inline
+    public static KValField val(
+        final Number val
     ) {
-        return new KInlineField(inline);
+        return new KValField(val);
     }
     
-    public static KInlineField isolate(
-        final KInlineField kInlineField
+    public static KValField isolate(
+        final KValField kValField
     ) {
-        final KInlineField isolateKInlineField = kInlineField.cloneMe();
+        final KValField isolateKValField = kValField.cloneMe();
         
-        isolateKInlineField.sb.insert(0, "(").append(")");
+        isolateKValField.sb.insert(0, "(").append(")");
         
-        return isolateKInlineField;
+        return isolateKValField;
     }
     
     public static KField isolate(

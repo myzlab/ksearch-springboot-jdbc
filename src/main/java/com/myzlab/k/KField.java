@@ -48,13 +48,13 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
         return KFunction.cast(this, kDataType);
     }
     
-    public KField divide(
+    public KField div(
         final KField kField
     ) {
         return this.doOperation("/", kField);
     }
     
-    public KField divide(
+    public KField div(
         final Number number
     ) {
         return this.doOperation("/", new KField(new StringBuilder(number.toString())));
@@ -88,37 +88,49 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
         return KFunction.getJsonObjectAtPathAsText(this, name);
     }
     
-    public KField minus(
+    public KField sub(
         final KField kField
     ) {
         return this.doOperation("-", kField);
     }
     
-    public KField minus(
+    public KField sub(
         final Number number
     ) {
         return this.doOperation("-", new KField(new StringBuilder(number.toString())));
     }
     
-    public KField multiply(
+    public KField mod(
+        final KField kField
+    ) {
+        return this.doOperation("%", kField);
+    }
+    
+    public KField mod(
+        final Number number
+    ) {
+        return this.doOperation("%", new KField(new StringBuilder(number.toString())));
+    }
+    
+    public KField mul(
         final KField kField
     ) {
         return this.doOperation("*", kField);
     }
     
-    public KField multiply(
+    public KField mul(
         final Number number
     ) {
         return this.doOperation("*", new KField(new StringBuilder(number.toString())));
     }
     
-    public KField plus(
+    public KField add(
         final KField kField
     ) {
         return this.doOperation("+", kField);
     }
     
-    public KField plus(
+    public KField add(
         final Number number
     ) {
         return this.doOperation("+", new KField(new StringBuilder(number.toString())));
