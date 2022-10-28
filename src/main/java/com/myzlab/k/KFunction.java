@@ -11,25 +11,122 @@ public class KFunction {
         return new KAliasedField(kField.sb, alias);
     }
     
-    public static KField avg(
+    public static KField abs(
         final KField kField
     ) {
-
+        return applyOneParameterFunctionWithValNumberValid(kField, "ABS");
+    }
+    
+    public static KField acos(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "ACOS");
+    }
+    
+    private static KField applyOneParameterFunction(
+        final KField kField,
+        final String functionName,
+        final boolean valNumberIsValid,
+        final boolean valStringIsValid
+    ) {
         final boolean kFieldIsVal = kField instanceof KValField;
+        final KField functionKField = new KField(kField.sb);
         
         if (kFieldIsVal) {
             final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError("'AVG' function is not available with a 'val' of string type");
+            if (isText && !valStringIsValid) {
+                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+            }
+            
+            if (isNumber && !valNumberIsValid) {
+                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of number type");
+            }
+            
+            if (isText) {
+                functionKField.sb.insert(0, "'");
             }
         }
         
-        final KField avgKField = new KField(kField.sb);
+        functionKField.sb.insert(0, "(").insert(0, functionName);
         
-        avgKField.sb.insert(0, "AVG(").append(")");
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (isText) {
+                functionKField.sb.append("'");
+            }
+        }
         
-        return avgKField;
+        functionKField.sb.append(")");
+        
+        return functionKField;
+    }
+    
+    private static KField applyOneParameterFunctionWithValNumberValid(
+        final KField kField,
+        final String functionName
+    ) {
+        return applyOneParameterFunction(kField, functionName, true, false);
+    }
+    
+    private static KField applyTwoParameterFunctionWithValNumberValid(
+        final KField kField1,
+        final KField kField2,
+        final String functionName
+    ) {
+        final KField functionKField = new KField();
+        
+        final boolean kField1IsVal = kField1 instanceof KValField;
+        final boolean kField2IsVal = kField2 instanceof KValField;
+        
+        functionKField.sb.append(functionName).append("(");
+        
+        if (kField1IsVal) {
+            final boolean isText = ((KValField) kField1).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+            }
+        }
+        
+        if (kField2IsVal) {
+            final boolean isText = ((KValField) kField2).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+            }
+        }
+        
+        functionKField.sb.append(kField1.sb).append(", ").append(kField2.sb).append(")");
+        
+        return functionKField;
+    }
+    
+    public static KField asin(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "ASIN");
+    }
+    
+    public static KField atan(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "ATAN");
+    }
+    
+    public static KField atan2(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "ATAN2");
+    }
+    
+    public static KField avg(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "AVG");
     }
     
     public static KField cast(
@@ -51,6 +148,12 @@ public class KFunction {
         castKField.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
         return castKField;
+    }
+    
+    public static KField ceil(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "CEIL");
     }
     
     public static KField coalesce(
@@ -91,6 +194,24 @@ public class KFunction {
         coalesceKField.sb.append(")");
         
         return coalesceKField;
+    }
+    
+    public static KField cos(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "COS");
+    }
+    
+    public static KField cosh(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "COSH");
+    }
+    
+    public static KField cot(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "COT");
     }
     
     public static KField count() {
@@ -168,6 +289,12 @@ public class KFunction {
         return encodeKField;
     }
     
+    public static KField exp(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "EXP");
+    }
+    
     public static KField decode(
         final KField kField,
         final KFormat kFormat
@@ -191,6 +318,12 @@ public class KFunction {
         encodeKField.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
         return encodeKField;
+    }
+    
+    public static KField floor(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "FLOOR");
     }
     
     public static KValField isolate(
@@ -279,6 +412,108 @@ public class KFunction {
         return jsonKField;
     }
     
+    public static KField greatest(
+        final KField... kFields
+    ) {
+        if (kFields.length < 2) {
+            throw KExceptionHelper.internalServerError("'GREATEST' function requires at least two KFields");
+        }
+        
+        final KField greatestKField = new KField();
+        
+        boolean first = true;
+        
+        greatestKField.sb.append("GREATEST(");
+        
+        for (final KField kField : kFields) {
+            if (kField == null) {
+                continue;
+            }
+            
+            if (!first) {
+                greatestKField.sb.append(", ");
+            }
+            
+            if (first) {
+                first = false;
+            }
+            
+            if (kField instanceof KValField) {
+                final boolean isText = ((KValField) kField).isText;
+            
+                if (isText) {
+                    greatestKField.sb.append("'");
+                }
+            }
+            
+            greatestKField.sb.append(kField.sb);
+            
+            if (kField instanceof KValField) {
+                final boolean isText = ((KValField) kField).isText;
+            
+                if (isText) {
+                    greatestKField.sb.append("'");
+                }
+            }
+            
+        }
+        
+        greatestKField.sb.append(")");
+        
+        return greatestKField;
+    }
+    
+    public static KField least(
+        final KField... kFields
+    ) {
+        if (kFields.length < 2) {
+            throw KExceptionHelper.internalServerError("'LEAST' function requires at least two KFields");
+        }
+        
+        final KField greatestKField = new KField();
+        
+        boolean first = true;
+        
+        greatestKField.sb.append("LEAST(");
+        
+        for (final KField kField : kFields) {
+            if (kField == null) {
+                continue;
+            }
+            
+            if (!first) {
+                greatestKField.sb.append(", ");
+            }
+            
+            if (first) {
+                first = false;
+            }
+            
+            if (kField instanceof KValField) {
+                final boolean isText = ((KValField) kField).isText;
+            
+                if (isText) {
+                    greatestKField.sb.append("'");
+                }
+            }
+            
+            greatestKField.sb.append(kField.sb);
+            
+            if (kField instanceof KValField) {
+                final boolean isText = ((KValField) kField).isText;
+            
+                if (isText) {
+                    greatestKField.sb.append("'");
+                }
+            }
+            
+        }
+        
+        greatestKField.sb.append(")");
+        
+        return greatestKField;
+    }
+    
     public static KField left(
         final KField kField,
         final int n
@@ -308,6 +543,25 @@ public class KFunction {
         leftKField.sb.append(", ").append(n).append(")");
         
         return leftKField;
+    }
+    
+    public static KField ln(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "LN");
+    }
+    
+    public static KField log(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "LOG");
+    }
+    
+    public static KField log10(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "LOG10");
     }
     
     public static KField now() {
@@ -367,6 +621,21 @@ public class KFunction {
         nullifKField.sb.append(")");
         
         return nullifKField;
+    }
+    
+    public static KField pi() {
+        return new KField("PI()");
+    }
+    
+    public static KField power(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "POWER");
+    }
+    
+    public static KField random() {
+        return new KField("RANDOM()");
     }
     
     public static KField right(

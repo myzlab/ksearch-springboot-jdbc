@@ -5,6 +5,7 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KValField<T> extends KField<T> implements Cloneable {
     
     protected boolean isNumber = false;
+    protected boolean isText = false;
     
     public KValField(
         final StringBuilder sb,
@@ -13,6 +14,7 @@ public class KValField<T> extends KField<T> implements Cloneable {
         super();
         
         this.isNumber = isNumber;
+        this.isText = !isNumber;
         this.sb.append(sb);
     }
     
@@ -23,6 +25,7 @@ public class KValField<T> extends KField<T> implements Cloneable {
         super();
         
         this.isNumber = isNumber;
+        this.isText = !isNumber;
         this.sb.append(val);
     }
     

@@ -140,7 +140,11 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
         final String operation,
         final KField kField
     ) {
-        return new KField(this.sb.append(" ").append(operation).append(" ").append(kField.sb).toString());
+        final KField operationKField = new KField(this.sb);
+        
+        operationKField.sb.append(" ").append(operation).append(" ").append(kField.sb);
+        
+        return operationKField;
     }
     
     protected KField cloneMe() {
