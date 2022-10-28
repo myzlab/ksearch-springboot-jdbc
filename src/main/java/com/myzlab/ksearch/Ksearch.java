@@ -3,6 +3,7 @@ package com.myzlab.ksearch;
 import com.myzlab.k.KField;
 import static com.myzlab.k.KFunction.*;
 import static com.myzlab.k.SqlDataType.*;
+import static com.myzlab.k.SqlFormat.*;
 import com.myzlab.k.KInitializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,13 @@ public class Ksearch {
             .select(
                 as(isolate(concat(name, val(" "), lastName)), "FullName"),
                 avg(age).cast(bigint()).as("average"),
+                avg(val(11)).cast(bigint()).as("average"),
                 concat(name, val(" "), val("3 + 2"), lastName).as("Full2Name"),
                 count().as("total"),
                 val(7).mul(val(2).add(val(3))).sub(val(8).div(val(4).mod(2))).as("values__"),
                 cast(name, varchar(255)).as("nameCasted"),
+                cast(val(111), varchar(255)).as("nameCasted"),
+                cast(val("abc"), varchar(255)).as("nameCasted"),
                 name.cast(varchar(255)).as("varchar_255"),
                 name.cast(varchar()).as("varchar_"),
                 name.cast(characterVarying(255)).as("characterVarying_255"),
@@ -62,7 +66,19 @@ public class Ksearch {
                 data.cast(jsonb()).getJsonObjectAtPath("a,b,c").as("getJsonObjectAtPath"),
                 data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText"),
                 coalesce(name, val(" "), val(3).add(5), lastName).as("coal"),
-                now().as("now_")
+                now().as("now_"),
+                encode(encode(encode(val("'123\\000456'").cast(bytea()), base64()), hex()), escape()),
+                decode(decode(decode(val("'123\\000456'").cast(bytea()), base64()), hex()), escape()),
+                encode(val("1"), escape()),
+                decode(val("1"), hex()),
+                nullif(name, lastName).as("nullif1"),
+                nullif(name, val("")).as("nullif2"),
+                nullif(val(1), lastName).as("nullif3"),
+                nullif(val(1), val("1")).as("nullif4"),
+                left(name, 2),
+                left(val("11"), 5),
+                right(name, 1),
+                right(val("11"), 8)
             )
             .single();
 //            .select(new KColumn().as())

@@ -14,6 +14,17 @@ public class KFunction {
     public static KField avg(
         final KField kField
     ) {
+
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError("'AVG' function is not available with a 'val' of string type");
+            }
+        }
+        
         final KField avgKField = new KField(kField.sb);
         
         avgKField.sb.insert(0, "AVG(").append(")");
@@ -27,6 +38,16 @@ public class KFunction {
     ) {
         final KField castKField = new KField(kField.sb);
         
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (!isNumber) {
+                castKField.sb.insert(0, "'").append("'");
+            }
+        }
+        
         castKField.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
         return castKField;
@@ -36,7 +57,7 @@ public class KFunction {
         final KField... kFields
     ) {
         if (kFields.length < 2) {
-            throw KExceptionHelper.internalServerError("'COALESCE' method requires at least two KFields");
+            throw KExceptionHelper.internalServerError("'COALESCE' function requires at least two KFields");
         }
         
         final KField coalesceKField = new KField();
@@ -80,7 +101,7 @@ public class KFunction {
         final KField... kFields
     ) {
         if (kFields.length < 2) {
-            throw KExceptionHelper.internalServerError("'CONCAT' method requires at least two KFields");
+            throw KExceptionHelper.internalServerError("'CONCAT' function requires at least two KFields");
         }
         
         final KField concatKField = new KField();
@@ -120,6 +141,56 @@ public class KFunction {
         }
         
         return concatKField;
+    }
+    
+    public static KField encode(
+        final KField kField,
+        final KFormat kFormat
+    ) {
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
+            }
+        }
+        
+        final KField encodeKField = kField.cloneMe();
+        
+        if (kFieldIsVal) {
+            encodeKField.sb.insert(0, "'").append("'");
+        }
+        
+        encodeKField.sb.insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
+        
+        return encodeKField;
+    }
+    
+    public static KField decode(
+        final KField kField,
+        final KFormat kFormat
+    ) {
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
+            }
+        }
+        
+        final KField encodeKField = kField.cloneMe();
+        
+        if (kFieldIsVal) {
+            encodeKField.sb.insert(0, "'").append("'");
+        }
+        
+        encodeKField.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
+        
+        return encodeKField;
     }
     
     public static KValField isolate(
@@ -208,8 +279,125 @@ public class KFunction {
         return jsonKField;
     }
     
+    public static KField left(
+        final KField kField,
+        final int n
+    ) {
+        final KField leftKField = new KField();
+        
+        leftKField.sb.append("LEFT(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'LEFT' function is not available with a 'val' of number type");
+            }
+            
+            leftKField.sb.append("'");
+        }
+        
+        leftKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            leftKField.sb.append("'");
+        }
+        
+        leftKField.sb.append(", ").append(n).append(")");
+        
+        return leftKField;
+    }
+    
     public static KField now() {
         return new KField("NOW()");
+    }
+    
+    public static KField nullif(
+        final KField kField1,
+        final KField kField2
+    ) {
+        
+        final KField nullifKField = new KField();
+        
+        final boolean kField1IsVal = kField1 instanceof KValField;
+        final boolean kField2IsVal = kField2 instanceof KValField;
+        
+        nullifKField.sb.append("NULLIF(");
+        
+        if (kField1IsVal) {
+            final boolean isNumber = ((KValField) kField1).isNumber;
+            
+            if (!isNumber) {
+                nullifKField.sb.append("'");
+            }
+        }
+        
+        nullifKField.sb.append(kField1.sb);
+        
+        if (kField1IsVal) {
+            final boolean isNumber = ((KValField) kField1).isNumber;
+            
+            if (!isNumber) {
+                nullifKField.sb.append("'");
+            }
+        }
+        
+        nullifKField.sb.append(", ");
+        
+        if (kField2IsVal) {
+            final boolean isNumber = ((KValField) kField2).isNumber;
+            
+            if (!isNumber) {
+                nullifKField.sb.append("'");
+            }
+        }
+        
+        nullifKField.sb.append(kField2.sb);
+        
+        if (kField2IsVal) {
+            final boolean isNumber = ((KValField) kField2).isNumber;
+            
+            if (!isNumber) {
+                nullifKField.sb.append("'");
+            }
+        }
+        
+        nullifKField.sb.append(")");
+        
+        return nullifKField;
+    }
+    
+    public static KField right(
+        final KField kField,
+        final int n
+    ) {
+        final KField leftKField = new KField();
+        
+        leftKField.sb.append("RIGHT(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'RIGHT' function is not available with a 'val' of number type");
+            }
+            
+            leftKField.sb.append("'");
+        }
+        
+        leftKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            leftKField.sb.append("'");
+        }
+        
+        leftKField.sb.append(", ").append(n).append(")");
+        
+        return leftKField;
     }
     
     public static KValField val(

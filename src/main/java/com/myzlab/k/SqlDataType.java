@@ -3,6 +3,7 @@ package com.myzlab.k;
 import com.myzlab.k.sql.datatype.KBigint;
 import com.myzlab.k.sql.datatype.KBigserial;
 import com.myzlab.k.sql.datatype.KBoolean;
+import com.myzlab.k.sql.datatype.KBytea;
 import com.myzlab.k.sql.datatype.KCharacter;
 import com.myzlab.k.sql.datatype.KCharacterVarying;
 import com.myzlab.k.sql.datatype.KDate;
@@ -23,6 +24,10 @@ import com.myzlab.k.sql.datatype.KTimestampWithoutTimeZone;
 import com.myzlab.k.sql.datatype.KUuid;
 
 public class SqlDataType {
+    
+    public static KBytea bytea() {
+        return new KBytea();
+    }
 
     public static KBigint bigint() {
         return new KBigint();
