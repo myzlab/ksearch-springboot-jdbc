@@ -42,103 +42,68 @@ public class KValField<T> extends KField<T> implements Cloneable {
     }
     
     @Override
+    public KValField add(
+        final Number number
+    ) {
+        return KFunction.add(this, new KValField(number));
+    }
+    
+    public KValField add(
+        final KValField kValField 
+    ) {
+        return KFunction.add(this, kValField);
+    }
+    
+    @Override
     public KValField div(
         final Number number
     ) {
-        return this.div(new KValField(number));
+        return KFunction.div(this, new KValField(number));
     }
     
     public KValField div(
         final KValField kValField 
     ) {
-        return this.doOperation("/", kValField);
+        return KFunction.div(this, kValField);
     }
     
     @Override
     public KValField sub(
         final Number number
     ) {
-        return this.sub(new KValField(number));
+        return KFunction.sub(this, new KValField(number));
     }
     
     public KValField sub(
         final KValField kValField 
     ) {
-        return this.doOperation("-", kValField);
+        return KFunction.sub(this, kValField);
     }
     
     @Override
     public KValField mod(
         final Number number
     ) {
-        return this.mod(new KValField(number));
+        return KFunction.mod(this, new KValField(number));
     }
     
     public KValField mod(
         final KValField kValField
     ) {
-        return this.doOperation("%", kValField);
+        return KFunction.mod(this, kValField);
     }
     
     @Override
     public KValField mul(
         final Number number
     ) {
-        return this.mul(new KValField(number));
+        return KFunction.mul(this, new KValField(number));
     }
     
     public KValField mul(
         final KValField kValField 
     ) {
-        return this.doOperation("*", kValField);
-    }
-    
-    @Override
-    public KValField add(
-        final Number number
-    ) {
-        return this.add(new KValField(number));
-    }
-    
-    public KValField add(
-        final KValField kValField 
-    ) {
-        return this.doOperation("+", kValField);
-    }
-    
-    private KValField doOperation(
-        final String operation,
-        final KValField kValField 
-    ) {
-        if (!this.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + this.sb.toString() + "]");
-        }
-        
-        if (!kValField.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + kValField.sb.toString() + "]");
-        }
-        
-        final KValField newKValField = new KValField(this.sb, true);
-        
-        if (!isCasteableToANumber(newKValField.sb.toString())) {
-            newKValField.sb.insert(0, "(").append(")");
-        }
-        
-        newKValField.sb.append(" ").append(operation).append(" ");
-        
-        final boolean kValFieldCasteableToANumber = isCasteableToANumber(kValField.sb.toString());
-        
-        if (!kValFieldCasteableToANumber) {
-            newKValField.sb.append("(");
-        }
-        
-        newKValField.sb.append(kValField.sb);
-        
-        if (!kValFieldCasteableToANumber) {
-            newKValField.sb.append(")");
-        }
-        
-        return newKValField;
+        return KFunction.mul(this, kValField);
     }
     
     @Override
@@ -150,13 +115,4 @@ public class KValField<T> extends KField<T> implements Cloneable {
         }
     }
     
-    private boolean isCasteableToANumber(
-        final String text
-    ) {
-        try {
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

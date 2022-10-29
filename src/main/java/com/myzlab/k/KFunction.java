@@ -23,6 +23,48 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "ACOS");
     }
     
+    public static KField add(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return doOperation(kField1, kField2, "+");
+    }
+    
+    public static KField add(
+        final KField kField,
+        final Number number
+    ) {
+        return doOperation(kField, new KField(new StringBuilder(number.toString())), "+");
+    }
+    
+    public static KField add(
+        final Number number,
+        final KField kField
+    ) {
+        return doOperation(new KField(new StringBuilder(number.toString())), kField, "+");
+    }
+    
+    public static KValField add(
+        final KValField kValField,
+        final Number number
+    ) {
+        return doOperation(kValField, new KValField(number), "+");
+    }
+    
+    public static KValField add(
+        final Number number,
+        final KValField kValField
+    ) {
+        return doOperation(new KValField(number), kValField, "+");
+    }
+    
+    public static KValField add(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return doOperation(kValField1, kValField2, "+");
+    }
+    
     private static KField applyOneParameterFunction(
         final KField kField,
         final String functionName,
@@ -150,10 +192,22 @@ public class KFunction {
         return castKField;
     }
     
+    public static KField cbrt(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "CBRT");
+    }
+    
     public static KField ceil(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "CEIL");
+    }
+    
+    public static KField ceiling(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "CEILING");
     }
     
     public static KField coalesce(
@@ -264,6 +318,127 @@ public class KFunction {
         return concatKField;
     }
     
+    public static KField decode(
+        final KField kField,
+        final KFormat kFormat
+    ) {
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
+            }
+        }
+        
+        final KField encodeKField = kField.cloneMe();
+        
+        if (kFieldIsVal) {
+            encodeKField.sb.insert(0, "'").append("'");
+        }
+        
+        encodeKField.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
+        
+        return encodeKField;
+    }
+    
+    public static KField degrees(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "DEGREES");
+    }
+    
+    public static KField div(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return doOperation(kField1, kField2, "/");
+    }
+    
+    public static KField div(
+        final KField kField,
+        final Number number
+    ) {
+        return doOperation(kField, new KField(new StringBuilder(number.toString())), "/");
+    }
+    
+    public static KField div(
+        final Number number,
+        final KField kField
+    ) {
+        return doOperation(new KField(new StringBuilder(number.toString())), kField, "/");
+    }
+    
+    public static KValField div(
+        final KValField kValField,
+        final Number number
+    ) {
+        return doOperation(kValField, new KValField(number), "/");
+    }
+    
+    public static KValField div(
+        final Number number,
+        final KValField kValField
+    ) {
+        return doOperation(new KValField(number), kValField, "/");
+    }
+    
+    public static KValField div(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return doOperation(kValField1, kValField2, "/");
+    }
+    
+    private static KField doOperation(
+        final KField kField1,
+        final KField kField2,
+        final String operation
+    ) {
+        final KField operationKField = new KField(kField1.sb);
+        
+        operationKField.sb.append(" ").append(operation).append(" ").append(kField2.sb);
+        
+        return operationKField;
+    }
+    
+    private static KValField doOperation(
+        final KValField kValField1,
+        final KValField kValField2,
+        final String operation
+    ) {
+        if (!kValField1.isNumber) {
+            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
+        }
+        
+        if (!kValField2.isNumber) {
+            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + kValField2.sb.toString() + "]");
+        }
+        
+        final KValField newKValField = new KValField(kValField1.sb, true);
+        
+        if (!isCasteableToANumber(newKValField.sb.toString())) {
+            newKValField.sb.insert(0, "(").append(")");
+        }
+        
+        newKValField.sb.append(" ").append(operation).append(" ");
+        
+        final boolean kValFieldCasteableToANumber = isCasteableToANumber(kValField2.sb.toString());
+        
+        if (!kValFieldCasteableToANumber) {
+            newKValField.sb.append("(");
+        }
+        
+        newKValField.sb.append(kValField2.sb);
+        
+        if (!kValFieldCasteableToANumber) {
+            newKValField.sb.append(")");
+        }
+        
+        return newKValField;
+    }
+    
     public static KField encode(
         final KField kField,
         final KFormat kFormat
@@ -295,55 +470,10 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "EXP");
     }
     
-    public static KField decode(
-        final KField kField,
-        final KFormat kFormat
-    ) {
-        final boolean kFieldIsVal = kField instanceof KValField;
-        
-        if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
-            
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
-            }
-        }
-        
-        final KField encodeKField = kField.cloneMe();
-        
-        if (kFieldIsVal) {
-            encodeKField.sb.insert(0, "'").append("'");
-        }
-        
-        encodeKField.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
-        
-        return encodeKField;
-    }
-    
     public static KField floor(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "FLOOR");
-    }
-    
-    public static KValField isolate(
-        final KValField kValField
-    ) {
-        final KValField isolateKValField = kValField.cloneMe();
-        
-        isolateKValField.sb.insert(0, "(").append(")");
-        
-        return isolateKValField;
-    }
-    
-    public static KField isolate(
-        final KField kField
-    ) {
-        final KField isolateKField = kField.cloneMe();
-        
-        isolateKField.sb.insert(0, "(").append(")");
-        
-        return isolateKField;
     }
     
     public static KField getJsonArray(
@@ -463,6 +593,38 @@ public class KFunction {
         return greatestKField;
     }
     
+    private static boolean isCasteableToANumber(
+        final String text
+    ) {
+        try {
+            Double.parseDouble(text);
+            
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    public static KValField isolate(
+        final KValField kValField
+    ) {
+        final KValField isolateKValField = kValField.cloneMe();
+        
+        isolateKValField.sb.insert(0, "(").append(")");
+        
+        return isolateKValField;
+    }
+    
+    public static KField isolate(
+        final KField kField
+    ) {
+        final KField isolateKField = kField.cloneMe();
+        
+        isolateKField.sb.insert(0, "(").append(")");
+        
+        return isolateKField;
+    }
+    
     public static KField least(
         final KField... kFields
     ) {
@@ -562,6 +724,90 @@ public class KFunction {
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "LOG10");
+    }
+    
+    public static KField mod(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return doOperation(kField1, kField2, "%");
+    }
+    
+    public static KField mod(
+        final KField kField,
+        final Number number
+    ) {
+        return doOperation(kField, new KField(new StringBuilder(number.toString())), "%");
+    }
+    
+    public static KField mod(
+        final Number number,
+        final KField kField
+    ) {
+        return doOperation(new KField(new StringBuilder(number.toString())), kField, "%");
+    }
+    
+    public static KValField mod(
+        final KValField kValField,
+        final Number number
+    ) {
+        return doOperation(kValField, new KValField(number), "%");
+    }
+    
+    public static KValField mod(
+        final Number number,
+        final KValField kValField
+    ) {
+        return doOperation(new KValField(number), kValField, "%");
+    }
+    
+    public static KValField mod(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return doOperation(kValField1, kValField2, "%");
+    }
+    
+    public static KField mul(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return doOperation(kField1, kField2, "*");
+    }
+    
+    public static KField mul(
+        final KField kField,
+        final Number number
+    ) {
+        return doOperation(kField, new KField(new StringBuilder(number.toString())), "*");
+    }
+    
+    public static KField mul(
+        final Number number,
+        final KField kField
+    ) {
+        return doOperation(new KField(new StringBuilder(number.toString())), kField, "*");
+    }
+    
+    public static KValField mul(
+        final KValField kValField,
+        final Number number
+    ) {
+        return doOperation(kValField, new KValField(number), "*");
+    }
+    
+    public static KValField mul(
+        final Number number,
+        final KValField kValField
+    ) {
+        return doOperation(new KValField(number), kValField, "*");
+    }
+    
+    public static KValField mul(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return doOperation(kValField1, kValField2, "*");
     }
     
     public static KField now() {
@@ -667,6 +913,161 @@ public class KFunction {
         leftKField.sb.append(", ").append(n).append(")");
         
         return leftKField;
+    }
+    
+    public static KField round(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "ROUND");
+    }
+    
+    public static KField round(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "ROUND");
+    }
+    
+    public static KField sign(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "SIGN");
+    }
+    
+    public static KField sin(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "SIN");
+    }
+    
+    public static KField sinh(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "SINH");
+    }
+    
+    public static KField sqrt(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "SQRT");
+    }
+    
+    public static KField tan(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "TAN");
+    }
+    
+    public static KField tanh(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "TANH");
+    }
+    
+    public static KField radians(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "RADIANS");
+    }
+    
+    public static KField sub(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return doOperation(kField1, kField2, "-");
+    }
+    
+    public static KField sub(
+        final KField kField,
+        final Number number
+    ) {
+        return doOperation(kField, new KField(new StringBuilder(number.toString())), "-");
+    }
+    
+    public static KField sub(
+        final Number number,
+        final KField kField
+    ) {
+        return doOperation(new KField(new StringBuilder(number.toString())), kField, "-");
+    }
+    
+    public static KValField sub(
+        final KValField kValField,
+        final Number number
+    ) {
+        return doOperation(kValField, new KValField(number), "-");
+    }
+    
+    public static KValField sub(
+        final Number number,
+        final KValField kValField
+    ) {
+        return doOperation(new KValField(number), kValField, "-");
+    }
+    
+    public static KValField sub(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return doOperation(kValField1, kValField2, "-");
+    }
+    
+    public static KField trunc(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "TRUNC");
+    }
+    
+    public static KField widthBucket(
+        final KField op,
+        final KField b1,
+        final KField b2,
+        final KField count
+    ) {
+        final KField widthBucketKField = new KField();
+        
+        final boolean opIsVal = op instanceof KValField;
+        final boolean b1IsVal = b1 instanceof KValField;
+        final boolean b2IsVal = b2 instanceof KValField;
+        final boolean countIsVal = count instanceof KValField;
+        
+        widthBucketKField.sb.append("WIDTH_BUCKET(");
+        
+        if (opIsVal) {
+            final boolean isText = ((KValField) op).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            }
+        }
+        
+        if (b1IsVal) {
+            final boolean isText = ((KValField) b1).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            }
+        }
+        
+        if (b2IsVal) {
+            final boolean isText = ((KValField) b2).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            }
+        }
+        
+        if (countIsVal) {
+            final boolean isText = ((KValField) count).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            }
+        }
+        
+        widthBucketKField.sb.append(op.sb).append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count.sb).append(")");
+        
+        return widthBucketKField;
     }
     
     public static KValField val(

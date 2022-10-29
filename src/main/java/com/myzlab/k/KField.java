@@ -31,6 +31,18 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
         this(name);
         this.sb.append(sb);
     }
+    
+    public KField add(
+        final KField kField
+    ) {
+        return KFunction.add(this, kField);
+    }
+    
+    public KField add(
+        final Number number
+    ) {
+        return KFunction.add(this, number);
+    }
 
     public KAliasedField as(
         final String alias
@@ -51,13 +63,13 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
     public KField div(
         final KField kField
     ) {
-        return this.doOperation("/", kField);
+        return KFunction.div(this, kField);
     }
     
     public KField div(
         final Number number
     ) {
-        return this.doOperation("/", new KField(new StringBuilder(number.toString())));
+        return KFunction.div(this, number);
     }
     
     public KField isolate() {
@@ -91,60 +103,37 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
     public KField sub(
         final KField kField
     ) {
-        return this.doOperation("-", kField);
+        return KFunction.sub(this, kField);
     }
     
     public KField sub(
         final Number number
     ) {
-        return this.doOperation("-", new KField(new StringBuilder(number.toString())));
+        return KFunction.sub(this, number);
     }
     
     public KField mod(
         final KField kField
     ) {
-        return this.doOperation("%", kField);
+        return KFunction.mod(this, kField);
     }
     
     public KField mod(
         final Number number
     ) {
-        return this.doOperation("%", new KField(new StringBuilder(number.toString())));
+        return KFunction.mod(this, number);
     }
     
     public KField mul(
         final KField kField
     ) {
-        return this.doOperation("*", kField);
+        return KFunction.mul(this, kField);
     }
     
     public KField mul(
         final Number number
     ) {
-        return this.doOperation("*", new KField(new StringBuilder(number.toString())));
-    }
-    
-    public KField add(
-        final KField kField
-    ) {
-        return this.doOperation("+", kField);
-    }
-    
-    public KField add(
-        final Number number
-    ) {
-        return this.doOperation("+", new KField(new StringBuilder(number.toString())));
-    }
-    
-    private KField doOperation(
-        final String operation,
-        final KField kField
-    ) {
-        final KField operationKField = new KField(this.sb);
-        
-        operationKField.sb.append(" ").append(operation).append(" ").append(kField.sb);
-        
-        return operationKField;
+        return KFunction.mul(this, number);
     }
     
     protected KField cloneMe() {
