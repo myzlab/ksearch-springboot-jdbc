@@ -141,7 +141,25 @@ public class Ksearch {
                 ceiling(age),
                 ceiling(val(5)),
                 round(val(951), val(2)),
-                round(age, val(2))
+                round(age, val(2)),
+                cast(val("6"), bitVarying(255)).as("bits_"),
+                bitNot(age),
+                bitNot(val(444)),
+                bitNot(7),
+                bitShiftLeft(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9), 3).as("ooo_"),
+                bitShiftLeft(isolate(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9)), age).as("ooo_"),
+                concat(val(1).cast(bit()), val(2).cast(bit(2)), val(1).cast(bit())).as("bitConcat"),
+                ascii(age).as("ascii_"),
+                ascii(val("2")).as("ascii_"),
+                chr(age).as("chr_"),
+                chr(val("2")).as("chr_"),
+                length(age).as("length_"),
+                length(val("2")).as("length_"),
+                lower(age).as("lower_"),
+                lower(val("2")).as("lower_"),
+                upper(age).as("upper_"),
+                upper(val("2")).as("upper_"),
+                lpad(age, 2, "a").as("lpad_")
             )
             .single();
 //            .select(new KColumn().as())

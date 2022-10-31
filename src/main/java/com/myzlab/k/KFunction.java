@@ -27,42 +27,42 @@ public class KFunction {
         final KField kField1,
         final KField kField2
     ) {
-        return doOperation(kField1, kField2, "+");
+        return applyBinaryOperator(kField1, kField2, "+");
     }
     
     public static KField add(
         final KField kField,
         final Number number
     ) {
-        return doOperation(kField, new KField(new StringBuilder(number.toString())), "+");
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "+");
     }
     
     public static KField add(
         final Number number,
         final KField kField
     ) {
-        return doOperation(new KField(new StringBuilder(number.toString())), kField, "+");
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "+");
     }
     
     public static KValField add(
         final KValField kValField,
         final Number number
     ) {
-        return doOperation(kValField, new KValField(number), "+");
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "+");
     }
     
     public static KValField add(
         final Number number,
         final KValField kValField
     ) {
-        return doOperation(new KValField(number), kValField, "+");
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "+");
     }
     
     public static KValField add(
         final KValField kValField1,
         final KValField kValField2
     ) {
-        return doOperation(kValField1, kValField2, "+");
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "+");
     }
     
     private static KField applyOneParameterFunction(
@@ -106,6 +106,13 @@ public class KFunction {
         return functionKField;
     }
     
+    private static KField applyOneParameterFunctionWithValStringValid(
+        final KField kField,
+        final String functionName
+    ) {
+        return applyOneParameterFunction(kField, functionName, false, true);
+    }
+    
     private static KField applyOneParameterFunctionWithValNumberValid(
         final KField kField,
         final String functionName
@@ -146,6 +153,12 @@ public class KFunction {
         return functionKField;
     }
     
+    public static KField ascii(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "ASCII");
+    }
+    
     public static KField asin(
         final KField kField
     ) {
@@ -169,6 +182,192 @@ public class KFunction {
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "AVG");
+    }
+    
+    public static KField bitAnd(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyBinaryOperator(kField1, kField2, "&");
+    }
+    
+    public static KField bitAnd(
+        final KField kField,
+        final Number number
+    ) {
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "&");
+    }
+    
+    public static KField bitAnd(
+        final Number number,
+        final KField kField
+    ) {
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "&");
+    }
+    
+    public static KValField bitAnd(
+        final KValField kValField,
+        final Number number
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "&");
+    }
+    
+    public static KValField bitAnd(
+        final Number number,
+        final KValField kValField
+    ) {
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "&");
+    }
+    
+    public static KValField bitAnd(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "&");
+    }
+    
+    public static KField bitNot(
+        final KField kField
+    ) {
+        return applyUnaryOperator(kField, "~", false);
+    }
+    
+    public static KValField bitNot(
+        final Number number
+    ) {
+        return applyUnaryOperatorWithValNumberValid(new KValField(number), "~", false);
+    }
+    
+    public static KValField bitNot(
+        final KValField kValField
+    ) {
+        return applyUnaryOperatorWithValNumberValid(kValField, "~", false);
+    }
+    
+    public static KField bitOr(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyBinaryOperator(kField1, kField2, "|");
+    }
+    
+    public static KField bitOr(
+        final KField kField,
+        final Number number
+    ) {
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "|");
+    }
+    
+    public static KField bitOr(
+        final Number number,
+        final KField kField
+    ) {
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "|");
+    }
+    
+    public static KValField bitOr(
+        final KValField kValField,
+        final Number number
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "|");
+    }
+    
+    public static KValField bitOr(
+        final Number number,
+        final KValField kValField
+    ) {
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "|");
+    }
+    
+    public static KValField bitOr(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "|");
+    }
+    
+    public static KField bitShiftLeft(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyBinaryOperator(kField1, kField2, "<<");
+    }
+    
+    public static KField bitShiftLeft(
+        final KField kField,
+        final int n
+    ) {
+        return applyBinaryOperator(kField, new KField(new StringBuilder(n)), "<<");
+    }
+    
+    public static KValField bitShiftLeft(
+        final KValField kValField,
+        final int n
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(n), "<<");
+    }
+    
+    public static KField bitShiftRight(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyBinaryOperator(kField1, kField2, ">>");
+    }
+    
+    public static KField bitShiftRight(
+        final KField kField,
+        final int n
+    ) {
+        return applyBinaryOperator(kField, new KField(new StringBuilder(n)), ">>");
+    }
+    
+    public static KValField bitShiftRight(
+        final KValField kValField,
+        final int n
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(n), ">>");
+    }
+    
+    public static KField bitXor(
+        final KField kField1,
+        final KField kField2
+    ) {
+        return applyBinaryOperator(kField1, kField2, "#");
+    }
+    
+    public static KField bitXor(
+        final KField kField,
+        final Number number
+    ) {
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "#");
+    }
+    
+    public static KField bitXor(
+        final Number number,
+        final KField kField
+    ) {
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "#");
+    }
+    
+    public static KValField bitXor(
+        final KValField kValField,
+        final Number number
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "#");
+    }
+    
+    public static KValField bitXor(
+        final Number number,
+        final KValField kValField
+    ) {
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "#");
+    }
+    
+    public static KValField bitXor(
+        final KValField kValField1,
+        final KValField kValField2
+    ) {
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "#");
     }
     
     public static KField cast(
@@ -208,6 +407,12 @@ public class KFunction {
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "CEILING");
+    }
+    
+    public static KField chr(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "CHR");
     }
     
     public static KField coalesce(
@@ -353,67 +558,67 @@ public class KFunction {
         final KField kField1,
         final KField kField2
     ) {
-        return doOperation(kField1, kField2, "/");
+        return applyBinaryOperator(kField1, kField2, "/");
     }
     
     public static KField div(
         final KField kField,
         final Number number
     ) {
-        return doOperation(kField, new KField(new StringBuilder(number.toString())), "/");
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "/");
     }
     
     public static KField div(
         final Number number,
         final KField kField
     ) {
-        return doOperation(new KField(new StringBuilder(number.toString())), kField, "/");
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "/");
     }
     
     public static KValField div(
         final KValField kValField,
         final Number number
     ) {
-        return doOperation(kValField, new KValField(number), "/");
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "/");
     }
     
     public static KValField div(
         final Number number,
         final KValField kValField
     ) {
-        return doOperation(new KValField(number), kValField, "/");
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "/");
     }
     
     public static KValField div(
         final KValField kValField1,
         final KValField kValField2
     ) {
-        return doOperation(kValField1, kValField2, "/");
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "/");
     }
     
-    private static KField doOperation(
+    private static KField applyBinaryOperator(
         final KField kField1,
         final KField kField2,
-        final String operation
+        final String operator
     ) {
         final KField operationKField = new KField(kField1.sb);
         
-        operationKField.sb.append(" ").append(operation).append(" ").append(kField2.sb);
+        operationKField.sb.append(" ").append(operator).append(" ").append(kField2.sb);
         
         return operationKField;
     }
     
-    private static KValField doOperation(
+    private static KValField applyBinaryOperatorWithValNumberValid(
         final KValField kValField1,
         final KValField kValField2,
-        final String operation
+        final String operator
     ) {
         if (!kValField1.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
+            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
         }
         
         if (!kValField2.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operation + "' method only can be used in 'val' of number type. Current value: [" + kValField2.sb.toString() + "]");
+            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField2.sb.toString() + "]");
         }
         
         final KValField newKValField = new KValField(kValField1.sb, true);
@@ -422,7 +627,7 @@ public class KFunction {
             newKValField.sb.insert(0, "(").append(")");
         }
         
-        newKValField.sb.append(" ").append(operation).append(" ");
+        newKValField.sb.append(" ").append(operator).append(" ");
         
         final boolean kValFieldCasteableToANumber = isCasteableToANumber(kValField2.sb.toString());
         
@@ -439,6 +644,38 @@ public class KFunction {
         return newKValField;
     }
     
+    private static KField applyUnaryOperator(
+        final KField kField1,
+        final String operator,
+        final boolean addToRightSide
+    ) {
+        final KField operationKField = new KField();
+        
+        operationKField.sb.append(addToRightSide ? "" : operator).append(kField1.sb).append(addToRightSide ? operator : "");
+        
+        return operationKField;
+    }
+    
+    private static KValField applyUnaryOperatorWithValNumberValid(
+        final KValField kValField1,
+        final String operator,
+        final boolean addToRightSide
+    ) {
+        if (!kValField1.isNumber) {
+            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
+        }
+        
+        final KValField newKValField = new KValField(kValField1.sb, true);
+        
+        if (!isCasteableToANumber(newKValField.sb.toString())) {
+            newKValField.sb.insert(0, "(").append(")");
+        }
+        
+        newKValField.sb.insert(0, addToRightSide ? "" : operator).append(addToRightSide ? operator : "");
+        
+        return newKValField;
+    }
+    
     public static KField encode(
         final KField kField,
         final KFormat kFormat
@@ -446,10 +683,10 @@ public class KFunction {
         final boolean kFieldIsVal = kField instanceof KValField;
         
         if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("ENCODE", kField));
             }
         }
         
@@ -474,6 +711,43 @@ public class KFunction {
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "FLOOR");
+    }
+    
+    private static String getErrorMessageFunctionTextType(
+        final String functionName,
+        final KField kField
+    ) {
+        return getGenericErrorMessage(functionName, "function", "text", kField);
+    }
+    
+    private static String getErrorMessageFunctionNumberType(
+        final String functionName,
+        final KField kField
+    ) {
+        return getGenericErrorMessage(functionName, "function", "number", kField);
+    }
+    
+    private static String getErrorMessageOperatorTextType(
+        final String operatorName,
+        final KField kField
+    ) {
+        return getGenericErrorMessage(operatorName, "operator", "text", kField);
+    }
+    
+    private static String getErrorMessageOperatorNumberType(
+        final String operatorName,
+        final KField kField
+    ) {
+        return getGenericErrorMessage(operatorName, "operator", "number", kField);
+    }
+    
+    private static String getGenericErrorMessage(
+        final String name,
+        final String entity,
+        final String type,
+        final KField kField
+    ) {
+        return "The '" + name + "' " + entity +" only can be used with a 'val' of " + type + " type. Current value: [" + kField.sb.toString() + "]";
     }
     
     public static KField getJsonArray(
@@ -687,10 +961,10 @@ public class KFunction {
         final boolean kFieldIsVal = kField instanceof KValField;
         
         if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'LEFT' function is not available with a 'val' of number type");
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("LEFT", kField));
             }
             
             leftKField.sb.append("'");
@@ -705,6 +979,12 @@ public class KFunction {
         leftKField.sb.append(", ").append(n).append(")");
         
         return leftKField;
+    }
+    
+    public static KField length(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "LENGTH");
     }
     
     public static KField ln(
@@ -726,88 +1006,132 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "LOG10");
     }
     
+    public static KField lower(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "LOWER");
+    }
+    
+    public static KField lpad(
+        final KField kField,
+        final int n,
+        final String fillText
+    ) {
+        final KField lpadKField = new KField();
+        
+        lpadKField.sb.append("LPAD(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("LPAD", kField));
+            }
+            
+            lpadKField.sb.append("'");
+        }
+        
+        lpadKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            lpadKField.sb.append("'");
+        }
+        
+        lpadKField.sb.append(", ").append(n);
+                
+        if (fillText != null) {
+            lpadKField.sb.append(", '").append(fillText).append("'");
+        }
+                
+        lpadKField.sb.append(")");
+        
+        return lpadKField;
+    }
+    
     public static KField mod(
         final KField kField1,
         final KField kField2
     ) {
-        return doOperation(kField1, kField2, "%");
+        return applyBinaryOperator(kField1, kField2, "%");
     }
     
     public static KField mod(
         final KField kField,
         final Number number
     ) {
-        return doOperation(kField, new KField(new StringBuilder(number.toString())), "%");
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "%");
     }
     
     public static KField mod(
         final Number number,
         final KField kField
     ) {
-        return doOperation(new KField(new StringBuilder(number.toString())), kField, "%");
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "%");
     }
     
     public static KValField mod(
         final KValField kValField,
         final Number number
     ) {
-        return doOperation(kValField, new KValField(number), "%");
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "%");
     }
     
     public static KValField mod(
         final Number number,
         final KValField kValField
     ) {
-        return doOperation(new KValField(number), kValField, "%");
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "%");
     }
     
     public static KValField mod(
         final KValField kValField1,
         final KValField kValField2
     ) {
-        return doOperation(kValField1, kValField2, "%");
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "%");
     }
     
     public static KField mul(
         final KField kField1,
         final KField kField2
     ) {
-        return doOperation(kField1, kField2, "*");
+        return applyBinaryOperator(kField1, kField2, "*");
     }
     
     public static KField mul(
         final KField kField,
         final Number number
     ) {
-        return doOperation(kField, new KField(new StringBuilder(number.toString())), "*");
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "*");
     }
     
     public static KField mul(
         final Number number,
         final KField kField
     ) {
-        return doOperation(new KField(new StringBuilder(number.toString())), kField, "*");
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "*");
     }
     
     public static KValField mul(
         final KValField kValField,
         final Number number
     ) {
-        return doOperation(kValField, new KValField(number), "*");
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "*");
     }
     
     public static KValField mul(
         final Number number,
         final KValField kValField
     ) {
-        return doOperation(new KValField(number), kValField, "*");
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "*");
     }
     
     public static KValField mul(
         final KValField kValField1,
         final KValField kValField2
     ) {
-        return doOperation(kValField1, kValField2, "*");
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "*");
     }
     
     public static KField now() {
@@ -928,6 +1252,44 @@ public class KFunction {
         return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "ROUND");
     }
     
+    public static KField rpad(
+        final KField kField,
+        final int n,
+        final String fillText
+    ) {
+        final KField lpadKField = new KField();
+        
+        lpadKField.sb.append("RPAD(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("'RPAD' function is not available with a 'val' of number type");
+            }
+            
+            lpadKField.sb.append("'");
+        }
+        
+        lpadKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            lpadKField.sb.append("'");
+        }
+        
+        lpadKField.sb.append(", ").append(n);
+                
+        if (fillText != null) {
+            lpadKField.sb.append(", '").append(fillText).append("'");
+        }
+                
+        lpadKField.sb.append(")");
+        
+        return lpadKField;
+    }
+    
     public static KField sign(
         final KField kField
     ) {
@@ -974,48 +1336,54 @@ public class KFunction {
         final KField kField1,
         final KField kField2
     ) {
-        return doOperation(kField1, kField2, "-");
+        return applyBinaryOperator(kField1, kField2, "-");
     }
     
     public static KField sub(
         final KField kField,
         final Number number
     ) {
-        return doOperation(kField, new KField(new StringBuilder(number.toString())), "-");
+        return applyBinaryOperator(kField, new KField(new StringBuilder(number.toString())), "-");
     }
     
     public static KField sub(
         final Number number,
         final KField kField
     ) {
-        return doOperation(new KField(new StringBuilder(number.toString())), kField, "-");
+        return applyBinaryOperator(new KField(new StringBuilder(number.toString())), kField, "-");
     }
     
     public static KValField sub(
         final KValField kValField,
         final Number number
     ) {
-        return doOperation(kValField, new KValField(number), "-");
+        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), "-");
     }
     
     public static KValField sub(
         final Number number,
         final KValField kValField
     ) {
-        return doOperation(new KValField(number), kValField, "-");
+        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, "-");
     }
     
     public static KValField sub(
         final KValField kValField1,
         final KValField kValField2
     ) {
-        return doOperation(kValField1, kValField2, "-");
+        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "-");
     }
     
     public static KField trunc(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "TRUNC");
+    }
+    
+    public static KField upper(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "UPPER");
     }
     
     public static KField widthBucket(

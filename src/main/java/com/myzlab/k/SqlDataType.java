@@ -2,6 +2,8 @@ package com.myzlab.k;
 
 import com.myzlab.k.sql.datatype.KBigint;
 import com.myzlab.k.sql.datatype.KBigserial;
+import com.myzlab.k.sql.datatype.KBit;
+import com.myzlab.k.sql.datatype.KBitVarying;
 import com.myzlab.k.sql.datatype.KBoolean;
 import com.myzlab.k.sql.datatype.KBytea;
 import com.myzlab.k.sql.datatype.KCharacter;
@@ -35,6 +37,26 @@ public class SqlDataType {
     
     public static KBigserial bigserial() {
         return new KBigserial();
+    }
+    
+    public static KBit bit() {
+        return new KBit();
+    }
+    
+    public static KBit bit(
+        final int length
+    ) {
+        return new KBit(length);
+    }
+    
+    public static KBitVarying bitVarying() {
+        return new KBitVarying();
+    }
+    
+    public static KBitVarying bitVarying(
+        final int length
+    ) {
+        return new KBitVarying(length);
     }
     
     public static KBoolean bool() {
@@ -201,6 +223,16 @@ public class SqlDataType {
     
     public static KUuid uuid() {
         return new KUuid();
+    }
+    
+    public static KBitVarying varbit() {
+        return bitVarying();
+    }
+    
+    public static KBitVarying varbit(
+        final int length
+    ) {
+        return bitVarying(length);
     }
     
     public static KCharacterVarying varchar() {
