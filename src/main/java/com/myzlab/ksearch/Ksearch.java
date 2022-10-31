@@ -159,7 +159,10 @@ public class Ksearch {
                 lower(val("2")).as("lower_"),
                 upper(age).as("upper_"),
                 upper(val("2")).as("upper_"),
-                lpad(age, 2, "a").as("lpad_")
+                lpad(age, 2, "a").as("lpad_"),
+                lpad(val("age"), 2, "a").as("lpad_"),
+                rpad(val("abd"), 2, "a").as("rpad_"),
+                rpad(age, 2, "a").as("rpad_")
             )
             .single();
 //            .select(new KColumn().as())

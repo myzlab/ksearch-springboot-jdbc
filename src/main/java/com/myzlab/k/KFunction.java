@@ -79,11 +79,11 @@ public class KFunction {
             final boolean isText = ((KValField) kField).isText;
             
             if (isText && !valStringIsValid) {
-                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kField));
             }
             
             if (isNumber && !valNumberIsValid) {
-                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of number type");
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType(functionName, kField));
             }
             
             if (isText) {
@@ -133,18 +133,18 @@ public class KFunction {
         functionKField.sb.append(functionName).append("(");
         
         if (kField1IsVal) {
-            final boolean isText = ((KValField) kField1).isText;
+            final boolean isNumber = ((KValField) kField1).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kField1));
             }
         }
         
         if (kField2IsVal) {
-            final boolean isText = ((KValField) kField2).isText;
+            final boolean isNumber = ((KValField) kField2).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'" + functionName + "' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kField2));
             }
         }
         
@@ -530,10 +530,10 @@ public class KFunction {
         final boolean kFieldIsVal = kField instanceof KValField;
         
         if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'ENCODE' function is not available with a 'val' of number type");
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("DECODE", kField));
             }
         }
         
@@ -614,11 +614,11 @@ public class KFunction {
         final String operator
     ) {
         if (!kValField1.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
+            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField1));
         }
         
         if (!kValField2.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField2.sb.toString() + "]");
+            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField2));
         }
         
         final KValField newKValField = new KValField(kValField1.sb, true);
@@ -657,15 +657,15 @@ public class KFunction {
     }
     
     private static KValField applyUnaryOperatorWithValNumberValid(
-        final KValField kValField1,
+        final KValField kValField,
         final String operator,
         final boolean addToRightSide
     ) {
-        if (!kValField1.isNumber) {
-            throw KExceptionHelper.internalServerError("The '" + operator + "' method only can be used in 'val' of number type. Current value: [" + kValField1.sb.toString() + "]");
+        if (!kValField.isNumber) {
+            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField));
         }
         
-        final KValField newKValField = new KValField(kValField1.sb, true);
+        final KValField newKValField = new KValField(kValField.sb, true);
         
         if (!isCasteableToANumber(newKValField.sb.toString())) {
             newKValField.sb.insert(0, "(").append(")");
@@ -747,7 +747,11 @@ public class KFunction {
         final String type,
         final KField kField
     ) {
-        return "The '" + name + "' " + entity +" only can be used with a 'val' of " + type + " type. Current value: [" + kField.sb.toString() + "]";
+        return "The '" + name + "' " + entity + " only can be used with a column or with a 'val' of " + type + " type. Current value: [" 
+            + (type.equals("number") ? "'" : "") 
+            + kField.sb.toString() 
+            + (type.equals("number") ? "'" : "") 
+            + "]";
     }
     
     public static KField getJsonArray(
@@ -1219,10 +1223,10 @@ public class KFunction {
         final boolean kFieldIsVal = kField instanceof KValField;
         
         if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'RIGHT' function is not available with a 'val' of number type");
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("RIGHT", kField));
             }
             
             leftKField.sb.append("'");
@@ -1264,10 +1268,10 @@ public class KFunction {
         final boolean kFieldIsVal = kField instanceof KValField;
         
         if (kFieldIsVal) {
-            final boolean isNumber = ((KValField) kField).isNumber;
+            final boolean isText = ((KValField) kField).isText;
             
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("'RPAD' function is not available with a 'val' of number type");
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("RPAD", kField));
             }
             
             lpadKField.sb.append("'");
@@ -1402,34 +1406,34 @@ public class KFunction {
         widthBucketKField.sb.append("WIDTH_BUCKET(");
         
         if (opIsVal) {
-            final boolean isText = ((KValField) op).isText;
+            final boolean isNumber = ((KValField) op).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", op));
             }
         }
         
         if (b1IsVal) {
-            final boolean isText = ((KValField) b1).isText;
+            final boolean isNumber = ((KValField) b1).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", b1));
             }
         }
         
         if (b2IsVal) {
-            final boolean isText = ((KValField) b2).isText;
+            final boolean isNumber = ((KValField) b2).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", b2));
             }
         }
         
         if (countIsVal) {
-            final boolean isText = ((KValField) count).isText;
+            final boolean isNumber = ((KValField) count).isNumber;
             
-            if (isText) {
-                throw KExceptionHelper.internalServerError("'WIDTH_BUCKET' function is not available with a 'val' of string type");
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", count));
             }
         }
         
