@@ -16,7 +16,7 @@ public class Ksearch {
         final KField<Long> age = new KField<>("age");
         final KField<String> data = new KField<>("data");
         final KField<Long> ageWorking = new KField<>("ageWorking");
-        
+        final String x = null;
         new KInitializer()
             .select(
                 as(isolate(concat(name, val(" "), lastName)), "FullName"),
@@ -161,8 +161,47 @@ public class Ksearch {
                 upper(val("2")).as("upper_"),
                 lpad(age, 2, "a").as("lpad_"),
                 lpad(val("age"), 2, "a").as("lpad_"),
+                lpad(val("age"), 2).as("lpad_"),
                 rpad(val("abd"), 2, "a").as("rpad_"),
-                rpad(age, 2, "a").as("rpad_")
+                rpad(age, 2, "a").as("rpad_"),
+                rpad(age, 2).as("rpad_"),
+                ltrim(val("abd"), "xyz"),
+                ltrim(val("abd")),
+                trim(val("abd"), "xyz"),
+                trim(val("abd")),
+                rtrim(val("abd"), "xyz"),
+                rtrim(val("abd")),
+                md5(val("abd")),
+                md5(age),
+                substring(age, 4, 8),
+                substring(val("ageageageage"), null, 8),
+                substring(val("ageageageage"), 4),
+                substring(val("Thomas"), "...$"),
+                substring(val("Thomas"), "%#\"o_a#\"_", "#"),
+                overlay(val("Txxxxas"), "hom", 2, 4),
+                overlay(val("Txxxxas"), "hom", 2),
+                overlay(age, "hom", 2),
+                position(age, "om"),
+                position(val("age"), "om"),
+                regexpReplace(val("Thomas"), ".[mN]a.", "M", "g"),
+                regexpReplace(age, ".[mN]a.", "M"),
+                repeat(age, 2),
+                repeat(val("age"), 2),
+                replace(val("Thomas"), "a", "b"),
+                replace(age, "a", "b"),
+                reverse(age).as("reverse_"),
+                reverse(val("222")).as("reverse_"),
+                splitPart(age, "x", 2).as("splitPart_"),
+                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_"),
+                toChar(cast(age, timestamp()), "YYYY"),
+                toChar(val(2019), "9,999"),
+                toHex(age),
+                toHex(val(0)),
+                translate(val("12345"), "143", "ax"),
+                translate(age, "143", "ax"),
+                uuidGenerateV1().as("u1"),
+                uuidGenerateV4().as("u4"),
+                genRandomUuid().as("g")
             )
             .single();
 //            .select(new KColumn().as())

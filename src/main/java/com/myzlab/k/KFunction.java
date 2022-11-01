@@ -713,6 +713,46 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "FLOOR");
     }
     
+    public static KField genRandomUuid() {
+        return new KField("GEN_RANDOM_UUID()");
+    }
+    
+    private static KField genericTrim(
+        final String trimFunctionName,
+        final KField kField,
+        final String characters
+    ) {
+        final KField lpadKField = new KField();
+        
+        lpadKField.sb.append(trimFunctionName).append("(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType(trimFunctionName, kField));
+            }
+            
+            lpadKField.sb.append("'");
+        }
+        
+        lpadKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            lpadKField.sb.append("'");
+        }
+                
+        if (characters != null) {
+            lpadKField.sb.append(", '").append(characters).append("'");
+        }
+                
+        lpadKField.sb.append(")");
+        
+        return lpadKField;
+    }
+    
     private static String getErrorMessageFunctionTextType(
         final String functionName,
         final KField kField
@@ -1018,6 +1058,13 @@ public class KFunction {
     
     public static KField lpad(
         final KField kField,
+        final int n
+    ) {
+        return lpad(kField, n, null);
+    }
+    
+    public static KField lpad(
+        final KField kField,
         final int n,
         final String fillText
     ) {
@@ -1052,6 +1099,25 @@ public class KFunction {
         lpadKField.sb.append(")");
         
         return lpadKField;
+    }
+    
+    public static KField ltrim(
+        final KField kField
+    ) {
+        return ltrim(kField, null);
+    }
+    
+    public static KField ltrim(
+        final KField kField,
+        final String characters
+    ) {
+        return genericTrim("LTRIM", kField, characters);
+    }
+    
+    public static KField md5(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "MD5");
     }
     
     public static KField mod(
@@ -1197,8 +1263,94 @@ public class KFunction {
         return nullifKField;
     }
     
+    public static KField overlay(
+        final KField kField,
+        final String value,
+        final Integer from
+    ) {
+        return overlay(kField, value, from, null);
+    }
+    
+    public static KField overlay(
+        final KField kField,
+        final String value,
+        final Integer from,
+        final Integer for_
+    ) {
+        if (from == null || value == null) {
+            throw KExceptionHelper.internalServerError("'from' and 'value' are required in 'OVERLAY' function");
+        }
+        
+        final KField overlayKField = new KField();
+        
+        overlayKField.sb.append("OVERLAY(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("OVERLAY", kField));
+            }
+            
+            overlayKField.sb.append("'");
+        }
+        
+        overlayKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            overlayKField.sb.append("'");
+        }
+        
+        overlayKField.sb.append(" PLACING '").append(value).append("'").append(" from ").append(from);
+        
+        if (for_ != null) {
+            overlayKField.sb.append(" for ").append(for_);
+        }
+                
+        overlayKField.sb.append(")");
+        
+        return overlayKField;
+    }
+    
     public static KField pi() {
         return new KField("PI()");
+    }
+    
+    public static KField position(
+        final KField kField,
+        final String valueToLocate
+    ) {
+        if (valueToLocate == null) {
+            throw KExceptionHelper.internalServerError("'valueToLocate' is required in 'POSITION' function");
+        }
+        
+        final KField positionKField = new KField();
+        
+        positionKField.sb.append("POSITION('").append(valueToLocate).append("'").append(" in ");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("POSITION", kField));
+            }
+            
+            positionKField.sb.append("'");
+        }
+        
+        positionKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            positionKField.sb.append("'");
+        }
+        
+        positionKField.sb.append(")");
+        
+        return positionKField;
     }
     
     public static KField power(
@@ -1208,8 +1360,138 @@ public class KFunction {
         return applyTwoParameterFunctionWithValNumberValid(kField1, kField2, "POWER");
     }
     
+    public static KField radians(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValNumberValid(kField, "RADIANS");
+    }
+    
     public static KField random() {
         return new KField("RANDOM()");
+    }
+    
+    public static KField repeat(
+        final KField kField,
+        final int n
+    ) {
+        final KField repeatKField = new KField();
+        
+        repeatKField.sb.append("REPEAT(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REPEAT", kField));
+            }
+            
+            repeatKField.sb.append("'");
+        }
+        
+        repeatKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            repeatKField.sb.append("'");
+        }
+        
+        repeatKField.sb.append(", ").append(n).append(")");
+        
+        return repeatKField;
+    }
+    
+    public static KField regexpReplace(
+        final KField kField,
+        final String pattern,
+        final String replacement
+    ) {
+        return regexpReplace(kField, pattern, replacement, null);
+    }
+    
+    public static KField regexpReplace(
+        final KField kField,
+        final String pattern,
+        final String replacement,
+        final String flags
+    ) {
+        if (pattern == null || replacement == null) {
+            throw KExceptionHelper.internalServerError("'pattern' and 'replacement' are required in 'REGEX_REPLACE' function");
+        }
+        
+        final KField regexpReplaceKField = new KField();
+        
+        regexpReplaceKField.sb.append("REGEXP_REPLACE(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REGEXP_REPLACE", kField));
+            }
+            
+            regexpReplaceKField.sb.append("'");
+        }
+        
+        regexpReplaceKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            regexpReplaceKField.sb.append("'");
+        }
+
+        regexpReplaceKField.sb.append(", '").append(pattern).append("', '").append(replacement).append("'");
+        
+        if (flags != null) {
+            regexpReplaceKField.sb.append(", '").append(flags).append("'");
+        }
+        
+        regexpReplaceKField.sb.append(")");
+        
+        return regexpReplaceKField;
+    }
+    
+    public static KField replace(
+        final KField kField,
+        final String from,
+        final String to
+    ) {
+        if (from == null || to == null) {
+            throw KExceptionHelper.internalServerError("'from' and 'to' are required in 'REPLACE' function");
+        }
+        
+        final KField replaceKField = new KField();
+        
+        replaceKField.sb.append("REPLACE(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REGEXP_REPLACE", kField));
+            }
+            
+            replaceKField.sb.append("'");
+        }
+        
+        replaceKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            replaceKField.sb.append("'");
+        }
+
+        replaceKField.sb.append(", '").append(from).append("', '").append(to).append("'").append(")");
+        
+        return replaceKField;
+    }
+    
+    public static KField reverse(
+        final KField kField
+    ) {
+        return applyOneParameterFunctionWithValStringValid(kField, "REVERSE");
     }
     
     public static KField right(
@@ -1258,12 +1540,19 @@ public class KFunction {
     
     public static KField rpad(
         final KField kField,
+        final int n
+    ) {
+        return rpad(kField, n, null);
+    }
+    
+    public static KField rpad(
+        final KField kField,
         final int n,
         final String fillText
     ) {
-        final KField lpadKField = new KField();
+        final KField rpadKField = new KField();
         
-        lpadKField.sb.append("RPAD(");
+        rpadKField.sb.append("RPAD(");
         
         final boolean kFieldIsVal = kField instanceof KValField;
         
@@ -1274,24 +1563,37 @@ public class KFunction {
                 throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("RPAD", kField));
             }
             
-            lpadKField.sb.append("'");
+            rpadKField.sb.append("'");
         }
         
-        lpadKField.sb.append(kField.sb);
+        rpadKField.sb.append(kField.sb);
         
         if (kFieldIsVal) {
-            lpadKField.sb.append("'");
+            rpadKField.sb.append("'");
         }
         
-        lpadKField.sb.append(", ").append(n);
+        rpadKField.sb.append(", ").append(n);
                 
         if (fillText != null) {
-            lpadKField.sb.append(", '").append(fillText).append("'");
+            rpadKField.sb.append(", '").append(fillText).append("'");
         }
                 
-        lpadKField.sb.append(")");
+        rpadKField.sb.append(")");
         
-        return lpadKField;
+        return rpadKField;
+    }
+    
+    public static KField rtrim(
+        final KField kField
+    ) {
+        return rtrim(kField, null);
+    }
+    
+    public static KField rtrim(
+        final KField kField,
+        final String characters
+    ) {
+        return genericTrim("RTRIM", kField, characters);
     }
     
     public static KField sign(
@@ -1312,10 +1614,146 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "SINH");
     }
     
+    public static KField splitPart(
+        final KField kField,
+        final String delimiter,
+        final int field
+    ) {
+        if (delimiter == null) {
+            throw KExceptionHelper.internalServerError("'delimiter' is required in 'SPLIT_PART' function");
+        }
+        
+        final KField splitPartKField = new KField();
+        
+        splitPartKField.sb.append("SPLIT_PART(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SPLIT_PART", kField));
+            }
+            
+            splitPartKField.sb.append("'");
+        }
+        
+        splitPartKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            splitPartKField.sb.append("'");
+        }
+        
+        splitPartKField.sb.append(", '").append(delimiter).append("', ").append(field).append(")");
+        
+        return splitPartKField;
+    }
+    
     public static KField sqrt(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "SQRT");
+    }
+    
+    public static KField substring(
+        final KField kField,
+        final Integer from
+    ) {
+        return substring(kField, from, null);
+    }
+    
+    public static KField substring(
+        final KField kField,
+        final Integer from,
+        final Integer for_
+    ) {
+        if (from == null && for_ == null) {
+            throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least 1 is required in 'SUBSTRING' function");
+        }
+        
+        final KField substringKField = new KField();
+        
+        substringKField.sb.append("SUBSTRING(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SUBSTRING", kField));
+            }
+            
+            substringKField.sb.append("'");
+        }
+        
+        substringKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            substringKField.sb.append("'");
+        }
+        
+        if (from != null) {
+            substringKField.sb.append(" from ").append(from);
+        }
+        
+        if (for_ != null) {
+            substringKField.sb.append(" for ").append(for_);
+        }
+                
+        substringKField.sb.append(")");
+        
+        return substringKField;
+    }
+    
+    public static KField substring(
+        final KField kField,
+        final String from
+    ) {
+        return substring(kField, from, null);
+    }
+    
+    public static KField substring(
+        final KField kField,
+        final String from,
+        final String for_
+    ) {
+        if (from == null) {
+            throw KExceptionHelper.internalServerError("'from' is required in 'SUBSTRING' function");
+        }
+        
+        final KField substringKField = new KField();
+        
+        substringKField.sb.append("SUBSTRING(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SUBSTRING", kField));
+            }
+            
+            substringKField.sb.append("'");
+        }
+        
+        substringKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            substringKField.sb.append("'");
+        }
+        
+        substringKField.sb.append(" from '").append(from).append("'");
+        
+        if (for_ != null) {
+            substringKField.sb.append(" for '").append(for_).append("'");
+        }
+        
+        substringKField.sb.append(")");
+        
+        return substringKField;
     }
     
     public static KField tan(
@@ -1330,10 +1768,59 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "TANH");
     }
     
-    public static KField radians(
+    public static KField toHex(
         final KField kField
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kField, "RADIANS");
+        return applyOneParameterFunctionWithValNumberValid(kField, "TO_HEX");
+    }
+    
+    public static KField translate(
+        final KField kField,
+        final String from,
+        final String to
+    ) {
+        if (from == null || to == null) {
+            throw KExceptionHelper.internalServerError("'from' and 'to' are required in 'TRANSLATE' function");
+        }
+        
+        final KField translateKField = new KField();
+        
+        translateKField.sb.append("TRANSLATE(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TRANSLATE", kField));
+            }
+            
+            translateKField.sb.append("'");
+        }
+        
+        translateKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            translateKField.sb.append("'");
+        }
+        
+        translateKField.sb.append(", '").append(from).append("', '").append(to).append("')");
+        
+        return translateKField;
+    }
+    
+    public static KField trim(
+        final KField kField
+    ) {
+        return trim(kField, null);
+    }
+    
+    public static KField trim(
+        final KField kField,
+        final String characters
+    ) {
+        return genericTrim("TRIM", kField, characters);
     }
     
     public static KField sub(
@@ -1378,16 +1865,63 @@ public class KFunction {
         return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "-");
     }
     
+    public static KField toChar(
+        final KField kField,
+        final String format
+    ) {
+        if (format == null) {
+            throw KExceptionHelper.internalServerError("'format' is required in 'TO_CHAR' function");
+        }
+        
+        final KField substringKField = new KField();
+        
+        substringKField.sb.append("TO_CHAR(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (!isNumber) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("TO_CHAR", kField));
+            }
+        }
+        
+        substringKField.sb.append(kField.sb).append(", '").append(format).append("'").append(")");
+        
+        return substringKField;
+    }
+    
     public static KField trunc(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "TRUNC");
     }
     
+    public static KField uuidGenerateV1() {
+        return new KField("UUID_GENERATE_V1()");
+    }
+    
+    public static KField uuidGenerateV4() {
+        return new KField("UUID_GENERATE_V4()");
+    }
+    
     public static KField upper(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValStringValid(kField, "UPPER");
+    }
+    
+    public static KValField val(
+        final String val
+    ) {
+        return new KValField(val);
+    }
+    
+    public static KValField val(
+        final Number val
+    ) {
+        return new KValField(val);
     }
     
     public static KField widthBucket(
@@ -1442,15 +1976,4 @@ public class KFunction {
         return widthBucketKField;
     }
     
-    public static KValField val(
-        final String val
-    ) {
-        return new KValField(val);
-    }
-    
-    public static KValField val(
-        final Number val
-    ) {
-        return new KValField(val);
-    }
 }
