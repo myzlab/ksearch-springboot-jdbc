@@ -553,6 +553,38 @@ public class KFunction {
         return concatKField;
     }
     
+    public static KField currentDate() {
+        return new KField("CURRENT_DATE");
+    }
+    
+    public static KField currentSchema() {
+        return new KField("CURRENT_SCHEMA");
+    }
+    
+    public static KField currentTime() {
+        return currentTime(null);
+    }
+    
+    public static KField currentTime(
+        final Integer precision
+    ) {
+        return new KField("CURRENT_TIME" + ((precision != null) ? "(" + precision + ")": ""));
+    }
+    
+    public static KField currentTimestamp() {
+        return currentTimestamp(null);
+    }
+    
+    public static KField currentTimestamp(
+        final Integer precision
+    ) {
+        return new KField("CURRENT_TIMESTAMP" + ((precision != null) ? "(" + precision + ")": ""));
+    }
+    
+    public static KField currentUser() {
+        return new KField("CURRENT_USER");
+    }
+    
     public static KField datePart(
         final KField kField,
         final KExtractField kExtractField
@@ -565,21 +597,52 @@ public class KFunction {
             final boolean isText = ((KValField) kField).isText;
             
             if (isText) {
-                throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column. Current value: ['" + kField.sb.toString() + "']" );
+                throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column. Current value: ['" + kField.sb.toString() + "']" );
             }
             
             final boolean isNumber = ((KValField) kField).isNumber;
             
             if (isNumber) {
-                throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column. Current value: [" + kField.sb.toString() + "]" );
+                throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column. Current value: [" + kField.sb.toString() + "]" );
             }
             
-            throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column.");
+            throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column.");
         }
         
         final KField extractKField = new KField(kField.sb);
         
         extractKField.sb.insert(0, "', ").insert(0, kExtractField.toSql()).insert(0, "DATE_PART('").append(")");
+        
+        return extractKField;
+    }
+    
+    public static KField dateTrunc(
+        final KField kField,
+        final KExtractField kExtractField
+    ) {
+        
+        assertNotNull(kField, "kField");
+        assertNotNull(kExtractField, "kExtractField");
+        
+        if (kField instanceof KValField) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (isText) {
+                throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column. Current value: ['" + kField.sb.toString() + "']" );
+            }
+            
+            final boolean isNumber = ((KValField) kField).isNumber;
+            
+            if (isNumber) {
+                throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column. Current value: [" + kField.sb.toString() + "]" );
+            }
+            
+            throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column.");
+        }
+        
+        final KField extractKField = new KField(kField.sb);
+        
+        extractKField.sb.insert(0, "', ").insert(0, kExtractField.toSql()).insert(0, "DATE_TRUNC('").append(")");
         
         return extractKField;
     }
@@ -1222,6 +1285,26 @@ public class KFunction {
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "LN");
+    }
+    
+    public static KField localTime() {
+        return localTime(null);
+    }
+    
+    public static KField localTime(
+        final Integer precision
+    ) {
+        return new KField("LOCALTIME" + ((precision != null) ? "(" + precision + ")": ""));
+    }
+    
+    public static KField localTimestamp() {
+        return localTimestamp(null);
+    }
+    
+    public static KField localTimestamp(
+        final Integer precision
+    ) {
+        return new KField("LOCALTIMESTAMP" + ((precision != null) ? "(" + precision + ")": ""));
     }
     
     public static KField log(
@@ -1969,10 +2052,78 @@ public class KFunction {
         return applyOneParameterFunctionWithValNumberValid(kField, "TANH");
     }
     
+    public static KField toDate(
+        final KField kField,
+        final String format
+    ) {
+        assertNotNull(kField, "kField");
+        assertNotNull(format, "format");
+        
+        final KField toDateKField = new KField();
+        
+        toDateKField.sb.append("TO_DATE(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TO_DATE", kField));
+            }
+            
+            toDateKField.sb.append("'");
+        }
+        
+        toDateKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            toDateKField.sb.append("'");
+        }
+
+        toDateKField.sb.append(", '").append(format).append("'").append(")");
+        
+        return toDateKField;
+    }
+    
     public static KField toHex(
         final KField kField
     ) {
         return applyOneParameterFunctionWithValNumberValid(kField, "TO_HEX");
+    }
+    
+    public static KField toTimestamp(
+        final KField kField,
+        final String format
+    ) {
+        assertNotNull(kField, "kField");
+        assertNotNull(format, "format");
+        
+        final KField toDateKField = new KField();
+        
+        toDateKField.sb.append("TO_TIMESTAMP(");
+        
+        final boolean kFieldIsVal = kField instanceof KValField;
+        
+        if (kFieldIsVal) {
+            final boolean isText = ((KValField) kField).isText;
+            
+            if (!isText) {
+                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TO_DATE", kField));
+            }
+            
+            toDateKField.sb.append("'");
+        }
+        
+        toDateKField.sb.append(kField.sb);
+        
+        if (kFieldIsVal) {
+            toDateKField.sb.append("'");
+        }
+
+        toDateKField.sb.append(", '").append(format).append("'").append(")");
+        
+        return toDateKField;
     }
     
     public static KField translate(

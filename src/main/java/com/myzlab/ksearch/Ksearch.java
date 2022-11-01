@@ -204,7 +204,25 @@ public class Ksearch {
                 uuidGenerateV4().as("u4"),
                 genRandomUuid().as("g"),
                 extract(val("2020-10-10").cast(timestamp()), day()),
-                datePart(val("2020-10-10").cast(timestamp()), day())
+                datePart(val("2020-10-10").cast(timestamp()), day()),
+                currentDate().as("c"),
+                currentTimestamp().as("c22"),
+                currentTime().as("tc"),
+                currentTimestamp(3).as("ct3"),
+                currentTime(4).as("ci4"),
+                localTimestamp().as("ll"),
+                localTime().as("l"),
+                localTimestamp(5).as("lt5"),
+                localTime(6).as("li6"),
+                cast(val("2020-02-03"), date()).add(3),
+                cast(val("2020-02-03"), date()).sub(cast(val("2020-02-04"), date())),
+                toDate(age, "YYYYMMDD"),
+                toDate(val("20201010"), "YYYYMMDD"),
+                toTimestamp(age, "YYYYMMDDHH24MISS"),
+                toTimestamp(val("20200203153045"), "YYYYMMDDHH24MISS"),
+                dateTrunc(val("2020-10-10").cast(timestamp()), day()),
+                currentSchema().as("sc"),
+                currentUser().as("us")
             )
             .single();
 //            .select(new KColumn().as())
