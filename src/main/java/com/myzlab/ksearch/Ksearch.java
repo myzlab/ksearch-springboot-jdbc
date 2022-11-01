@@ -5,6 +5,7 @@ import static com.myzlab.k.KFunction.*;
 import static com.myzlab.k.SqlDataType.*;
 import static com.myzlab.k.SqlFormat.*;
 import com.myzlab.k.KInitializer;
+import static com.myzlab.k.SqlExtractField.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,7 +17,7 @@ public class Ksearch {
         final KField<Long> age = new KField<>("age");
         final KField<String> data = new KField<>("data");
         final KField<Long> ageWorking = new KField<>("ageWorking");
-        final String x = null;
+        
         new KInitializer()
             .select(
                 as(isolate(concat(name, val(" "), lastName)), "FullName"),
@@ -201,7 +202,9 @@ public class Ksearch {
                 translate(age, "143", "ax"),
                 uuidGenerateV1().as("u1"),
                 uuidGenerateV4().as("u4"),
-                genRandomUuid().as("g")
+                genRandomUuid().as("g"),
+                extract(val("2020-10-10").cast(timestamp()), day()),
+                datePart(val("2020-10-10").cast(timestamp()), day())
             )
             .single();
 //            .select(new KColumn().as())

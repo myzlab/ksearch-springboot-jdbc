@@ -16,9 +16,6 @@ import com.myzlab.k.sql.extract.field.KQuarter;
 import com.myzlab.k.sql.extract.field.KSecond;
 import com.myzlab.k.sql.extract.field.KWeek;
 import com.myzlab.k.sql.extract.field.KYear;
-import com.myzlab.k.sql.format.KBase64;
-import com.myzlab.k.sql.format.KEscape;
-import com.myzlab.k.sql.format.KHex;
 
 public class SqlExtractField {
     
