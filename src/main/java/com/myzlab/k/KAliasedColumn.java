@@ -1,8 +1,8 @@
 package com.myzlab.k;
 
-public class KAliasedField<T> extends KBaseField<T> {
+public class KAliasedColumn<T> extends KBaseColumn<T> {
     
-    public KAliasedField(
+    public KAliasedColumn(
         final StringBuilder sb,
         final String alias
     ) {

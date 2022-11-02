@@ -1,44 +1,60 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.ArrayList;
+import java.util.List;
 
-public class KValField<T> extends KField<T> implements Cloneable {
+public class KValField<T> extends KColumn<T> implements Cloneable {
     
-    protected boolean isNumber = false;
-    protected boolean isText = false;
+    protected final StringBuilder sbParam;
     
-    public KValField(
-        final StringBuilder sb,
-        final boolean isNumber
+    protected final boolean isNumber;
+    protected final boolean isText;
+    protected final List<Object> params;
+    
+    private KValField(
+        final boolean isNumber,
+        final boolean isText
     ) {
         super();
         
         this.isNumber = isNumber;
-        this.isText = !isNumber;
-        this.sb.append(sb);
+        this.isText = isText;
+        this.params = new ArrayList<>();
+        this.sbParam = new StringBuilder();
     }
     
     public KValField(
-        final String val,
+        final StringBuilder sb,
+        final StringBuilder sbParam,
+        final List<Object> params,
         final boolean isNumber
     ) {
-        super();
+        this(isNumber, !isNumber);
         
-        this.isNumber = isNumber;
-        this.isText = !isNumber;
-        this.sb.append(val);
+        this.sb.append(sb);
+        this.sbParam.append(sbParam);
+        this.params.addAll(params);
     }
     
     public KValField(
         final String val
     ) {
-        this(val, false);
+        this(false, true);
+        
+        this.sb.append(val);
+        this.sbParam.append("?");
+        this.params.add(val);
     }
     
     public KValField(
         final Number val
     ) {
-        this(val.toString(), true);
+        this(true, false);
+        
+        this.sb.append(val);
+        this.sbParam.append("?");
+        this.params.add(val);
     }
     
     @Override
@@ -114,5 +130,4 @@ public class KValField<T> extends KField<T> implements Cloneable {
             throw KExceptionHelper.internalServerError("An error has occurred while cloning KValField object");
         }
     }
-    
 }

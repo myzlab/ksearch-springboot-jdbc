@@ -1,23 +1,35 @@
 package com.myzlab.k;
 
+import com.myzlab.k.helper.KExceptionHelper;
+
 public class KSelect extends KQuery {
     
-    public KSelect(
-        final KBaseField... kBaseColumns
-    ) {
-        this.process(kBaseColumns);
-    }
-
-    public KSelect select() {
-        return new KSelect();
+    private KSelect() {
+        super();
     }
     
-    public KFrom from() {
-        return new KFrom();
+    public static KSelect getInstance(final KBaseColumn... kBaseColums) {
+        final KSelect kSelect = new KSelect();
+        
+        kSelect.process(kBaseColums);
+        
+        return kSelect;
+    }
+    
+    public KSelect select(final KBaseColumn... kBaseColums) {
+        this.process(kBaseColums);
+        
+        return this;
+    }
+    
+    public KFrom from(
+        final KTable kTable
+    ) {
+        return KFrom.getInstance(this, kTable);
     }
     
     public KWhere where() {
-        return new KWhere();
+        return KWhere.getInstance(this);
     }
     
     public KGroupBy groupBy() {
@@ -53,22 +65,25 @@ public class KSelect extends KQuery {
     }
     
     private void process(
-        final KBaseField... kBaseColumns
+        final KBaseColumn... kBaseColums
     ) {
-        this.sb.append("SELECT ");
+        if (kBaseColums == null || kBaseColums.length == 0) {
+            throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
+        }
         
-        boolean first = true;
+        if (this.kQueryData.columnsAdded == 0) {
+            this.kQueryData.sb.append("SELECT ");
+        }
         
-        for (final KBaseField kBaseColumn : kBaseColumns) {
-            if (!first) {
-                this.sb.append(", ");
+        for (final KBaseColumn kBaseColum : kBaseColums) {
+            if (this.kQueryData.columnsAdded > 0) {
+                this.kQueryData.sb.append(", ");
             }
             
-            if (first) {
-                first = false;
-            }
+            this.kQueryData.columnsAdded++;
             
-            this.sb.append(kBaseColumn.toSql());
+            this.kQueryData.sb.append(kBaseColum.toSql());
         }
     }
+    
 }

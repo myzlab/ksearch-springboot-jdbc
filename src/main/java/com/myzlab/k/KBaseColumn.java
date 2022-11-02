@@ -1,6 +1,6 @@
 package com.myzlab.k;
 
-public abstract class KBaseField<T> {
+public abstract class KBaseColumn<T> {
 
     protected final StringBuilder sb = new StringBuilder();
  

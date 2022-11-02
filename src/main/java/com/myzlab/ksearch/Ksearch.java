@@ -1,10 +1,11 @@
 package com.myzlab.ksearch;
 
-import com.myzlab.k.KField;
+import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
 import static com.myzlab.k.SqlDataType.*;
 import static com.myzlab.k.SqlFormat.*;
 import com.myzlab.k.KInitializer;
+import com.myzlab.k.KTable;
 import static com.myzlab.k.SqlExtractField.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 public class Ksearch {
 
     public static void main(String[] args) {
-        final KField<String> name = new KField<>("name");
-        final KField<String> lastName = new KField<>("last_name");
-        final KField<Long> age = new KField<>("age");
-        final KField<String> data = new KField<>("data");
-        final KField<Long> ageWorking = new KField<>("ageWorking");
+        final KColumn<String> name = new KColumn<>("name");
+        final KColumn<String> lastName = new KColumn<>("last_name");
+        final KColumn<Long> age = new KColumn<>("age");
+        final KColumn<String> data = new KColumn<>("data");
+        final KColumn<Long> ageWorking = new KColumn<>("ageWorking");
+        
+        final KTable author  = new KTable("author");
+        final KTable book  = new KTable("book");
         
         new KInitializer()
             .select(
@@ -221,9 +225,14 @@ public class Ksearch {
                 toTimestamp(age, "YYYYMMDDHH24MISS"),
                 toTimestamp(val("20200203153045"), "YYYYMMDDHH24MISS"),
                 dateTrunc(val("2020-10-10").cast(timestamp()), day()),
-                currentSchema().as("sc"),
-                currentUser().as("us")
+                rawColumn("CASE WHEN rental_rate = 0.99 THEN 1 ELSE 0 END AS raw_")
             )
+            .select(currentSchema().as("sc"))
+            .select(currentUser().as("us"))
+            .from(author)
+            .from(book)
+            .where(name.neq("Matia"))
+//            .where(name.eq(val("abc")))
             .single();
 //            .select(new KColumn().as())
 //            .from()

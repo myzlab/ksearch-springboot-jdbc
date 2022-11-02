@@ -2,29 +2,29 @@ package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KField<T> extends KBaseField<T> implements Cloneable {
+public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     
     private final String name;
     
-    public KField() {
+    public KColumn() {
         this.name = null;
     }
     
-    public KField(
+    public KColumn(
         final String name
     ) {
         this.name = name;
         sb.append(name);
     }
     
-    public KField(
+    public KColumn(
         final StringBuilder sb
     ) {
         this();
         this.sb.append(sb);
     }
     
-    public KField(
+    public KColumn(
         final String name,
         final StringBuilder sb
     ) {
@@ -32,115 +32,163 @@ public class KField<T> extends KBaseField<T> implements Cloneable {
         this.sb.append(sb);
     }
     
-    public KField add(
-        final KField kField
+    public KColumn add(
+        final KColumn kColumn
     ) {
-        return KFunction.add(this, kField);
+        return KFunction.add(this, kColumn);
     }
     
-    public KField add(
+    public KColumn add(
         final Number number
     ) {
         return KFunction.add(this, number);
     }
 
-    public KAliasedField as(
+    public KAliasedColumn as(
         final String alias
     ) {
         return KFunction.as(this, alias);
     }
     
-    public KField avg() {
+    public KColumn avg() {
         return KFunction.avg(this);
     }
     
-    public KField cast(
+    public KColumn cast(
         final KDataType kDataType    
     ) {
         return KFunction.cast(this, kDataType);
     }
     
-    public KField div(
-        final KField kField
+    public KColumn div(
+        final KColumn kColumn
     ) {
-        return KFunction.div(this, kField);
+        return KFunction.div(this, kColumn);
     }
     
-    public KField div(
+    public KColumn div(
         final Number number
     ) {
         return KFunction.div(this, number);
     }
     
-    public KField isolate() {
+    public KCondition eq(
+        final KColumn kColumn
+    ) {
+        return KCondition.eq(this, kColumn);
+    }
+    
+    public KCondition eq(
+        final KValField kValField
+    ) {
+        return KCondition.eq(this, kValField);
+    }
+    
+    public KCondition eq(
+        final Number number
+    ) {
+        return eq(KFunction.val(number));
+    }
+    
+    public KCondition eq(
+        final String string
+    ) {
+        return eq(KFunction.val(string));
+    }
+    
+    public KColumn isolate() {
         return KFunction.isolate(this);
     }
     
-    public KField getJsonArray(final int index) {
+    public KColumn getJsonArray(final int index) {
         return KFunction.getJsonArray(this, index);
     }
     
-    public KField getJsonArrayAsText(final int index) {
+    public KColumn getJsonArrayAsText(final int index) {
         return KFunction.getJsonArrayAsText(this, index);
     }
     
-    public KField getJsonObject(final String name) {
+    public KColumn getJsonObject(final String name) {
         return KFunction.getJsonObject(this, name);
     }
     
-    public KField getJsonObjectAsText(final String name) {
+    public KColumn getJsonObjectAsText(final String name) {
         return KFunction.getJsonObjectAsText(this, name);
     }
     
-    public KField getJsonObjectAtPath(final String name) {
+    public KColumn getJsonObjectAtPath(final String name) {
         return KFunction.getJsonObjectAtPath(this, name);
     }
     
-    public KField getJsonObjectAtPathAsText(final String name) {
+    public KColumn getJsonObjectAtPathAsText(final String name) {
         return KFunction.getJsonObjectAtPathAsText(this, name);
     }
     
-    public KField sub(
-        final KField kField
+    public KColumn sub(
+        final KColumn kColumn
     ) {
-        return KFunction.sub(this, kField);
+        return KFunction.sub(this, kColumn);
     }
     
-    public KField sub(
+    public KColumn sub(
         final Number number
     ) {
         return KFunction.sub(this, number);
     }
     
-    public KField mod(
-        final KField kField
+    public KColumn mod(
+        final KColumn kColumn
     ) {
-        return KFunction.mod(this, kField);
+        return KFunction.mod(this, kColumn);
     }
     
-    public KField mod(
+    public KColumn mod(
         final Number number
     ) {
         return KFunction.mod(this, number);
     }
     
-    public KField mul(
-        final KField kField
+    public KColumn mul(
+        final KColumn kColumn
     ) {
-        return KFunction.mul(this, kField);
+        return KFunction.mul(this, kColumn);
     }
     
-    public KField mul(
+    public KColumn mul(
         final Number number
     ) {
         return KFunction.mul(this, number);
     }
     
-    protected KField cloneMe() {
+    public KCondition neq(
+        final KColumn kColumn
+    ) {
+        return KCondition.neq(this, kColumn);
+    }
+    
+    public KCondition neq(
+        final KValField kValField
+    ) {
+        return KCondition.neq(this, kValField);
+    }
+    
+    public KCondition neq(
+        final Number number
+    ) {
+        return neq(KFunction.val(number));
+    }
+    
+    public KCondition neq(
+        final String string
+    ) {
+        return neq(KFunction.val(string));
+    }
+    
+    protected KColumn cloneMe() {
         try {
-            return (KField) super.clone();
+            return (KColumn) super.clone();
         } catch (Exception e) {
-            throw KExceptionHelper.internalServerError("An error has occurred while cloning KField object");
+            throw KExceptionHelper.internalServerError("An error has occurred while cloning KColumn object");
         }
     }
 
