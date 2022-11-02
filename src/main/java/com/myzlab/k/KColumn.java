@@ -75,25 +75,85 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     public KCondition eq(
         final KColumn kColumn
     ) {
-        return KCondition.eq(this, kColumn);
+        return equal(kColumn);
     }
     
     public KCondition eq(
         final KValField kValField
     ) {
-        return KCondition.eq(this, kValField);
+        return equal(kValField);
     }
     
     public KCondition eq(
         final Number number
     ) {
-        return eq(KFunction.val(number));
+        return equal(number);
     }
     
     public KCondition eq(
         final String string
     ) {
+        return equal(string);
+    }
+    
+    public KCondition equal(
+        final KColumn kColumn
+    ) {
+        return KCondition.eq(this, kColumn);
+    }
+    
+    public KCondition equal(
+        final KValField kValField
+    ) {
+        return KCondition.eq(this, kValField);
+    }
+    
+    public KCondition equal(
+        final Number number
+    ) {
+        return eq(KFunction.val(number));
+    }
+    
+    public KCondition equal(
+        final String string
+    ) {
         return eq(KFunction.val(string));
+    }
+    
+    public KCondition ieq(
+        final KColumn kColumn
+    ) {
+        return iEqual(kColumn);
+    }
+    
+    public KCondition ieq(
+        final KValField kValField
+    ) {
+        return iEqual(kValField);
+    }
+    
+    public KCondition ieq(
+        final String string
+    ) {
+        return iEqual(string);
+    }
+    
+    public KCondition iEqual(
+        final KColumn kColumn
+    ) {
+        return KCondition.ieq(this, kColumn);
+    }
+    
+    public KCondition iEqual(
+        final KValField kValField
+    ) {
+        return KCondition.ieq(this, kValField);
+    }
+    
+    public KCondition iEqual(
+        final String string
+    ) {
+        return iEqual(KFunction.val(string));
     }
     
     public KColumn isolate() {
@@ -163,25 +223,85 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     public KCondition neq(
         final KColumn kColumn
     ) {
-        return KCondition.neq(this, kColumn);
+        return notEqual(kColumn);
     }
     
     public KCondition neq(
         final KValField kValField
     ) {
-        return KCondition.neq(this, kValField);
+        return notEqual(kValField);
     }
     
     public KCondition neq(
         final Number number
     ) {
-        return neq(KFunction.val(number));
+        return notEqual(number);
     }
     
     public KCondition neq(
         final String string
     ) {
+        return notEqual(string);
+    }
+    
+    public KCondition notEqual(
+        final KColumn kColumn
+    ) {
+        return KCondition.neq(this, kColumn);
+    }
+    
+    public KCondition notEqual(
+        final KValField kValField
+    ) {
+        return KCondition.neq(this, kValField);
+    }
+    
+    public KCondition notEqual(
+        final Number number
+    ) {
+        return neq(KFunction.val(number));
+    }
+    
+    public KCondition notEqual(
+        final String string
+    ) {
         return neq(KFunction.val(string));
+    }
+    
+    public KCondition nieq(
+        final KColumn kColumn
+    ) {
+        return notIEqual(kColumn);
+    }
+    
+    public KCondition nieq(
+        final KValField kValField
+    ) {
+        return notIEqual(kValField);
+    }
+    
+    public KCondition nieq(
+        final String string
+    ) {
+        return notIEqual(string);
+    }
+    
+    public KCondition notIEqual(
+        final KColumn kColumn
+    ) {
+        return KCondition.nieq(this, kColumn);
+    }
+    
+    public KCondition notIEqual(
+        final KValField kValField
+    ) {
+        return KCondition.nieq(this, kValField);
+    }
+    
+    public KCondition notIEqual(
+        final String string
+    ) {
+        return nieq(KFunction.val(string));
     }
     
     protected KColumn cloneMe() {

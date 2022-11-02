@@ -231,7 +231,7 @@ public class Ksearch {
             .select(currentUser().as("us"))
             .from(author)
             .from(book)
-            .where(name.neq("Matia"))
+            .where(name.nieq(val(555)))
 //            .where(name.eq(val("abc")))
             .single();
 //            .select(new KColumn().as())
