@@ -4,25 +4,55 @@ import com.myzlab.k.helper.KExceptionHelper;
 
 public class KFunction {
 
-    public static KAliasedColumn<?> as(
-        final KColumn kColumn,
+    public static KAliasedColumn as(
+        final KBaseColumnCastable kBaseColumnCastable,
         final String alias
     ) {
-        assertNotNull(kColumn, "kColumn");
+        assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
                 
-        return new KAliasedColumn(kColumn.sb, alias);
+        return new KAliasedColumn(kBaseColumnCastable, alias);
+    }
+    
+    public static KAliasedColumn as(
+        final Number val,
+        final String alias
+    ) {
+        assertNotNull(val, "val");
+                
+        return new KAliasedColumn(val(val), alias);
+    }
+    
+    public static KAliasedColumn as(
+        final String val,
+        final String alias
+    ) {
+        assertNotNull(val, "val");
+                
+        return new KAliasedColumn(val(val), alias);
     }
     
     public static KColumn abs(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "ABS");
+        return applyOneParameterFunction(kColumn, "ABS");
+    }
+    
+    public static KColumn abs(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "ABS");
     }
     
     public static KColumn acos(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "ACOS");
+        return applyOneParameterFunction(kColumn, "ACOS");
+    }
+    
+    public static KColumn acos(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "ACOS");
     }
     
     public static KColumn add(
@@ -46,154 +76,356 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "+");
     }
     
-    public static KValField add(
-        final KValField kValField,
+    public static KValNumberField add(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "+");
+        return applyBinaryOperator(kValNumberField, number, "+");
     }
     
-    public static KValField add(
+    public static KValNumberField add(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "+");
+        return applyBinaryOperator(number, kValNumberField, "+");
     }
     
-    public static KValField add(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField add(
+        final KValNumberField kValField1,
+        final KValNumberField kValField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "+");
+        return applyBinaryOperator(kValField1, kValField2, "+");
+    }
+    
+    private static KColumn applyBinaryOperator(
+        final Number number,
+        final KColumn kColumn,
+        final String operator
+    ) {
+        assertNotNull(number, "number");
+        assertNotNull(kColumn, "kColumn");
+        
+        return applyBinaryOperator(new KColumn(new StringBuilder(number.toString())), kColumn, operator);
+    }
+    
+    private static KColumn applyBinaryOperator(
+        final KColumn kColumn,
+        final Number number,
+        final String operator
+    ) {
+        assertNotNull(kColumn, "kColumn");
+        assertNotNull(number, "number");
+        
+        return applyBinaryOperator(kColumn, new KColumn(new StringBuilder(number.toString())), operator);
+    }
+    
+    private static KColumn applyBinaryOperator(
+        final KColumn kColumn1,
+        final KColumn kColumn2,
+        final String operator
+    ) {
+        assertNotNull(kColumn1, "kColumn1");
+        assertNotNull(kColumn2, "kColumn2");
+        
+        final KColumn operationkColumn = new KColumn(kColumn1.sb);
+        
+        operationkColumn.sb.append(" ").append(operator).append(" ").append(kColumn2.sb);
+        
+        return operationkColumn;
+    }
+    
+    private static KValNumberField applyBinaryOperator(
+        final KValNumberField kValNumberField,
+        final Number number,
+        final String operator
+    ) {
+        assertNotNull(kValNumberField, "kValNumberField");
+        assertNotNull(number, "number");
+        
+        return applyBinaryOperator(kValNumberField, new KValNumberField(number), operator);
+    }
+    
+    private static KValNumberField applyBinaryOperator(
+        final Number number,
+        final KValNumberField kValNumberField,
+        final String operator
+    ) {
+        assertNotNull(number, "number");
+        assertNotNull(kValNumberField, "kValNumberField");
+        
+        return applyBinaryOperator(new KValNumberField(number), kValNumberField, operator);
+    }
+    
+    private static KValNumberField applyBinaryOperator(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2,
+        final String operator
+    ) {
+        
+        assertNotNull(kValNumberField1, "kValNumberField1");
+        assertNotNull(kValNumberField2, "kValNumberField2");
+        
+        final KValNumberField newKValField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, kValNumberField1.operating, false);
+        
+        if (!isCasteableToANumber(newKValField.sb.toString())) {
+            newKValField.sb.insert(0, "(").append(")");
+        }
+        
+        newKValField.sb.append(" ").append(operator).append(" ");
+        
+        final boolean kValFieldCasteableToANumber = isCasteableToANumber(kValNumberField2.sb.toString());
+        
+        if (!kValFieldCasteableToANumber) {
+            newKValField.sb.append("(");
+        }
+        
+        newKValField.sb.append(kValNumberField2.sb);
+        newKValField.params.addAll(kValNumberField2.params);
+        
+        if (!kValFieldCasteableToANumber) {
+            newKValField.sb.append(")");
+        }
+        
+        return newKValField;
+    }
+    
+    private static KColumn applyUnaryOperator(
+        final KColumn kColumn,
+        final String operator,
+        final boolean addToRightSide
+    ) {
+        assertNotNull(kColumn, "kColumn");
+        
+        final KColumn operationkColumn = new KColumn();
+        
+        operationkColumn.sb.append(addToRightSide ? "" : operator).append(kColumn.sb).append(addToRightSide ? operator : "");
+        
+        return operationkColumn;
+    }
+    
+    private static KValNumberField applyUnaryOperator(
+        final Number number,
+        final String operator,
+        final boolean addToRightSide
+    ) {
+        assertNotNull(number, "number");
+        
+        return applyUnaryOperator(val(number), operator, addToRightSide);
+    }
+    
+    private static KValNumberField applyUnaryOperator(
+        final KValNumberField kValNumberField,
+        final String operator,
+        final boolean addToRightSide
+    ) {
+        assertNotNull(kValNumberField, "kValNumberField");
+        
+        final KValNumberField newKValField = new KValNumberField(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, false);
+        
+        if (!isCasteableToANumber(newKValField.sb.toString())) {
+            newKValField.sb.insert(0, "(").append(")");
+        }
+        
+        newKValField.sb.insert(0, addToRightSide ? "" : operator).append(addToRightSide ? operator : "");
+        
+        return newKValField;
     }
     
     private static KColumn applyOneParameterFunction(
         final KColumn kColumn,
-        final String functionName,
-        final boolean valNumberIsValid,
-        final boolean valStringIsValid
+        final String functionName
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        final KColumn functionkColumn = new KColumn(kColumn.sb);
+        final KColumn functionkColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
         
-        if (kColumnIsVal) {
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (isText && !valStringIsValid) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kColumn));
-            }
-            
-            if (isNumber && !valNumberIsValid) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType(functionName, kColumn));
-            }
-            
-            if (isText) {
-                functionkColumn.sb.insert(0, "'");
-            }
-        }
-        
-        functionkColumn.sb.insert(0, "(").insert(0, functionName);
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (isText) {
-                functionkColumn.sb.append("'");
-            }
-        }
-        
-        functionkColumn.sb.append(")");
+        functionkColumn.sb.insert(0, "(").insert(0, functionName).append(")");
         
         return functionkColumn;
     }
     
-    private static KColumn applyOneParameterFunctionWithValStringValid(
-        final KColumn kColumn,
+    private static KColumn applyOneParameterFunction(
+        final KValNumberField kValNumberField,
         final String functionName
     ) {
-        assertNotNull(kColumn, "kColumn");
+        assertNotNull(kValNumberField, "kValNumberField");
         
-        return applyOneParameterFunction(kColumn, functionName, false, true);
+        final KColumn functionkColumn = new KColumn(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, true);
+        
+        functionkColumn.sb.insert(0, "(").insert(0, functionName).append(")");
+        
+        return functionkColumn;
     }
     
-    private static KColumn applyOneParameterFunctionWithValNumberValid(
-        final KColumn kColumn,
+    private static KColumn applyOneParameterFunction(
+        final Number number,
         final String functionName
     ) {
-        assertNotNull(kColumn, "kColumn");
+        assertNotNull(number, "number");
         
-        return applyOneParameterFunction(kColumn, functionName, true, false);
+        final KColumn functionkColumn = new KColumn(null, number);
+        
+        functionkColumn.sb.insert(0, "(").insert(0, functionName).append(")");
+        
+        return functionkColumn;
     }
     
-    private static KColumn applyTwoParameterFunctionWithValNumberValid(
+    private static KColumn applyOneParameterFunction(
+        final KValTextField kValTextField,
+        final String functionName
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        
+        final KColumn functionkColumn = new KColumn(kValTextField.sb);
+        
+        functionkColumn.sb.insert(0, "'").insert(0, "(").insert(0, functionName).append("'").append(")");
+        
+        return functionkColumn;
+    }
+    
+    private static KColumn applyTwoParameterFunction(
         final KColumn kColumn1,
         final KColumn kColumn2,
         final String functionName
     ) {
-        
         assertNotNull(kColumn1, "kColumn1");
         assertNotNull(kColumn2, "kColumn2");
         
         final KColumn functionkColumn = new KColumn();
         
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
-        
-        functionkColumn.sb.append(functionName).append("(");
-        
-        if (kColumn1IsVal) {
-            final boolean isNumber = ((KValField) kColumn1).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kColumn1));
-            }
-        }
-        
-        if (kColumn2IsVal) {
-            final boolean isNumber = ((KValField) kColumn2).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType(functionName, kColumn2));
-            }
-        }
-        
-        functionkColumn.sb.append(kColumn1.sb).append(", ").append(kColumn2.sb).append(")");
+        functionkColumn.sb.append(functionName).append("(").append(kColumn1.sb).append(", ").append(kColumn2.sb).append(")");
         
         return functionkColumn;
+    }
+    
+    private static KColumn applyTwoParameterFunction(
+        final KValNumberField kValNumberField,
+        final KColumn kColumn,
+        final String functionName
+    ) {
+        assertNotNull(kValNumberField, "kValNumberField");
+        assertNotNull(kColumn, "kColumn");
+        
+        final KColumn functionkColumn = new KColumn();
+        
+        functionkColumn.sb.append(functionName).append("(").append(kValNumberField.sb).append(", ").append(kColumn.sb).append(")");
+        
+        return functionkColumn;
+    }
+    
+    private static KColumn applyTwoParameterFunction(
+        final KColumn kColumn,
+        final KValNumberField kValNumberField,
+        final String functionName
+    ) {
+        assertNotNull(kColumn, "kColumn");
+        assertNotNull(kValNumberField, "kValNumberField");
+        
+        final KColumn functionkColumn = new KColumn();
+        
+        functionkColumn.sb.append(functionName).append("(").append(kColumn.sb).append(", ").append(kValNumberField.sb).append(")");
+        
+        return functionkColumn;
+    }
+    
+    private static KValNumberField applyTwoParameterFunction(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2,
+        final String functionName
+    ) {
+        
+        assertNotNull(kValNumberField1, "kValNumberField1");
+        assertNotNull(kValNumberField2, "kValNumberField2");
+        
+        final KValNumberField functionkValNumberField = new KValNumberField();
+        
+        functionkValNumberField.sb.append(functionName).append("(").append(kValNumberField1.sb).append(", ").append(kValNumberField2.sb).append(")");
+        functionkValNumberField.params.addAll(kValNumberField1.params);
+        functionkValNumberField.params.addAll(kValNumberField2.params);
+        
+        return functionkValNumberField;
     }
     
     public static KColumn ascii(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "ASCII");
+        return applyOneParameterFunction(kColumn, "ASCII");
+    }
+    
+    public static KColumn ascii(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "ASCII");
     }
     
     public static KColumn asin(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "ASIN");
+        return applyOneParameterFunction(kColumn, "ASIN");
+    }
+    
+    public static KColumn asin(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "ASIN");
     }
     
     public static KColumn atan(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "ATAN");
+        return applyOneParameterFunction(kColumn, "ATAN");
+    }
+    
+    public static KColumn atan(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "ATAN");
     }
     
     public static KColumn atan2(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
-        return applyTwoParameterFunctionWithValNumberValid(kColumn1, kColumn2, "ATAN2");
+        return applyTwoParameterFunction(kColumn1, kColumn2, "ATAN2");
+    }
+    
+    public static KColumn atan2(
+        final KColumn kColumn,
+        final Number number
+    ) {
+        return applyTwoParameterFunction(kColumn, val(number), "ATAN2");
+    }
+    
+    public static KColumn atan2(
+        final Number number,
+        final KColumn kColumn
+    ) {
+        return applyTwoParameterFunction(val(number), kColumn, "ATAN2");
+    }
+    
+    public static KValNumberField atan2(
+        final Number number1,
+        final Number number2
+    ) {
+        return applyTwoParameterFunction(val(number1), val(number2), "ATAN2");
     }
     
     public static KColumn avg(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "AVG");
+        return applyOneParameterFunction(kColumn, "AVG");
+    }
+    
+    public static KColumn avg(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "AVG");
+    }
+    
+    public static KColumn avg(
+        final Number number
+    ) {
+        return applyOneParameterFunction(number, "AVG");
     }
     
     public static KColumn bitAnd(
@@ -217,25 +449,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "&");
     }
     
-    public static KValField bitAnd(
-        final KValField kValField,
+    public static KValNumberField bitAnd(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "&");
+        return applyBinaryOperator(kValNumberField, number, "&");
     }
     
-    public static KValField bitAnd(
+    public static KValNumberField bitAnd(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "&");
+        return applyBinaryOperator(number, kValNumberField, "&");
     }
     
-    public static KValField bitAnd(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField bitAnd(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "&");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "&");
     }
     
     public static KColumn bitNot(
@@ -244,16 +476,16 @@ public class KFunction {
         return applyUnaryOperator(kColumn, "~", false);
     }
     
-    public static KValField bitNot(
+    public static KValNumberField bitNot(
         final Number number
     ) {
-        return applyUnaryOperatorWithValNumberValid(number, "~", false);
+        return applyUnaryOperator(number, "~", false);
     }
     
-    public static KValField bitNot(
-        final KValField kValField
+    public static KValNumberField bitNot(
+        final KValNumberField kValNumberField
     ) {
-        return applyUnaryOperatorWithValNumberValid(kValField, "~", false);
+        return applyUnaryOperator(kValNumberField, "~", false);
     }
     
     public static KColumn bitOr(
@@ -277,25 +509,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "|");
     }
     
-    public static KValField bitOr(
-        final KValField kValField,
+    public static KValNumberField bitOr(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "|");
+        return applyBinaryOperator(kValNumberField, number, "|");
     }
     
-    public static KValField bitOr(
+    public static KValNumberField bitOr(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "|");
+        return applyBinaryOperator(number, kValNumberField, "|");
     }
     
-    public static KValField bitOr(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField bitOr(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "|");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "|");
     }
     
     public static KColumn bitShiftLeft(
@@ -314,13 +546,13 @@ public class KFunction {
         return applyBinaryOperator(kColumn, new KColumn(new StringBuilder(n)), "<<");
     }
     
-    public static KValField bitShiftLeft(
-        final KValField kValField,
+    public static KValNumberField bitShiftLeft(
+        final KValNumberField kValNumberField,
         final int n
     ) {
-        assertNotNull(kValField, "kValField");
+        assertNotNull(kValNumberField, "kValNumberField");
         
-        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(n), "<<");
+        return applyBinaryOperator(kValNumberField, new KValNumberField(n), "<<");
     }
     
     public static KColumn bitShiftRight(
@@ -339,13 +571,13 @@ public class KFunction {
         return applyBinaryOperator(kColumn, new KColumn(new StringBuilder(n)), ">>");
     }
     
-    public static KValField bitShiftRight(
-        final KValField kValField,
+    public static KValNumberField bitShiftRight(
+        final KValNumberField kValNumberField,
         final int n
     ) {
-        assertNotNull(kValField, "kValField");
+        assertNotNull(kValNumberField, "kValNumberField");
         
-        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(n), ">>");
+        return applyBinaryOperator(kValNumberField, new KValNumberField(n), ">>");
     }
     
     public static KColumn bitXor(
@@ -369,84 +601,166 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "#");
     }
     
-    public static KValField bitXor(
-        final KValField kValField,
+    public static KValNumberField bitXor(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "#");
+        return applyBinaryOperator(kValNumberField, number, "#");
     }
     
-    public static KValField bitXor(
+    public static KValNumberField bitXor(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "#");
+        return applyBinaryOperator(number, kValNumberField, "#");
     }
     
-    public static KValField bitXor(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField bitXor(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "#");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "#");
     }
     
     public static KColumn cast(
-        final KColumn kColumn,
+        final KBaseColumnCastable kBaseColumnCastable,
         final KDataType kDataType    
     ) {
-        
-        assertNotNull(kColumn, "kColumn");
+        assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(kColumn.sb);
-        
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            
-            if (!isNumber) {
-                castkColumn.sb.insert(0, "'").append("'");
-            }
-        }
+        final KColumn castkColumn = new KColumn(kBaseColumnCastable.sb, kBaseColumnCastable.params, kBaseColumnCastable.operating, true);
         
         castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
         return castkColumn;
     }
     
+    public static KColumn cast(
+        final Number val,
+        final KDataType kDataType    
+    ) {
+        assertNotNull(val, "val");
+        assertNotNull(kDataType, "kDataType");
+        
+        final KColumn castkColumn = new KColumn(null, val);
+        
+        castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+        
+        return castkColumn;
+    }
+    
+    public static KColumn cast(
+        final String val,
+        final KDataType kDataType    
+    ) {
+        assertNotNull(val, "val");
+        assertNotNull(kDataType, "kDataType");
+        
+        final KColumn castkColumn = new KColumn(null, val);
+        
+        castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+        
+        return castkColumn;
+    }
+    
+//    public static KColumn cast(
+//        final KColumn kColumn,
+//        final KDataType kDataType    
+//    ) {
+//        assertNotNull(kColumn, "kColumn");
+//        assertNotNull(kDataType, "kDataType");
+//        
+//        final KColumn castkColumn = kColumn.cloneMe();
+//        
+//        castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+//        
+//        return castkColumn;
+//    }
+//    
+//    public static KColumn cast(
+//        final KValNumberField kValNumberField,
+//        final KDataType kDataType    
+//    ) {
+//        assertNotNull(kValNumberField, "kValNumberField");
+//        assertNotNull(kDataType, "kDataType");
+//        
+//        final KColumn castkColumn = new KColumn(kValNumberField.sb);
+//        
+//        castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+//        
+//        return castkColumn;
+//    }
+    
+//    public static KColumn cast(
+//        final KValTextField kValTextField,
+//        final KDataType kDataType    
+//    ) {
+//        assertNotNull(kValTextField, "kValTextField");
+//        assertNotNull(kDataType, "kDataType");
+//        
+//        final KColumn castkColumn = new KColumn(kValTextField.sb);
+//        
+//        castkColumn.sb.insert(0, "'").append("'").insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
+//        
+//        return castkColumn;
+//    }
+    
     public static KColumn cbrt(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "CBRT");
+        return applyOneParameterFunction(kColumn, "CBRT");
+    }
+    
+    public static KColumn cbrt(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "CBRT");
     }
     
     public static KColumn ceil(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "CEIL");
+        return applyOneParameterFunction(kColumn, "CEIL");
+    }
+    
+    public static KColumn ceil(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "CEIL");
     }
     
     public static KColumn ceiling(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "CEILING");
+        return applyOneParameterFunction(kColumn, "CEILING");
+    }
+    
+    public static KColumn ceiling(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "CEILING");
     }
     
     public static KColumn chr(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "CHR");
+        return applyOneParameterFunction(kColumn, "CHR");
+    }
+    
+    public static KColumn chr(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "CHR");
     }
     
     public static KColumn coalesce(
-        final KColumn... kColumns
+        final KBaseColumn... kBaseColumns
     ) {
+        assertNotNull(kBaseColumns, "kBaseColumn");
         
-        assertNotNull(kColumns, "kColumns");
-        
-        if (kColumns.length < 2) {
-            throw KExceptionHelper.internalServerError("'COALESCE' function requires at least two kColumns");
+        if (kBaseColumns.length < 2) {
+            throw KExceptionHelper.internalServerError("'COALESCE' function requires at least two kBaseColumns");
         }
         
         final KColumn coalescekColumn = new KColumn();
@@ -455,8 +769,8 @@ public class KFunction {
         
         coalescekColumn.sb.append("COALESCE(");
         
-        for (final KColumn kColumn : kColumns) {
-            if (kColumn == null) {
+        for (final KBaseColumn kBaseColumn : kBaseColumns) {
+            if (kBaseColumn == null) {
                 continue;
             }
             
@@ -468,13 +782,13 @@ public class KFunction {
                 first = false;
             }
             
-            if (kColumn instanceof KValField) {
-                coalescekColumn.sb.append("'").append(kColumn.sb).append("'");
+            if (kBaseColumn instanceof KValTextField) {
+                coalescekColumn.sb.append("'").append(kBaseColumn.sb).append("'");
                 
                 continue;
             }
             
-            coalescekColumn.sb.append(kColumn.sb);
+            coalescekColumn.sb.append(kBaseColumn.sb);
         }
         
         coalescekColumn.sb.append(")");
@@ -485,19 +799,37 @@ public class KFunction {
     public static KColumn cos(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "COS");
+        return applyOneParameterFunction(kColumn, "COS");
+    }
+    
+    public static KColumn cos(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "COS");
     }
     
     public static KColumn cosh(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "COSH");
+        return applyOneParameterFunction(kColumn, "COSH");
+    }
+    
+    public static KColumn cosh(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "COSH");
     }
     
     public static KColumn cot(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "COT");
+        return applyOneParameterFunction(kColumn, "COT");
+    }
+    
+    public static KColumn cot(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "COT");
     }
     
     public static KColumn count() {
@@ -505,21 +837,20 @@ public class KFunction {
     }
     
     public static KColumn concat(
-        final KColumn... kColumns
+        final KBaseColumnCastable... kBaseColumnCastables
     ) {
+        assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
         
-        assertNotNull(kColumns, "kColumns");
-        
-        if (kColumns.length < 2) {
-            throw KExceptionHelper.internalServerError("'CONCAT' function requires at least two kColumns");
+        if (kBaseColumnCastables.length < 2) {
+            throw KExceptionHelper.internalServerError("'CONCAT' function requires at least two kBaseColumnCastable");
         }
         
-        final KColumn concatkColumn = new KColumn();
+        final KColumn concatkColumn = new KColumn(false);
         
         boolean first = true;
         
-        for (final KColumn kColumn : kColumns) {
-            if (kColumn == null) {
+        for (final KBaseColumnCastable kBaseColumnCastable : kBaseColumnCastables) {
+            if (kBaseColumnCastable == null) {
                 continue;
             }
             
@@ -531,23 +862,9 @@ public class KFunction {
                 first = false;
             }
             
-            if (kColumn instanceof KValField) {
-                final boolean isNumber = ((KValField) kColumn).isNumber;
-                
-                if (!isNumber) {
-                    concatkColumn.sb.append("'");
-                }
-                
-                concatkColumn.sb.append(kColumn.sb);
-                
-                if (!isNumber) {
-                    concatkColumn.sb.append("'");
-                }
-                
-                continue;
-            }
-            
-            concatkColumn.sb.append(kColumn.sb);
+            concatkColumn.sb.append(kBaseColumnCastable.sb);
+            concatkColumn.params.addAll(kBaseColumnCastable.params);
+            concatkColumn.operating += kBaseColumnCastable.operating;
         }
         
         return concatkColumn;
@@ -589,25 +906,8 @@ public class KFunction {
         final KColumn kColumn,
         final KExtractField kExtractField
     ) {
-        
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
-        
-        if (kColumn instanceof KValField) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (isText) {
-                throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column. Current value: ['" + kColumn.sb.toString() + "']" );
-            }
-            
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column. Current value: [" + kColumn.sb.toString() + "]" );
-            }
-            
-            throw KExceptionHelper.internalServerError("The 'DATE_PART' function only can be used with a column.");
-        }
         
         final KColumn extractkColumn = new KColumn(kColumn.sb);
         
@@ -620,25 +920,8 @@ public class KFunction {
         final KColumn kColumn,
         final KExtractField kExtractField
     ) {
-        
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
-        
-        if (kColumn instanceof KValField) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (isText) {
-                throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column. Current value: ['" + kColumn.sb.toString() + "']" );
-            }
-            
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column. Current value: [" + kColumn.sb.toString() + "]" );
-            }
-            
-            throw KExceptionHelper.internalServerError("The 'DATE_TRUNC' function only can be used with a column.");
-        }
         
         final KColumn extractkColumn = new KColumn(kColumn.sb);
         
@@ -651,35 +934,40 @@ public class KFunction {
         final KColumn kColumn,
         final KFormat kFormat
     ) {
-        
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kFormat, "kFormat");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        final KColumn decodeKColumn = kColumn.cloneMe();
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("DECODE", kColumn));
-            }
-        }
+        decodeKColumn.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
-        final KColumn encodekColumn = kColumn.cloneMe();
+        return decodeKColumn;
+    }
+    
+    public static KValTextField decode(
+        final KValTextField kValTextField,
+        final KFormat kFormat
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(kFormat, "kFormat");
         
-        if (kColumnIsVal) {
-            encodekColumn.sb.insert(0, "'").append("'");
-        }
+        final KValTextField decodeKValTextField = kValTextField.cloneMe();
         
-        encodekColumn.sb.insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
+        decodeKValTextField.sb.insert(0, "'").append("'").insert(0, "DECODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
-        return encodekColumn;
+        return decodeKValTextField;
     }
     
     public static KColumn degrees(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "DEGREES");
+        return applyOneParameterFunction(kColumn, "DEGREES");
+    }
+    
+    public static KColumn degrees(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "DEGREES");
     }
     
     public static KColumn div(
@@ -703,178 +991,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "/");
     }
     
-    public static KValField div(
-        final KValField kValField,
+    public static KValNumberField div(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "/");
+        return applyBinaryOperator(kValNumberField, number, "/");
     }
     
-    public static KValField div(
+    public static KValNumberField div(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "/");
+        return applyBinaryOperator(number, kValNumberField, "/");
     }
     
-    public static KValField div(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField div(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "/");
-    }
-    
-    private static KColumn applyBinaryOperator(
-        final Number number,
-        final KColumn kColumn,
-        final String operator
-    ) {
-        assertNotNull(number, "number");
-        assertNotNull(kColumn, "kColumn");
-        
-        return applyBinaryOperator(new KColumn(new StringBuilder(number.toString())), kColumn, operator);
-    }
-    
-    private static KColumn applyBinaryOperator(
-        final KColumn kColumn,
-        final Number number,
-        final String operator
-    ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(number, "number");
-        
-        return applyBinaryOperator(kColumn, new KColumn(new StringBuilder(number.toString())), operator);
-    }
-    
-    private static KColumn applyBinaryOperator(
-        final KColumn kColumn1,
-        final KColumn kColumn2,
-        final String operator
-    ) {
-        assertNotNull(kColumn1, "kColumn1");
-        assertNotNull(kColumn2, "kColumn2");
-        
-        final KColumn operationkColumn = new KColumn(kColumn1.sb);
-        
-        operationkColumn.sb.append(" ").append(operator).append(" ").append(kColumn2.sb);
-        
-        return operationkColumn;
-    }
-    
-    private static KValField applyBinaryOperatorWithValNumberValid(
-        final KValField kValField,
-        final Number number,
-        final String operator
-    ) {
-        assertNotNull(kValField, "kValField");
-        assertNotNull(number, "number");
-        
-        return applyBinaryOperatorWithValNumberValid(kValField, new KValField(number), operator);
-    }
-    
-    private static KValField applyBinaryOperatorWithValNumberValid(
-        final Number number,
-        final KValField kValField,
-        final String operator
-    ) {
-        assertNotNull(number, "number");
-        assertNotNull(kValField, "kValField");
-        
-        return applyBinaryOperatorWithValNumberValid(new KValField(number), kValField, operator);
-    }
-    
-    private static KValField applyBinaryOperatorWithValNumberValid(
-        final KValField kValField1,
-        final KValField kValField2,
-        final String operator
-    ) {
-        
-        assertNotNull(kValField1, "kValField1");
-        assertNotNull(kValField2, "kValField2");
-        
-        if (!kValField1.isNumber) {
-            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField1));
-        }
-        
-        if (!kValField2.isNumber) {
-            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField2));
-        }
-        
-        final KValField newKValField = new KValField(kValField1.sb, kValField1.sbParam, kValField1.params, true);
-        
-        if (!isCasteableToANumber(newKValField.sb.toString())) {
-            newKValField.sb.insert(0, "(").append(")");
-            newKValField.sbParam.insert(0, "(").append(")");
-        }
-        
-        newKValField.sb.append(" ").append(operator).append(" ");
-        newKValField.sbParam.append(" ").append(operator).append(" ");
-        
-        final boolean kValFieldCasteableToANumber = isCasteableToANumber(kValField2.sb.toString());
-        
-        if (!kValFieldCasteableToANumber) {
-            newKValField.sb.append("(");
-            newKValField.sbParam.append("(");
-        }
-        
-        newKValField.sb.append(kValField2.sb);
-        newKValField.sbParam.append(kValField2.sbParam);
-        newKValField.params.addAll(kValField2.params);
-        
-        if (!kValFieldCasteableToANumber) {
-            newKValField.sb.append(")");
-            newKValField.sbParam.append(")");
-        }
-        
-        return newKValField;
-    }
-    
-    private static KColumn applyUnaryOperator(
-        final KColumn kColumn,
-        final String operator,
-        final boolean addToRightSide
-    ) {
-        assertNotNull(kColumn, "kColumn");
-        
-        final KColumn operationkColumn = new KColumn();
-        
-        operationkColumn.sb.append(addToRightSide ? "" : operator).append(kColumn.sb).append(addToRightSide ? operator : "");
-        
-        return operationkColumn;
-    }
-    
-    private static KValField applyUnaryOperatorWithValNumberValid(
-        final Number number,
-        final String operator,
-        final boolean addToRightSide
-    ) {
-        assertNotNull(number, "number");
-        
-        return applyUnaryOperatorWithValNumberValid(new KValField(number), operator, addToRightSide);
-    }
-    
-    private static KValField applyUnaryOperatorWithValNumberValid(
-        final KValField kValField,
-        final String operator,
-        final boolean addToRightSide
-    ) {
-        assertNotNull(kValField, "kValField");
-        
-        if (!kValField.isNumber) {
-            throw KExceptionHelper.internalServerError(getErrorMessageOperatorNumberType(operator, kValField));
-        }
-        
-        final KValField newKValField = new KValField(kValField.sb, kValField.sbParam, kValField.params, true);
-        
-        if (!isCasteableToANumber(newKValField.sb.toString())) {
-            newKValField.sb.insert(0, "(").append(")");
-            newKValField.sbParam.insert(0, "(").append(")");
-        }
-        
-        newKValField.sb.insert(0, addToRightSide ? "" : operator).append(addToRightSide ? operator : "");
-        newKValField.sbParam.insert(0, addToRightSide ? "" : operator).append(addToRightSide ? operator : "");
-        
-        return newKValField;
+        return applyBinaryOperator(kValNumberField1, 2, "/");
     }
     
     public static KColumn encode(
@@ -884,31 +1019,37 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kFormat, "kFormat");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        final KColumn encodeKColumn = kColumn.cloneMe();
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("ENCODE", kColumn));
-            }
-        }
+        encodeKColumn.sb.insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
-        final KColumn encodekColumn = kColumn.cloneMe();
+        return encodeKColumn;
+    }
+    
+    public static KValTextField encode(
+        final KValTextField kValTextField,
+        final KFormat kFormat
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(kFormat, "kFormat");
         
-        if (kColumnIsVal) {
-            encodekColumn.sb.insert(0, "'").append("'");
-        }
+        final KValTextField encodeKColumn = kValTextField.cloneMe();
         
-        encodekColumn.sb.insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
+        encodeKColumn.sb.insert(0, "'").append("'").insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
-        return encodekColumn;
+        return encodeKColumn;
     }
     
     public static KColumn exp(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "EXP");
+        return applyOneParameterFunction(kColumn, "EXP");
+    }
+    
+    public static KColumn exp(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "EXP");
     }
     
     public static KColumn extract(
@@ -917,22 +1058,6 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
-        
-        if (kColumn instanceof KValField) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (isText) {
-                throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column. Current value: ['" + kColumn.sb.toString() + "']" );
-            }
-            
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            
-            if (isNumber) {
-                throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column. Current value: [" + kColumn.sb.toString() + "]" );
-            }
-            
-            throw KExceptionHelper.internalServerError("The 'EXTRACT' function only can be used with a column.");
-        }
         
         final KColumn extractkColumn = new KColumn(kColumn.sb);
         
@@ -944,7 +1069,13 @@ public class KFunction {
     public static KColumn floor(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "FLOOR");
+        return applyOneParameterFunction(kColumn, "FLOOR");
+    }
+    
+    public static KColumn floor(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "FLOOR");
     }
     
     public static KColumn genRandomUuid() {
@@ -958,35 +1089,38 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn lpadkColumn = new KColumn();
+        final KColumn genericTrimKColumn = new KColumn();
         
-        lpadkColumn.sb.append(trimFunctionName).append("(");
-        
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType(trimFunctionName, kColumn));
-            }
-            
-            lpadkColumn.sb.append("'");
-        }
-        
-        lpadkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            lpadkColumn.sb.append("'");
-        }
+        genericTrimKColumn.sb.append(trimFunctionName).append("(");
+        genericTrimKColumn.sb.append(kColumn.sb);
                 
         if (characters != null) {
-            lpadkColumn.sb.append(", '").append(characters).append("'");
+            genericTrimKColumn.sb.append(", '").append(characters).append("'");
         }
                 
-        lpadkColumn.sb.append(")");
+        genericTrimKColumn.sb.append(")");
         
-        return lpadkColumn;
+        return genericTrimKColumn;
+    }
+    
+    private static KColumn genericTrim(
+        final String trimFunctionName,
+        final KValTextField kValTextField,
+        final String characters
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        
+        final KColumn genericTrimKColumn = new KColumn();
+        
+        genericTrimKColumn.sb.append(trimFunctionName).append("(").append("'").append(kValTextField.sb).append("'");
+                
+        if (characters != null) {
+            genericTrimKColumn.sb.append(", '").append(characters).append("'");
+        }
+                
+        genericTrimKColumn.sb.append(")");
+        
+        return genericTrimKColumn;
     }
     
     private static String getErrorMessageFunctionTextType(
@@ -1109,12 +1243,12 @@ public class KFunction {
     }
     
     public static KColumn greatest(
-        final KColumn... kColumns
+        final KBaseColumn... KBaseColumns
     ) {
-        assertNotNull(kColumns, "kColumns");
+        assertNotNull(KBaseColumns, "KBaseColumns");
         
-        if (kColumns.length < 2) {
-            throw KExceptionHelper.internalServerError("'GREATEST' function requires at least two kColumns");
+        if (KBaseColumns.length < 2) {
+            throw KExceptionHelper.internalServerError("'GREATEST' function requires at least two KBaseColumns");
         }
         
         final KColumn greatestkColumn = new KColumn();
@@ -1123,8 +1257,8 @@ public class KFunction {
         
         greatestkColumn.sb.append("GREATEST(");
         
-        for (final KColumn kColumn : kColumns) {
-            if (kColumn == null) {
+        for (final KBaseColumn kBaseColumn : KBaseColumns) {
+            if (kBaseColumn == null) {
                 continue;
             }
             
@@ -1136,24 +1270,15 @@ public class KFunction {
                 first = false;
             }
             
-            if (kColumn instanceof KValField) {
-                final boolean isText = ((KValField) kColumn).isText;
-            
-                if (isText) {
-                    greatestkColumn.sb.append("'");
-                }
+            if (kBaseColumn instanceof KValTextField) {
+                greatestkColumn.sb.append("'");
             }
             
-            greatestkColumn.sb.append(kColumn.sb);
+            greatestkColumn.sb.append(kBaseColumn.sb);
             
-            if (kColumn instanceof KValField) {
-                final boolean isText = ((KValField) kColumn).isText;
-            
-                if (isText) {
-                    greatestkColumn.sb.append("'");
-                }
+            if (kBaseColumn instanceof KValTextField) {
+                greatestkColumn.sb.append("'");
             }
-            
         }
         
         greatestkColumn.sb.append(")");
@@ -1173,16 +1298,28 @@ public class KFunction {
         }
     }
     
-    public static KValField isolate(
-        final KValField kValField
+    public static KValTextField isolate(
+        final KValTextField kValTextField
     ) {
-        assertNotNull(kValField, "kValField");
+        assertNotNull(kValTextField, "kValTextField");
         
-        final KValField isolateKValField = kValField.cloneMe();
+        final KValTextField isolateKValTextField = kValTextField.cloneMe();
         
-        isolateKValField.sb.insert(0, "(").append(")");
+        isolateKValTextField.sb.insert(0, "(").append(")");
         
-        return isolateKValField;
+        return isolateKValTextField;
+    }
+    
+    public static KValNumberField isolate(
+        final KValNumberField kValNumberField
+    ) {
+        assertNotNull(kValNumberField, "kValNumberField");
+        
+        final KValNumberField isolateKValNumberField = kValNumberField.cloneMe();
+        
+        isolateKValNumberField.sb.insert(0, "(").append(")");
+        
+        return isolateKValNumberField;
     }
     
     public static KColumn isolate(
@@ -1198,12 +1335,12 @@ public class KFunction {
     }
     
     public static KColumn least(
-        final KColumn... kColumns
+        final KBaseColumn... KBaseColumns
     ) {
-        assertNotNull(kColumns, "kColumns");
+        assertNotNull(KBaseColumns, "KBaseColumns");
         
-        if (kColumns.length < 2) {
-            throw KExceptionHelper.internalServerError("'LEAST' function requires at least two kColumns");
+        if (KBaseColumns.length < 2) {
+            throw KExceptionHelper.internalServerError("'LEAST' function requires at least two KBaseColumns");
         }
         
         final KColumn greatestkColumn = new KColumn();
@@ -1212,8 +1349,8 @@ public class KFunction {
         
         greatestkColumn.sb.append("LEAST(");
         
-        for (final KColumn kColumn : kColumns) {
-            if (kColumn == null) {
+        for (final KBaseColumn kBaseColumn : KBaseColumns) {
+            if (kBaseColumn == null) {
                 continue;
             }
             
@@ -1225,22 +1362,14 @@ public class KFunction {
                 first = false;
             }
             
-            if (kColumn instanceof KValField) {
-                final boolean isText = ((KValField) kColumn).isText;
-            
-                if (isText) {
-                    greatestkColumn.sb.append("'");
-                }
+            if (kBaseColumn instanceof KValTextField) {
+                greatestkColumn.sb.append("'");
             }
             
-            greatestkColumn.sb.append(kColumn.sb);
+            greatestkColumn.sb.append(kBaseColumn.sb);
             
-            if (kColumn instanceof KValField) {
-                final boolean isText = ((KValField) kColumn).isText;
-            
-                if (isText) {
-                    greatestkColumn.sb.append("'");
-                }
+            if (kBaseColumn instanceof KValTextField) {
+                greatestkColumn.sb.append("'");
             }
             
         }
@@ -1258,27 +1387,19 @@ public class KFunction {
         
         final KColumn leftkColumn = new KColumn();
         
-        leftkColumn.sb.append("LEFT(");
+        leftkColumn.sb.append("LEFT(").append(kColumn.sb).append(", ").append(n).append(")");
+        return leftkColumn;
+    }
+    
+    public static KColumn left(
+        final KValTextField kValTextField,
+        final int n
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        final KColumn leftkColumn = new KColumn();
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("LEFT", kColumn));
-            }
-            
-            leftkColumn.sb.append("'");
-        }
-        
-        leftkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            leftkColumn.sb.append("'");
-        }
-        
-        leftkColumn.sb.append(", ").append(n).append(")");
+        leftkColumn.sb.append("LEFT(").append("'").append(kValTextField.sb).append("'").append(", ").append(n).append(")");
         
         return leftkColumn;
     }
@@ -1286,13 +1407,25 @@ public class KFunction {
     public static KColumn length(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "LENGTH");
+        return applyOneParameterFunction(kColumn, "LENGTH");
+    }
+    
+    public static KColumn length(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "LENGTH");
     }
     
     public static KColumn ln(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "LN");
+        return applyOneParameterFunction(kColumn, "LN");
+    }
+    
+    public static KColumn ln(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "LN");
     }
     
     public static KColumn localTime() {
@@ -1319,19 +1452,52 @@ public class KFunction {
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
-        return applyTwoParameterFunctionWithValNumberValid(kColumn1, kColumn2, "LOG");
+        return applyTwoParameterFunction(kColumn1, kColumn2, "LOG");
+    }
+    
+    public static KColumn log(
+        final Number number,
+        final KColumn kColumn
+    ) {
+        return applyTwoParameterFunction(val(number), kColumn, "LOG");
+    }
+    
+    public static KColumn log(
+        final KColumn kColumn,
+        final Number number
+    ) {
+        return applyTwoParameterFunction(kColumn, val(number), "LOG");
+    }
+    
+    public static KValNumberField log(
+        final Number number1,
+        final Number number2
+    ) {
+        return applyTwoParameterFunction(val(number1), val(number2), "LOG");
     }
     
     public static KColumn log10(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "LOG10");
+        return applyOneParameterFunction(kColumn, "LOG10");
+    }
+    
+    public static KColumn log10(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "LOG10");
     }
     
     public static KColumn lower(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "LOWER");
+        return applyOneParameterFunction(kColumn, "LOWER");
+    }
+    
+    public static KColumn lower(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "LOWER");
     }
     
     public static KColumn lpad(
@@ -1348,37 +1514,37 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn lpadkColumn = new KColumn();
+        final KColumn lpadKColumn = new KColumn();
         
-        lpadkColumn.sb.append("LPAD(");
-        
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("LPAD", kColumn));
-            }
-            
-            lpadkColumn.sb.append("'");
-        }
-        
-        lpadkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            lpadkColumn.sb.append("'");
-        }
-        
-        lpadkColumn.sb.append(", ").append(n);
+        lpadKColumn.sb.append("LPAD(").append(kColumn.sb).append(", ").append(n);
                 
         if (fillText != null) {
-            lpadkColumn.sb.append(", '").append(fillText).append("'");
+            lpadKColumn.sb.append(", '").append(fillText).append("'");
         }
                 
-        lpadkColumn.sb.append(")");
+        lpadKColumn.sb.append(")");
         
-        return lpadkColumn;
+        return lpadKColumn;
+    }
+    
+    public static KColumn lpad(
+        final KValTextField kValTextField,
+        final int n,
+        final String fillText
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        
+        final KColumn lpadKColumn = new KColumn();
+        
+        lpadKColumn.sb.append("LPAD(").append("'").append(kValTextField.sb).append("'").append(", ").append(n);
+                
+        if (fillText != null) {
+            lpadKColumn.sb.append(", '").append(fillText).append("'");
+        }
+                
+        lpadKColumn.sb.append(")");
+        
+        return lpadKColumn;
     }
     
     public static KColumn ltrim(
@@ -1397,7 +1563,13 @@ public class KFunction {
     public static KColumn md5(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "MD5");
+        return applyOneParameterFunction(kColumn, "MD5");
+    }
+    
+    public static KColumn md5(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "MD5");
     }
     
     public static KColumn mod(
@@ -1421,25 +1593,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "%");
     }
     
-    public static KValField mod(
-        final KValField kValField,
+    public static KValNumberField mod(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "%");
+        return applyBinaryOperator(kValNumberField, number, "%");
     }
     
-    public static KValField mod(
+    public static KValNumberField mod(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "%");
+        return applyBinaryOperator(number, kValNumberField, "%");
     }
     
-    public static KValField mod(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField mod(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "%");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "%");
     }
     
     public static KColumn mul(
@@ -1463,25 +1635,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "*");
     }
     
-    public static KValField mul(
-        final KValField kValField,
+    public static KValNumberField mul(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "*");
+        return applyBinaryOperator(kValNumberField, number, "*");
     }
     
-    public static KValField mul(
+    public static KValNumberField mul(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "*");
+        return applyBinaryOperator(number, kValNumberField, "*");
     }
     
-    public static KValField mul(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField mul(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "*");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "*");
     }
     
     public static KColumn now() {
@@ -1489,56 +1661,37 @@ public class KFunction {
     }
     
     public static KColumn nullif(
-        final KColumn kColumn1,
-        final KColumn kColumn2
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
     ) {
         
-        assertNotNull(kColumn1, "kColumn1");
-        assertNotNull(kColumn2, "kColumn2");
+        assertNotNull(kBaseColumn1, "kBaseColumn1");
+        assertNotNull(kBaseColumn2, "kBaseColumn2");
         
         final KColumn nullifkColumn = new KColumn();
         
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
-        
         nullifkColumn.sb.append("NULLIF(");
         
-        if (kColumn1IsVal) {
-            final boolean isNumber = ((KValField) kColumn1).isNumber;
-            
-            if (!isNumber) {
-                nullifkColumn.sb.append("'");
-            }
+        if (kBaseColumn1 instanceof KValTextField) {
+            nullifkColumn.sb.append("'");
         }
         
-        nullifkColumn.sb.append(kColumn1.sb);
+        nullifkColumn.sb.append(kBaseColumn1.sb);
         
-        if (kColumn1IsVal) {
-            final boolean isNumber = ((KValField) kColumn1).isNumber;
-            
-            if (!isNumber) {
-                nullifkColumn.sb.append("'");
-            }
+        if (kBaseColumn1 instanceof KValTextField) {
+            nullifkColumn.sb.append("'");
         }
         
         nullifkColumn.sb.append(", ");
         
-        if (kColumn2IsVal) {
-            final boolean isNumber = ((KValField) kColumn2).isNumber;
-            
-            if (!isNumber) {
-                nullifkColumn.sb.append("'");
-            }
+        if (kBaseColumn2 instanceof KValTextField) {
+            nullifkColumn.sb.append("'");
         }
         
-        nullifkColumn.sb.append(kColumn2.sb);
+        nullifkColumn.sb.append(kBaseColumn2.sb);
         
-        if (kColumn2IsVal) {
-            final boolean isNumber = ((KValField) kColumn2).isNumber;
-            
-            if (!isNumber) {
-                nullifkColumn.sb.append("'");
-            }
+        if (kBaseColumn2 instanceof KValTextField) {
+            nullifkColumn.sb.append("'");
         }
         
         nullifkColumn.sb.append(")");
@@ -1566,27 +1719,30 @@ public class KFunction {
         
         final KColumn overlaykColumn = new KColumn();
         
-        overlaykColumn.sb.append("OVERLAY(");
+        overlaykColumn.sb.append("OVERLAY(").append(kColumn.sb).append(" PLACING '").append(value).append("'").append(" from ").append(from);
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("OVERLAY", kColumn));
-            }
-            
-            overlaykColumn.sb.append("'");
+        if (for_ != null) {
+            overlaykColumn.sb.append(" for ").append(for_);
         }
+                
+        overlaykColumn.sb.append(")");
         
-        overlaykColumn.sb.append(kColumn.sb);
+        return overlaykColumn;
+    }
+    
+    public static KColumn overlay(
+        final KValTextField kValTextField,
+        final String value,
+        final Integer from,
+        final Integer for_
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(from, "from");
+        assertNotNull(value, "value");
         
-        if (kColumnIsVal) {
-            overlaykColumn.sb.append("'");
-        }
+        final KColumn overlaykColumn = new KColumn();
         
-        overlaykColumn.sb.append(" PLACING '").append(value).append("'").append(" from ").append(from);
+        overlaykColumn.sb.append("OVERLAY(").append("'").append(kValTextField.sb).append("'").append(" PLACING '").append(value).append("'").append(" from ").append(from);
         
         if (for_ != null) {
             overlaykColumn.sb.append(" for ").append(for_);
@@ -1611,27 +1767,22 @@ public class KFunction {
         
         final KColumn positionkColumn = new KColumn();
         
-        positionkColumn.sb.append("POSITION('").append(valueToLocate).append("'").append(" in ");
+        positionkColumn.sb.append("POSITION('").append(valueToLocate).append("'").append(" in ").append(kColumn.sb).append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return positionkColumn;
+    }
+    
+    public static KColumn position(
+        final KValTextField kValTextField,
+        final String valueToLocate
+    ) {
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("POSITION", kColumn));
-            }
-            
-            positionkColumn.sb.append("'");
-        }
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(valueToLocate, "valueToLocate");
         
-        positionkColumn.sb.append(kColumn.sb);
+        final KColumn positionkColumn = new KColumn();
         
-        if (kColumnIsVal) {
-            positionkColumn.sb.append("'");
-        }
-        
-        positionkColumn.sb.append(")");
+        positionkColumn.sb.append("POSITION('").append(valueToLocate).append("'").append(" in ").append("'").append(kValTextField.sb).append("'").append(")");
         
         return positionkColumn;
     }
@@ -1640,13 +1791,40 @@ public class KFunction {
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
-        return applyTwoParameterFunctionWithValNumberValid(kColumn1, kColumn2, "POWER");
+        return applyTwoParameterFunction(kColumn1, kColumn2, "POWER");
+    }
+    
+    public static KColumn power(
+        final Number number,
+        final KColumn kColumn
+    ) {
+        return applyTwoParameterFunction(val(number), kColumn, "POWER");
+    }
+    
+    public static KColumn power(
+        final KColumn kColumn,
+        final Number number
+    ) {
+        return applyTwoParameterFunction(kColumn, val(number), "POWER");
+    }
+    
+    public static KValNumberField power(
+        final Number number1,
+        final Number number2
+    ) {
+        return applyTwoParameterFunction(val(number1), val(number2), "POWER");
     }
     
     public static KColumn radians(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "RADIANS");
+        return applyOneParameterFunction(kColumn, "RADIANS");
+    }
+    
+    public static KColumn radians(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "RADIANS");
     }
     
     public static KColumn random() {
@@ -1667,27 +1845,20 @@ public class KFunction {
         
         final KColumn repeatkColumn = new KColumn();
         
-        repeatkColumn.sb.append("REPEAT(");
+        repeatkColumn.sb.append("REPEAT(").append(kColumn.sb).append(", ").append(n).append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return repeatkColumn;
+    }
+    
+    public static KColumn repeat(
+        final KValTextField kValTextField,
+        final int n
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REPEAT", kColumn));
-            }
-            
-            repeatkColumn.sb.append("'");
-        }
+        final KColumn repeatkColumn = new KColumn();
         
-        repeatkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            repeatkColumn.sb.append("'");
-        }
-        
-        repeatkColumn.sb.append(", ").append(n).append(")");
+        repeatkColumn.sb.append("REPEAT(").append("'").append(kValTextField.sb).append("'").append(", ").append(n).append(")");
         
         return repeatkColumn;
     }
@@ -1698,6 +1869,14 @@ public class KFunction {
         final String replacement
     ) {
         return regexpReplace(kColumn, pattern, replacement, null);
+    }
+    
+    public static KColumn regexpReplace(
+        final KValTextField kValTextField,
+        final String pattern,
+        final String replacement
+    ) {
+        return regexpReplace(kValTextField, pattern, replacement, null);
     }
     
     public static KColumn regexpReplace(
@@ -1712,27 +1891,30 @@ public class KFunction {
         
         final KColumn regexpReplacekColumn = new KColumn();
         
-        regexpReplacekColumn.sb.append("REGEXP_REPLACE(");
+        regexpReplacekColumn.sb.append("REGEXP_REPLACE(").append(kColumn.sb).append(", '").append(pattern).append("', '").append(replacement).append("'");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REGEXP_REPLACE", kColumn));
-            }
-            
-            regexpReplacekColumn.sb.append("'");
+        if (flags != null) {
+            regexpReplacekColumn.sb.append(", '").append(flags).append("'");
         }
         
-        regexpReplacekColumn.sb.append(kColumn.sb);
+        regexpReplacekColumn.sb.append(")");
         
-        if (kColumnIsVal) {
-            regexpReplacekColumn.sb.append("'");
-        }
-
-        regexpReplacekColumn.sb.append(", '").append(pattern).append("', '").append(replacement).append("'");
+        return regexpReplacekColumn;
+    }
+    
+    public static KColumn regexpReplace(
+        final KValTextField kValTextField,
+        final String pattern,
+        final String replacement,
+        final String flags
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(pattern, "pattern");
+        assertNotNull(replacement, "replacement");
+        
+        final KColumn regexpReplacekColumn = new KColumn();
+        
+        regexpReplacekColumn.sb.append("REGEXP_REPLACE(").append("'").append(kValTextField.sb).append("'").append(", '").append(pattern).append("', '").append(replacement).append("'");
         
         if (flags != null) {
             regexpReplacekColumn.sb.append(", '").append(flags).append("'");
@@ -1754,27 +1936,23 @@ public class KFunction {
         
         final KColumn replacekColumn = new KColumn();
         
-        replacekColumn.sb.append("REPLACE(");
+        replacekColumn.sb.append("REPLACE(").append(kColumn.sb).append(", '").append(from).append("', '").append(to).append("'").append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return replacekColumn;
+    }
+    
+    public static KColumn replace(
+        final KValTextField kValTextField,
+        final String from,
+        final String to
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(from, "from");
+        assertNotNull(to, "to");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("REGEXP_REPLACE", kColumn));
-            }
-            
-            replacekColumn.sb.append("'");
-        }
+        final KColumn replacekColumn = new KColumn();
         
-        replacekColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            replacekColumn.sb.append("'");
-        }
-
-        replacekColumn.sb.append(", '").append(from).append("', '").append(to).append("'").append(")");
+        replacekColumn.sb.append("REPLACE(").append("'").append(kValTextField.sb).append("'").append(", '").append(from).append("', '").append(to).append("'").append(")");
         
         return replacekColumn;
     }
@@ -1782,7 +1960,13 @@ public class KFunction {
     public static KColumn reverse(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "REVERSE");
+        return applyOneParameterFunction(kColumn, "REVERSE");
+    }
+    
+    public static KColumn reverse(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "REVERSE");
     }
     
     public static KColumn right(
@@ -1793,27 +1977,20 @@ public class KFunction {
         
         final KColumn leftkColumn = new KColumn();
         
-        leftkColumn.sb.append("RIGHT(");
+        leftkColumn.sb.append("RIGHT(").append(kColumn.sb).append(", ").append(n).append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return leftkColumn;
+    }
+    
+    public static KColumn right(
+        final KValTextField kValTextField,
+        final int n
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("RIGHT", kColumn));
-            }
-            
-            leftkColumn.sb.append("'");
-        }
+        final KColumn leftkColumn = new KColumn();
         
-        leftkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            leftkColumn.sb.append("'");
-        }
-        
-        leftkColumn.sb.append(", ").append(n).append(")");
+        leftkColumn.sb.append("RIGHT(").append("'").append(kValTextField.sb).append("'").append(", ").append(n).append(")");
         
         return leftkColumn;
     }
@@ -1821,14 +1998,41 @@ public class KFunction {
     public static KColumn round(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "ROUND");
+        return applyOneParameterFunction(kColumn, "ROUND");
+    }
+    
+    public static KColumn round(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "ROUND");
     }
     
     public static KColumn round(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
-        return applyTwoParameterFunctionWithValNumberValid(kColumn1, kColumn2, "ROUND");
+        return applyTwoParameterFunction(kColumn1, kColumn2, "ROUND");
+    }
+    
+    public static KColumn round(
+        final Number number,
+        final KColumn kColumn2
+    ) {
+        return applyTwoParameterFunction(val(number), kColumn2, "ROUND");
+    }
+    
+    public static KColumn round(
+        final KColumn kColumn1,
+        final Number number
+    ) {
+        return applyTwoParameterFunction(kColumn1, val(number), "ROUND");
+    }
+    
+    public static KValNumberField round(
+        final Number number1,
+        final Number number2
+    ) {
+        return applyTwoParameterFunction(val(number1), val(number2), "ROUND");
     }
     
     public static KColumn rpad(
@@ -1847,27 +2051,7 @@ public class KFunction {
         
         final KColumn rpadkColumn = new KColumn();
         
-        rpadkColumn.sb.append("RPAD(");
-        
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("RPAD", kColumn));
-            }
-            
-            rpadkColumn.sb.append("'");
-        }
-        
-        rpadkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            rpadkColumn.sb.append("'");
-        }
-        
-        rpadkColumn.sb.append(", ").append(n);
+        rpadkColumn.sb.append("RPAD(").append(kColumn.sb).append(", ").append(n);
                 
         if (fillText != null) {
             rpadkColumn.sb.append(", '").append(fillText).append("'");
@@ -1876,6 +2060,26 @@ public class KFunction {
         rpadkColumn.sb.append(")");
         
         return rpadkColumn;
+    }
+    
+    public static KColumn rpad(
+        final KValTextField kValTextField,
+        final int n,
+        final String fillText
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        
+        final KColumn rpadKColumn = new KColumn();
+        
+        rpadKColumn.sb.append("RPAD(").append("'").append(kValTextField.sb).append("'").append(", ").append(n);
+                
+        if (fillText != null) {
+            rpadKColumn.sb.append(", '").append(fillText).append("'");
+        }
+                
+        rpadKColumn.sb.append(")");
+        
+        return rpadKColumn;
     }
     
     public static KColumn rtrim(
@@ -1894,19 +2098,37 @@ public class KFunction {
     public static KColumn sign(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "SIGN");
+        return applyOneParameterFunction(kColumn, "SIGN");
+    }
+    
+    public static KColumn sign(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "SIGN");
     }
     
     public static KColumn sin(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "SIN");
+        return applyOneParameterFunction(kColumn, "SIN");
+    }
+    
+    public static KColumn sin(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "SIN");
     }
     
     public static KColumn sinh(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "SINH");
+        return applyOneParameterFunction(kColumn, "SINH");
+    }
+    
+    public static KColumn sinh(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "SINH");
     }
     
     public static KColumn splitPart(
@@ -1915,34 +2137,26 @@ public class KFunction {
         final int field
     ) {
         assertNotNull(kColumn, "kColumn");
-        
-        if (delimiter == null) {
-            throw KExceptionHelper.internalServerError("'delimiter' is required in 'SPLIT_PART' function");
-        }
+        assertNotNull(delimiter, "delimiter");
         
         final KColumn splitPartkColumn = new KColumn();
         
-        splitPartkColumn.sb.append("SPLIT_PART(");
+        splitPartkColumn.sb.append("SPLIT_PART(").append(kColumn.sb).append(", '").append(delimiter).append("', ").append(field).append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return splitPartkColumn;
+    }
+    
+    public static KColumn splitPart(
+        final KValTextField kValTextField,
+        final String delimiter,
+        final int field
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(delimiter, "delimiter");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SPLIT_PART", kColumn));
-            }
-            
-            splitPartkColumn.sb.append("'");
-        }
+        final KColumn splitPartkColumn = new KColumn();
         
-        splitPartkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            splitPartkColumn.sb.append("'");
-        }
-        
-        splitPartkColumn.sb.append(", '").append(delimiter).append("', ").append(field).append(")");
+        splitPartkColumn.sb.append("SPLIT_PART(").append("'").append(kValTextField.sb).append("'").append(", '").append(delimiter).append("', ").append(field).append(")");
         
         return splitPartkColumn;
     }
@@ -1950,7 +2164,13 @@ public class KFunction {
     public static KColumn sqrt(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "SQRT");
+        return applyOneParameterFunction(kColumn, "SQRT");
+    }
+    
+    public static KColumn sqrt(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "SQRT");
     }
     
     public static KColumn substring(
@@ -1961,6 +2181,13 @@ public class KFunction {
     }
     
     public static KColumn substring(
+        final KValTextField kValTextField,
+        final Integer from
+    ) {
+        return substring(kValTextField, from, null);
+    }
+    
+    public static KColumn substring(
         final KColumn kColumn,
         final Integer from,
         final Integer for_
@@ -1968,30 +2195,40 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         
         if (from == null && for_ == null) {
-            throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least 1 is required");
+            throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least one is required");
         }
         
         final KColumn substringkColumn = new KColumn();
         
-        substringkColumn.sb.append("SUBSTRING(");
+        substringkColumn.sb.append("SUBSTRING(").append(kColumn.sb);
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SUBSTRING", kColumn));
-            }
-            
-            substringkColumn.sb.append("'");
+        if (from != null) {
+            substringkColumn.sb.append(" from ").append(from);
         }
         
-        substringkColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            substringkColumn.sb.append("'");
+        if (for_ != null) {
+            substringkColumn.sb.append(" for ").append(for_);
         }
+                
+        substringkColumn.sb.append(")");
+        
+        return substringkColumn;
+    }
+    
+    public static KColumn substring(
+        final KValTextField kValTextField,
+        final Integer from,
+        final Integer for_
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        
+        if (from == null && for_ == null) {
+            throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least one is required");
+        }
+        
+        final KColumn substringkColumn = new KColumn();
+        
+        substringkColumn.sb.append("SUBSTRING(").append("'").append(kValTextField.sb).append("'");
         
         if (from != null) {
             substringkColumn.sb.append(" from ").append(from);
@@ -2014,6 +2251,13 @@ public class KFunction {
     }
     
     public static KColumn substring(
+        final KValTextField kValTextField,
+        final String from
+    ) {
+        return substring(kValTextField, from, null);
+    }
+    
+    public static KColumn substring(
         final KColumn kColumn,
         final String from,
         final String for_
@@ -2023,27 +2267,28 @@ public class KFunction {
         
         final KColumn substringkColumn = new KColumn();
         
-        substringkColumn.sb.append("SUBSTRING(");
+        substringkColumn.sb.append("SUBSTRING(").append(kColumn.sb).append(" from '").append(from).append("'");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
-        
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("SUBSTRING", kColumn));
-            }
-            
-            substringkColumn.sb.append("'");
+        if (for_ != null) {
+            substringkColumn.sb.append(" for '").append(for_).append("'");
         }
         
-        substringkColumn.sb.append(kColumn.sb);
+        substringkColumn.sb.append(")");
         
-        if (kColumnIsVal) {
-            substringkColumn.sb.append("'");
-        }
+        return substringkColumn;
+    }
+    
+    public static KColumn substring(
+        final KValTextField kValTextField,
+        final String from,
+        final String for_
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(from, "from");
         
-        substringkColumn.sb.append(" from '").append(from).append("'");
+        final KColumn substringkColumn = new KColumn();
+        
+        substringkColumn.sb.append("SUBSTRING(").append("'").append(kValTextField.sb).append("'").append(" from '").append(from).append("'");
         
         if (for_ != null) {
             substringkColumn.sb.append(" for '").append(for_).append("'");
@@ -2057,13 +2302,25 @@ public class KFunction {
     public static KColumn tan(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "TAN");
+        return applyOneParameterFunction(kColumn, "TAN");
+    }
+    
+    public static KColumn tan(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "TAN");
     }
     
     public static KColumn tanh(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "TANH");
+        return applyOneParameterFunction(kColumn, "TANH");
+    }
+    
+    public static KColumn tanh(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "TANH");
     }
     
     public static KColumn toDate(
@@ -2075,27 +2332,21 @@ public class KFunction {
         
         final KColumn toDatekColumn = new KColumn();
         
-        toDatekColumn.sb.append("TO_DATE(");
+        toDatekColumn.sb.append("TO_DATE(").append(kColumn.sb).append(", '").append(format).append("'").append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return toDatekColumn;
+    }
+    
+    public static KColumn toDate(
+        final KValTextField kValTextField,
+        final String format
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(format, "format");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TO_DATE", kColumn));
-            }
-            
-            toDatekColumn.sb.append("'");
-        }
+        final KColumn toDatekColumn = new KColumn();
         
-        toDatekColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            toDatekColumn.sb.append("'");
-        }
-
-        toDatekColumn.sb.append(", '").append(format).append("'").append(")");
+        toDatekColumn.sb.append("TO_DATE(").append("'").append(kValTextField.sb).append("'").append(", '").append(format).append("'").append(")");
         
         return toDatekColumn;
     }
@@ -2103,7 +2354,13 @@ public class KFunction {
     public static KColumn toHex(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "TO_HEX");
+        return applyOneParameterFunction(kColumn, "TO_HEX");
+    }
+    
+    public static KColumn toHex(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "TO_HEX");
     }
     
     public static KColumn toTimestamp(
@@ -2115,27 +2372,21 @@ public class KFunction {
         
         final KColumn toDatekColumn = new KColumn();
         
-        toDatekColumn.sb.append("TO_TIMESTAMP(");
+        toDatekColumn.sb.append("TO_TIMESTAMP(").append(kColumn.sb).append(", '").append(format).append("'").append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return toDatekColumn;
+    }
+    
+    public static KColumn toTimestamp(
+        final KValTextField kValTextField,
+        final String format
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(format, "format");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TO_DATE", kColumn));
-            }
-            
-            toDatekColumn.sb.append("'");
-        }
+        final KColumn toDatekColumn = new KColumn();
         
-        toDatekColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            toDatekColumn.sb.append("'");
-        }
-
-        toDatekColumn.sb.append(", '").append(format).append("'").append(")");
+        toDatekColumn.sb.append("TO_TIMESTAMP(").append("'").append(kValTextField.sb).append("'").append(", '").append(format).append("'").append(")");
         
         return toDatekColumn;
     }
@@ -2151,27 +2402,23 @@ public class KFunction {
         
         final KColumn translatekColumn = new KColumn();
         
-        translatekColumn.sb.append("TRANSLATE(");
+        translatekColumn.sb.append("TRANSLATE(").append(kColumn.sb).append(", '").append(from).append("', '").append(to).append("')");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return translatekColumn;
+    }
+    
+    public static KColumn translate(
+        final KValTextField kValTextField,
+        final String from,
+        final String to
+    ) {
+        assertNotNull(kValTextField, "kValTextField");
+        assertNotNull(from, "from");
+        assertNotNull(to, "to");
         
-        if (kColumnIsVal) {
-            final boolean isText = ((KValField) kColumn).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionTextType("TRANSLATE", kColumn));
-            }
-            
-            translatekColumn.sb.append("'");
-        }
+        final KColumn translatekColumn = new KColumn();
         
-        translatekColumn.sb.append(kColumn.sb);
-        
-        if (kColumnIsVal) {
-            translatekColumn.sb.append("'");
-        }
-        
-        translatekColumn.sb.append(", '").append(from).append("', '").append(to).append("')");
+        translatekColumn.sb.append("TRANSLATE(").append("'").append(kValTextField.sb).append("'").append(", '").append(from).append("', '").append(to).append("')");
         
         return translatekColumn;
     }
@@ -2210,25 +2457,25 @@ public class KFunction {
         return applyBinaryOperator(number, kColumn, "-");
     }
     
-    public static KValField sub(
-        final KValField kValField,
+    public static KValNumberField sub(
+        final KValNumberField kValNumberField,
         final Number number
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField, number, "-");
+        return applyBinaryOperator(kValNumberField, number, "-");
     }
     
-    public static KValField sub(
+    public static KValNumberField sub(
         final Number number,
-        final KValField kValField
+        final KValNumberField kValNumberField
     ) {
-        return applyBinaryOperatorWithValNumberValid(number, kValField, "-");
+        return applyBinaryOperator(number, kValNumberField, "-");
     }
     
-    public static KValField sub(
-        final KValField kValField1,
-        final KValField kValField2
+    public static KValNumberField sub(
+        final KValNumberField kValNumberField1,
+        final KValNumberField kValNumberField2
     ) {
-        return applyBinaryOperatorWithValNumberValid(kValField1, kValField2, "-");
+        return applyBinaryOperator(kValNumberField1, kValNumberField2, "-");
     }
     
     public static KColumn toChar(
@@ -2240,19 +2487,21 @@ public class KFunction {
         
         final KColumn substringkColumn = new KColumn();
         
-        substringkColumn.sb.append("TO_CHAR(");
+        substringkColumn.sb.append("TO_CHAR(").append(kColumn.sb).append(", '").append(format).append("'").append(")");
         
-        final boolean kColumnIsVal = kColumn instanceof KValField;
+        return substringkColumn;
+    }
+    
+    public static KColumn toChar(
+        final KValNumberField kValNumberField,
+        final String format
+    ) {
+        assertNotNull(kValNumberField, "kValNumberField");
+        assertNotNull(format, "format");
         
-        if (kColumnIsVal) {
-            final boolean isNumber = ((KValField) kColumn).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("TO_CHAR", kColumn));
-            }
-        }
+        final KColumn substringkColumn = new KColumn();
         
-        substringkColumn.sb.append(kColumn.sb).append(", '").append(format).append("'").append(")");
+        substringkColumn.sb.append("TO_CHAR(").append(kValNumberField.sb).append(", '").append(format).append("'").append(")");
         
         return substringkColumn;
     }
@@ -2260,7 +2509,13 @@ public class KFunction {
     public static KColumn trunc(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValNumberValid(kColumn, "TRUNC");
+        return applyOneParameterFunction(kColumn, "TRUNC");
+    }
+    
+    public static KColumn trunc(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "TRUNC");
     }
     
     public static KColumn uuidGenerateV1() {
@@ -2274,19 +2529,25 @@ public class KFunction {
     public static KColumn upper(
         final KColumn kColumn
     ) {
-        return applyOneParameterFunctionWithValStringValid(kColumn, "UPPER");
+        return applyOneParameterFunction(kColumn, "UPPER");
     }
     
-    public static KValField val(
+    public static KColumn upper(
+        final KValTextField kValTextField
+    ) {
+        return applyOneParameterFunction(kValTextField, "UPPER");
+    }
+    
+    public static KValTextField val(
         final String val
     ) {
-        return new KValField(val);
+        return new KValTextField(val);
     }
     
-    public static KValField val(
+    public static KValNumberField val(
         final Number val
     ) {
-        return new KValField(val);
+        return new KValNumberField(val);
     }
     
     public static KColumn widthBucket(
@@ -2303,46 +2564,83 @@ public class KFunction {
         
         final KColumn widthBucketkColumn = new KColumn();
         
-        final boolean opIsVal = op instanceof KValField;
-        final boolean b1IsVal = b1 instanceof KValField;
-        final boolean b2IsVal = b2 instanceof KValField;
-        final boolean countIsVal = count instanceof KValField;
+        widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op.sb).append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count.sb).append(")");
         
-        widthBucketkColumn.sb.append("WIDTH_BUCKET(");
+        return widthBucketkColumn;
+    }
+    
+    public static KColumn widthBucket(
+        final KColumn op,
+        final KColumn b1,
+        final KColumn b2,
+        final int count
+    ) {
         
-        if (opIsVal) {
-            final boolean isNumber = ((KValField) op).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", op));
-            }
-        }
+        assertNotNull(op, "op");
+        assertNotNull(b1, "b1");
+        assertNotNull(b2, "b2");
+        assertNotNull(count, "count");
         
-        if (b1IsVal) {
-            final boolean isNumber = ((KValField) b1).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", b1));
-            }
-        }
+        final KColumn widthBucketkColumn = new KColumn();
         
-        if (b2IsVal) {
-            final boolean isNumber = ((KValField) b2).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", b2));
-            }
-        }
+        widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op.sb).append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count).append(")");
         
-        if (countIsVal) {
-            final boolean isNumber = ((KValField) count).isNumber;
-            
-            if (!isNumber) {
-                throw KExceptionHelper.internalServerError(getErrorMessageFunctionNumberType("WIDTH_BUCKET", count));
-            }
-        }
+        return widthBucketkColumn;
+    }
+    
+    public static KColumn widthBucket(
+        final KColumn op,
+        final Number b1,
+        final Number b2,
+        final int count
+    ) {
         
-        widthBucketkColumn.sb.append(op.sb).append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count.sb).append(")");
+        assertNotNull(op, "op");
+        assertNotNull(b1, "b1");
+        assertNotNull(b2, "b2");
+        assertNotNull(count, "count");
+        
+        final KColumn widthBucketkColumn = new KColumn();
+        
+        widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op.sb).append(", ").append(b1).append(", ").append(b2).append(", ").append(count).append(")");
+        
+        return widthBucketkColumn;
+    }
+    
+    public static KColumn widthBucket(
+        final Number op,
+        final Number b1,
+        final Number b2,
+        final int count
+    ) {
+        
+        assertNotNull(op, "op");
+        assertNotNull(b1, "b1");
+        assertNotNull(b2, "b2");
+        assertNotNull(count, "count");
+        
+        final KColumn widthBucketkColumn = new KColumn();
+        
+        widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op).append(", ").append(b1).append(", ").append(b2).append(", ").append(count).append(")");
+        
+        return widthBucketkColumn;
+    }
+    
+    public static KColumn widthBucket(
+        final Number op,
+        final Number b1,
+        final Number b2,
+        final KColumn count
+    ) {
+        
+        assertNotNull(op, "op");
+        assertNotNull(b1, "b1");
+        assertNotNull(b2, "b2");
+        assertNotNull(count, "count");
+        
+        final KColumn widthBucketkColumn = new KColumn();
+        
+        widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op).append(", ").append(b1).append(", ").append(b2).append(", ").append(count.sb).append(")");
         
         return widthBucketkColumn;
     }

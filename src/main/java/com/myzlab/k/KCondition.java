@@ -1,6 +1,5 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +17,12 @@ public class KCondition {
     }
     
     public static KCondition eq(
-        final KColumn kColumn1,
-        final KColumn kColumn2
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processBinaryOperator(kColumn1, kColumn2, "=");
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
         
         return kCondition;
     }
@@ -47,13 +46,46 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition neq(
-        final KColumn kColumn1,
-        final KColumn kColumn2
+    public static KCondition ieq(
+        final KColumn kColumn,
+        final KValTextField kValTextField
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotBinaryOperator(kColumn1, kColumn2, "=");
+        kCondition.processIBinaryOperator(kColumn, kValTextField, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ieq(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField, kColumn, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ieq(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField1, kValTextField2, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition neq(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
         
         return kCondition;
     }
@@ -69,53 +101,87 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition nieq(
+        final KColumn kColumn,
+        final KValTextField kValTextField
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kColumn, kValTextField, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nieq(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField, kColumn, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nieq(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField1, kValTextField2, "=");
+        
+        return kCondition;
+    }
+    
     protected String toSql() {
         return sb.toString();
     }
     
     private void processBinaryOperator(
-        final KColumn kColumn1,
-        final KColumn kColumn2,
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2,
         final String operator
-    ) {
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
+    ) {        
+        params.addAll(kBaseColumn1.params);
+        params.addAll(kBaseColumn2.params);
         
-        if (kColumn1IsVal) {
-            params.addAll(((KValField) kColumn1).params);
-        }
-
-        if (kColumn2IsVal) {
-            params.addAll(((KValField) kColumn2).params);
+        if (!kBaseColumn1.closed) {
+            this.sb.append("(");
         }
         
-        this.sb
-            .append(kColumn1IsVal ? ((KValField) kColumn1).sbParam : kColumn1.sb)
-            .append(" ").append(operator).append(" ")
-            .append(kColumn2IsVal ? ((KValField) kColumn2).sbParam : kColumn2.sb);
+        this.sb.append(kBaseColumn1.sb);
+        
+        if (!kBaseColumn1.closed) {
+            this.sb.append(")");
+        }
+        
+        this.sb.append(" ").append(operator).append(" ");
+        
+        if (!kBaseColumn2.closed) {
+            this.sb.append("(");
+        }
+        
+        this.sb.append(kBaseColumn2.sb);
+        
+        if (!kBaseColumn2.closed) {
+            this.sb.append(")");
+        }
     }
     
     private void processNotBinaryOperator(
-        final KColumn kColumn1,
-        final KColumn kColumn2,
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2,
         final String operator
     ) {
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
-        
-        if (kColumn1IsVal) {
-            params.addAll(((KValField) kColumn1).params);
-        }
-
-        if (kColumn2IsVal) {
-            params.addAll(((KValField) kColumn2).params);
-        }
+        params.addAll(kBaseColumn1.params);
+        params.addAll(kBaseColumn2.params);
         
         this.sb
             .append("NOT (")
-            .append(kColumn1IsVal ? ((KValField) kColumn1).sbParam : kColumn1.sb)
+            .append(kBaseColumn1.sb)
             .append(" ").append(operator).append(" ")
-            .append(kColumn2IsVal ? ((KValField) kColumn2).sbParam : kColumn2.sb)
+            .append(kBaseColumn2.sb)
             .append(")");
     }
     
@@ -124,76 +190,94 @@ public class KCondition {
         final KColumn kColumn2,
         final String operator
     ) {
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
+        this.sb.append("NOT (LOWER(").append(kColumn1.sb).append(") ").append(operator).append(" LOWER(").append(kColumn2.sb).append("))");
+    }
+    
+    private void processNotIBinaryOperator(
+        final KColumn kColumn,
+        final KValTextField kValTextField,
+        final String operator
+    ) {
+        for (final Object param : kValTextField.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
         
-        if (kColumn1IsVal) {
-            final boolean isText = ((KValField) kColumn1).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError("The 'NOT' + 'I' + '" + operator + "' operator only can be used with a column or with a 'val' of text type");
-            }
-            
-            for (final Object param : ((KValField) kColumn1).params) {
-                params.add(param instanceof String ? param.toString().toLowerCase() : param);
-            }
+        this.sb.append("NOT (LOWER(").append(kColumn.sb).append(") ").append(operator).append(" ").append(kValTextField.sb).append(")");
+    }
+    
+    private void processNotIBinaryOperator(
+        final KValTextField kValTextField,
+        final KBaseColumn kBaseColumn,
+        final String operator
+    ) {
+        for (final Object param : kValTextField.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        this.sb.append("NOT (").append(kValTextField.sb).append(" ").append(operator).append(" LOWER(").append(kBaseColumn.sb).append("))");
+    }
+    
+    private void processNotIBinaryOperator(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2,
+        final String operator
+    ) {
+        for (final Object param : kValTextField1.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
         }
 
-        if (kColumn2IsVal) {
-            final boolean isText = ((KValField) kColumn2).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError("The 'NOT' + 'I' + '" + operator + "' operator only can be used with a column or with a 'val' of text type");
-            }
-            
-            for (final Object param : ((KValField) kColumn2).params) {
-                params.add(param instanceof String ? param.toString().toLowerCase() : param);
-            }
+        for (final Object param : kValTextField2.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
         }
         
-        this.sb
-            .append("NOT (")
-            .append(kColumn1IsVal ? ((KValField) kColumn1).sbParam : ("LOWER(" + kColumn1.sb + ")"))
-            .append(" ").append(operator).append(" ")
-            .append(kColumn2IsVal ? ((KValField) kColumn2).sbParam : ("LOWER(" + kColumn2.sb + ")"))
-            .append(")");
+        this.sb.append("NOT (").append(kValTextField1.sb).append(" ").append(operator).append(" ").append(kValTextField2.sb).append(")");
     }
     
     private void processIBinaryOperator(
         final KColumn kColumn1,
         final KColumn kColumn2,
         final String operator
+    ) { 
+        this.sb.append("LOWER(").append(kColumn1.sb).append(") ").append(operator).append(" LOWER(").append(kColumn2.sb).append(")");
+    }
+    
+    private void processIBinaryOperator(
+        final KColumn kColumn,
+        final KValTextField kValTextField,
+        final String operator
     ) {
-        final boolean kColumn1IsVal = kColumn1 instanceof KValField;
-        final boolean kColumn2IsVal = kColumn2 instanceof KValField;
+        for (final Object param : kValTextField.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
         
-        if (kColumn1IsVal) {
-            final boolean isText = ((KValField) kColumn1).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError("The 'I' + '" + operator + "' operator only can be used with a column or with a 'val' of text type");
-            }
-            
-            for (final Object param : ((KValField) kColumn1).params) {
-                params.add(param instanceof String ? param.toString().toLowerCase() : param);
-            }
+        this.sb.append("LOWER(").append(kColumn.sb).append(") ").append(operator).append(" ").append(kValTextField.sb);
+    }
+    
+    private void processIBinaryOperator(
+        final KValTextField kValTextField,
+        final KColumn kColumn,
+        final String operator
+    ) {
+        for (final Object param : kValTextField.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        this.sb.append(kValTextField.sb).append(" ").append(operator).append(" LOWER(").append(kColumn.sb).append(")");
+    }
+    
+    private void processIBinaryOperator(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2,
+        final String operator
+    ) {
+        for (final Object param : kValTextField1.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
         }
 
-        if (kColumn2IsVal) {
-            final boolean isText = ((KValField) kColumn2).isText;
-            
-            if (!isText) {
-                throw KExceptionHelper.internalServerError("The 'I' + '" + operator + "' operator only can be used with a column or with a 'val' of text type");
-            }
-            
-            for (final Object param : ((KValField) kColumn2).params) {
-                params.add(param instanceof String ? param.toString().toLowerCase() : param);
-            }
+        for (final Object param : kValTextField2.params) {
+            params.add(param instanceof String ? param.toString().toLowerCase() : param);
         }
         
-        this.sb
-            .append(kColumn1IsVal ? ((KValField) kColumn1).sbParam : ("LOWER(" + kColumn1.sb + ")"))
-            .append(" ").append(operator).append(" ")
-            .append(kColumn2IsVal ? ((KValField) kColumn2).sbParam : ("LOWER(" + kColumn2.sb + ")"));
+        this.sb.append(kValTextField1.sb).append(" ").append(operator).append(" ").append(kValTextField2.sb);
     }
 }

@@ -64,6 +64,12 @@ public class KSelect extends KQuery {
         return new KFetch();
     }
     
+    public KWhere where(
+        final KCondition... kConditions
+    ) {
+        return KWhere.getInstance(this, kConditions);
+    }
+    
     private void process(
         final KBaseColumn... kBaseColums
     ) {
@@ -81,6 +87,7 @@ public class KSelect extends KQuery {
             }
             
             this.kQueryData.columnsAdded++;
+            this.kQueryData.params.addAll(kBaseColum.params);
             
             this.kQueryData.sb.append(kBaseColum.toSql());
         }

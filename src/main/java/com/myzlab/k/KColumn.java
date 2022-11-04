@@ -1,30 +1,73 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.List;
 
-public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
+public class KColumn extends KBaseColumnCastable implements Cloneable {
     
     private final String name;
     
-    public KColumn() {
+    protected KColumn() {
+        super();
+        
+        this.name = null;
+    }
+    
+    protected KColumn(
+        final boolean closed
+    ) {
+        super(closed);
+        
         this.name = null;
     }
     
     public KColumn(
         final String name
     ) {
+        super();
+        
         this.name = name;
-        sb.append(name);
+        this.sb.append(name);
+        this.operating = 1;
     }
     
-    public KColumn(
+    protected KColumn(
+        final StringBuilder sb,
+        final List<Object> params,
+        final int operating,
+        final boolean closed
+    ) {
+        super(sb, params, operating, closed);
+        
+        this.name = null;
+    }
+    
+    protected KColumn(
+        final String name,
+        final String val
+    ) {
+        super(val);
+        
+        this.name = name;
+    }
+    
+    protected KColumn(
+        final String name,
+        final Number val
+    ) {
+        super(val);
+        
+        this.name = name;
+    }
+    
+    protected KColumn(
         final StringBuilder sb
     ) {
         this();
         this.sb.append(sb);
     }
     
-    public KColumn(
+    protected KColumn(
         final String name,
         final StringBuilder sb
     ) {
@@ -43,21 +86,9 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     ) {
         return KFunction.add(this, number);
     }
-
-    public KAliasedColumn as(
-        final String alias
-    ) {
-        return KFunction.as(this, alias);
-    }
     
     public KColumn avg() {
         return KFunction.avg(this);
-    }
-    
-    public KColumn cast(
-        final KDataType kDataType    
-    ) {
-        return KFunction.cast(this, kDataType);
     }
     
     public KColumn div(
@@ -72,54 +103,6 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
         return KFunction.div(this, number);
     }
     
-    public KCondition eq(
-        final KColumn kColumn
-    ) {
-        return equal(kColumn);
-    }
-    
-    public KCondition eq(
-        final KValField kValField
-    ) {
-        return equal(kValField);
-    }
-    
-    public KCondition eq(
-        final Number number
-    ) {
-        return equal(number);
-    }
-    
-    public KCondition eq(
-        final String string
-    ) {
-        return equal(string);
-    }
-    
-    public KCondition equal(
-        final KColumn kColumn
-    ) {
-        return KCondition.eq(this, kColumn);
-    }
-    
-    public KCondition equal(
-        final KValField kValField
-    ) {
-        return KCondition.eq(this, kValField);
-    }
-    
-    public KCondition equal(
-        final Number number
-    ) {
-        return eq(KFunction.val(number));
-    }
-    
-    public KCondition equal(
-        final String string
-    ) {
-        return eq(KFunction.val(string));
-    }
-    
     public KCondition ieq(
         final KColumn kColumn
     ) {
@@ -127,9 +110,9 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition ieq(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return iEqual(kValField);
+        return iEqual(kValTextField);
     }
     
     public KCondition ieq(
@@ -145,9 +128,9 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition iEqual(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return KCondition.ieq(this, kValField);
+        return KCondition.ieq(this, kValTextField);
     }
     
     public KCondition iEqual(
@@ -227,9 +210,15 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition neq(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return notEqual(kValField);
+        return notEqual(kValTextField);
+    }
+    
+    public KCondition neq(
+        final KValNumberField kValNumberField
+    ) {
+        return notEqual(kValNumberField);
     }
     
     public KCondition neq(
@@ -251,9 +240,15 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition notEqual(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return KCondition.neq(this, kValField);
+        return KCondition.neq(this, kValTextField);
+    }
+    
+    public KCondition notEqual(
+        final KValNumberField kValNumberField
+    ) {
+        return KCondition.neq(this, kValNumberField);
     }
     
     public KCondition notEqual(
@@ -275,9 +270,9 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition nieq(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return notIEqual(kValField);
+        return notIEqual(kValTextField);
     }
     
     public KCondition nieq(
@@ -293,9 +288,9 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
     }
     
     public KCondition notIEqual(
-        final KValField kValField
+        final KValTextField kValTextField
     ) {
-        return KCondition.nieq(this, kValField);
+        return KCondition.nieq(this, kValTextField);
     }
     
     public KCondition notIEqual(
@@ -304,6 +299,7 @@ public class KColumn<T> extends KBaseColumn<T> implements Cloneable {
         return nieq(KFunction.val(string));
     }
     
+    @Override
     protected KColumn cloneMe() {
         try {
             return (KColumn) super.clone();
