@@ -57,7 +57,7 @@ public abstract class KBaseColumn implements Cloneable {
         this();
         
         if (val == null) {
-            throw KExceptionHelper.internalServerError("The 'val' param is required");
+            throw KExceptionHelper.internalServerError("The 'val' param cannot be null");
         }
         
         this.sb.append("?");
@@ -71,7 +71,7 @@ public abstract class KBaseColumn implements Cloneable {
         this();
         
         if (val == null) {
-            throw KExceptionHelper.internalServerError("The 'val' param is required");
+            throw KExceptionHelper.internalServerError("The 'val' param cannot be null");
         }
         
         this.sb.append("?");

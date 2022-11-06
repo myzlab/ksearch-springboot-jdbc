@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KColumn extends KBaseColumnCastable implements Cloneable {
@@ -43,6 +44,16 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
     }
     
     protected KColumn(
+        final StringBuilder sb,
+        final int operating,
+        final boolean closed
+    ) {
+        super(sb, new ArrayList<>(), operating, closed);
+        
+        this.name = null;
+    }
+    
+    protected KColumn(
         final String name,
         final String val
     ) {
@@ -61,13 +72,6 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
     }
     
     protected KColumn(
-        final StringBuilder sb
-    ) {
-        this();
-        this.sb.append(sb);
-    }
-    
-    protected KColumn(
         final String name,
         final StringBuilder sb
     ) {
@@ -79,6 +83,12 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
         final KColumn kColumn
     ) {
         return KFunction.add(this, kColumn);
+    }
+    
+    public KColumn add(
+        final KValNumberField kValNumberField
+    ) {
+        return KFunction.add(this, kValNumberField);
     }
     
     public KColumn add(
@@ -95,6 +105,12 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
         final KColumn kColumn
     ) {
         return KFunction.div(this, kColumn);
+    }
+    
+    public KColumn div(
+        final KValNumberField kValNumberField
+    ) {
+        return KFunction.div(this, kValNumberField);
     }
     
     public KColumn div(
@@ -174,6 +190,12 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
     }
     
     public KColumn sub(
+        final KValNumberField kValNumberField
+    ) {
+        return KFunction.sub(this, kValNumberField);
+    }
+    
+    public KColumn sub(
         final Number number
     ) {
         return KFunction.sub(this, number);
@@ -186,6 +208,12 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
     }
     
     public KColumn mod(
+        final KValNumberField kValNumberField
+    ) {
+        return KFunction.mod(this, kValNumberField);
+    }
+    
+    public KColumn mod(
         final Number number
     ) {
         return KFunction.mod(this, number);
@@ -195,6 +223,12 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
         final KColumn kColumn
     ) {
         return KFunction.mul(this, kColumn);
+    }
+    
+    public KColumn mul(
+        final KValNumberField kValNumberField
+    ) {
+        return KFunction.mul(this, kValNumberField);
     }
     
     public KColumn mul(

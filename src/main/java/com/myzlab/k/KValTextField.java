@@ -16,9 +16,6 @@ public class KValTextField extends KBaseValField implements Cloneable {
         final boolean closed
     ) {
         super(sb, params, operating, closed);
-        
-        this.sb.append(sb);
-        this.params.addAll(params);
     }
     
     protected KValTextField(

@@ -23,20 +23,24 @@ public class Ksearch {
         final KColumn title = new KColumn("title");
         final KColumn description = new KColumn("description");
         final KColumn pages = new KColumn("pages");
+        final KColumn data = new KColumn("data");
+        
+        final Number nullNumber = null;
+        final String nullString = null;
         
         new KInitializer()
             .select(
-                avg(pages),
-//                avg(val(881)),
-//                avg(561),
+//                avg(pages),
+//                avg(val(881).add(bookId)),
+//                avg(561)
 //                age.cast(smallint()).as("mini")
-                cast(age, smallint()).as("mini"),
+//                cast(age, smallint()).as("mini"),
 //                avg(age).cast(bigint()).as("average"),
 //                cast(avg(age), bigint()).as("average"),
-//                val(11).cast(bigint()).as("eleven"),
+//                val(11).add(15).cast(bigint()).as("eleven_fifteen"),
 //                cast(val(11), bigint()).as("eleven"),
 //                val("2020-10-01").cast(date()).as("my-date"),
-//                cast(val("2020-10-01"), date()).as("my-date"),
+//                cast(val("2020-10-01"), date()).as("my-date")
 //                val(55).as("average"),
 //                as(avg(pages), "test1"),
 //                as(description, "test2"),
@@ -45,148 +49,283 @@ public class Ksearch {
 //                as(pages, "test5"),
 //                as(7741, "test6"),
 //                as("AOA(((I", "test7"),
-                    
-                concat(title, val("x"), avg(pages), val(7), val("2020-11-11").cast(date()))
-                    
-//                as(isolate(concat(name, val(" "), lastName)), "FullName"),
+//                concat(title, val("x"), avg(pages), val(7), val("2020-11-11").cast(date())),
+//                    isolate(age),
+//                as(isolate(concat(title, val(" "), description)), "FullName")
 //                val(99).cast(bigint()).as("average")
-//                concat(name, val(" "), val("3 + 2"), lastName).as("Full2Name"),
-//                count().as("total"),
-//                val(7).mul(val(2).add(val(3))).sub(val(8).div(val(4).mod(2))).as("values__"),
-//                sub(mul(val(7), add(3, val(2))), div(val(8), mod(val(4), 2))).as("values_x_"),
-//                cast(name, varchar(255)).as("nameCasted"),
-//                cast(val(111), varchar(255)).as("nameCasted"),
-//                cast(val("abc"), varchar(255)).as("nameCasted"),
-//                name.cast(varchar(255)).as("varchar_255"),
-//                name.cast(varchar()).as("varchar_"),
-//                name.cast(characterVarying(255)).as("characterVarying_255"),
-//                name.cast(characterVarying()).as("characterVarying_"),
-//                name.cast(bigint()).as("bigint_"),
-//                name.cast(bigserial()).as("bigserial_"),
-//                name.cast(bool()).as("bool_"),
-//                name.cast(date()).as("date_"),
-//                name.cast(character(255)).as("character_255"),
-//                name.cast(character()).as("character_"),
-//                name.cast(numeric()).as("numeric_"),
-//                name.cast(decimal(7)).as("decimal7_"),
-//                name.cast(numeric(4, 1)).as("numeric4_1_"),
-//                name.cast(decimal(8, 2)).as("decimal8_2_"),
-//                name.cast(real()).as("real_"),
-//                name.cast(float4()).as("float_4"),
-//                name.cast(smallserial()).as("smallserial_"),
-//                name.cast(serial2()).as("serial_2"),
-//                name.cast(text()).as("text_"),
-//                name.cast(timetz()).as("timetz_"),
-//                name.cast(timeWithoutTimeZone()).as("timeWithoutTimeZone_"),
-//                name.cast(timestampWithTimeZone()).as("timestampWithTimeZone_"),
-//                name.cast(timestamp()).as("timestamp_"),
-//                name.cast(uuid()).as("uuid_"),
-//                name.cast(json()).as("json_"),
-//                name.cast(jsonb()).as("jsonb_"),
-//                age.mul(ageWorking).avg().isolate().sub(2).as("theaqvgp2"),
+//                concat(title, val(" "), val("3 + 2"), description).as("Full2Name")
+//                avg(count()).as("total")
+//                val(7).mul(val(2).add(val(3))).sub(val(8).div(val(4).mod(2))).as("values__")
+//                    add(pages, val(6)),
+//                    add(pages, 5),
+//                    add(pages, pages)
+//                    pages.add(9)
+//                    pages.add(val(7).add(pages).add(val(4).add(bookId)).add(1)),
+//                    pages.add(pages)
+//                    mul(pages, val(6)),
+//                    mul(pages, 5),
+//                    mul(pages, pages),
+//                    pages.mul(9),
+//                    pages.mul(val(7).mul(pages).mul(val(4).mul(bookId)).mul(1)),
+//                    pages.mul(pages)
+//                    div(pages, val(6)),
+//                    div(pages, 5),
+//                    div(pages, pages),
+//                    pages.div(9),
+//                    pages.div(val(7).div(pages).div(val(4).div(bookId)).div(1)),
+//                    pages.div(pages)
+//                    mod(pages, val(6)),
+//                    mod(pages, 5),
+//                    mod(pages, pages),
+//                    pages.mod(9),
+//                    pages.mod(val(7).mod(pages).div(val(4).mod(bookId)).mod(1)),
+//                    pages.mod(pages)
+//                    sub(pages, val(6)),
+//                    sub(pages, 5),
+//                    sub(pages, pages),
+//                    pages.sub(9),
+//                    pages.sub(val(7).sub(pages).div(val(4).sub(bookId)).sub(1)),
+//                    pages.sub(pages)
+//                    bitAnd(pages, val(6)),
+//                    bitAnd(pages, 5),
+//                    bitAnd(pages, pages),
+//                    bitAnd(pages, bitAnd(bitAnd(bitAnd(val(7), pages), bitAnd(val(4), bookId)), 1))
+//                    bitOr(pages, val(6)),
+//                    bitOr(pages, 5),
+//                    bitOr(pages, pages),
+//                    bitOr(pages, bitOr(bitOr(bitOr(val(7), pages), bitOr(val(4), bookId)), 1))
+//                    bitXor(pages, val(6)),
+//                    bitXor(pages, 5),
+//                    bitXor(pages, pages),
+//                    bitXor(pages, bitXor(bitXor(bitXor(val(7), pages), bitXor(val(4), bookId)), 1))
+//                        bitShiftLeft(bookId, pages),
+//                    bitShiftLeft(bookId, 7),
+//                    bitShiftLeft(bitShiftLeft(val(2), 3), 4),
+//                    bitShiftRight(bookId, pages),
+//                    bitShiftRight(bookId, 7),
+//                    bitShiftRight(bitShiftRight(val(2), 3), 4)
+//                sub(mul(val(7), add(3, val(2))), div(val(8), mod(val(4), 2))).as("values_x_")
+//                cast(title, varchar(255)).as("nameCasted1"),
+//                cast(val(111), varchar(255)).as("nameCasted2"),
+//                cast(val("abc"), varchar(255)).as("nameCasted3")
+//                title.cast(varchar(255)).as("varchar_255"),
+//                title.cast(varchar()).as("varchar_"),
+//                title.cast(characterVarying(255)).as("characterVarying_255"),
+//                title.cast(characterVarying()).as("characterVarying_"),
+//                title.cast(bigint()).as("bigint_"),
+//                title.cast(bigserial()).as("bigserial_"),
+//                title.cast(bool()).as("bool_"),
+//                title.cast(date()).as("date_"),
+//                title.cast(character(255)).as("character_255"),
+//                title.cast(character()).as("character_"),
+//                title.cast(numeric()).as("numeric_"),
+//                title.cast(decimal(7)).as("decimal7_"),
+//                title.cast(numeric(4, 1)).as("numeric4_1_"),
+//                title.cast(decimal(8, 2)).as("decimal8_2_"),
+//                title.cast(real()).as("real_"),
+//                title.cast(float4()).as("float_4"),
+//                title.cast(smallserial()).as("smallserial_"),
+//                title.cast(serial2()).as("serial_2"),
+//                title.cast(text()).as("text_"),
+//                title.cast(timetz()).as("timetz_"),
+//                title.cast(timeWithoutTimeZone()).as("timeWithoutTimeZone_"),
+//                title.cast(timestampWithTimeZone()).as("timestampWithTimeZone_"),
+//                title.cast(timestamp()).as("timestamp_"),
+//                title.cast(uuid()).as("uuid_"),
+//                title.cast(json()).as("json_"),
+//                title.cast(jsonb()).as("jsonb_")
+//                age.mul(bookId).avg().isolate().sub(2).as("theaqvgp2")
 //                getJsonArray(data.cast(jsonb()), 0).as("getJsonArrayElement"),
 //                getJsonArrayAsText(data.cast(jsonb()), 0).as("getJsonArrayElementAsText"),
 //                getJsonObject(data.cast(jsonb()), "attr").as("getJsonObjectElement"),
 //                getJsonObjectAsText(data.cast(jsonb()), "attr").as("getJsonObjectElementAsText"),
+//                getJsonObjectAtPath(data.cast(jsonb()), "a,b,c").as("getJsonObjectAtPath"),
+//                getJsonObjectAtPathAsText(data.cast(jsonb()), "a,b,c").as("getJsonObjectAtPathAsText"),
 //                data.cast(jsonb()).getJsonArray(0).as("getJsonArray"),
 //                data.cast(jsonb()).getJsonArrayAsText(0).as("getJsonArrayAsText"),
 //                data.cast(jsonb()).getJsonObject("attr").as("getJsonObject"),
 //                data.cast(jsonb()).getJsonObjectAsText("attr").as("getJsonObjectAsText"),
 //                data.cast(jsonb()).getJsonObjectAtPath("a,b,c").as("getJsonObjectAtPath"),
-//                data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText"),
-//                coalesce(name, val(" "), val(3).add(5), lastName).as("coal"),
-//                now().as("now_"),
-//                encode(encode(encode(val("'123\\000456'").cast(bytea()), base64()), hex()), escape()),
-//                decode(decode(decode(val("'123\\000456'").cast(bytea()), base64()), hex()), escape()),
+//                data.cast(jsonb()).getJsonObjectAtPathAsText("a,b,c").as("getJsonObjectAtPathAsText")
+//                coalesce(bookId, val(" "), val(3).add(5), avg(pages.avg().mul(4)).mod(avg(val(1).add(5)))).add(1).as("coal")
+//                now().as("now_")
+//                encode(encode(encode(val("123\\000456").cast(bytea()), base64()), hex()), escape()),
+//                decode(decode(decode(val("123\\000456").cast(bytea()), base64()), hex()), escape())
 //                encode(val("1"), escape()),
-//                decode(val("1"), hex()),
-//                nullif(name, lastName).as("nullif1"),
-//                nullif(name, val("")).as("nullif2"),
-//                nullif(val(1), lastName).as("nullif3"),
-//                nullif(val(1), val("1")).as("nullif4"),
-//                left(name, 2),
-//                left(val("11"), 5),
-//                right(name, 1),
-//                right(val("11"), 8),
+//                decode(val("2"), hex())
+//                nullif(bookId, pages).as("nullif1"),
+//                nullif(title, val("-")).as("nullif2"),
+//                nullif(pages, val(1).add(val(7))).as("nullif3"),
+//                nullif(val(1), pages).as("nullif4"),
+//                nullif(val(1), val("A")).as("nullif5"),
+//                nullif(val(1), val(3)).as("nullif6")
+//                left(title, 2),
+//                left(val("ABD "), 5),
+//                right(description, 1),
+//                right(val("XXR"), 8)
+//                round(val(1), val(1)),
+//                round(age, age),
+//                round(age, 8),
+//                round(7, age),
+//                round(age, val(9)),
+//                round(val(0), age),
+//                round(val(0), val(3)),
+//                round(5, 8)
 //                abs(age),
 //                abs(val(11)),
+//                abs(12),
 //                acos(age),
 //                acos(val(33)),
+//                acos(35),
 //                asin(age),
 //                asin(val(1)),
-//                atan(age),
-//                atan(val(1)),
-//                atan2(val(1), val(1)),
-//                atan2(age, age),
-//                ceil(age),
-//                ceil(val(1)),
-//                cos(age),
-//                cos(val(1)),
-//                cosh(age),
-//                cosh(val(1)),
-//                cot(age),
-//                cot(val(1)),
-//                exp(age),
-//                exp(val(1)),
-//                floor(age),
-//                floor(val(1)),
-//                greatest(age, val(1), val("1")),
-//                least(age, val(1), val("1")),
-//                ln(age),
-//                ln(val(1)),
-//                atan2(val(1), val(1)),
-//                log(age, age),
-//                log(val(1), val(1)),
-//                log10(age),
-//                log10(val(1)),
-//                pi().as("pi_"),
-//                power(age, age),
-//                power(val(1), val(1)),
-//                random().as("random_"),
-//                round(age),
-//                round(val(1.77)),
-//                sign(age),
-//                sign(val(1.77)),
-//                sin(age),
-//                sin(val(1.77)),
-//                sinh(age),
-//                sinh(val(1.77)),
-//                sqrt(age),
-//                sqrt(val(1.77)),
-//                tan(age),
-//                tan(val(1.77)),
-//                tanh(age),
-//                tanh(val(1.77)),
-//                trunc(age),
-//                trunc(val(1.77)),
-//                widthBucket(val(5.22), val(1.77), val(5.22), age),
-//                radians(val(1.77)),
-//                radians(age),
-//                cbrt(age),
-//                cbrt(val(444)),
-//                degrees(age),
-//                degrees(val(444)),
-//                ceiling(age),
-//                ceiling(val(5)),
-//                round(val(951), val(2)),
-//                round(age, val(2)),
-//                cast(val("6"), bitVarying(255)).as("bits_"),
-//                bitNot(age),
-//                bitNot(val(444)),
-//                bitNot(7),
-//                bitShiftLeft(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9), 3).as("ooo_"),
-//                bitShiftLeft(isolate(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9)), age).as("ooo_"),
-//                concat(val(1).cast(bit()), val(2).cast(bit(2)), val(1).cast(bit())).as("bitConcat"),
+//                asin(77),
 //                ascii(age).as("ascii_"),
 //                ascii(val("2")).as("ascii_"),
-//                chr(age).as("chr_"),
-//                chr(val("2")).as("chr_"),
-//                length(age).as("length_"),
-//                length(val("2")).as("length_"),
-//                lower(age).as("lower_"),
-//                lower(val("2")).as("lower_"),
-//                upper(age).as("upper_"),
-//                upper(val("2")).as("upper_"),
+//                ascii("JUJU").as("ascii_")
+//                bitNot(age),
+//                bitNot(val(444)),
+//                bitNot(7)
+//                atan(age),
+//                atan(val(1)),
+//                atan(3),
+//                atan2(val(1), val(1)),
+//                atan2(age, age),
+//                atan2(age, 8),
+//                atan2(7, age),
+//                atan2(age, val(9)),
+//                atan2(val(0), age),
+//                atan2(val(0), val(3)),
+//                atan2(5, 8)
+//                ceil(age),
+//                ceil(val(1)),
+//                ceil(5),
+//                cos(age),
+//                cos(val(1)),
+//                cos(2),
+//                cosh(age),
+//                cosh(val(1)),
+//                cosh(22),
+//                cot(age),
+//                cot(val(1)),
+//                cot(11),
+//                exp(age),
+//                exp(val(1)),
+//                exp(234),
+//                floor(age),
+//                floor(val(1)),
+//                floor(957)
+//                ln(age),
+//                ln(val(1)),            
+//                ln(2), 
+//                sign(age),
+//                sign(val(3)),
+//                sign(4),
+//                sin(age),
+//                sin(val(5)),
+//                sin(6),
+//                sinh(age),
+//                sinh(val(7)),
+//                sinh(8),
+//                sqrt(age),
+//                sqrt(val(9)),
+//                sqrt(10),
+//                tan(age),
+//                tan(val(11)),
+//                tan(12),
+//                tanh(age),
+//                tanh(val(13)),
+//                tanh(14),
+//                trunc(age),
+//                trunc(val(15)),
+//                trunc(16)
+//                cbrt(age),
+//                cbrt(val(444)),
+//                cbrt(445),
+//                degrees(age),
+//                degrees(val(446)),
+//                degrees(447),
+//                ceiling(age),
+//                ceiling(val(499)),
+//                ceiling(500)
+//                cast(val("6"), bitVarying(255)).as("bits_")
+//                radians(val(1.77)),
+//                radians(age),
+//                radians(2),
+//                toHex(age),
+//                toHex(val(0)),
+//                toHex(4),
+//                log10(age),
+//                log10(val(1)),  
+//                log10(12)
+//                chr(age),
+//                chr(val("2")),
+//                chr("ABC"),
+//                length(age),
+//                length(val("2")),
+//                length("p"),
+//                lower(age),
+//                lower(val("2")),
+//                lower("A"),
+//                upper(age),
+//                upper(val("2")),
+//                upper("T"),
+//                reverse(age),
+//                reverse(val("222")),
+//                reverse("re"),
+//                md5(val("abd")),
+//                md5(age),
+//                md5("md")
+//                log(val(1), val(1)),
+//                log(age, age),
+//                log(age, 8),
+//                log(7, age),
+//                log(age, val(9)),
+//                log(val(0), age),
+//                log(val(0), val(3)),
+//                log(5, 8),
+//                power(val(1), val(1)),
+//                power(age, age),
+//                power(age, 8),
+//                power(7, age),
+//                power(age, val(9)),
+//                power(val(0), age),
+//                power(val(0), val(3)),
+//                power(5, 8)
+//                random().as("random_"),
+//                    pi().as("pi_")
+//                uuidGenerateV1().as("u1"),
+//                uuidGenerateV4().as("u4"),
+//                genRandomUuid().as("g")
+//                    concat(val(1).cast(bit()), val(2).cast(bit(2)), val(1).cast(bit())).as("bitConcat")
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //                log(age, age),
+//                log(val(1), val(1)),
+//                greatest(age, val(1), val("1")),
+//                least(age, val(1), val("1")),
+
+//                
+
+//                widthBucket(val(5.22), val(1.77), val(5.22), age),
+
+//                bitShiftLeft(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9), 3).as("ooo_"),
+//                bitShiftLeft(isolate(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9)), age).as("ooo_"),
+                
+
+
 //                lpad(age, 2, "a").as("lpad_"),
 //                lpad(val("age"), 2, "a").as("lpad_"),
 //                lpad(val("age"), 2).as("lpad_"),
@@ -199,8 +338,7 @@ public class Ksearch {
 //                trim(val("abd")),
 //                rtrim(val("abd"), "xyz"),
 //                rtrim(val("abd")),
-//                md5(val("abd")),
-//                md5(age),
+
 //                substring(age, 4, 8),
 //                substring(val("ageageageage"), null, 8),
 //                substring(val("ageageageage"), 4),
@@ -217,19 +355,15 @@ public class Ksearch {
 //                repeat(val("age"), 2),
 //                replace(val("Thomas"), "a", "b"),
 //                replace(age, "a", "b"),
-//                reverse(age).as("reverse_"),
-//                reverse(val("222")).as("reverse_"),
+
 //                splitPart(age, "x", 2).as("splitPart_"),
 //                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_"),
 //                toChar(cast(age, timestamp()), "YYYY"),
 //                toChar(val(2019), "9,999"),
-//                toHex(age),
-//                toHex(val(0)),
+
 //                translate(val("12345"), "143", "ax"),
 //                translate(age, "143", "ax"),
-//                uuidGenerateV1().as("u1"),
-//                uuidGenerateV4().as("u4"),
-//                genRandomUuid().as("g"),
+
 //                extract(val("2020-10-10").cast(timestamp()), day()),
 //                datePart(val("2020-10-10").cast(timestamp()), day()),
 //                currentDate().as("c"),
@@ -254,8 +388,29 @@ public class Ksearch {
 //            .select(currentUser().as("us"))
 //            .from(author)
 //            .from(book)
-//            .where(cast(";p", int4()).eq(avg(bookId.cast(bigint()))))//avg(pages).eq(avg(pages))
-            .where(val("55SAD").eq(concat(title, val("zzz").cast(text()))))
+//                .where(avg(val(881).add(1)).eq("1"))
+//                .where(pages.add(7).add(bookId.add(99)).eq(val(5).add(1).add(bookId)))
+//                .where(pages.mul(7).mul(bookId.mul(99)).eq(val(5).mul(1).mul(bookId)))
+//                .where(pages.div(7).div(bookId.div(99)).eq(val(5).div(1).div(bookId)))
+//                .where(pages.mod(7).mod(bookId.mod(99)).eq(val(5).mod(1).mod(bookId)))
+//                .where(pages.sub(7).sub(bookId.sub(99)).eq(val(5).sub(1).sub(bookId)))
+//            .where(bitAnd(bitAnd(pages, 7), bitAnd(bookId, 99)).eq(bitAnd(bitAnd(val(5), 1), bookId)))
+//                .where(bitOr(bitOr(pages, 7), bitOr(bookId, 99)).eq(bitOr(bitOr(val(5), 1), bookId)))
+//                .where(bitXor(bitXor(pages, 7), bitXor(bookId, 99)).eq(bitXor(bitXor(val(5), 1), bookId)))
+//                .where(bitShiftRight(bitXor(bitShiftRight(pages, 7), 55), 88).eq(bitShiftRight(bitShiftRight(val(5), 191), 444)))
+//                .where(data.cast(jsonb()).getJsonArray(0).cast(bigint()).eq(2))
+//                .where(coalesce(bookId, val(" "), val(3).add(5), avg(pages.avg().mul(4)).mod(avg(val(1).add(5)))).eq(2))
+//                .where(avg(count()).eq(isolate(concat(title, val("zzz").cast(text())))))
+//            .where(cast(";p", int4()).eq(avg(bookId.cast(bigint()))))
+//            .where(encode(encode(encode(val("123\\000456").cast(bytea()), base64()), hex()), escape()).eq(1))
+//                .where(nullif(pages, val(1).add(val(7))).eq("ABC"))                
+//                .where(right(val("XXR"), 8).eq(right(description, 5)))
+//                .where(round(age, 7).add(2).eq("A"))
+//                .where(acos(acos(age).mod(2)).eq(2))
+//                .where(asin(val(1).add(5)).eq(2))
+//                .where(bitNot(4).eq(2))
+//                .where(atan2(atan(68787), val(2)).eq("A"))
+//                .where(md5(age).eq(md5("2")))
             .single();
 //            .select(new KColumn().as())
 //            .from()
