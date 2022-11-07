@@ -30,7 +30,7 @@ public class Ksearch {
         
         new KInitializer()
             .select(
-//                avg(pages),
+                avg(pages)
 //                avg(val(881).add(bookId)),
 //                avg(561)
 //                age.cast(smallint()).as("mini")
@@ -298,74 +298,6 @@ public class Ksearch {
 //                uuidGenerateV4().as("u4"),
 //                genRandomUuid().as("g")
 //                    concat(val(1).cast(bit()), val(2).cast(bit(2)), val(1).cast(bit())).as("bitConcat")
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    //                log(age, age),
-//                log(val(1), val(1)),
-//                greatest(age, val(1), val("1")),
-//                least(age, val(1), val("1")),
-
-//                
-
-//                widthBucket(val(5.22), val(1.77), val(5.22), age),
-
-//                bitShiftLeft(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9), 3).as("ooo_"),
-//                bitShiftLeft(isolate(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9)), age).as("ooo_"),
-                
-
-
-//                lpad(age, 2, "a").as("lpad_"),
-//                lpad(val("age"), 2, "a").as("lpad_"),
-//                lpad(val("age"), 2).as("lpad_"),
-//                rpad(val("abd"), 2, "a").as("rpad_"),
-//                rpad(age, 2, "a").as("rpad_"),
-//                rpad(age, 2).as("rpad_"),
-//                ltrim(val("abd"), "xyz"),
-//                ltrim(val("abd")),
-//                trim(val("abd"), "xyz"),
-//                trim(val("abd")),
-//                rtrim(val("abd"), "xyz"),
-//                rtrim(val("abd")),
-
-//                substring(age, 4, 8),
-//                substring(val("ageageageage"), null, 8),
-//                substring(val("ageageageage"), 4),
-//                substring(val("Thomas"), "...$"),
-//                substring(val("Thomas"), "%#\"o_a#\"_", "#"),
-//                overlay(val("Txxxxas"), "hom", 2, 4),
-//                overlay(val("Txxxxas"), "hom", 2),
-//                overlay(age, "hom", 2),
-//                position(age, "om"),
-//                position(val("age"), "om"),
-//                regexpReplace(val("Thomas"), ".[mN]a.", "M", "g"),
-//                regexpReplace(age, ".[mN]a.", "M"),
-//                repeat(age, 2),
-//                repeat(val("age"), 2),
-//                replace(val("Thomas"), "a", "b"),
-//                replace(age, "a", "b"),
-
-//                splitPart(age, "x", 2).as("splitPart_"),
-//                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_"),
-//                toChar(cast(age, timestamp()), "YYYY"),
-//                toChar(val(2019), "9,999"),
-
-//                translate(val("12345"), "143", "ax"),
-//                translate(age, "143", "ax"),
-
-//                extract(val("2020-10-10").cast(timestamp()), day()),
-//                datePart(val("2020-10-10").cast(timestamp()), day()),
 //                currentDate().as("c"),
 //                currentTimestamp().as("c22"),
 //                currentTime().as("tc"),
@@ -374,18 +306,83 @@ public class Ksearch {
 //                localTimestamp().as("ll"),
 //                localTime().as("l"),
 //                localTimestamp(5).as("lt5"),
-//                localTime(6).as("li6"),
-//                cast(val("2020-02-03"), date()).add(3),
-//                cast(val("2020-02-03"), date()).sub(cast(val("2020-02-04"), date())),
+//                localTime(6).as("li6")
+//            currentSchema().as("sc")
+//            currentUser().as("us")
+//                ltrim(val("abd"), "xyz"),
+//                ltrim(val("abd")),
+//                ltrim(title, "xyz"),
+//                ltrim(title),
+//                trim(val("abd"), "xyz"),
+//                trim(val("abd")),
+//                trim(title, "xyz"),
+//                trim(title),
+//                rtrim(val("abd"), "xyz"),
+//                rtrim(val("abd")),
+//                rtrim(title, "xyz"),
+//                rtrim(title)
+//                substring(age, 1),    
+//                substring(age, 2, 3),
+//                substring(age, null, 7),
+//                substring(val("ageageageage1"), 4),    
+//                substring(val("ageageageage2"), 5, 6),
+//                substring(val("ageageageage3"), null, 8),
+//                substring(title, "...$"),
+//                substring(title, "%#\"o_a#\"_", "#"),
+//                substring(val("Thomas"), "...$"),
+//                substring(val("Thomas"), "%#\"o_a#\"_", "#")
+//                substring("Hola", 1),    
+//                substring("Hola2", 2, 3),
+//                substring("Hola3", null, 7),
+//                substring("Thomas", "...$"),
+//                substring("Thomas2", "%#\"o_a#\"_", "#")
+//                lpad(age, 1, "a").as("lpad_"),
+//                lpad(age, 2, "ab").as("lpad_"),
+//                lpad(val("age"), 3, "a").as("lpad_"),
+//                lpad(val("age"), 4).as("lpad_"),
+//                rpad(age, 5, "a").as("rpad_"),
+//                rpad(age, 6, "a").as("rpad_"),
+//                rpad(val("age"), 7, "a").as("rpad_"),
+//                rpad(val("age"), 8).as("rpad_")
+//                overlay(age, "hom1", 1),
+//                overlay(age, "abc", 2, 3),
+//                overlay(val("Txxxxas1"), "homA", 6),
+//                overlay(val("Txxxxas2"), "homB", 4, 5)
+//                position(age, "om"),
+//                position(val("age"), "om")
+//                regexpReplace(val("Thomas1"), ".[mN]a.", "M1"),
+//                regexpReplace(val("Thomas2"), ".[mN]b.", "M2", "gx"),
+//                regexpReplace(age, ".[mN]c.", "M3"),
+//                regexpReplace(age, ".[mN]d.", "M4", "gy")
+//                repeat(age, 2),
+//                repeat(val("age"), 4)
+//                replace(val("Thomas"), "a", "b"),
+//                replace(age, "c", "d")
 //                toDate(age, "YYYYMMDD"),
 //                toDate(val("20201010"), "YYYYMMDD"),
 //                toTimestamp(age, "YYYYMMDDHH24MISS"),
-//                toTimestamp(val("20200203153045"), "YYYYMMDDHH24MISS"),
-//                dateTrunc(val("2020-10-10").cast(timestamp()), day()),
-//                rawColumn("CASE WHEN rental_rate = 0.99 THEN 1 ELSE 0 END AS raw_")
+//                toTimestamp(val("20200203153045"), "YYYYMMDDHH24MISS")
+//                greatest(age, val(5), val("4"), val(1).add(2), avg(bookId.add(7))),
+//                least(age, val(51), val("41"), val(11).add(21), avg(bookId.add(71)))
+//                    cast(val("2020-02-03"), date()).add(3),
+//                cast(val("2020-02-03"), date()).sub(cast(val("2020-02-04"), date()))
+//                toChar(cast(age, timestamp()), "YYYY"),
+//                toChar(val(2019), "9,999")
+//                    widthBucket(val(9).add(age), bookId, age, bookId),
+//                    widthBucket(val(10).add(bookId), val(13).add(bookId), val(12).add(age), 7),
+//                    widthBucket(age, 1, 2, 3),
+//                    widthBucket(4, 5, 6, 7)
+//                    bitShiftLeft(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9), 3).as("ooo_"),
+//                bitShiftLeft(isolate(bitShiftRight(bitShiftLeft(bitNot(bitXor(val(5), val(4))), 2), 9)), 4).as("ooo_")
+//                translate(concat(val(777), val("abc"), age), "143", "ax"),
+//                translate(val("jjj"), "143", "ax")
+//                    rawColumn("CASE WHEN rental_rate = 0.99 THEN 1 ELSE 0 END AS raw_")
+//                extract(val("2020-10-10").cast(timestamp()), day()),
+//                datePart(val("2020-10-11").cast(timestamp()), epoch()),
+//                dateTrunc(val("2020-10-12").cast(timestamptz()), century())
+//                splitPart(age, "x", 2).as("splitPart_"),
+//                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_")
             )
-//            .select(currentSchema().as("sc"))
-//            .select(currentUser().as("us"))
 //            .from(author)
 //            .from(book)
 //                .where(avg(val(881).add(1)).eq("1"))
@@ -411,6 +408,12 @@ public class Ksearch {
 //                .where(bitNot(4).eq(2))
 //                .where(atan2(atan(68787), val(2)).eq("A"))
 //                .where(md5(age).eq(md5("2")))
+//                .where(ltrim(title).eq(val("thetittle")))
+//                .where(substring(age, 2, 3).eq("A"))
+//                .where(rpad(age, 8).eq("A"))
+//                .where(regexpReplace(age, ".[mN]c.", "M3").eq("A"))
+//                .where(least(age, val(51), val("41"), val(11).add(21), avg(bookId.add(71))).eq("ABC"))
+//                .where(widthBucket(val(9).add(age), bookId, age, bookId).eq("ABC"))
             .single();
 //            .select(new KColumn().as())
 //            .from()
