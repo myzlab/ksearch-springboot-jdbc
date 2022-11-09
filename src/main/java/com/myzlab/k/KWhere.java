@@ -4,39 +4,69 @@ import com.myzlab.k.helper.KExceptionHelper;
 
 public class KWhere extends KQuery {
     
+    private final KCondition kCondition;
+    
     private KWhere() {
         super();
+        
+        this.kCondition = null;
     }
     
     private KWhere(
         final KQueryData kQueryData,
-        final KCondition... kConditions
+        final KCondition kCondition
     ) {
         super(kQueryData);
         
-        this.process(kConditions);
+        assertNotNull(kCondition, "kCondition");
+        
+        this.kCondition = kCondition;
     }
     
     public static KWhere getInstance(
         final KSelect kSelect,
-        final KCondition... kConditions
+        final KCondition kCondition
     ) {
-        return new KWhere(kSelect.kQueryData, kConditions);
+        return new KWhere(kSelect.kQueryData, kCondition);
     }
 
     public static KWhere getInstance(
         final KFrom kFrom,
-        final KCondition... kConditions
+        final KCondition kCondition
     ) {
-        return new KWhere(kFrom.kQueryData, kConditions);
+        return new KWhere(kFrom.kQueryData, kCondition);
     }
     
-    public KWhere and() {
-        return new KWhere();
+    public KWhere andNot(
+        final KCondition kCondition
+    ) {
+        this.kCondition.andNot(kCondition);
+        
+        return this;
     }
     
-    public KWhere or() {
-        return new KWhere();
+    public KWhere orNot(
+        final KCondition kCondition
+    ) {
+        this.kCondition.orNot(kCondition);
+        
+        return this;
+    }
+
+    public KWhere and(
+        final KCondition kCondition
+    ) {
+        this.kCondition.and(kCondition);
+        
+        return this;
+    }
+    
+    public KWhere or(
+        final KCondition kCondition
+    ) {
+        this.kCondition.or(kCondition);
+        
+        return this;
     }
     
     public KGroupBy groupBy() {
@@ -75,24 +105,36 @@ public class KWhere extends KQuery {
         return new KFetch();
     }
     
-    private void process(
-        final KCondition... kConditions
+    private void buildWhere() {
+        assertNotNull(this.kCondition, "kCondition");
+        
+        this.kQueryData.sb.append(" WHERE ").append(this.kCondition.toSql());
+        this.kQueryData.params.addAll(this.kCondition.params);
+    }
+    
+    private static void assertNotNull(
+        final Object o,
+        final String name
     ) {
-        if (kConditions == null || kConditions.length == 0) {
-            throw KExceptionHelper.internalServerError("The 'kConditions' param is required"); 
+        if (o == null) {
+            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
         }
         
-        this.kQueryData.sb.append(" WHERE ");
-        
-        for (final KCondition kCondition : kConditions) {
-            if (this.kQueryData.conditionsAdded > 0) {
-//                this.kQueryData.sb.append(", ");
+        if (o instanceof Object[]) {
+            for (final Object o_ : (Object[]) o) {
+                if (o_ == null) {
+                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
+                }
             }
-            
-            this.kQueryData.conditionsAdded++;
-            
-            this.kQueryData.sb.append(kCondition.toSql());
-            this.kQueryData.params.addAll(kCondition.params);
         }
     }
+
+    @Override
+    public void single() {
+        this.buildWhere();
+        
+        super.single();
+    }
+    
+    
 }

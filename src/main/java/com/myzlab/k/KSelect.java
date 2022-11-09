@@ -28,10 +28,6 @@ public class KSelect extends KQuery {
         return KFrom.getInstance(this, kTable);
     }
     
-    public KWhere where() {
-        return KWhere.getInstance(this);
-    }
-    
     public KGroupBy groupBy() {
         return new KGroupBy();
     }
@@ -65,9 +61,9 @@ public class KSelect extends KQuery {
     }
     
     public KWhere where(
-        final KCondition... kConditions
+        final KCondition kCondition
     ) {
-        return KWhere.getInstance(this, kConditions);
+        return KWhere.getInstance(this, kCondition);
     }
     
     private void process(

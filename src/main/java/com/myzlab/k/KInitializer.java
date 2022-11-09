@@ -1,6 +1,9 @@
 package com.myzlab.k;
 
-public class KInitializer {
+import java.util.Map;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public abstract class KInitializer {
     
     public KWith with() {
         return new KWith();
@@ -21,4 +24,8 @@ public class KInitializer {
     public void delete() {
         
     }
+    
+    public abstract Map<String, JdbcTemplate> getJdbcTemplates();
+    
+    public abstract String getJdbcTemplateDefaultName();
 }

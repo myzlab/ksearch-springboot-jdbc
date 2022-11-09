@@ -5,15 +5,36 @@ import java.util.List;
 
 public class KCondition {
     
-    protected final StringBuilder sb;
-//    private int level = 0;
-    protected List<Object> params; 
+    public final static int AND_TYPE = 1;
+    public final static int OR_TYPE = 2;
+    public final static int UNDEFINED_TYPE = 3;
     
-    private KCondition() {
+    protected final StringBuilder sb;
+    protected int operator = 0;
+    protected List<Object> params;
+    protected int type = UNDEFINED_TYPE;
+    
+    private KCondition(
+    ) {
         super();
         
         this.sb = new StringBuilder();
         this.params = new ArrayList<>();
+        this.operator = 1;
+    }
+    
+    private KCondition(
+        final StringBuilder sb,
+        final List<Object> params,
+        final int operator,
+        final int type
+    ) {
+        super();
+        
+        this.sb = new StringBuilder(sb);
+        this.params = new ArrayList(params);
+        this.operator = operator;
+        this.type = type;
     }
     
     public static KCondition eq(
@@ -26,13 +47,59 @@ public class KCondition {
         
         return kCondition;
     }
-
-    public KCondition and() {
-        return new KCondition();
+    
+    public KCondition andNot(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
     }
     
-    public KCondition or() {
-        return new KCondition();
+    public KCondition orNot(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
+    }
+
+    public KCondition and(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(kCondition, "AND", AND_TYPE);
+    }
+    
+    public KCondition or(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(kCondition, "OR", OR_TYPE);
+    }
+    
+    private KCondition applyLogicOperator(
+        final KCondition kCondition,
+        final String operator,
+        final int type
+    ) {
+        if (this.type != UNDEFINED_TYPE && this.type != type) {
+            this.sb.insert(0, "(").append(")");
+        }
+        
+        this.sb.append(" ").append(operator).append(" ");
+        
+        final boolean closeNext = kCondition.type != UNDEFINED_TYPE && kCondition.type != type;
+        
+        if (closeNext) {
+            this.sb.append("(");
+        }
+        
+        this.sb.append(kCondition.sb);
+        
+        if (closeNext) {
+            this.sb.append(")");
+        }
+        
+        this.params.addAll(kCondition.params);
+        this.operator += kCondition.operator;
+        this.type = type;
+        
+        return this;
     }
     
     public static KCondition ieq(
@@ -85,7 +152,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "<>");
         
         return kCondition;
     }
@@ -96,7 +163,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotIBinaryOperator(kColumn1, kColumn2, "=");
+        kCondition.processIBinaryOperator(kColumn1, kColumn2, "<>");
         
         return kCondition;
     }
@@ -107,7 +174,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotIBinaryOperator(kColumn, kValTextField, "=");
+        kCondition.processIBinaryOperator(kColumn, kValTextField, "<>");
         
         return kCondition;
     }
@@ -118,7 +185,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotIBinaryOperator(kValTextField, kColumn, "=");
+        kCondition.processIBinaryOperator(kValTextField, kColumn, "<>");
         
         return kCondition;
     }
@@ -129,7 +196,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processNotIBinaryOperator(kValTextField1, kValTextField2, "=");
+        kCondition.processIBinaryOperator(kValTextField1, kValTextField2, "<>");
         
         return kCondition;
     }

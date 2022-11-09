@@ -6,7 +6,7 @@ public class KWith {
         return new KWith();
     }
     
-    public KSelect select() {
-        return new KSelect();
-    }
+//    public KSelect select() {
+//        return new KSelect();
+//    }
 }

@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import static com.myzlab.k.KCondition.UNDEFINED_TYPE;
 import com.myzlab.k.helper.KExceptionHelper;
 
 public class KFunction {
@@ -1951,6 +1952,26 @@ public class KFunction {
         return genericTrim(kValTextField, characters, "LTRIM");
     }
     
+    public static KColumn max(
+        final KColumn kColumn
+    ) {
+        return applyOneParameterFunction(kColumn, "MAX");
+    }
+    
+    public static KValNumberField max(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "MAX");
+    }
+    
+    public static KValNumberField max(
+        final Number number
+    ) {
+        assertNotNull(number, "number");
+        
+        return applyOneParameterFunction(val(number), "MAX");
+    }
+    
     public static KColumn md5(
         final KColumn kColumn
     ) {
@@ -1969,6 +1990,26 @@ public class KFunction {
         assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "MD5");
+    }
+    
+    public static KColumn min(
+        final KColumn kColumn
+    ) {
+        return applyOneParameterFunction(kColumn, "MIN");
+    }
+    
+    public static KValNumberField min(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "MIN");
+    }
+    
+    public static KValNumberField min(
+        final Number number
+    ) {
+        assertNotNull(number, "number");
+        
+        return applyOneParameterFunction(val(number), "MIN");
     }
     
     public static KColumn mod(
@@ -2102,6 +2143,14 @@ public class KFunction {
         nullifkColumn.operating += kBaseColumnCastable2.operating;
         
         return nullifkColumn;
+    }
+    
+    public static KCondition not(
+        final KCondition kCondition
+    ) {
+        kCondition.sb.insert(0, "NOT (").append(")");
+        
+        return kCondition;
     }
     
     public static KColumn overlay(
@@ -2910,6 +2959,26 @@ public class KFunction {
         substringKValTextField.sb.append(")");
         
         return substringKValTextField;
+    }
+    
+    public static KColumn sum(
+        final KColumn kColumn
+    ) {
+        return applyOneParameterFunction(kColumn, "SUM");
+    }
+    
+    public static KValNumberField sum(
+        final KValNumberField kValNumberField
+    ) {
+        return applyOneParameterFunction(kValNumberField, "SUM");
+    }
+    
+    public static KValNumberField sum(
+        final Number number
+    ) {
+        assertNotNull(number, "number");
+        
+        return applyOneParameterFunction(val(number), "SUM");
     }
     
     public static KColumn tan(

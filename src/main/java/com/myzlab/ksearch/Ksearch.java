@@ -17,6 +17,7 @@ public class Ksearch {
         final KTable author  = new KTable("author");
         final KColumn authorId = new KColumn("authorId");
         final KColumn age = new KColumn("age");
+        final KColumn name = new KColumn("name");
         
         final KTable book  = new KTable("book");
         final KColumn bookId = new KColumn("bookId");
@@ -28,11 +29,20 @@ public class Ksearch {
         final Number nullNumber = null;
         final String nullString = null;
         
-        new KInitializer()
+        new KTest()
             .select(
                 avg(pages)
-//                avg(val(881).add(bookId)),
-//                avg(561)
+//                avg(val(881).add(val(3))),
+//                avg(561),
+//                max(pages),
+//                max(val(881).add(val(2))),
+//                max(561)
+//                min(pages),
+//                min(val(881).add(val(2))),
+//                min(561),
+//                sum(pages),
+//                sum(val(881).add(val(1))),
+//                sum(5612)
 //                age.cast(smallint()).as("mini")
 //                cast(age, smallint()).as("mini"),
 //                avg(age).cast(bigint()).as("average"),
@@ -414,6 +424,13 @@ public class Ksearch {
 //                .where(regexpReplace(age, ".[mN]c.", "M3").eq("A"))
 //                .where(least(age, val(51), val("41"), val(11).add(21), avg(bookId.add(71))).eq("ABC"))
 //                .where(widthBucket(val(9).add(age), bookId, age, bookId).eq("ABC"))
+                .where(name.nieq("Orwell"))
+//                .and(val(55).nieq(pages))
+                .and(val("ALICIA").nieq(title))
+                .and(name.nieq(title))
+                .and(name.nieq(val("ROMEO")))
+//                .and(pages.nieq(val(333)))
+//                .and(pages.nieq(123))
             .single();
 //            .select(new KColumn().as())
 //            .from()

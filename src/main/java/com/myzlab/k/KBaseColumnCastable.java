@@ -79,9 +79,9 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
     }
     
     public KCondition eq(
-        final String string
+        final String value
     ) {
-        return equal(string);
+        return equal(value);
     }
     
     public KCondition equal(
@@ -109,11 +109,72 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
     }
     
     public KCondition equal(
-        final String string
+        final String value
     ) {
-        return eq(KFunction.val(string));
+        return eq(KFunction.val(value));
     }
     
+    public KCondition neq(
+        final KColumn kColumn
+    ) {
+        return notEqual(kColumn);
+    }
+    
+    public KCondition neq(
+        final KValTextField kValTextField
+    ) {
+        return notEqual(kValTextField);
+    }
+    
+    public KCondition neq(
+        final KValNumberField kValNumberField
+    ) {
+        return notEqual(kValNumberField);
+    }
+    
+    public KCondition neq(
+        final Number number
+    ) {
+        return notEqual(number);
+    }
+    
+    public KCondition neq(
+        final String value
+    ) {
+        return notEqual(value);
+    }
+    
+    public KCondition notEqual(
+        final KColumn kColumn
+    ) {
+        return KCondition.neq(this, kColumn);
+    }
+    
+    public KCondition notEqual(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.neq(this, kValTextField);
+    }
+    
+    public KCondition notEqual(
+        final KValNumberField kValNumberField
+    ) {
+        return KCondition.neq(this, kValNumberField);
+    }
+    
+    public KCondition notEqual(
+        final Number number
+    ) {
+        return neq(KFunction.val(number));
+    }
+    
+    public KCondition notEqual(
+        final String value
+    ) {
+        return neq(KFunction.val(value));
+    }
+    
+    @Override
     protected KBaseColumnCastable cloneMe() {
         try {
             return (KBaseColumnCastable) super.clone();

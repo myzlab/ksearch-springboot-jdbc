@@ -4,7 +4,7 @@ import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KColumn extends KBaseColumnCastable implements Cloneable {
+public class KColumn extends KBaseColumnCastable implements Cloneable, TextMethods {
     
     private final String name;
     
@@ -119,36 +119,42 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
         return KFunction.div(this, number);
     }
     
+    @Override
     public KCondition ieq(
         final KColumn kColumn
     ) {
         return iEqual(kColumn);
     }
     
+    @Override
     public KCondition ieq(
         final KValTextField kValTextField
     ) {
         return iEqual(kValTextField);
     }
     
+    @Override
     public KCondition ieq(
         final String string
     ) {
         return iEqual(string);
     }
     
+    @Override
     public KCondition iEqual(
         final KColumn kColumn
     ) {
         return KCondition.ieq(this, kColumn);
     }
     
+    @Override
     public KCondition iEqual(
         final KValTextField kValTextField
     ) {
         return KCondition.ieq(this, kValTextField);
     }
     
+    @Override
     public KCondition iEqual(
         final String string
     ) {
@@ -237,100 +243,46 @@ public class KColumn extends KBaseColumnCastable implements Cloneable {
         return KFunction.mul(this, number);
     }
     
-    public KCondition neq(
-        final KColumn kColumn
-    ) {
-        return notEqual(kColumn);
-    }
-    
-    public KCondition neq(
-        final KValTextField kValTextField
-    ) {
-        return notEqual(kValTextField);
-    }
-    
-    public KCondition neq(
-        final KValNumberField kValNumberField
-    ) {
-        return notEqual(kValNumberField);
-    }
-    
-    public KCondition neq(
-        final Number number
-    ) {
-        return notEqual(number);
-    }
-    
-    public KCondition neq(
-        final String string
-    ) {
-        return notEqual(string);
-    }
-    
-    public KCondition notEqual(
-        final KColumn kColumn
-    ) {
-        return KCondition.neq(this, kColumn);
-    }
-    
-    public KCondition notEqual(
-        final KValTextField kValTextField
-    ) {
-        return KCondition.neq(this, kValTextField);
-    }
-    
-    public KCondition notEqual(
-        final KValNumberField kValNumberField
-    ) {
-        return KCondition.neq(this, kValNumberField);
-    }
-    
-    public KCondition notEqual(
-        final Number number
-    ) {
-        return neq(KFunction.val(number));
-    }
-    
-    public KCondition notEqual(
-        final String string
-    ) {
-        return neq(KFunction.val(string));
-    }
-    
+    @Override
     public KCondition nieq(
         final KColumn kColumn
     ) {
         return notIEqual(kColumn);
     }
     
+    @Override
     public KCondition nieq(
         final KValTextField kValTextField
     ) {
         return notIEqual(kValTextField);
     }
     
+    @Override
     public KCondition nieq(
-        final String string
+        final String value
     ) {
-        return notIEqual(string);
+        return notIEqual(value);
     }
     
+    @Override
     public KCondition notIEqual(
         final KColumn kColumn
     ) {
         return KCondition.nieq(this, kColumn);
     }
     
+    @Override
     public KCondition notIEqual(
         final KValTextField kValTextField
     ) {
         return KCondition.nieq(this, kValTextField);
     }
     
+    @Override
     public KCondition notIEqual(
-        final String string
+        final String value
     ) {
-        return nieq(KFunction.val(string));
+        return nieq(KFunction.val(value));
     }
     
     @Override
