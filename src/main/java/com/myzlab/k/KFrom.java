@@ -57,9 +57,9 @@ public class KFrom extends KQuery {
     }
     
     public KWhere where(
-        final KCondition... kConditions
+        final KCondition kCondition
     ) {
-        return KWhere.getInstance(this, kConditions);
+        return KWhere.getInstance(this, kCondition);
     }
     
     public KGroupBy groupBy() {

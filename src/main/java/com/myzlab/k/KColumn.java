@@ -123,21 +123,21 @@ public class KColumn extends KBaseColumnCastable implements Cloneable, TextMetho
     public KCondition ieq(
         final KColumn kColumn
     ) {
-        return iEqual(kColumn);
+        return KCondition.ieq(this, kColumn);
     }
     
     @Override
     public KCondition ieq(
         final KValTextField kValTextField
     ) {
-        return iEqual(kValTextField);
+        return KCondition.ieq(this, kValTextField);
     }
     
     @Override
     public KCondition ieq(
-        final String string
+        final String value
     ) {
-        return iEqual(string);
+        return KCondition.ieq(this, KFunction.val(value));
     }
     
     @Override
@@ -156,9 +156,93 @@ public class KColumn extends KBaseColumnCastable implements Cloneable, TextMetho
     
     @Override
     public KCondition iEqual(
-        final String string
+        final String value
     ) {
-        return iEqual(KFunction.val(string));
+        return KCondition.ieq(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition igt(
+        final KColumn kColumn
+    ) {
+        return KCondition.igt(this, kColumn);
+    }
+    
+    @Override
+    public KCondition igt(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.igt(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition igt(
+        final String value
+    ) {
+        return KCondition.igt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition igte(
+        final KColumn kColumn
+    ) {
+        return KCondition.igte(this, kColumn);
+    }
+    
+    @Override
+    public KCondition igte(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.igte(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition igte(
+        final String value
+    ) {
+        return KCondition.igte(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
+        final KColumn kColumn
+    ) {
+        return KCondition.igt(this, kColumn);
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.igt(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
+        final String value
+    ) {
+        return KCondition.igt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
+        final KColumn kColumn
+    ) {
+        return KCondition.igte(this, kColumn);
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.igte(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
+        final String value
+    ) {
+        return KCondition.igte(this, KFunction.val(value));
     }
     
     public KColumn isolate() {
@@ -247,21 +331,21 @@ public class KColumn extends KBaseColumnCastable implements Cloneable, TextMetho
     public KCondition nieq(
         final KColumn kColumn
     ) {
-        return notIEqual(kColumn);
+        return KCondition.nieq(this, kColumn);
     }
     
     @Override
     public KCondition nieq(
         final KValTextField kValTextField
     ) {
-        return notIEqual(kValTextField);
+        return KCondition.nieq(this, kValTextField);
     }
     
     @Override
     public KCondition nieq(
         final String value
     ) {
-        return notIEqual(value);
+        return KCondition.nieq(this, KFunction.val(value));
     }
     
     @Override
@@ -282,7 +366,91 @@ public class KColumn extends KBaseColumnCastable implements Cloneable, TextMetho
     public KCondition notIEqual(
         final String value
     ) {
-        return nieq(KFunction.val(value));
+        return KCondition.nieq(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nigt(
+        final KColumn kColumn
+    ) {
+        return KCondition.nigt(this, kColumn);
+    }
+    
+    @Override
+    public KCondition nigt(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nigt(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition nigt(
+        final String value
+    ) {
+        return KCondition.nigt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nigte(
+        final KColumn kColumn
+    ) {
+        return KCondition.nigte(this, kColumn);
+    }
+    
+    @Override
+    public KCondition nigte(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nigte(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition nigte(
+        final String value
+    ) {
+        return KCondition.nigte(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notIGreaterThan(
+        final KColumn kColumn
+    ) {
+        return KCondition.nigt(this, kColumn);
+    }
+    
+    @Override
+    public KCondition notIGreaterThan(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nigt(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition notIGreaterThan(
+        final String value
+    ) {
+        return KCondition.nigt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notIGreaterThanOrEqualTo(
+        final KColumn kColumn
+    ) {
+        return KCondition.nigte(this, kColumn);
+    }
+    
+    @Override
+    public KCondition notIGreaterThanOrEqualTo(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nigte(this, kValTextField);
+    }
+    
+    @Override
+    public KCondition notIGreaterThanOrEqualTo(
+        final String value
+    ) {
+        return KCondition.nigte(this, KFunction.val(value));
     }
     
     @Override

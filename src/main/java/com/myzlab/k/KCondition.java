@@ -23,53 +23,30 @@ public class KCondition {
         this.operator = 1;
     }
     
-    private KCondition(
-        final StringBuilder sb,
-        final List<Object> params,
-        final int operator,
-        final int type
-    ) {
-        super();
-        
-        this.sb = new StringBuilder(sb);
-        this.params = new ArrayList(params);
-        this.operator = operator;
-        this.type = type;
-    }
+//    private KCondition(
+//        final StringBuilder sb,
+//        final List<Object> params,
+//        final int operator,
+//        final int type
+//    ) {
+//        super();
+//        
+//        this.sb = new StringBuilder(sb);
+//        this.params = new ArrayList(params);
+//        this.operator = operator;
+//        this.type = type;
+//    }
     
-    public static KCondition eq(
-        final KBaseColumn kBaseColumn1,
-        final KBaseColumn kBaseColumn2
-    ) {
-        final KCondition kCondition = new KCondition();
-        
-        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
-        
-        return kCondition;
-    }
-    
-    public KCondition andNot(
-        final KCondition kCondition
-    ) {
-        return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
-    }
-    
-    public KCondition orNot(
-        final KCondition kCondition
-    ) {
-        return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
-    }
-
     public KCondition and(
         final KCondition kCondition
     ) {
         return applyLogicOperator(kCondition, "AND", AND_TYPE);
     }
     
-    public KCondition or(
+    public KCondition andNot(
         final KCondition kCondition
     ) {
-        return applyLogicOperator(kCondition, "OR", OR_TYPE);
+        return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
     }
     
     private KCondition applyLogicOperator(
@@ -100,6 +77,73 @@ public class KCondition {
         this.type = type;
         
         return this;
+    }
+    
+    public static KCondition eq(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition gt(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition gte(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition lt(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "<");
+        
+        return kCondition;
+    }
+    
+    public static KCondition lte(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "<=");
+        
+        return kCondition;
+    }
+    
+    public KCondition or(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(kCondition, "OR", OR_TYPE);
+    }
+    
+    public KCondition orNot(
+        final KCondition kCondition
+    ) {
+        return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
     }
     
     public static KCondition ieq(
@@ -146,13 +190,145 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition igt(
+        final KColumn kColumn1,
+        final KColumn kColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kColumn1, kColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igt(
+        final KColumn kColumn,
+        final KValTextField kValTextField
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kColumn, kValTextField, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igt(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField, kColumn, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igt(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField1, kValTextField2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igte(
+        final KColumn kColumn1,
+        final KColumn kColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kColumn1, kColumn2, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igte(
+        final KColumn kColumn,
+        final KValTextField kValTextField
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kColumn, kValTextField, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igte(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField, kColumn, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition igte(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processIBinaryOperator(kValTextField1, kValTextField2, ">=");
+        
+        return kCondition;
+    }
+    
     public static KCondition neq(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "<>");
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ngt(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ngte(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nlt(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "<");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nlte(
+        final KBaseColumn kBaseColumn1,
+        final KBaseColumn kBaseColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "<=");
         
         return kCondition;
     }
@@ -163,7 +339,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processIBinaryOperator(kColumn1, kColumn2, "<>");
+        kCondition.processNotIBinaryOperator(kColumn1, kColumn2, "=");
         
         return kCondition;
     }
@@ -174,7 +350,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processIBinaryOperator(kColumn, kValTextField, "<>");
+        kCondition.processNotIBinaryOperator(kColumn, kValTextField, "=");
         
         return kCondition;
     }
@@ -185,7 +361,7 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processIBinaryOperator(kValTextField, kColumn, "<>");
+        kCondition.processNotIBinaryOperator(kValTextField, kColumn, "=");
         
         return kCondition;
     }
@@ -196,7 +372,95 @@ public class KCondition {
     ) {
         final KCondition kCondition = new KCondition();
         
-        kCondition.processIBinaryOperator(kValTextField1, kValTextField2, "<>");
+        kCondition.processNotIBinaryOperator(kValTextField1, kValTextField2, "=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigt(
+        final KColumn kColumn1,
+        final KColumn kColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kColumn1, kColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigt(
+        final KColumn kColumn,
+        final KValTextField kValTextField
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kColumn, kValTextField, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigt(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField, kColumn, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigt(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField1, kValTextField2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigte(
+        final KColumn kColumn1,
+        final KColumn kColumn2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kColumn1, kColumn2, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigte(
+        final KColumn kColumn,
+        final KValTextField kValTextField
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kColumn, kValTextField, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigte(
+        final KValTextField kValTextField,
+        final KColumn kColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField, kColumn, ">=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nigte(
+        final KValTextField kValTextField1,
+        final KValTextField kValTextField2
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.processNotIBinaryOperator(kValTextField1, kValTextField2, ">=");
         
         return kCondition;
     }
