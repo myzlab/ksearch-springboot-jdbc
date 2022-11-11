@@ -1,11 +1,22 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KAliasedColumn extends KBaseColumnUncastable {
     
     private KAliasedColumn() {
         super();
+    }
+    
+    protected KAliasedColumn(
+        final StringBuilder sb,
+        final List<Object> params,
+        final int operating,
+        final boolean closed
+    ) {
+        super(sb, params, operating, closed);
     }
     
     protected KAliasedColumn(
@@ -30,10 +41,6 @@ public class KAliasedColumn extends KBaseColumnUncastable {
     
     @Override
     protected KAliasedColumn cloneMe() {
-        try {
-            return (KAliasedColumn) super.clone();
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError("An error has occurred while cloning KAliasedColumn object");
-        }
+        return new KAliasedColumn(this.sb, new ArrayList<>(this.params), this.operating, this.closed);
     }
 }

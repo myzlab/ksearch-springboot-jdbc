@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KValNumberField extends KBaseValField implements Cloneable {
@@ -114,11 +115,8 @@ public class KValNumberField extends KBaseValField implements Cloneable {
         return KFunction.mul(this, new KValNumberField(number));
     }
     
+    @Override
     protected KValNumberField cloneMe() {
-        try {
-            return (KValNumberField) super.clone();
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError("An error has occurred while cloning KValNumberField object");
-        }
+        return new KValNumberField(this.sb, new ArrayList<>(this.params), this.operating, this.closed);
     }
 }

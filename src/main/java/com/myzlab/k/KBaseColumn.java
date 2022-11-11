@@ -83,11 +83,5 @@ public abstract class KBaseColumn implements Cloneable {
         return sb.toString();
     }
     
-    protected KBaseColumn cloneMe() {
-        try {
-            return (KBaseColumn) super.clone();
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError("An error has occurred while cloning KBaseColumn object");
-        }
-    }
+    protected abstract KBaseColumn cloneMe();
 }

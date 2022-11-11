@@ -384,6 +384,36 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         return KCondition.neq(this, KFunction.val(value));
     }
     
+    public KCondition ngt(
+        final KColumn kColumn
+    ) {
+        return KCondition.ngt(this, kColumn);
+    }
+    
+    public KCondition ngt(
+        final KValNumberField kValNumberField
+    ) {
+        return KCondition.ngt(this, kValNumberField);
+    }
+    
+    public KCondition ngt(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.ngt(this, kValTextField);
+    }
+    
+    public KCondition ngt(
+        final Number number
+    ) {
+        return KCondition.ngt(this, KFunction.val(number));
+    }
+    
+    public KCondition ngt(
+        final String value
+    ) {
+        return KCondition.ngt(this, KFunction.val(value));
+    }
+    
     public KCondition ngte(
         final KColumn kColumn
     ) {
@@ -412,6 +442,66 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         final String value
     ) {
         return KCondition.ngte(this, KFunction.val(value));
+    }
+    
+    public KCondition nlt(
+        final KColumn kColumn
+    ) {
+        return KCondition.nlt(this, kColumn);
+    }
+    
+    public KCondition nlt(
+        final KValNumberField kValNumberField
+    ) {
+        return KCondition.nlt(this, kValNumberField);
+    }
+    
+    public KCondition nlt(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nlt(this, kValTextField);
+    }
+    
+    public KCondition nlt(
+        final Number number
+    ) {
+        return KCondition.nlt(this, KFunction.val(number));
+    }
+    
+    public KCondition nlt(
+        final String value
+    ) {
+        return KCondition.nlt(this, KFunction.val(value));
+    }
+    
+    public KCondition nlte(
+        final KColumn kColumn
+    ) {
+        return KCondition.nlte(this, kColumn);
+    }
+    
+    public KCondition nlte(
+        final KValNumberField kValNumberField
+    ) {
+        return KCondition.nlte(this, kValNumberField);
+    }
+    
+    public KCondition nlte(
+        final KValTextField kValTextField
+    ) {
+        return KCondition.nlte(this, kValTextField);
+    }
+    
+    public KCondition nlte(
+        final Number number
+    ) {
+        return KCondition.nlte(this, KFunction.val(number));
+    }
+    
+    public KCondition nlte(
+        final String value
+    ) {
+        return KCondition.nlte(this, KFunction.val(value));
     }
     
     public KCondition notEqual(
@@ -444,96 +534,6 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         return KCondition.neq(this, KFunction.val(value));
     }
     
-    public KCondition ngt(
-        final KColumn kColumn
-    ) {
-        return KCondition.ngt(this, kColumn);
-    }
-    
-    public KCondition ngt(
-        final KValNumberField kValNumberField
-    ) {
-        return KCondition.ngt(this, kValNumberField);
-    }
-    
-    public KCondition ngt(
-        final KValTextField kValTextField
-    ) {
-        return KCondition.ngt(this, kValTextField);
-    }
-    
-    public KCondition ngt(
-        final Number number
-    ) {
-        return KCondition.ngt(this, KFunction.val(number));
-    }
-    
-    public KCondition ngt(
-        final String value
-    ) {
-        return KCondition.ngt(this, KFunction.val(value));
-    }
-    
-    public KCondition nlt(
-        final KColumn kColumn
-    ) {
-        return KCondition.nlt(this, kColumn);
-    }
-    
-    public KCondition nlt(
-        final KValNumberField kValNumberField
-    ) {
-        return KCondition.nlt(this, kValNumberField);
-    }
-    
-    public KCondition nlt(
-        final KValTextField kValTextField
-    ) {
-        return KCondition.nlt(this, kValTextField);
-    }
-    
-    public KCondition nlt(
-        final Number number
-    ) {
-        return KCondition.nlt(this, KFunction.val(number));
-    }
-    
-    public KCondition nlt(
-        final String value
-    ) {
-        return KCondition.nlt(this, KFunction.val(value));
-    }
-    
-    public KCondition nlte(
-        final KColumn kColumn
-    ) {
-        return KCondition.nlte(this, kColumn);
-    }
-    
-    public KCondition nlte(
-        final KValNumberField kValNumberField
-    ) {
-        return KCondition.nlte(this, kValNumberField);
-    }
-    
-    public KCondition nlte(
-        final KValTextField kValTextField
-    ) {
-        return KCondition.nlte(this, kValTextField);
-    }
-    
-    public KCondition nlte(
-        final Number number
-    ) {
-        return KCondition.nlte(this, KFunction.val(number));
-    }
-    
-    public KCondition nlte(
-        final String value
-    ) {
-        return KCondition.nlte(this, KFunction.val(value));
-    }
-    
     public KCondition notGreaterThan(
         final KColumn kColumn
     ) {
@@ -652,14 +652,5 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         final String value
     ) {
         return KCondition.nlte(this, KFunction.val(value));
-    }
-    
-    @Override
-    protected KBaseColumnCastable cloneMe() {
-        try {
-            return (KBaseColumnCastable) super.clone();
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError("An error has occurred while cloning KBaseColumnCastable object");
-        }
     }
 }

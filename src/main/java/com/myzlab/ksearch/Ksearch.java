@@ -2,11 +2,7 @@ package com.myzlab.ksearch;
 
 import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
-import static com.myzlab.k.SqlDataType.*;
-import static com.myzlab.k.SqlFormat.*;
-import com.myzlab.k.KInitializer;
 import com.myzlab.k.KTable;
-import static com.myzlab.k.SqlExtractField.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -424,15 +420,16 @@ public class Ksearch {
 //                .where(regexpReplace(age, ".[mN]c.", "M3").eq("A"))
 //                .where(least(age, val(51), val("41"), val(11).add(21), avg(bookId.add(71))).eq("ABC"))
 //                .where(widthBucket(val(9).add(age), bookId, age, bookId).eq("ABC"))
-                .where(name.notLessThanOrEqualTo("Orwell").or(val("A").eq("B")))
-                .and(val("ALICIA").notLessThanOrEqualTo(title))
-                .and(val("MARIA").notLessThanOrEqualTo(val("JUANA")))
-                .and(description.notLessThanOrEqualTo(title))
-                .and(title.notLessThanOrEqualTo(val("ROMEO")))
-                .and(val(70).notLessThanOrEqualTo(pages))
-                .and(val(55).notLessThanOrEqualTo(val(12)))
-                .and(pages.notLessThanOrEqualTo(val(333)))
-                .and(pages.notLessThanOrEqualTo(123))
+                .where(name.notILikeEndWith("Orwell").or(val("A").eq("B")))
+                .and(val("ALIciA").notILikeEndWith(title))
+                .and(val("MARia").notILikeEndWith(concat(val("JuaNita"), val("JuaNota"))))
+                .and(val("MARia").notILikeEndWith(val("JuaNA")))
+                .and(description.notILikeEndWith(title))
+                .and(title.notILikeEndWith(val("ROmeO")))
+//                .and(val(70).iLike(pages))
+//                .and(val(55).ilt(val(12)))
+//                .and(pages.ilt(val(333)))
+//                .and(pages.ilt(123))
             .single();
 //            .select(new KColumn().as())
 //            .from()
