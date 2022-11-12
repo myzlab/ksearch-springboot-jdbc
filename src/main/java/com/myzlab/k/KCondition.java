@@ -8,6 +8,7 @@ public class KCondition {
     public final static int AND_TYPE = 1;
     public final static int OR_TYPE = 2;
     public final static int UNDEFINED_TYPE = 3;
+    public final static int CLOSABLE_TYPE = 4;
     
     protected final StringBuilder sb;
     protected int operator = 0;
@@ -54,13 +55,13 @@ public class KCondition {
         final String operator,
         final int type
     ) {
-        if (this.type != UNDEFINED_TYPE && this.type != type) {
+        if (this.type == CLOSABLE_TYPE || (this.type != UNDEFINED_TYPE && this.type != type)) {
             this.sb.insert(0, "(").append(")");
         }
         
         this.sb.append(" ").append(operator).append(" ");
         
-        final boolean closeNext = kCondition.type != UNDEFINED_TYPE && kCondition.type != type;
+        final boolean closeNext = this.type == CLOSABLE_TYPE || (kCondition.type != UNDEFINED_TYPE && kCondition.type != type);
         
         if (closeNext) {
             this.sb.append("(");
@@ -77,6 +78,55 @@ public class KCondition {
         this.type = type;
         
         return this;
+    }
+    
+    public static KCondition bt(
+        final KBaseColumn kBaseColumnValue,
+        final KBaseColumn kBaseColumnLow,
+        final KBaseColumn kBaseColumnHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        kCondition.type = CLOSABLE_TYPE;
+        
+        kCondition.params.addAll(kBaseColumnValue.params);
+        kCondition.params.addAll(kBaseColumnLow.params);
+        kCondition.params.addAll(kBaseColumnHigh.params);
+        
+        if (!kBaseColumnValue.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (!kBaseColumnValue.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" BETWEEN ");
+        
+        if (!kBaseColumnLow.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnLow.sb);
+        
+        if (!kBaseColumnLow.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" AND ");
+        
+        if (!kBaseColumnHigh.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnHigh.sb);
+        
+        if (!kBaseColumnHigh.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        return kCondition;
     }
     
     public static KCondition eq(
@@ -144,6 +194,118 @@ public class KCondition {
         final KCondition kCondition
     ) {
         return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
+    }
+    
+    public static KCondition ibt(
+        final KBaseColumn kBaseColumnValue,
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        kCondition.type = CLOSABLE_TYPE;
+        
+        for (final Object param : kBaseColumnValue.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kColumnLow.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kColumnHigh.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append("(");
+            }
+        } else {
+            kCondition.sb.append("LOWER(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append(")");
+            }
+        } else {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb
+            .append(" BETWEEN ")
+            .append("LOWER(").append(kColumnLow.sb).append(")")
+            .append(" AND ")
+            .append("LOWER(").append(kColumnHigh.sb).append(")");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ibt(
+        final KBaseColumn kBaseColumnValue,
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        kCondition.type = CLOSABLE_TYPE;
+        
+        for (final Object param : kBaseColumnValue.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kValTextFieldLow.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kValTextFieldHigh.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append("(");
+            }
+        } else {
+            kCondition.sb.append("LOWER(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append(")");
+            }
+        } else {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" BETWEEN ");
+        
+        if (!kValTextFieldLow.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kValTextFieldLow.sb);
+        
+        if (!kValTextFieldLow.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" AND ");
+        
+        if (!kValTextFieldHigh.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kValTextFieldHigh.sb);
+        
+        if (!kValTextFieldHigh.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        return kCondition;
     }
     
     public static KCondition ieq(
@@ -366,7 +528,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLike(
+    public static KCondition ilk(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -377,7 +539,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLike(
+    public static KCondition ilk(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -388,7 +550,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLike(
+    public static KCondition ilk(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -399,7 +561,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLike(
+    public static KCondition ilk(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -410,7 +572,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeAny(
+    public static KCondition ilka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -423,7 +585,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeAny(
+    public static KCondition ilka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -441,7 +603,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeAny(
+    public static KCondition ilka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -454,7 +616,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeAny(
+    public static KCondition ilka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -596,7 +758,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition like(
+    public static KCondition lk(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -607,7 +769,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeAny(
+    public static KCondition lka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -620,7 +782,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeAny(
+    public static KCondition lka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -638,7 +800,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeAny(
+    public static KCondition lka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -651,7 +813,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeAny(
+    public static KCondition lka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -844,6 +1006,126 @@ public class KCondition {
         final KCondition kCondition = new KCondition();
         
         kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "<=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nibt(
+        final KBaseColumn kBaseColumnValue,
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        kCondition.type = CLOSABLE_TYPE;
+        
+        for (final Object param : kBaseColumnValue.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kColumnLow.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kColumnHigh.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        kCondition.sb.append("NOT (");
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append("(");
+            }
+        } else {
+            kCondition.sb.append("LOWER(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append(")");
+            }
+        } else {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb
+            .append(" BETWEEN ")
+            .append("LOWER(").append(kColumnLow.sb).append(")")
+            .append(" AND ")
+            .append("LOWER(").append(kColumnHigh.sb).append(")");
+        
+        kCondition.sb.append(")");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nibt(
+        final KBaseColumn kBaseColumnValue,
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        kCondition.type = CLOSABLE_TYPE;
+        
+        for (final Object param : kBaseColumnValue.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kValTextFieldLow.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        for (final Object param : kValTextFieldHigh.params) {
+            kCondition.params.add(param instanceof String ? param.toString().toLowerCase() : param);
+        }
+        
+        kCondition.sb.append("NOT (");
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append("(");
+            }
+        } else {
+            kCondition.sb.append("LOWER(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (kBaseColumnValue instanceof KValTextField) {
+            if (!kBaseColumnValue.closed) {
+                kCondition.sb.append(")");
+            }
+        } else {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" BETWEEN ");
+        
+        if (!kValTextFieldLow.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kValTextFieldLow.sb);
+        
+        if (!kValTextFieldLow.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" AND ");
+        
+        if (!kValTextFieldHigh.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kValTextFieldHigh.sb);
+        
+        if (!kValTextFieldHigh.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(")");
         
         return kCondition;
     }
@@ -1068,7 +1350,59 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILike(
+    public static KCondition nbt(
+        final KBaseColumn kBaseColumnValue,
+        final KBaseColumn kBaseColumnLow,
+        final KBaseColumn kBaseColumnHigh
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumnValue.params);
+        kCondition.params.addAll(kBaseColumnLow.params);
+        kCondition.params.addAll(kBaseColumnHigh.params);
+        
+        kCondition.sb.append("NOT (");
+        
+        if (!kBaseColumnValue.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnValue.sb);
+        
+        if (!kBaseColumnValue.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" BETWEEN ");
+        
+        if (!kBaseColumnLow.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnLow.sb);
+        
+        if (!kBaseColumnLow.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" AND ");
+        
+        if (!kBaseColumnHigh.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumnHigh.sb);
+        
+        if (!kBaseColumnHigh.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(")");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nilk(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1079,7 +1413,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILike(
+    public static KCondition nilk(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1090,7 +1424,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILike(
+    public static KCondition nilk(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1101,7 +1435,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILike(
+    public static KCondition nilk(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1298,7 +1632,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLike(
+    public static KCondition nlk(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1309,7 +1643,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeAny(
+    public static KCondition nlka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1322,7 +1656,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeAny(
+    public static KCondition nlka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1340,7 +1674,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeAny(
+    public static KCondition nlka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1353,7 +1687,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeAny(
+    public static KCondition nlka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {

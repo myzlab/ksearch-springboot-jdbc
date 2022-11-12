@@ -48,6 +48,76 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         return KFunction.as(this, alias);
     }
     
+    public KCondition between(
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        return KCondition.bt(this, kColumnLow, kColumnHigh);
+    }
+    
+    public KCondition between(
+        final KValNumberField kValNumberFieldLow,
+        final KValNumberField kValNumberFieldHigh
+    ) {
+        return KCondition.bt(this, kValNumberFieldLow, kValNumberFieldHigh);
+    }
+    
+    public KCondition between(
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        return KCondition.bt(this, kValTextFieldLow, kValTextFieldHigh);
+    }
+    
+    public KCondition between(
+        final Number numberLow,
+        final Number numberHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(numberLow), KFunction.val(numberHigh));
+    }
+    
+    public KCondition between(
+        final String valueLow,
+        final String valueHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
+    }
+    
+    public KCondition bt(
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        return KCondition.bt(this, kColumnLow, kColumnHigh);
+    }
+    
+    public KCondition bt(
+        final KValNumberField kValNumberFieldLow,
+        final KValNumberField kValNumberFieldHigh
+    ) {
+        return KCondition.bt(this, kValNumberFieldLow, kValNumberFieldHigh);
+    }
+    
+    public KCondition bt(
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        return KCondition.bt(this, kValTextFieldLow, kValTextFieldHigh);
+    }
+    
+    public KCondition bt(
+        final Number numberLow,
+        final Number numberHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(numberLow), KFunction.val(numberHigh));
+    }
+    
+    public KCondition bt(
+        final String valueLow,
+        final String valueHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
+    }
+    
     public KColumn cast(
         final KDataType kDataType    
     ) {
@@ -354,6 +424,41 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         return KCondition.lte(this, KFunction.val(value));
     }
     
+    public KCondition nbt(
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        return KCondition.nbt(this, kColumnLow, kColumnHigh);
+    }
+    
+    public KCondition nbt(
+        final KValNumberField kValNumberFieldLow,
+        final KValNumberField kValNumberFieldHigh
+    ) {
+        return KCondition.nbt(this, kValNumberFieldLow, kValNumberFieldHigh);
+    }
+    
+    public KCondition nbt(
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        return KCondition.nbt(this, kValTextFieldLow, kValTextFieldHigh);
+    }
+    
+    public KCondition nbt(
+        final Number numberLow,
+        final Number numberHigh
+    ) {
+        return KCondition.nbt(this, KFunction.val(numberLow), KFunction.val(numberHigh));
+    }
+    
+    public KCondition nbt(
+        final String valueLow,
+        final String valueHigh
+    ) {
+        return KCondition.nbt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
+    }
+    
     public KCondition neq(
         final KColumn kColumn
     ) {
@@ -502,6 +607,41 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         final String value
     ) {
         return KCondition.nlte(this, KFunction.val(value));
+    }
+    
+    public KCondition notBetween(
+        final KColumn kColumnLow,
+        final KColumn kColumnHigh
+    ) {
+        return KCondition.nbt(this, kColumnLow, kColumnHigh);
+    }
+    
+    public KCondition notBetween(
+        final KValNumberField kValNumberFieldLow,
+        final KValNumberField kValNumberFieldHigh
+    ) {
+        return KCondition.nbt(this, kValNumberFieldLow, kValNumberFieldHigh);
+    }
+    
+    public KCondition notBetween(
+        final KValTextField kValTextFieldLow,
+        final KValTextField kValTextFieldHigh
+    ) {
+        return KCondition.nbt(this, kValTextFieldLow, kValTextFieldHigh);
+    }
+    
+    public KCondition notBetween(
+        final Number numberLow,
+        final Number numberHigh
+    ) {
+        return KCondition.nbt(this, KFunction.val(numberLow), KFunction.val(numberHigh));
+    }
+    
+    public KCondition notBetween(
+        final String valueLow,
+        final String valueHigh
+    ) {
+        return KCondition.nbt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
     }
     
     public KCondition notEqual(

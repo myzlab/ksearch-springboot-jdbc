@@ -1,6 +1,5 @@
 package com.myzlab.k;
 
-import static com.myzlab.k.KCondition.UNDEFINED_TYPE;
 import com.myzlab.k.helper.KExceptionHelper;
 
 public class KFunction {
