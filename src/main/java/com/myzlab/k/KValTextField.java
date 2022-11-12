@@ -287,42 +287,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition iLikeEndWith(
         final KColumn kColumn
     ) {
-        return KCondition.iLikeEndWith(this, kColumn);
+        return KCondition.ilkew(this, kColumn);
     }
     
     @Override
     public KCondition iLikeEndWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.iLikeEndWith(this, kValTextField);
+        return KCondition.ilkew(this, kValTextField);
     }
     
     @Override
     public KCondition iLikeEndWith(
         final String value
     ) {
-        return KCondition.iLikeEndWith(this, KFunction.val(value));
+        return KCondition.ilkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition iLikeStartWith(
         final KColumn kColumn
     ) {
-        return KCondition.iLikeStartWith(this, kColumn);
+        return KCondition.ilksw(this, kColumn);
     }
     
     @Override
     public KCondition iLikeStartWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.iLikeStartWith(this, kValTextField);
+        return KCondition.ilksw(this, kValTextField);
     }
     
     @Override
     public KCondition iLikeStartWith(
         final String value
     ) {
-        return KCondition.iLikeStartWith(this, KFunction.val(value));
+        return KCondition.ilksw(this, KFunction.val(value));
     }
     
     @Override
@@ -371,42 +371,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition ilkew(
         final KColumn kColumn
     ) {
-        return KCondition.iLikeEndWith(this, kColumn);
+        return KCondition.ilkew(this, kColumn);
     }
     
     @Override
     public KCondition ilkew(
         final KValTextField kValTextField
     ) {
-        return KCondition.iLikeEndWith(this, kValTextField);
+        return KCondition.ilkew(this, kValTextField);
     }
     
     @Override
     public KCondition ilkew(
         final String value
     ) {
-        return KCondition.iLikeEndWith(this, KFunction.val(value));
+        return KCondition.ilkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition ilksw(
         final KColumn kColumn
     ) {
-        return KCondition.iLikeStartWith(this, kColumn);
+        return KCondition.ilksw(this, kColumn);
     }
     
     @Override
     public KCondition ilksw(
         final KValTextField kValTextField
     ) {
-        return KCondition.iLikeStartWith(this, kValTextField);
+        return KCondition.ilksw(this, kValTextField);
     }
     
     @Override
     public KCondition ilksw(
         final String value
     ) {
-        return KCondition.iLikeStartWith(this, KFunction.val(value));
+        return KCondition.ilksw(this, KFunction.val(value));
     }
     
     @Override
@@ -497,42 +497,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition likeEndWith(
         final KColumn kColumn
     ) {
-        return KCondition.likeEndWith(this, kColumn);
+        return KCondition.lkew(this, kColumn);
     }
     
     @Override
     public KCondition likeEndWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.likeEndWith(this, kValTextField);
+        return KCondition.lkew(this, kValTextField);
     }
     
     @Override
     public KCondition likeEndWith(
         final String value
     ) {
-        return KCondition.likeEndWith(this, KFunction.val(value));
+        return KCondition.lkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition likeStartWith(
         final KColumn kColumn
     ) {
-        return KCondition.likeStartWith(this, kColumn);
+        return KCondition.lksw(this, kColumn);
     }
     
     @Override
     public KCondition likeStartWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.likeStartWith(this, kValTextField);
+        return KCondition.lksw(this, kValTextField);
     }
     
     @Override
     public KCondition likeStartWith(
         final String value
     ) {
-        return KCondition.likeStartWith(this, KFunction.val(value));
+        return KCondition.lksw(this, KFunction.val(value));
     }
     
     @Override
@@ -581,42 +581,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition lkew(
         final KColumn kColumn
     ) {
-        return KCondition.likeEndWith(this, kColumn);
+        return KCondition.lkew(this, kColumn);
     }
     
     @Override
     public KCondition lkew(
         final KValTextField kValTextField
     ) {
-        return KCondition.likeEndWith(this, kValTextField);
+        return KCondition.lkew(this, kValTextField);
     }
     
     @Override
     public KCondition lkew(
         final String value
     ) {
-        return KCondition.likeEndWith(this, KFunction.val(value));
+        return KCondition.lkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition lksw(
         final KColumn kColumn
     ) {
-        return KCondition.likeStartWith(this, kColumn);
+        return KCondition.lksw(this, kColumn);
     }
     
     @Override
     public KCondition lksw(
         final KValTextField kValTextField
     ) {
-        return KCondition.likeStartWith(this, kValTextField);
+        return KCondition.lksw(this, kValTextField);
     }
     
     @Override
     public KCondition lksw(
         final String value
     ) {
-        return KCondition.likeStartWith(this, KFunction.val(value));
+        return KCondition.lksw(this, KFunction.val(value));
     }
     
     @Override
@@ -644,63 +644,63 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition nilka(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeAny(this, kColumn);
+        return KCondition.nilka(this, kColumn);
     }
     
     @Override
     public KCondition nilka(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeAny(this, kValTextField);
+        return KCondition.nilka(this, kValTextField);
     }
     
     @Override
     public KCondition nilka(
         final String value
     ) {
-        return KCondition.notILikeAny(this, KFunction.val(value));
+        return KCondition.nilka(this, KFunction.val(value));
     }
     
     @Override
     public KCondition nilkew(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeEndWith(this, kColumn);
+        return KCondition.nilkew(this, kColumn);
     }
     
     @Override
     public KCondition nilkew(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeEndWith(this, kValTextField);
+        return KCondition.nilkew(this, kValTextField);
     }
     
     @Override
     public KCondition nilkew(
         final String value
     ) {
-        return KCondition.notILikeEndWith(this, KFunction.val(value));
+        return KCondition.nilkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition nilksw(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeStartWith(this, kColumn);
+        return KCondition.nilksw(this, kColumn);
     }
     
     @Override
     public KCondition nilksw(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeStartWith(this, kValTextField);
+        return KCondition.nilksw(this, kValTextField);
     }
     
     @Override
     public KCondition nilksw(
         final String value
     ) {
-        return KCondition.notILikeStartWith(this, KFunction.val(value));
+        return KCondition.nilksw(this, KFunction.val(value));
     }
     
     @Override
@@ -986,63 +986,63 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition notILikeAny(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeAny(this, kColumn);
+        return KCondition.nilka(this, kColumn);
     }
     
     @Override
     public KCondition notILikeAny(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeAny(this, kValTextField);
+        return KCondition.nilka(this, kValTextField);
     }
     
     @Override
     public KCondition notILikeAny(
         final String value
     ) {
-        return KCondition.notILikeAny(this, KFunction.val(value));
+        return KCondition.nilka(this, KFunction.val(value));
     }
     
     @Override
     public KCondition notILikeEndWith(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeEndWith(this, kColumn);
+        return KCondition.nilkew(this, kColumn);
     }
     
     @Override
     public KCondition notILikeEndWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeEndWith(this, kValTextField);
+        return KCondition.nilkew(this, kValTextField);
     }
     
     @Override
     public KCondition notILikeEndWith(
         final String value
     ) {
-        return KCondition.notILikeEndWith(this, KFunction.val(value));
+        return KCondition.nilkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition notILikeStartWith(
         final KColumn kColumn
     ) {
-        return KCondition.notILikeStartWith(this, kColumn);
+        return KCondition.nilksw(this, kColumn);
     }
     
     @Override
     public KCondition notILikeStartWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.notILikeStartWith(this, kValTextField);
+        return KCondition.nilksw(this, kValTextField);
     }
     
     @Override
     public KCondition notILikeStartWith(
         final String value
     ) {
-        return KCondition.notILikeStartWith(this, KFunction.val(value));
+        return KCondition.nilksw(this, KFunction.val(value));
     }
     
     @Override
@@ -1091,42 +1091,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition nlkew(
         final KColumn kColumn
     ) {
-        return KCondition.notLikeEndWith(this, kColumn);
+        return KCondition.nlkew(this, kColumn);
     }
     
     @Override
     public KCondition nlkew(
         final KValTextField kValTextField
     ) {
-        return KCondition.notLikeEndWith(this, kValTextField);
+        return KCondition.nlkew(this, kValTextField);
     }
     
     @Override
     public KCondition nlkew(
         final String value
     ) {
-        return KCondition.notLikeEndWith(this, KFunction.val(value));
+        return KCondition.nlkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition nlksw(
         final KColumn kColumn
     ) {
-        return KCondition.notLikeStartWith(this, kColumn);
+        return KCondition.nlksw(this, kColumn);
     }
     
     @Override
     public KCondition nlksw(
         final KValTextField kValTextField
     ) {
-        return KCondition.notLikeStartWith(this, kValTextField);
+        return KCondition.nlksw(this, kValTextField);
     }
     
     @Override
     public KCondition nlksw(
         final String value
     ) {
-        return KCondition.notLikeStartWith(this, KFunction.val(value));
+        return KCondition.nlksw(this, KFunction.val(value));
     }
     
     @Override
@@ -1175,42 +1175,42 @@ public class KValTextField extends KBaseValField implements Cloneable, TextMetho
     public KCondition notLikeEndWith(
         final KColumn kColumn
     ) {
-        return KCondition.notLikeEndWith(this, kColumn);
+        return KCondition.nlkew(this, kColumn);
     }
     
     @Override
     public KCondition notLikeEndWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.notLikeEndWith(this, kValTextField);
+        return KCondition.nlkew(this, kValTextField);
     }
     
     @Override
     public KCondition notLikeEndWith(
         final String value
     ) {
-        return KCondition.notLikeEndWith(this, KFunction.val(value));
+        return KCondition.nlkew(this, KFunction.val(value));
     }
     
     @Override
     public KCondition notLikeStartWith(
         final KColumn kColumn
     ) {
-        return KCondition.notLikeStartWith(this, kColumn);
+        return KCondition.nlksw(this, kColumn);
     }
     
     @Override
     public KCondition notLikeStartWith(
         final KValTextField kValTextField
     ) {
-        return KCondition.notLikeStartWith(this, kValTextField);
+        return KCondition.nlksw(this, kValTextField);
     }
     
     @Override
     public KCondition notLikeStartWith(
         final String value
     ) {
-        return KCondition.notLikeStartWith(this, KFunction.val(value));
+        return KCondition.nlksw(this, KFunction.val(value));
     }
     
     @Override

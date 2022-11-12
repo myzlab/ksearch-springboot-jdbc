@@ -1,6 +1,8 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneable {
@@ -302,6 +304,50 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         final String value
     ) {
         return KCondition.gte(this, KFunction.val(value));
+    }
+    
+    public KCondition in(
+        final Object[] values
+    ) {
+        return KCondition.in(this, Arrays.asList(values));
+    }
+    
+    public KCondition in(
+        final Collection values
+    ) {
+        return KCondition.in(this, values);
+    }
+    
+    public KCondition isFalse() {
+        return KCondition.isFalse(this);
+    }
+    
+    public KCondition isNotFalse() {
+        return KCondition.isNotFalse(this);
+    }
+    
+    public KCondition isNotNull() {
+        return KCondition.isNotNull(this);
+    }
+    
+    public KCondition isNull() {
+        return KCondition.isNull(this);
+    }
+    
+    public KCondition isNotTrue() {
+        return KCondition.isNotTrue(this);
+    }
+    
+    public KCondition isTrue() {
+        return KCondition.isTrue(this);
+    }
+    
+    public KCondition isUnknown() {
+        return KCondition.isUnknown(this);
+    }
+    
+    public KCondition isNotUnknown() {
+        return KCondition.isNotUnknown(this);
     }
     
     public KCondition lessThan(
@@ -732,6 +778,18 @@ public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneab
         final String value
     ) {
         return KCondition.ngte(this, KFunction.val(value));
+    }
+    
+    public KCondition notIn(
+        final Object[] values
+    ) {
+        return KCondition.notIn(this, Arrays.asList(values));
+    }
+    
+    public KCondition notIn(
+        final Collection values
+    ) {
+        return KCondition.notIn(this, values);
     }
     
     public KCondition notLessThan(

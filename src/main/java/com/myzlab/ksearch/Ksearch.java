@@ -3,6 +3,8 @@ package com.myzlab.ksearch;
 import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
 import com.myzlab.k.KTable;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,6 +26,17 @@ public class Ksearch {
         
         final Number nullNumber = null;
         final String nullString = null;
+        final List<Long> nullList = null;
+        
+        final List<Long> ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
+        ids.add(3L);
+        ids.add(4L);
+        
+        final List<Long> emptyIds = new ArrayList<>();
+        
+        
         
         new KTest()
             .select(
@@ -422,19 +435,21 @@ public class Ksearch {
 //                .where(widthBucket(val(9).add(age), bookId, age, bookId).eq("ABC"))
                 
 //                .where(name.eq("Orwell").or(val("A").eq("B")))
-                .where(val("ALIciA").ilka(title))
-                .and(val("MARia").ilka(concat(val("JuaNita"), val("JuaNota"))))
-                .and(val("MARia").ilka(val("JuaNA")))
-                .and(val("MARia").ilka("Holis"))
-                .and(description.ilka(title))
-                .and(title.ilka(val("ROmeO")))
-                .and(title.ilka("Kul"))
+//                .where(val("ALIciA").eq(title))
+//                .and(val("MARia").nlkew(concat(val("JuaNita"), val("JuaNota"))))
+//                .and(val("MARia").nlkew(val("JuaNA")))
+//                .and(val("MARia").nlkew("Holis"))
+//                .and(description.nlkew(title))
+//                .and(title.nlkew(val("ROmeO")))
+//                .and(title.nlkew("Kul"))
                 
 //                .and(val(70).iLike(pages))
 //                .and(val(55).ilt(val(12)))
-//                .and(pages.ilt(val(333)))
+//                .and(pages.ilt(val(333)))True
 //                .and(pages.ilt(123))
                 
+                .where(title.isUnknown().and(concat(pages, age, val(" "), val("HHH")).isNotUnknown()))
+//                .or(pages.bt("A", "B"))
 //                .where(pages.ibt(1, 5))
 //                .where(concat(description, age, val("XXX")).notIBetween(bookId, concat(title, description, val("OPA"))))
 //                .and(pages.notIBetween(bookId, age))

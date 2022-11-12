@@ -1,6 +1,8 @@
 package com.myzlab.k;
 
+import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class KCondition {
@@ -634,7 +636,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeEndWith(
+    public static KCondition ilkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -647,7 +649,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeEndWith(
+    public static KCondition ilkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -665,7 +667,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeEndWith(
+    public static KCondition ilkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -678,7 +680,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeEndWith(
+    public static KCondition ilkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -696,7 +698,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeStartWith(
+    public static KCondition ilksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -709,7 +711,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeStartWith(
+    public static KCondition ilksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -727,7 +729,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeStartWith(
+    public static KCondition ilksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -740,7 +742,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition iLikeStartWith(
+    public static KCondition ilksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -754,6 +756,216 @@ public class KCondition {
         }
         
         kCondition.processIBinaryOperator(kValTextField1, newValTextField2, "LIKE");
+        
+        return kCondition;
+    }
+    
+    public static KCondition in(
+        final KBaseColumn kBaseColumn,
+        final Collection values
+    ) {
+        if (values == null) {
+            throw KExceptionHelper.internalServerError("The 'values' param cannot be null");
+        }
+        
+        final KCondition kCondition = new KCondition();
+        
+        if (values.isEmpty()) {
+            kCondition.sb.append("1 = 0");
+            
+            return kCondition;
+        }
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        kCondition.params.addAll(values);
+        
+        kCondition.sb.append(kBaseColumn.sb).append(" IN (");
+        
+        for (int i = 0; i < values.size(); i++) {
+            if (i > 0) {
+                kCondition.sb.append(", ");
+            }
+            
+            kCondition.sb.append("?");
+        }
+        
+        kCondition.sb.append(")");
+
+        return kCondition;
+    }
+    
+    public static KCondition isFalse(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS FALSE");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isNotFalse(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS NOT FALSE");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isNotNull(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS NOT NULL");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isNull(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS NULL");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isNotTrue(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS NOT TRUE");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isTrue(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS TRUE");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isUnknown(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS UNKNOWN");
+        
+        return kCondition;
+    }
+    
+    public static KCondition isNotUnknown(
+        final KBaseColumn kBaseColumn
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append("(");
+        }
+        
+        kCondition.sb.append(kBaseColumn.sb);
+        
+        if (!kBaseColumn.closed) {
+            kCondition.sb.append(")");
+        }
+        
+        kCondition.sb.append(" IS NOT UNKNOWN");
         
         return kCondition;
     }
@@ -831,7 +1043,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeEndWith(
+    public static KCondition lkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -844,7 +1056,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeEndWith(
+    public static KCondition lkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -862,7 +1074,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeEndWith(
+    public static KCondition lkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -875,7 +1087,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeEndWith(
+    public static KCondition lkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -893,7 +1105,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeStartWith(
+    public static KCondition lksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -906,7 +1118,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeStartWith(
+    public static KCondition lksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -924,7 +1136,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeStartWith(
+    public static KCondition lksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -937,7 +1149,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition likeStartWith(
+    public static KCondition lksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1446,7 +1658,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeAny(
+    public static KCondition nilka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1459,7 +1671,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeAny(
+    public static KCondition nilka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1477,7 +1689,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeAny(
+    public static KCondition nilka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1490,7 +1702,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeAny(
+    public static KCondition nilka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1508,7 +1720,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeEndWith(
+    public static KCondition nilkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1521,7 +1733,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeEndWith(
+    public static KCondition nilkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1539,7 +1751,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeEndWith(
+    public static KCondition nilkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1552,7 +1764,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeEndWith(
+    public static KCondition nilkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1570,7 +1782,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeStartWith(
+    public static KCondition nilksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1583,7 +1795,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeStartWith(
+    public static KCondition nilksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1601,7 +1813,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeStartWith(
+    public static KCondition nilksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1614,7 +1826,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notILikeStartWith(
+    public static KCondition nilksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1705,7 +1917,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeEndWith(
+    public static KCondition nlkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1718,7 +1930,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeEndWith(
+    public static KCondition nlkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1736,7 +1948,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeEndWith(
+    public static KCondition nlkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1749,7 +1961,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeEndWith(
+    public static KCondition nlkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1767,7 +1979,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeStartWith(
+    public static KCondition nlksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1780,7 +1992,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeStartWith(
+    public static KCondition nlksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1798,7 +2010,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeStartWith(
+    public static KCondition nlksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1811,7 +2023,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition notLikeStartWith(
+    public static KCondition nlksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1826,6 +2038,40 @@ public class KCondition {
         
         kCondition.processNotBinaryOperator(kValTextField1, newValTextField2, "LIKE");
         
+        return kCondition;
+    }
+    
+    public static KCondition notIn(
+        final KBaseColumn kBaseColumn,
+        final Collection values
+    ) {
+        if (values == null) {
+            throw KExceptionHelper.internalServerError("The 'values' param cannot be null");
+        }
+        
+        final KCondition kCondition = new KCondition();
+        
+        if (values.isEmpty()) {
+            kCondition.sb.append("1 = 1");
+            
+            return kCondition;
+        }
+        
+        kCondition.params.addAll(kBaseColumn.params);
+        kCondition.params.addAll(values);
+        
+        kCondition.sb.append(kBaseColumn.sb).append(" NOT IN (");
+        
+        for (int i = 0; i < values.size(); i++) {
+            if (i > 0) {
+                kCondition.sb.append(", ");
+            }
+            
+            kCondition.sb.append("?");
+        }
+        
+        kCondition.sb.append(")");
+
         return kCondition;
     }
     
