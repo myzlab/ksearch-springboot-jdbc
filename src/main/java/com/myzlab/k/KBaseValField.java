@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 import java.util.List;
 
-public abstract class KBaseValField extends KBaseColumnCastable implements Cloneable {
+public abstract class KBaseValField extends KBaseColumnCastable {
     
     protected KBaseValField() {
         super();

@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 import java.util.List;
 
-public abstract class KBaseColumnUncastable extends KBaseColumn implements Cloneable {
+public abstract class KBaseColumnUncastable extends KBaseColumn {
     
     protected KBaseColumnUncastable() {
         super();

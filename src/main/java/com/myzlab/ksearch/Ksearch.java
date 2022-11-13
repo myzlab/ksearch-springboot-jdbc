@@ -2,7 +2,12 @@ package com.myzlab.ksearch;
 
 import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
+import static com.myzlab.k.SqlDataType.*;
 import com.myzlab.k.KTable;
+import com.myzlab.k.KWindowDefinitionNamed;
+import com.myzlab.k.KWindowDefinitionOrdered;
+import com.myzlab.k.KWindowDefinitionPartitioned;
+import com.myzlab.k.KWindowDefinitionUnnamed;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -36,13 +41,36 @@ public class Ksearch {
         
         final List<Long> emptyIds = new ArrayList<>();
         
+        final KWindowDefinitionOrdered wdo1 = wd().name("w1").partitionBy(title).orderBy(age.asc());
+        final KWindowDefinitionOrdered wdo2 = wd("w2").partitionBy(description).orderBy(bookId.desc());
+        final KWindowDefinitionOrdered wdo3 = wd().name("w3").orderBy(pages.asc());
+        final KWindowDefinitionOrdered wdo4 = wd().partitionBy(age).orderBy(data.desc());
+        final KWindowDefinitionOrdered wdo5 = wd("w5").orderBy(data.desc());
+        final KWindowDefinitionOrdered wdo6 = wd().orderBy(data);
+        final KWindowDefinitionNamed wdo7 = wd("w7");
+        final KWindowDefinitionUnnamed wdo8 = wd();
+        final KWindowDefinitionPartitioned wdo9 = wd("w9").partitionBy(title);
+        final KWindowDefinitionPartitioned wdo10 = wd().partitionBy(title);
         
+//        System.out.println(wdo1.sb.toString());
+//        System.out.println(wdo2.sb.toString());
+//        System.out.println(wdo3.sb.toString());
+//        System.out.println(wdo4.sb.toString());
         
         new KTest()
             .select(
-                avg(pages)
+//                title.over(wdo1),
+//                title.over(wdo2),
+//                title.over(wdo3),
+//                title.over(wdo4),
+//                title.over(wdo5),
+//                title.over(wdo6),
+//                title.over(wdo7),
+//                title.over(wdo8),
+//                title.over(wdo9),
+//                title.over(wdo10)
 //                avg(val(881).add(val(3))),
-//                avg(561),
+                avg(561)
 //                max(pages),
 //                max(val(881).add(val(2))),
 //                max(561)
@@ -448,7 +476,7 @@ public class Ksearch {
 //                .and(pages.ilt(val(333)))True
 //                .and(pages.ilt(123))
                 
-                .where(title.isUnknown().and(concat(pages, age, val(" "), val("HHH")).isNotUnknown()))
+//                .where(title.isUnknown().and(concat(pages, age, val(" "), val("HHH")).isNotUnknown()))
 //                .or(pages.bt("A", "B"))
 //                .where(pages.ibt(1, 5))
 //                .where(concat(description, age, val("XXX")).notIBetween(bookId, concat(title, description, val("OPA"))))
@@ -469,6 +497,16 @@ public class Ksearch {
 //                .and(val(995).ibt(val(2), val(8)))
 //                .and(val(995).ibt(val("C"), val("D")))
                 
+                
+//                .from(book)
+//                .where(pages.gt(2))
+//                .groupBy(bookId, val(1))
+//                .having(sum(pages).gt(999))
+//                .window(wdo1, wdo2, wdo3)
+//                .window(wdo5, wdo7)
+//                .window(wdo9)
+                
+                .orderBy(val(1))
             .single();
 //            .select(new KColumn().as())
 //            .from()

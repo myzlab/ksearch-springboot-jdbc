@@ -17,7 +17,7 @@ public class KCondition {
     protected List<Object> params;
     protected int type = UNDEFINED_TYPE;
     
-    private KCondition(
+    protected KCondition(
     ) {
         super();
         

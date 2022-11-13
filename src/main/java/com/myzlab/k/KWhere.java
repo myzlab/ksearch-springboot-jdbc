@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.helper.KExceptionHelper;
 
 public class KWhere extends KQuery {
@@ -24,17 +25,10 @@ public class KWhere extends KQuery {
     }
     
     public static KWhere getInstance(
-        final KSelect kSelect,
+        final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        return new KWhere(kSelect.kQueryData, kCondition);
-    }
-
-    public static KWhere getInstance(
-        final KFrom kFrom,
-        final KCondition kCondition
-    ) {
-        return new KWhere(kFrom.kQueryData, kCondition);
+        return new KWhere(kQueryData, kCondition);
     }
     
     public KWhere andNot(
@@ -69,39 +63,63 @@ public class KWhere extends KQuery {
         return this;
     }
     
-    public KGroupBy groupBy() {
-        return new KGroupBy();
+    public KGroupBy groupBy(
+        final KBaseColumnCastable... KBaseColumnCastables
+    ) {
+        this.buildWhere();
+        
+        return KGroupBy.getInstance(this.kQueryData, KBaseColumnCastables);
     }
     
-    public KWindow window() {
-        return new KWindow();
+    public KWindow window(
+        final KWindowDefinition... kWindowDefinitions
+    ) {
+        this.buildWhere();
+        
+        return KWindow.getInstance(kQueryData, kWindowDefinitions);
     }
     
     public KUnion union() {
+        this.buildWhere();
+        
         return new KUnion();
     }
     
     public KIntersect intersect() {
+        this.buildWhere();
+        
         return new KIntersect();
     }
     
     public KExcept except() {
+        this.buildWhere();
+        
         return new KExcept();
     }
     
-    public KOrderBy orderBy() {
-        return new KOrderBy();
+    public KOrderBy orderBy(
+        final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
+    ) {
+        this.buildWhere();
+        
+        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit() {
+        this.buildWhere();
+        
         return new KLimit();
     }
     
     public KOffset offset() {
+        this.buildWhere();
+        
         return new KOffset();
     }
     
     public KFetch fetch() {
+        this.buildWhere();
+        
         return new KFetch();
     }
     
@@ -135,6 +153,4 @@ public class KWhere extends KQuery {
         
         super.single();
     }
-    
-    
 }

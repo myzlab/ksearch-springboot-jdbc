@@ -1,10 +1,10 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValNumberField extends KBaseValField implements Cloneable {
+public class KValNumberField extends KBaseValField implements KColumnAllowedToOrderBy {
     
     protected KValNumberField() {
         super();
@@ -115,8 +115,21 @@ public class KValNumberField extends KBaseValField implements Cloneable {
         return KFunction.mul(this, new KValNumberField(number));
     }
     
+    public KColumnOrdered asc() {
+        return new KColumnOrdered(sb, params, operating, closed, 1);
+    }
+    
+    public KColumnOrdered desc() {
+        return new KColumnOrdered(sb, params, operating, closed, -1);
+    }
+    
     @Override
     protected KValNumberField cloneMe() {
         return new KValNumberField(this.sb, new ArrayList<>(this.params), this.operating, this.closed);
+    }
+    
+    @Override
+    public String getSqlToOrderBy() {
+        return KUtils.reverseParams(this);
     }
 }

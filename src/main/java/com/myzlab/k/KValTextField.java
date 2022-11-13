@@ -1,10 +1,9 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValTextField extends KBaseValField implements Cloneable, TextMethods {
+public class KValTextField extends KBaseValField implements TextMethods {
     
     protected KValTextField() {
         super();

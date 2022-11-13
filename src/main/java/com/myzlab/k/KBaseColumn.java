@@ -4,7 +4,7 @@ import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class KBaseColumn implements Cloneable {
+public abstract class KBaseColumn {
 
     protected final StringBuilder sb;
     protected final List<Object> params;

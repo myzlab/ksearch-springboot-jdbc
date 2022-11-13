@@ -2340,6 +2340,16 @@ public class KFunction {
         return new KColumn(new StringBuilder(content), 1, true);
     }
     
+    public static KCondition rawCondition(
+        final String content
+    ) {
+        final KCondition kCondition = new KCondition();
+        
+        kCondition.sb.append(content);
+        
+        return kCondition;
+    }
+    
     public static KColumn repeat(
         final KColumn kColumn,
         final int n
@@ -3336,6 +3346,26 @@ public class KFunction {
         final Number val
     ) {
         return new KValNumberField(val);
+    }
+    
+    public static KWindowDefinitionUnnamed wd() {
+        return KWindowDefinitionUnnamed.getInstance();
+    }
+    
+    public static KWindowDefinitionNamed wd(
+        final String name
+    ) {
+        return KWindowDefinitionNamed.getInstance(name);
+    }
+    
+    public static KWindowDefinitionUnnamed windowDefinition() {
+        return KWindowDefinitionUnnamed.getInstance();
+    }
+    
+    public static KWindowDefinitionNamed windowDefinition(
+        final String name
+    ) {
+        return KWindowDefinitionNamed.getInstance(name);
     }
     
     public static KColumn widthBucket(

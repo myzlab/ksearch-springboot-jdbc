@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+
 public class KCombining {
 
     public KUnion union() {
@@ -14,9 +16,11 @@ public class KCombining {
         return new KExcept();
     }
     
-    public KOrderBy orderBy() {
-        return new KOrderBy();
-    }
+//    public KOrderBy orderBy(
+//        final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
+//    ) {
+//        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+//    }
     
     public KLimit limit() {
         return new KLimit();

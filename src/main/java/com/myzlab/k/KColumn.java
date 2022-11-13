@@ -1,9 +1,10 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KColumn extends KBaseColumnCastable implements Cloneable, TextMethods {
+public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy {
     
     private final String name;
     
@@ -1400,54 +1401,46 @@ public class KColumn extends KBaseColumnCastable implements Cloneable, TextMetho
         return KCondition.nlksw(this, KFunction.val(value));
     }
     
+    public KColumnOvered over(
+        final KWindowDefinitionOrdered kWindowDefinitionOrdered
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionOrdered);
+    }
+    
+    public KColumnOvered over(
+        final KWindowDefinitionNamed kWindowDefinitionNamed
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionNamed);
+    }
+    
+    public KColumnOvered over(
+        final KWindowDefinitionUnnamed kWindowDefinitionUnnamed
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionUnnamed);
+    }
+    
+    public KColumnOvered over(
+        final KWindowDefinitionPartitioned kWindowDefinitionPartitioned
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionPartitioned);
+    }
+    
+    public KColumnOrdered asc() {
+        return new KColumnOrdered(sb, params, operating, closed, 1);
+    }
+    
+    public KColumnOrdered desc() {
+        return new KColumnOrdered(sb, params, operating, closed, -1);
+    }
+    
     @Override
     protected KColumn cloneMe() {
         return new KColumn(this.name, this.sb, new ArrayList<>(this.params), this.operating, this.closed);
     }
     
-//    
-//    public KOverColumn over() {
-//        return new KOverColumn();
-//    }
-//    
-//    public KColumn over(
-//        final KOrderedColumn... kOrderedColumn
-//    ) {
-//        return new KColumn();
-//    }
-//    
-//    public KColumn over(
-//        final KPartitionByColumn kPartitionByColumn,
-//        final KOrderedColumn... kOrderedColumn
-//    ) {
-//        return new KColumn();
-//    }
-//    
-//    public KPartitionByColumn partitionBy() {
-//        return new KPartitionByColumn();
-//    }
-//    
-//    public KOrderedColumn asc() {
-//        return new KOrderedColumn();
-//    }
-//    
-//    public KOrderedColumn desc() {
-//        return new KOrderedColumn();
-//    }
-//    
-//    public KColumn avg() {
-//        return new KColumn();
-//    }
-//    
-//    public KColumn sum() {
-//        return new KColumn();
-//    }
-//    
-//    public KColumn min() {
-//        return new KColumn();
-//    }
-//    
-//    public KColumn max() {
-//        return new KColumn();
-//    }
+    @Override
+    public String getSqlToOrderBy() {
+        return KUtils.reverseParams(this);
+    }
+    
 }

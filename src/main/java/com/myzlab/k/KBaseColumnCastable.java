@@ -1,11 +1,10 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class KBaseColumnCastable extends KBaseColumn implements Cloneable {
+public abstract class KBaseColumnCastable extends KBaseColumn {
     
     protected KBaseColumnCastable() {
         super();

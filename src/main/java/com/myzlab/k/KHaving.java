@@ -1,36 +1,148 @@
 package com.myzlab.k;
 
-public class KHaving {
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.helper.KExceptionHelper;
 
-    public KWindow window() {
-        return new KWindow();
+public class KHaving extends KQuery {
+    
+    private final KCondition kCondition;
+
+    private KHaving() {
+        super();
+        
+        this.kCondition = null;
+    }
+    
+    private KHaving(
+        final KQueryData kQueryData,
+        final KCondition kCondition
+    ) {
+        super(kQueryData);
+        
+        assertNotNull(kCondition, "kCondition");
+        
+        this.kCondition = kCondition;
+    }
+    
+    public static KHaving getInstance(
+        final KGroupBy kGroupBy,
+        final KCondition kCondition
+    ) {
+        return new KHaving(kGroupBy.kQueryData, kCondition);
+    }
+    
+    public KHaving andNot(
+        final KCondition kCondition
+    ) {
+        this.kCondition.andNot(kCondition);
+        
+        return this;
+    }
+    
+    public KHaving orNot(
+        final KCondition kCondition
+    ) {
+        this.kCondition.orNot(kCondition);
+        
+        return this;
+    }
+
+    public KHaving and(
+        final KCondition kCondition
+    ) {
+        this.kCondition.and(kCondition);
+        
+        return this;
+    }
+    
+    public KHaving or(
+        final KCondition kCondition
+    ) {
+        this.kCondition.or(kCondition);
+        
+        return this;
+    }
+    
+    public KWindow window(
+        final KWindowDefinition... kWindowDefinitions
+    ) {
+        this.buildhaving();
+        
+        return KWindow.getInstance(kQueryData, kWindowDefinitions);
     }
     
     public KUnion union() {
+        this.buildhaving();
+        
         return new KUnion();
     }
     
     public KIntersect intersect() {
+        this.buildhaving();
+        
         return new KIntersect();
     }
     
     public KExcept except() {
+        this.buildhaving();
+        
         return new KExcept();
     }
     
-    public KOrderBy orderBy() {
-        return new KOrderBy();
+    public KOrderBy orderBy(
+        final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
+    ) {
+        this.buildhaving();
+        
+        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit() {
+        this.buildhaving();
+        
         return new KLimit();
     }
     
     public KOffset offset() {
+        this.buildhaving();
+        
         return new KOffset();
     }
     
     public KFetch fetch() {
+        this.buildhaving();
+        
         return new KFetch();
+    }
+    
+    private void buildhaving() {
+        assertNotNull(this.kCondition, "kCondition");
+        
+        this.kQueryData.sb.append(" HAVING ").append(this.kCondition.toSql());
+        this.kQueryData.params.addAll(this.kCondition.params);
+    }
+    
+    private static void assertNotNull(
+        final Object o,
+        final String name
+    ) {
+        if (o == null) {
+            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
+        }
+        
+        if (o instanceof Object[]) {
+            for (final Object o_ : (Object[]) o) {
+                if (o_ == null) {
+                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
+                }
+            }
+        }
+    }
+
+    @Override
+    public void single() {
+        this.buildhaving();
+        
+        super.single();
     }
 }
