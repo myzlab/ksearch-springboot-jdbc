@@ -1,27 +1,27 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.helper.KExceptionHelper;
-import java.util.regex.Pattern;
 
 public class KGroupBy extends KQuery {
     
     private KGroupBy(
         final KQueryData kQueryData,
-        final KBaseColumnCastable... KBaseColumnCastables
+        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
         super(kQueryData);
         
-        assertNotNull(KBaseColumnCastables, "KBaseColumnCastables");
+        KUtils.assertNotNull(KColumnsAllowedToGroupBy, "KColumnsAllowedToGroupBy");
         
-        this.process(KBaseColumnCastables);
+        this.process(KColumnsAllowedToGroupBy);
     }
     
     public static KGroupBy getInstance(
         final KQueryData kQueryData,
-        final KBaseColumnCastable... KBaseColumnCastables
+        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        return new KGroupBy(kQueryData, KBaseColumnCastables);
+        return new KGroupBy(kQueryData, KColumnsAllowedToGroupBy);
     }
 
     public KHaving having(
@@ -54,72 +54,45 @@ public class KGroupBy extends KQuery {
         return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
     }
     
-    public KLimit limit() {
-        return new KLimit();
+    public KLimit limit(
+        final int count
+    ) {
+        return KLimit.getInstance(kQueryData, count);
     }
     
-    public KOffset offset() {
-        return new KOffset();
+    public KOffset offset(
+        final int start
+    ) {
+        return KOffset.getInstance(kQueryData, start);
     }
     
-    public KFetch fetch() {
-        return new KFetch();
+    public KFetch fetch(
+        final int rowCount
+    ) {
+        return KFetch.getInstance(kQueryData, rowCount);
     }
     
     private void process(
-        final KBaseColumnCastable... KBaseColumnCastables
+        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        if (KBaseColumnCastables == null || KBaseColumnCastables.length == 0) {
-            throw KExceptionHelper.internalServerError("The 'KBaseColumnCastables' param is required"); 
+        if (KColumnsAllowedToGroupBy == null || KColumnsAllowedToGroupBy.length == 0) {
+            throw KExceptionHelper.internalServerError("The 'KColumnsAllowedToGroupBy' param is required"); 
         }
         
         this.kQueryData.sb.append(" GROUP BY ");
         
-        for (int i = 0; i < KBaseColumnCastables.length; i++) {
-            final KBaseColumnCastable kBaseColumnCastable = KBaseColumnCastables[i];
+        for (int i = 0; i < KColumnsAllowedToGroupBy.length; i++) {
+            final KColumnAllowedToGroupBy kColumnAllowedToGroupBy = KColumnsAllowedToGroupBy[i];
             
-            if (kBaseColumnCastable == null) {
-                throw KExceptionHelper.internalServerError("'kBaseColumnCastable' is required");
+            if (kColumnAllowedToGroupBy == null) {
+                throw KExceptionHelper.internalServerError("'kColumnAllowedToGroupBy' is required");
             }
             
             if (i > 0) {
                 this.kQueryData.sb.append(", ");
             }
             
-            if (kBaseColumnCastable instanceof KValTextField) {
-                throw KExceptionHelper.internalServerError("'KValTextField' values not allowed in GROUP BY clause");
-            }
-            
-            String value = kBaseColumnCastable.sb.toString();
-            
-            for (final Object o : kBaseColumnCastable.params) {
-                if (o == null) {
-                    throw KExceptionHelper.internalServerError("'o' is required");
-                }
-                
-                final String quote = o instanceof String ? "'" : "";
-                
-                value = value.replaceFirst(Pattern.quote("?"), quote + o.toString() + quote);
-            }
-            
-            this.kQueryData.sb.append(value);
-        }
-    }
-    
-    private static void assertNotNull(
-        final Object o,
-        final String name
-    ) {
-        if (o == null) {
-            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
-        }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
+            this.kQueryData.sb.append(kColumnAllowedToGroupBy.getSqlToGroupBy());
         }
     }
 }

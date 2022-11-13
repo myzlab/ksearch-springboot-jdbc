@@ -1,10 +1,11 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValNumberField extends KBaseValField implements KColumnAllowedToOrderBy {
+public class KValNumberField extends KBaseValField implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
     
     protected KValNumberField() {
         super();
@@ -130,6 +131,11 @@ public class KValNumberField extends KBaseValField implements KColumnAllowedToOr
     
     @Override
     public String getSqlToOrderBy() {
+        return KUtils.reverseParams(this);
+    }
+    
+    @Override
+    public String getSqlToGroupBy() {
         return KUtils.reverseParams(this);
     }
 }

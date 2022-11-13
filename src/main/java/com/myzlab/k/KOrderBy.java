@@ -26,21 +26,23 @@ public class KOrderBy extends KQuery {
     ) {
         return new KOrderBy(kQueryData, kColumnsAllowedToOrderBy);
     }
-
-    public KOrderBy orderBy() {
-        return new KOrderBy();
+    
+    public KLimit limit(
+        final int count
+    ) {
+        return KLimit.getInstance(kQueryData, count);
     }
     
-    public KLimit limit() {
-        return new KLimit();
+    public KOffset offset(
+        final int start
+    ) {
+        return KOffset.getInstance(kQueryData, start);
     }
     
-    public KOffset offset() {
-        return new KOffset();
-    }
-    
-    public KFetch fetch() {
-        return new KFetch();
+    public KFetch fetch(
+        final int rowCount
+    ) {
+        return KFetch.getInstance(kQueryData, rowCount);
     }
     
     private void process(

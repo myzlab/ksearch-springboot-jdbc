@@ -22,15 +22,21 @@ public class KCombining {
 //        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
 //    }
     
-    public KLimit limit() {
-        return new KLimit();
-    }
+//    public KLimit limit(
+//        final int count
+//    ) {
+//        return KLimit.getInstance(kQueryData, count);
+//    }
     
-    public KOffset offset() {
-        return new KOffset();
-    }
-    
-    public KFetch fetch() {
-        return new KFetch();
-    }
+//    public KOffset offset(
+//        final int start
+//    ) {
+//        return KOffset.getInstance(kQueryData, start);
+//    }
+//    
+//    public KFetch fetch(
+//        final int rowCount
+//    ) {
+//        return KFetch.getInstance(kQueryData, rowCount);
+//    }
 }

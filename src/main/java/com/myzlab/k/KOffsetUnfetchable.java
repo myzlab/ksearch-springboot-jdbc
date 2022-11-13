@@ -1,12 +1,12 @@
 package com.myzlab.k;
 
-public class KOffset extends KQuery {
+public class KOffsetUnfetchable extends KQuery {
     
-    private KOffset() {
+    private KOffsetUnfetchable() {
         super();
     }
     
-    private KOffset(
+    private KOffsetUnfetchable(
         final KQueryData kQueryData,
         final int start
     ) {
@@ -15,17 +15,11 @@ public class KOffset extends KQuery {
         this.process(start);
     }
     
-    public static KOffset getInstance(
+    public static KOffsetUnfetchable getInstance(
         final KQueryData kQueryData,
         final int start
     ) {
-        return new KOffset(kQueryData, start);
-    }
-    
-    public KFetch fetch(
-        final int rowCount
-    ) {
-        return KFetch.getInstance(kQueryData, rowCount);
+        return new KOffsetUnfetchable(kQueryData, start);
     }
     
     private void process(

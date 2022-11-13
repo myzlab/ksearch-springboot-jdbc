@@ -97,22 +97,28 @@ public class KHaving extends KQuery {
         return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
     }
     
-    public KLimit limit() {
+    public KLimit limit(
+        final int count
+    ) {
         this.buildhaving();
         
-        return new KLimit();
+        return KLimit.getInstance(kQueryData, count);
     }
     
-    public KOffset offset() {
+    public KOffset offset(
+        final int start
+    ) {
         this.buildhaving();
         
-        return new KOffset();
+        return KOffset.getInstance(kQueryData, start);
     }
     
-    public KFetch fetch() {
+    public KFetch fetch(
+        final int rowCount
+    ) {
         this.buildhaving();
         
-        return new KFetch();
+        return KFetch.getInstance(kQueryData, rowCount);
     }
     
     private void buildhaving() {

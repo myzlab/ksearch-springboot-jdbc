@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.helper.KExceptionHelper;
 
@@ -64,9 +65,9 @@ public class KFrom extends KQuery {
     }
     
     public KGroupBy groupBy(
-        final KBaseColumnCastable... KBaseColumnCastables
+        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        return KGroupBy.getInstance(this.kQueryData, KBaseColumnCastables);
+        return KGroupBy.getInstance(this.kQueryData, KColumnsAllowedToGroupBy);
     }
     
     public KWindow window(
@@ -93,16 +94,22 @@ public class KFrom extends KQuery {
         return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
     }
     
-    public KLimit limit() {
-        return new KLimit();
+    public KLimit limit(
+        final int count
+    ) {
+        return KLimit.getInstance(kQueryData, count);
     }
     
-    public KOffset offset() {
-        return new KOffset();
+    public KOffset offset(
+        final int start
+    ) {
+        return KOffset.getInstance(kQueryData, start);
     }
     
-    public KFetch fetch() {
-        return new KFetch();
+    public KFetch fetch(
+        final int rowCount
+    ) {
+        return KFetch.getInstance(kQueryData, rowCount);
     }
     
     private void process(

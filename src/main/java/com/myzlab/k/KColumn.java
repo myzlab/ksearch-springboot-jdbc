@@ -1,10 +1,11 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy {
+public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
     
     private final String name;
     
@@ -1443,4 +1444,8 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         return KUtils.reverseParams(this);
     }
     
+    @Override
+    public String getSqlToGroupBy() {
+        return KUtils.reverseParams(this);
+    }
 }

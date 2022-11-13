@@ -8,7 +8,7 @@ public class KQueryData {
     protected final StringBuilder sb;
     protected int columnsAdded;
     protected int tablesAdded;
-    protected final List<Object> params; 
+    protected final List<Object> params;
     
     public KQueryData() {
         super();

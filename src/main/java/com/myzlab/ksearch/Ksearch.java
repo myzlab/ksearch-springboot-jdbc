@@ -500,13 +500,16 @@ public class Ksearch {
                 
 //                .from(book)
 //                .where(pages.gt(2))
-//                .groupBy(bookId, val(1))
+//                .groupBy(bookId, val(1), concat(title, description))
 //                .having(sum(pages).gt(999))
 //                .window(wdo1, wdo2, wdo3)
 //                .window(wdo5, wdo7)
 //                .window(wdo9)
+//                .orderBy(val(1), age.asc(), age)
+                .limit(1)
+//                .offset(2)
+//                .fetch(2)
                 
-                .orderBy(val(1))
             .single();
 //            .select(new KColumn().as())
 //            .from()
