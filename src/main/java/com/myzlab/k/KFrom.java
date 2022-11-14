@@ -26,6 +26,14 @@ public class KFrom extends KQuery {
         return new KFrom(kSelect.kQueryData, kTable);
     }
     
+    public KFrom crossJoin(
+        final KTable kTable  
+    ) {
+        this.processCrossJoin(kTable);
+        
+        return this;
+    }
+    
     public KFrom from(
         final KTable kTable
     ) {
@@ -34,28 +42,36 @@ public class KFrom extends KQuery {
         return this;
     }
     
-    public KInnerJoin join() {
-        return new KInnerJoin();
+    public KFrom fullJoin(
+        final KJoinDefinition kJoinDefinition    
+    ) {
+        this.processGeneralJoin("FULL JOIN", kJoinDefinition);
+        
+        return this;
     }
     
-    public KInnerJoin innerJoin() {
-        return new KInnerJoin();
+    public KFrom innerJoin(
+        final KJoinDefinition kJoinDefinition
+    ) {
+        this.processGeneralJoin("INNER JOIN", kJoinDefinition);
+        
+        return this;
     }
     
-    public KLeftJoin leftJoin() {
-        return new KLeftJoin();
+    public KFrom leftJoin(
+        final KJoinDefinition kJoinDefinition
+    ) {
+        this.processGeneralJoin("LEFT JOIN", kJoinDefinition);
+        
+        return this;
     }
     
-    public KRightJoin rightJoin() {
-        return new KRightJoin();
-    }
-    
-    public KFullJoin fullJoin() {
-        return new KFullJoin();
-    }
-    
-    public KCrossJoin crossJoin() {
-        return new KCrossJoin();
+    public KFrom rightJoin(
+        final KJoinDefinition kJoinDefinition
+    ) {
+        this.processGeneralJoin("RIGHT JOIN", kJoinDefinition);
+        
+        return this;
     }
     
     public KWhere where(
@@ -128,5 +144,23 @@ public class KFrom extends KQuery {
         this.kQueryData.tablesAdded++;
             
         this.kQueryData.sb.append(kTable.toSql());
+    }
+    
+    private void processGeneralJoin(
+        final String joinName,
+        final KJoinDefinition kJoinDefinition
+    ) {
+        KUtils.assertNotNull(kJoinDefinition, "kJoinDefinition");
+        
+        this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kJoinDefinition.table).append(" ON (").append(kJoinDefinition.kCondition.sb).append(")");
+        this.kQueryData.params.addAll(kJoinDefinition.kCondition.params);
+    }
+    
+    private void processCrossJoin(
+        final KTable kTable
+    ) {
+        KUtils.assertNotNull(kTable, "kTable");
+        
+        this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql());
     }
 }

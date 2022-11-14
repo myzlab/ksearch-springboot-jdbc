@@ -2,26 +2,30 @@ package com.myzlab.k;
 
 public class KTable {
     
-    private final String name;
     private final String schema;
+    private final String name;
+    private final String alias;
     
     private KTable() {
-        this.name = null;
         this.schema = null;
+        this.name = null;
+        this.alias = null;
     }
     
     public KTable(
-        final String name
-    ) {
-        this(name, "public");
-    }
-    
-    public KTable(
+        final String schema,
         final String name,
-        final String schema
+        final String alias
     ) {
-        this.name = name;
         this.schema = schema;
+        this.name = name;
+        this.alias = alias;
+    }
+    
+    public KJoinDefinition on(
+        final KCondition kCondition
+    ) {
+        return KJoinDefinition.getInstance(this.schema + "." + this.name, kCondition);
     }
     
     protected String toSql() {

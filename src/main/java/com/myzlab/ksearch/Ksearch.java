@@ -19,17 +19,21 @@ public class Ksearch {
 
     public static void main(String[] args) {
         
-        final KTable author  = new KTable("author");
+        final KTable author  = new KTable("public", "author", "au");
         final KColumn authorId = new KColumn("authorId");
         final KColumn age = new KColumn("age");
         final KColumn name = new KColumn("name");
         
-        final KTable book  = new KTable("book");
+        final KTable book  = new KTable("public", "book", "bo");
         final KColumn bookId = new KColumn("bookId");
         final KColumn title = new KColumn("title");
         final KColumn description = new KColumn("description");
         final KColumn pages = new KColumn("pages");
         final KColumn data = new KColumn("data");
+        
+        final KTable editorial  = new KTable("public", "editorial", "au");
+        final KColumn editorialId = new KColumn("editorialId");
+        final KColumn editorialName = new KColumn("editorialName");
         
         final Number nullNumber = null;
         final String nullString = null;
@@ -438,20 +442,26 @@ public class Ksearch {
                 
                 
                 
-                .where(pages.equal(optional(nullNumber)))
-                .and(bookId.equal(optional(nullString)))
-                .and(bookId.equal(optional(nullKValTextField)))
-                .and(bookId.equal(optional(nullKColumn)))
-                .and(val(1).equal(optional(bookId)))
-                .and(bookId.equal(optional(nullKValNumberField)))
+                
+//                .where(pages.equal(optional(nullNumber)))
+//                .and(bookId.equal(optional(nullString)))
+//                .and(bookId.equal(optional(nullKValTextField)))
+//                .and(bookId.equal(optional(nullKColumn)))
+//                .and(val(1).equal(optional(bookId)))
+//                .and(bookId.equal(optional(nullKValNumberField)))
                 
                 
                 
                 
                 
-//            .from(author)
+            .from(author)
+            .innerJoin(book.on(authorId.eq(bookId).and(pages.lessThan(10))))
+            .leftJoin(editorial.on(editorialId.eq(name).and(pages.gt(55))))
+            .rightJoin(editorial.on(editorialId.eq(name).and(pages.gt(12))))
+            .fullJoin(editorial.on(editorialId.eq(name).and(pages.gt(99))))
+            .crossJoin(book)
 //            .from(book)
-//                .where(avg(val(881).add(1)).eq("1"))
+                .where(avg(val(881).add(1)).eq("1"))
 //                .where(pages.add(7).add(bookId.add(99)).eq(val(5).add(1).add(bookId)))
 //                .where(pages.mul(7).mul(bookId.mul(99)).eq(val(5).mul(1).mul(bookId)))
 //                .where(pages.div(7).div(bookId.div(99)).eq(val(5).div(1).div(bookId)))
