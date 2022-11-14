@@ -133,6 +133,10 @@ public class KWhere extends KQuery {
     private void buildWhere() {
         assertNotNull(this.kCondition, "kCondition");
         
+        if (this.kCondition.emptyCondition) {
+            return;
+        }
+        
         this.kQueryData.sb.append(" WHERE ").append(this.kCondition.toSql());
         this.kQueryData.params.addAll(this.kCondition.params);
     }

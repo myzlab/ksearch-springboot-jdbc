@@ -1,5 +1,10 @@
 package com.myzlab.k;
 
+import com.myzlab.k.optional.KOptionalKColumn;
+import com.myzlab.k.optional.KOptionalKValNumberField;
+import com.myzlab.k.optional.KOptionalNumber;
+import com.myzlab.k.optional.KOptionalString;
+import com.myzlab.k.optional.KOptionalKValTextField;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -132,9 +137,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition eq(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalKColumn.get());
+    }
+    
+    public KCondition eq(
         final KValNumberField kValNumberField
     ) {
         return KCondition.eq(this, kValNumberField);
+    }
+    
+    public KCondition eq(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalKValNumberField.get());
     }
     
     public KCondition eq(
@@ -144,15 +169,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition eq(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalKValTextField.get());
+    }
+    
+    public KCondition eq(
         final Number number
     ) {
         return KCondition.eq(this, KFunction.val(number));
     }
     
     public KCondition eq(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalNumber.get());
+    }
+    
+    public KCondition eq(
         final String value
     ) {
         return KCondition.eq(this, KFunction.val(value));
+    }
+    
+    public KCondition eq(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalString.get());
     }
     
     public KCondition equal(
@@ -162,9 +217,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition equal(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, kOptionalKColumn.get());
+    }
+    
+    public KCondition equal(
         final KValNumberField kValNumberField
     ) {
         return KCondition.eq(this, kValNumberField);
+    }
+    
+    public KCondition equal(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, kOptionalKValNumberField.get());
     }
     
     public KCondition equal(
@@ -174,15 +249,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition equal(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, kOptionalKValTextField.get());
+    }
+    
+    public KCondition equal(
         final Number number
     ) {
         return KCondition.eq(this, KFunction.val(number));
     }
     
     public KCondition equal(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalNumber.get()));
+    }
+    
+    public KCondition equal(
         final String value
     ) {
         return KCondition.eq(this, KFunction.val(value));
+    }
+    
+    public KCondition equal(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalString.get()));
     }
     
     public KCondition greaterThan(

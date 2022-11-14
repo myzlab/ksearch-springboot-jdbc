@@ -1,7 +1,6 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
-import com.myzlab.k.helper.KExceptionHelper;
 
 public class KHaving extends KQuery {
     
@@ -19,7 +18,7 @@ public class KHaving extends KQuery {
     ) {
         super(kQueryData);
         
-        assertNotNull(kCondition, "kCondition");
+        KUtils.assertNotNull(kCondition, "kCondition");
         
         this.kCondition = kCondition;
     }
@@ -122,27 +121,14 @@ public class KHaving extends KQuery {
     }
     
     private void buildhaving() {
-        assertNotNull(this.kCondition, "kCondition");
+        KUtils.assertNotNull(this.kCondition, "kCondition");
+        
+        if (this.kCondition.emptyCondition) {
+            return;
+        }
         
         this.kQueryData.sb.append(" HAVING ").append(this.kCondition.toSql());
         this.kQueryData.params.addAll(this.kCondition.params);
-    }
-    
-    private static void assertNotNull(
-        final Object o,
-        final String name
-    ) {
-        if (o == null) {
-            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
-        }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
-        }
     }
 
     @Override

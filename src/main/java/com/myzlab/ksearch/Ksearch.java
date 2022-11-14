@@ -2,12 +2,14 @@ package com.myzlab.ksearch;
 
 import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
-import static com.myzlab.k.SqlDataType.*;
 import com.myzlab.k.KTable;
+import com.myzlab.k.KValNumberField;
+import com.myzlab.k.KValTextField;
 import com.myzlab.k.KWindowDefinitionNamed;
 import com.myzlab.k.KWindowDefinitionOrdered;
 import com.myzlab.k.KWindowDefinitionPartitioned;
 import com.myzlab.k.KWindowDefinitionUnnamed;
+import static com.myzlab.k.optional.KOptionalHelper.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,9 @@ public class Ksearch {
         
         final Number nullNumber = null;
         final String nullString = null;
+        final KColumn nullKColumn = null;
+        final KValTextField nullKValTextField = null;
+        final KValNumberField nullKValNumberField = null;
         final List<Long> nullList = null;
         
         final List<Long> ids = new ArrayList<>();
@@ -430,6 +435,20 @@ public class Ksearch {
 //                splitPart(age, "x", 2).as("splitPart_"),
 //                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_")
             )
+                
+                
+                
+                .where(pages.equal(optional(nullNumber)))
+                .and(bookId.equal(optional(nullString)))
+                .and(bookId.equal(optional(nullKValTextField)))
+                .and(bookId.equal(optional(nullKColumn)))
+                .and(val(1).equal(optional(bookId)))
+                .and(bookId.equal(optional(nullKValNumberField)))
+                
+                
+                
+                
+                
 //            .from(author)
 //            .from(book)
 //                .where(avg(val(881).add(1)).eq("1"))
@@ -438,6 +457,7 @@ public class Ksearch {
 //                .where(pages.div(7).div(bookId.div(99)).eq(val(5).div(1).div(bookId)))
 //                .where(pages.mod(7).mod(bookId.mod(99)).eq(val(5).mod(1).mod(bookId)))
 //                .where(pages.sub(7).sub(bookId.sub(99)).eq(val(5).sub(1).sub(bookId)))
+                
 //            .where(bitAnd(bitAnd(pages, 7), bitAnd(bookId, 99)).eq(bitAnd(bitAnd(val(5), 1), bookId)))
 //                .where(bitOr(bitOr(pages, 7), bitOr(bookId, 99)).eq(bitOr(bitOr(val(5), 1), bookId)))
 //                .where(bitXor(bitXor(pages, 7), bitXor(bookId, 99)).eq(bitXor(bitXor(val(5), 1), bookId)))
@@ -499,14 +519,14 @@ public class Ksearch {
                 
                 
 //                .from(book)
-//                .where(pages.gt(2))
+//                .where(pages.eq(Optional.ofNullable(null)).and(pages.eq(Optional.ofNullable(3))))
 //                .groupBy(bookId, val(1), concat(title, description))
 //                .having(sum(pages).gt(999))
 //                .window(wdo1, wdo2, wdo3)
 //                .window(wdo5, wdo7)
 //                .window(wdo9)
 //                .orderBy(val(1), age.asc(), age)
-                .limit(1)
+//                .limit(1)
 //                .offset(2)
 //                .fetch(2)
                 

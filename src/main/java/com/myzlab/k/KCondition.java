@@ -16,9 +16,9 @@ public class KCondition {
     protected int operator = 0;
     protected List<Object> params;
     protected int type = UNDEFINED_TYPE;
+    protected boolean emptyCondition = false;
     
-    protected KCondition(
-    ) {
+    protected KCondition() {
         super();
         
         this.sb = new StringBuilder();
@@ -26,19 +26,28 @@ public class KCondition {
         this.operator = 1;
     }
     
-//    private KCondition(
-//        final StringBuilder sb,
-//        final List<Object> params,
-//        final int operator,
-//        final int type
-//    ) {
-//        super();
-//        
-//        this.sb = new StringBuilder(sb);
-//        this.params = new ArrayList(params);
-//        this.operator = operator;
-//        this.type = type;
-//    }
+    protected KCondition(
+        final int operator
+    ) {
+        super();
+        
+        this.sb = new StringBuilder();
+        this.params = new ArrayList<>();
+        this.operator = operator;
+    }
+    
+    protected KCondition(
+        final int operator,
+        final boolean emptyCondition
+    ) {
+        this(operator);
+        
+        this.emptyCondition = emptyCondition;
+    }
+    
+    public static KCondition getEmptyInstance() {
+        return new KCondition(0, true);
+    }
     
     public KCondition and(
         final KCondition kCondition
@@ -57,6 +66,21 @@ public class KCondition {
         final String operator,
         final int type
     ) {
+        
+        if (this.emptyCondition) {
+            this.sb.append(kCondition.sb);
+            this.params.addAll(kCondition.params);
+            this.operator = kCondition.operator;
+            this.type = kCondition.type;
+            this.emptyCondition = kCondition.emptyCondition;
+            
+            return this;
+        }
+        
+        if (kCondition.emptyCondition) {
+            return this;
+        }
+        
         if (this.type == CLOSABLE_TYPE || (this.type != UNDEFINED_TYPE && this.type != type)) {
             this.sb.insert(0, "(").append(")");
         }
