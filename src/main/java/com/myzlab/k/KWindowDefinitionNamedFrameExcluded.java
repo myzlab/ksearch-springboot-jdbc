@@ -1,10 +1,11 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 
-public class KWindowDefinitionFrameExcluded extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
+public class KWindowDefinitionNamedFrameExcluded extends KWindowDefinition implements KWindowDefinitionAllowedToWindow, KWindowDefinitionAllowedToOver {
     
-    private KWindowDefinitionFrameExcluded(
+    private KWindowDefinitionNamedFrameExcluded(
         final StringBuilder sb,
         final String name,
         final String excluding
@@ -14,12 +15,12 @@ public class KWindowDefinitionFrameExcluded extends KWindowDefinition implements
         this.process(excluding);
     }
     
-    public static KWindowDefinitionFrameExcluded getInstance(
+    public static KWindowDefinitionNamedFrameExcluded getInstance(
         final StringBuilder sb,
         final String name,
         final String excluding
     ) {
-        return new KWindowDefinitionFrameExcluded(sb, name, excluding);
+        return new KWindowDefinitionNamedFrameExcluded(sb, name, excluding);
     }
 
     private void process(

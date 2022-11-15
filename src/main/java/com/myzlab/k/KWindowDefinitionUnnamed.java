@@ -16,29 +16,29 @@ public class KWindowDefinitionUnnamed extends KWindowDefinition {
         return KWindowDefinitionNamed.getInstance(sb, name);
     }
     
-    public KWindowDefinitionPartitioned partitionBy(
+    public KWindowDefinitionUnnamedPartitioned partitionBy(
         final KColumn kColumn
     ) {
-        return KWindowDefinitionPartitioned.getInstance(sb, null, kColumn);
+        return KWindowDefinitionUnnamedPartitioned.getInstance(sb, kColumn);
     }
     
-    public KWindowDefinitionOrdered orderBy(
+    public KWindowDefinitionUnnamedOrdered orderBy(
         final KColumn kColumn
     ) {
-        return KWindowDefinitionOrdered.getInstance(sb, null, kColumn);
+        return KWindowDefinitionUnnamedOrdered.getInstance(sb, kColumn);
     }
     
-    public KWindowDefinitionOrdered orderBy(
+    public KWindowDefinitionUnnamedOrdered orderBy(
         final KColumnOrdered kColumnOrdered
     ) {
-        return KWindowDefinitionOrdered.getInstance(sb, name, kColumnOrdered);
+        return KWindowDefinitionUnnamedOrdered.getInstance(sb, kColumnOrdered);
     }
     
-    public KWindowDefinitionFrameNoStarted range() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", false);
+    public KWindowDefinitionUnnamedFrameNoStarted range() {
+        return KWindowDefinitionUnnamedFrameNoStarted.getInstance(sb, "RANGE", false);
     }
     
-    public KWindowDefinitionFrameNoStarted rows() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", false);
+    public KWindowDefinitionUnnamedFrameNoStarted rows() {
+        return KWindowDefinitionUnnamedFrameNoStarted.getInstance(sb, "ROWS", false);
     }
 }

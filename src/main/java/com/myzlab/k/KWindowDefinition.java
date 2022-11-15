@@ -26,4 +26,12 @@ public class KWindowDefinition {
         
         this.sb.append(sb);
     }
+    
+    protected KWindowDefinition(
+        final StringBuilder sb
+    ) {
+        this();
+        
+        this.sb.append(sb);
+    }
 }

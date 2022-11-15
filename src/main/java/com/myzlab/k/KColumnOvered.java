@@ -1,6 +1,6 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import java.util.List;
 
 public class KColumnOvered extends KBaseColumn {
@@ -23,11 +23,11 @@ public class KColumnOvered extends KBaseColumn {
         final List<Object> params,
         final int operating,
         final boolean closed,
-        final KWindowDefinition kWindowDefinition
+        final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
     ) {
         super(sb, params, operating, closed);
         
-        this.process(kWindowDefinition);
+        this.process(kWindowDefinitionAllowedToOver);
     }
     
     @Override
@@ -36,16 +36,16 @@ public class KColumnOvered extends KBaseColumn {
     }
     
     private void process(
-        final KWindowDefinition kWindowDefinition
+        final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
     ) {
-        KUtils.assertNotNull(kWindowDefinition, "kWindowDefinition");
+        KUtils.assertNotNull(kWindowDefinitionAllowedToOver, "kWindowDefinitionAllowedToOver");
         
         this.sb.append(" OVER");
         
-        if (kWindowDefinition.name != null) {
-            this.sb.append(" ").append(kWindowDefinition.name);
+        if (kWindowDefinitionAllowedToOver.getName() != null) {
+            this.sb.append(" ").append(kWindowDefinitionAllowedToOver.getName());
         } else {
-            this.sb.append("(").append(kWindowDefinition.sb.toString()).append(")");
+            this.sb.append("(").append(kWindowDefinitionAllowedToOver.getSql()).append(")");
         }
     }
 }

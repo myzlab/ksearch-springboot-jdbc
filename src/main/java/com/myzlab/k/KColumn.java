@@ -2,6 +2,7 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1403,45 +1404,9 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     }
     
     public KColumnOvered over(
-        final KWindowDefinitionOrdered kWindowDefinitionOrdered
+        final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
     ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionOrdered);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionNamed kWindowDefinitionNamed
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionNamed);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionUnnamed kWindowDefinitionUnnamed
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionUnnamed);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionPartitioned kWindowDefinitionPartitioned
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionPartitioned);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionFrameStarted kWindowDefinitionFrameStarted
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameStarted);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionFrameEnded kWindowDefinitionFrameEnded
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameEnded);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionFrameExcluded kWindowDefinitionFrameExcluded
-    ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameExcluded);
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionAllowedToOver);
     }
     
     public KColumnOrdered asc() {

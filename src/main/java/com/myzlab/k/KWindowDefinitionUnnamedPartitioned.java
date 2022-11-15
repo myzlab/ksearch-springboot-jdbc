@@ -1,46 +1,44 @@
 package com.myzlab.k;
 
-import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KWindowDefinitionPartitioned extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
+public class KWindowDefinitionUnnamedPartitioned extends KWindowDefinition implements KWindowDefinitionAllowedToOver {
     
-    private KWindowDefinitionPartitioned(
+    private KWindowDefinitionUnnamedPartitioned(
         final StringBuilder sb,
-        final String name,
         final KColumn kColumn
     ) {
-        super(sb, name);
+        super(sb);
         
         this.process(kColumn);
     }
     
-    public static KWindowDefinitionPartitioned getInstance(
+    public static KWindowDefinitionUnnamedPartitioned getInstance(
         final StringBuilder sb,
-        final String name,
         final KColumn kColumn
     ) {
-        return new KWindowDefinitionPartitioned(sb, name, kColumn);
+        return new KWindowDefinitionUnnamedPartitioned(sb, kColumn);
     }
     
-    public KWindowDefinitionOrdered orderBy(
+    public KWindowDefinitionUnnamedOrdered orderBy(
         final KColumn kColumn
     ) {
-        return KWindowDefinitionOrdered.getInstance(sb, name, kColumn);
+        return KWindowDefinitionUnnamedOrdered.getInstance(sb, kColumn);
     }
     
-    public KWindowDefinitionOrdered orderBy(
+    public KWindowDefinitionUnnamedOrdered orderBy(
         final KColumnOrdered kColumnOrdered
     ) {
-        return KWindowDefinitionOrdered.getInstance(sb, name, kColumnOrdered);
+        return KWindowDefinitionUnnamedOrdered.getInstance(sb, kColumnOrdered);
     }
     
-    public KWindowDefinitionFrameNoStarted range() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", true);
+    public KWindowDefinitionUnnamedFrameNoStarted range() {
+        return KWindowDefinitionUnnamedFrameNoStarted.getInstance(sb, "RANGE", true);
     }
     
-    public KWindowDefinitionFrameNoStarted rows() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", true);
+    public KWindowDefinitionUnnamedFrameNoStarted rows() {
+        return KWindowDefinitionUnnamedFrameNoStarted.getInstance(sb, "ROWS", true);
     }
     
     private void process(

@@ -5,14 +5,14 @@ import static com.myzlab.k.KFunction.*;
 import com.myzlab.k.KTable;
 import com.myzlab.k.KValNumberField;
 import com.myzlab.k.KValTextField;
-import com.myzlab.k.KWindowDefinitionFrameEnded;
-import com.myzlab.k.KWindowDefinitionFrameExcluded;
-import com.myzlab.k.KWindowDefinitionFrameNoStarted;
-import com.myzlab.k.KWindowDefinitionFrameStarted;
 import com.myzlab.k.KWindowDefinitionNamed;
-import com.myzlab.k.KWindowDefinitionOrdered;
-import com.myzlab.k.KWindowDefinitionPartitioned;
-import com.myzlab.k.KWindowDefinitionUnnamed;
+import com.myzlab.k.KWindowDefinitionNamedFrameExcluded;
+import com.myzlab.k.KWindowDefinitionNamedFrameStarted;
+import com.myzlab.k.KWindowDefinitionNamedOrdered;
+import com.myzlab.k.KWindowDefinitionNamedPartitioned;
+import com.myzlab.k.KWindowDefinitionUnnamedFrameExcluded;
+import com.myzlab.k.KWindowDefinitionUnnamedOrdered;
+import com.myzlab.k.KWindowDefinitionUnnamedPartitioned;
 import static com.myzlab.k.optional.KOptionalHelper.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +54,16 @@ public class Ksearch {
         
         final List<Long> emptyIds = new ArrayList<>();
         
-        final KWindowDefinitionOrdered wdo1 = wd().name("w1").partitionBy(title).orderBy(age.asc());
-        final KWindowDefinitionOrdered wdo2 = wd("w2").partitionBy(description).orderBy(bookId.desc());
-        final KWindowDefinitionOrdered wdo3 = wd().name("w3").orderBy(pages.asc());
-        final KWindowDefinitionOrdered wdo4 = wd().partitionBy(age).orderBy(data.desc());
-        final KWindowDefinitionOrdered wdo5 = wd("w5").orderBy(data.desc());
-        final KWindowDefinitionOrdered wdo6 = wd().orderBy(data);
-        final KWindowDefinitionFrameExcluded wdo7 = wd("w7").rows().preceding(1).following(2).excludeCurrentRow();
-        final KWindowDefinitionFrameExcluded wdo8 = wd().range().unboundedPreceding().unboundedFollowing().excludeNoOthers();
-        final KWindowDefinitionPartitioned wdo9 = wd("w9").partitionBy(title);
-        final KWindowDefinitionPartitioned wdo10 = wd().partitionBy(title);
+        final KWindowDefinitionNamedOrdered wdo1 = wd().name("w1").partitionBy(title).orderBy(age.asc());
+        final KWindowDefinitionNamedOrdered wdo2 = wd("w2").partitionBy(description).orderBy(bookId.desc());
+        final KWindowDefinitionNamedOrdered wdo3 = wd().name("w3").orderBy(pages.asc());
+        final KWindowDefinitionUnnamedOrdered wdo4 = wd().partitionBy(age).orderBy(data.desc());
+        final KWindowDefinitionNamedOrdered wdo5 = wd("w5").orderBy(data.desc());
+        final KWindowDefinitionUnnamedOrdered wdo6 = wd().orderBy(data);
+        final KWindowDefinitionNamedFrameStarted wdo7 = wd("w7").rows().currentRow();
+        final KWindowDefinitionUnnamedFrameExcluded wdo8 = wd().range().unboundedPreceding().unboundedFollowing().excludeNoOthers();
+        final KWindowDefinitionNamedPartitioned wdo9 = wd("w9").partitionBy(title);
+        final KWindowDefinitionUnnamedPartitioned wdo10 = wd().partitionBy(title);
         
 //        System.out.println(wdo1.sb.toString());
 //        System.out.println(wdo2.sb.toString());
@@ -72,18 +72,18 @@ public class Ksearch {
         
         new KTest()
             .select(
-                title.over(wdo1),
-//                title.over(wdo2),
-//                title.over(wdo3),
-                title.over(wdo4),
-//                title.over(wdo5),
-                title.over(wdo6),
-//                title.over(wdo7),
-                title.over(wdo8),
-//                title.over(wdo9),
-                title.over(wdo10)
+//                title.over(wdo1)
+//                title.over(wdo2)
+//                title.over(wdo3)
+//                title.over(wdo4)
+//                title.over(wdo5)
+//                title.over(wdo6)
+//                title.over(wdo7)
+//                title.over(wdo8)
+//                title.over(wdo9)
+//                title.over(wdo10)
 //                avg(val(881).add(val(3))),
-//                avg(561)
+                avg(561)
 //                max(pages),
 //                max(val(881).add(val(2))),
 //                max(561)

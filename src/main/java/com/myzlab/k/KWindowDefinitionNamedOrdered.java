@@ -1,11 +1,12 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KWindowDefinitionOrdered extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
+public class KWindowDefinitionNamedOrdered extends KWindowDefinition implements KWindowDefinitionAllowedToWindow, KWindowDefinitionAllowedToOver {
     
-    private KWindowDefinitionOrdered(
+    private KWindowDefinitionNamedOrdered(
         final StringBuilder sb,
         final String name,
         final KColumn kColumn
@@ -15,7 +16,7 @@ public class KWindowDefinitionOrdered extends KWindowDefinition implements KWind
         this.process(kColumn);
     }
     
-    private KWindowDefinitionOrdered(
+    private KWindowDefinitionNamedOrdered(
         final StringBuilder sb,
         final String name,
         final KColumnOrdered kColumnOrdered
@@ -25,32 +26,32 @@ public class KWindowDefinitionOrdered extends KWindowDefinition implements KWind
         this.process(kColumnOrdered);
     }
     
-    public static KWindowDefinitionOrdered getInstance(
+    public static KWindowDefinitionNamedOrdered getInstance(
         final StringBuilder sb,
         final String name,
         final KColumn kColumn
     ) {
-        return new KWindowDefinitionOrdered(sb, name, kColumn);
+        return new KWindowDefinitionNamedOrdered(sb, name, kColumn);
     }
     
-    public static KWindowDefinitionOrdered getInstance(
+    public static KWindowDefinitionNamedOrdered getInstance(
         final StringBuilder sb,
         final String name,
         final KColumnOrdered kColumnOrdered
     ) {
-        return new KWindowDefinitionOrdered(sb, name, kColumnOrdered);
+        return new KWindowDefinitionNamedOrdered(sb, name, kColumnOrdered);
     }
     
-    public KWindowDefinitionFrameNoStarted range() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", true);
+    public KWindowDefinitionNamedFrameNoStarted range() {
+        return KWindowDefinitionNamedFrameNoStarted.getInstance(sb, name, "RANGE", true);
     }
     
-    public KWindowDefinitionFrameNoStarted rows() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", true);
+    public KWindowDefinitionNamedFrameNoStarted rows() {
+        return KWindowDefinitionNamedFrameNoStarted.getInstance(sb, name, "ROWS", true);
     }
     
-    public KWindowDefinitionFrameNoStarted groups() {
-        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "GROUPS", true);
+    public KWindowDefinitionNamedFrameNoStarted groups() {
+        return KWindowDefinitionNamedFrameNoStarted.getInstance(sb, name, "GROUPS", true);
     }
 
     private void process(
