@@ -33,4 +33,12 @@ public class KWindowDefinitionUnnamed extends KWindowDefinition {
     ) {
         return KWindowDefinitionOrdered.getInstance(sb, name, kColumnOrdered);
     }
+    
+    public KWindowDefinitionFrameNoStarted range() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", false);
+    }
+    
+    public KWindowDefinitionFrameNoStarted rows() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", false);
+    }
 }

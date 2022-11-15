@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,32 +9,32 @@ import java.util.List;
 
 public class KWindow extends KQuery {
     
-    final List<KWindowDefinition> kWindowDefinitions = new ArrayList<>();
+    final List<KWindowDefinitionAllowedToWindow> KWindowDefinitionsAllowedToWindow = new ArrayList<>();
     
     private KWindow(
         final KQueryData kQueryData,
-        final KWindowDefinition... kWindowDefinitions
+        final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
         super(kQueryData);
         
-        assertNotNull(kWindowDefinitions, "kWindowDefinitions");
+        KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
-        this.kWindowDefinitions.addAll(Arrays.asList(kWindowDefinitions));
+        this.KWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
     }
     
     public static KWindow getInstance(
         final KQueryData kQueryData,
-        final KWindowDefinition... kWindowDefinitions
+        final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return new KWindow(kQueryData, kWindowDefinitions);
+        return new KWindow(kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KWindow window(
-        final KWindowDefinition... kWindowDefinitions
+        final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        assertNotNull(kWindowDefinitions, "kWindowDefinitions");
+        KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
-        this.kWindowDefinitions.addAll(Arrays.asList(kWindowDefinitions));
+        this.KWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
         
         return this;
     }
@@ -91,39 +92,18 @@ public class KWindow extends KQuery {
     private void buildWindow() {
         this.kQueryData.sb.append(" WINDOW ");
         
-        for (int i = 0; i < kWindowDefinitions.size(); i++) {
-            final KWindowDefinition kWindowDefinition = kWindowDefinitions.get(i);
+        for (int i = 0; i < KWindowDefinitionsAllowedToWindow.size(); i++) {
+            final KWindowDefinitionAllowedToWindow kWindowDefinitionAllowedToWindow = KWindowDefinitionsAllowedToWindow.get(i);
 
-            if (kWindowDefinition == null) {
-                throw KExceptionHelper.internalServerError("'kWindowDefinition' is required");
-            }
-            
-            if (kWindowDefinition.name == null) {
-                throw KExceptionHelper.internalServerError("'name' is required");
+            if (kWindowDefinitionAllowedToWindow == null) {
+                throw KExceptionHelper.internalServerError("'kWindowDefinitionAllowedToWindow' is required");
             }
             
             if (i > 0) {
                 this.kQueryData.sb.append(", ");
             }
             
-            this.kQueryData.sb.append(kWindowDefinition.name).append(" AS (").append(kWindowDefinition.sb.toString()).append(")");
-        }
-    }
-    
-    private static void assertNotNull(
-        final Object o,
-        final String name
-    ) {
-        if (o == null) {
-            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
-        }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
+            this.kQueryData.sb.append(kWindowDefinitionAllowedToWindow.getName()).append(" AS (").append(kWindowDefinitionAllowedToWindow.getSql()).append(")");
         }
     }
     

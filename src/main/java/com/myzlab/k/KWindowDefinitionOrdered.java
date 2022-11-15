@@ -1,8 +1,9 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KWindowDefinitionOrdered extends KWindowDefinition {
+public class KWindowDefinitionOrdered extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
     
     private KWindowDefinitionOrdered(
         final StringBuilder sb,
@@ -39,6 +40,18 @@ public class KWindowDefinitionOrdered extends KWindowDefinition {
     ) {
         return new KWindowDefinitionOrdered(sb, name, kColumnOrdered);
     }
+    
+    public KWindowDefinitionFrameNoStarted range() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", true);
+    }
+    
+    public KWindowDefinitionFrameNoStarted rows() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", true);
+    }
+    
+    public KWindowDefinitionFrameNoStarted groups() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "GROUPS", true);
+    }
 
     private void process(
         final KColumn kColumn
@@ -74,5 +87,15 @@ public class KWindowDefinitionOrdered extends KWindowDefinition {
         }
         
         this.sb.append("ORDER BY ").append(kColumnOrdered.toSql());
+    }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getSql() {
+        return this.sb.toString();
     }
 }

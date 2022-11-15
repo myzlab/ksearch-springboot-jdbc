@@ -5,6 +5,10 @@ import static com.myzlab.k.KFunction.*;
 import com.myzlab.k.KTable;
 import com.myzlab.k.KValNumberField;
 import com.myzlab.k.KValTextField;
+import com.myzlab.k.KWindowDefinitionFrameEnded;
+import com.myzlab.k.KWindowDefinitionFrameExcluded;
+import com.myzlab.k.KWindowDefinitionFrameNoStarted;
+import com.myzlab.k.KWindowDefinitionFrameStarted;
 import com.myzlab.k.KWindowDefinitionNamed;
 import com.myzlab.k.KWindowDefinitionOrdered;
 import com.myzlab.k.KWindowDefinitionPartitioned;
@@ -56,8 +60,8 @@ public class Ksearch {
         final KWindowDefinitionOrdered wdo4 = wd().partitionBy(age).orderBy(data.desc());
         final KWindowDefinitionOrdered wdo5 = wd("w5").orderBy(data.desc());
         final KWindowDefinitionOrdered wdo6 = wd().orderBy(data);
-        final KWindowDefinitionNamed wdo7 = wd("w7");
-        final KWindowDefinitionUnnamed wdo8 = wd();
+        final KWindowDefinitionFrameExcluded wdo7 = wd("w7").rows().preceding(1).following(2).excludeCurrentRow();
+        final KWindowDefinitionFrameExcluded wdo8 = wd().range().unboundedPreceding().unboundedFollowing().excludeNoOthers();
         final KWindowDefinitionPartitioned wdo9 = wd("w9").partitionBy(title);
         final KWindowDefinitionPartitioned wdo10 = wd().partitionBy(title);
         
@@ -68,18 +72,18 @@ public class Ksearch {
         
         new KTest()
             .select(
-//                title.over(wdo1),
+                title.over(wdo1),
 //                title.over(wdo2),
 //                title.over(wdo3),
-//                title.over(wdo4),
+                title.over(wdo4),
 //                title.over(wdo5),
-//                title.over(wdo6),
+                title.over(wdo6),
 //                title.over(wdo7),
-//                title.over(wdo8),
+                title.over(wdo8),
 //                title.over(wdo9),
-//                title.over(wdo10)
+                title.over(wdo10)
 //                avg(val(881).add(val(3))),
-                avg(561)
+//                avg(561)
 //                max(pages),
 //                max(val(881).add(val(2))),
 //                max(561)
@@ -455,13 +459,13 @@ public class Ksearch {
                 
                 
             .from(author)
-            .innerJoin(book.on(authorId.eq(bookId).and(pages.lessThan(10))))
-            .leftJoin(editorial.on(editorialId.eq(name).and(pages.gt(55))))
-            .rightJoin(editorial.on(editorialId.eq(name).and(pages.gt(12))))
-            .fullJoin(editorial.on(editorialId.eq(name).and(pages.gt(99))))
-            .crossJoin(book)
+//            .innerJoin(book.on(authorId.eq(bookId)))
+//            .leftJoin(editorial.on(editorialId.eq(name).and(pages.gt(55))))
+//            .rightJoin(editorial.on(editorialId.eq(name).and(pages.gt(12))))
+//            .fullJoin(editorial.on(editorialId.eq(name).and(pages.gt(99))))
+//            .crossJoin(book)
 //            .from(book)
-                .where(avg(val(881).add(1)).eq("1"))
+//                .where(avg(val(881).add(1)).eq("1"))
 //                .where(pages.add(7).add(bookId.add(99)).eq(val(5).add(1).add(bookId)))
 //                .where(pages.mul(7).mul(bookId.mul(99)).eq(val(5).mul(1).mul(bookId)))
 //                .where(pages.div(7).div(bookId.div(99)).eq(val(5).div(1).div(bookId)))
@@ -532,9 +536,9 @@ public class Ksearch {
 //                .where(pages.eq(Optional.ofNullable(null)).and(pages.eq(Optional.ofNullable(3))))
 //                .groupBy(bookId, val(1), concat(title, description))
 //                .having(sum(pages).gt(999))
-//                .window(wdo1, wdo2, wdo3)
-//                .window(wdo5, wdo7)
-//                .window(wdo9)
+                .window(wdo1, wdo2, wdo3)
+                .window(wdo5, wdo7)
+                .window(wdo9)
 //                .orderBy(val(1), age.asc(), age)
 //                .limit(1)
 //                .offset(2)

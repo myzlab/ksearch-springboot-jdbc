@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 
 public class KHaving extends KQuery {
     
@@ -63,11 +64,11 @@ public class KHaving extends KQuery {
     }
     
     public KWindow window(
-        final KWindowDefinition... kWindowDefinitions
+        final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
         this.buildhaving();
         
-        return KWindow.getInstance(kQueryData, kWindowDefinitions);
+        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {

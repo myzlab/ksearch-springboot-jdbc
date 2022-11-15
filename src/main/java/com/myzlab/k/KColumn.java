@@ -1426,6 +1426,24 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionPartitioned);
     }
     
+    public KColumnOvered over(
+        final KWindowDefinitionFrameStarted kWindowDefinitionFrameStarted
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameStarted);
+    }
+    
+    public KColumnOvered over(
+        final KWindowDefinitionFrameEnded kWindowDefinitionFrameEnded
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameEnded);
+    }
+    
+    public KColumnOvered over(
+        final KWindowDefinitionFrameExcluded kWindowDefinitionFrameExcluded
+    ) {
+        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionFrameExcluded);
+    }
+    
     public KColumnOrdered asc() {
         return new KColumnOrdered(sb, params, operating, closed, 1);
     }

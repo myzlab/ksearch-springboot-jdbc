@@ -2,6 +2,7 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 
 public class KWhere extends KQuery {
@@ -73,11 +74,11 @@ public class KWhere extends KQuery {
     }
     
     public KWindow window(
-        final KWindowDefinition... kWindowDefinitions
+        final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
         this.buildWhere();
         
-        return KWindow.getInstance(kQueryData, kWindowDefinitions);
+        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {

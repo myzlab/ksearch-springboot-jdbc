@@ -23,109 +23,29 @@ public class KColumnOvered extends KBaseColumn {
         final List<Object> params,
         final int operating,
         final boolean closed,
-        final KWindowDefinitionOrdered kWindowDefinitionOrdered
+        final KWindowDefinition kWindowDefinition
     ) {
         super(sb, params, operating, closed);
         
-        this.process(kWindowDefinitionOrdered);
+        this.process(kWindowDefinition);
     }
     
-    protected KColumnOvered(
-        final StringBuilder sb,
-        final List<Object> params,
-        final int operating,
-        final boolean closed,
-        final KWindowDefinitionNamed kWindowDefinitionNamed
-    ) {
-        super(sb, params, operating, closed);
-        
-        this.process(kWindowDefinitionNamed);
-    }
-    
-    protected KColumnOvered(
-        final StringBuilder sb,
-        final List<Object> params,
-        final int operating,
-        final boolean closed,
-        final KWindowDefinitionUnnamed kWindowDefinitionUnnamed
-    ) {
-        super(sb, params, operating, closed);
-        
-        this.process(kWindowDefinitionUnnamed);
-    }
-    
-    protected KColumnOvered(
-        final StringBuilder sb,
-        final List<Object> params,
-        final int operating,
-        final boolean closed,
-        final KWindowDefinitionPartitioned kWindowDefinitionPartitioned
-    ) {
-        super(sb, params, operating, closed);
-        
-        this.process(kWindowDefinitionPartitioned);
-    }
-
     @Override
     protected KColumnOvered cloneMe() {
         return new KColumnOvered(this.sb, this.params, this.operating, this.closed);
     }
     
     private void process(
-        final KWindowDefinitionOrdered kWindowDefinitionOrdered
+        final KWindowDefinition kWindowDefinition
     ) {
-        if (kWindowDefinitionOrdered == null) {
-            throw KExceptionHelper.internalServerError("The 'kWindowDefinitionOrdered' param is required"); 
-        }
+        KUtils.assertNotNull(kWindowDefinition, "kWindowDefinition");
         
         this.sb.append(" OVER");
         
-        if (kWindowDefinitionOrdered.name != null) {
-            this.sb.append(" ").append(kWindowDefinitionOrdered.name);
+        if (kWindowDefinition.name != null) {
+            this.sb.append(" ").append(kWindowDefinition.name);
         } else {
-            this.sb.append("(").append(kWindowDefinitionOrdered.sb.toString()).append(")");
-        }
-    }
-    
-    private void process(
-        final KWindowDefinitionNamed kWindowDefinitionNamed
-    ) {
-        if (kWindowDefinitionNamed == null) {
-            throw KExceptionHelper.internalServerError("The 'kWindowDefinitionNamed' param is required"); 
-        }
-        
-        this.sb.append(" OVER");
-        
-        if (kWindowDefinitionNamed.name != null) {
-            this.sb.append(" ").append(kWindowDefinitionNamed.name);
-        } else {
-            this.sb.append("(").append(kWindowDefinitionNamed.sb.toString()).append(")");
-        }
-    }
-    
-    private void process(
-        final KWindowDefinitionUnnamed kWindowDefinitionUnnamed
-    ) {
-        if (kWindowDefinitionUnnamed == null) {
-            throw KExceptionHelper.internalServerError("The 'kWindowDefinitionUnnamed' param is required"); 
-        }
-        
-        this.sb.append(" OVER(").append(kWindowDefinitionUnnamed.sb.toString()).append(")");
-    }
-    
-    private void process(
-        final KWindowDefinitionPartitioned kWindowDefinitionPartitioned
-    ) {
-        if (kWindowDefinitionPartitioned == null) {
-            throw KExceptionHelper.internalServerError("The 'kWindowDefinitionPartitioned' param is required"); 
-        }
-        
-        this.sb.append(" OVER");
-        
-        if (kWindowDefinitionPartitioned.name != null) {
-            this.sb.append(" ").append(kWindowDefinitionPartitioned.name);
-        } else {
-            this.sb.append("(").append(kWindowDefinitionPartitioned.sb.toString()).append(")");
+            this.sb.append("(").append(kWindowDefinition.sb.toString()).append(")");
         }
     }
 }

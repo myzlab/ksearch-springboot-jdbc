@@ -1,8 +1,9 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KWindowDefinitionPartitioned extends KWindowDefinition {
+public class KWindowDefinitionPartitioned extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
     
     private KWindowDefinitionPartitioned(
         final StringBuilder sb,
@@ -34,6 +35,14 @@ public class KWindowDefinitionPartitioned extends KWindowDefinition {
         return KWindowDefinitionOrdered.getInstance(sb, name, kColumnOrdered);
     }
     
+    public KWindowDefinitionFrameNoStarted range() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", true);
+    }
+    
+    public KWindowDefinitionFrameNoStarted rows() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", true);
+    }
+    
     private void process(
         final KColumn kColumn
     ) {
@@ -46,5 +55,15 @@ public class KWindowDefinitionPartitioned extends KWindowDefinition {
         }
         
         this.sb.append("PARTITION BY ").append(kColumn.toSql());
+    }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getSql() {
+        return this.sb.toString();
     }
 }

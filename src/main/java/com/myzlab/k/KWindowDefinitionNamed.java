@@ -1,6 +1,8 @@
 package com.myzlab.k;
 
-public class KWindowDefinitionNamed extends KWindowDefinition {
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
+
+public class KWindowDefinitionNamed extends KWindowDefinition implements KWindowDefinitionAllowedToWindow {
     
     private KWindowDefinitionNamed() {
         super();
@@ -48,5 +50,23 @@ public class KWindowDefinitionNamed extends KWindowDefinition {
         final KColumnOrdered kColumnOrdered
     ) {
         return KWindowDefinitionOrdered.getInstance(sb, name, kColumnOrdered);
+    }
+    
+    public KWindowDefinitionFrameNoStarted range() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "RANGE", false);
+    }
+    
+    public KWindowDefinitionFrameNoStarted rows() {
+        return KWindowDefinitionFrameNoStarted.getInstance(sb, name, "ROWS", false);
+    }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getSql() {
+        return this.sb.toString();
     }
 }
