@@ -530,7 +530,7 @@ public class Ksearch {
 //                .offset(2)
 //                .fetch(2)
                 
-            .single();
+            .single(null);
 //            .select(new KColumn().as())
 //            .from()
 //            .where()

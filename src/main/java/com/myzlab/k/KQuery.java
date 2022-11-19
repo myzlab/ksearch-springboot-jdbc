@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SqlTypeValue;
 
 public abstract class KQuery {
@@ -35,23 +37,42 @@ public abstract class KQuery {
         this.k = kInitializer;
     }
     
-    public Map<String, Object> single() {
-        System.out.println(kQueryData.sb.toString());
-        System.out.println(kQueryData.params);
-        
-        if (this.k == null || this.k.getJdbcTemplates() == null) {
+    public <T extends KRow> T single(
+        final Class<T> clazz
+    ) {
+        System.out.println(this.kQueryData.sb.toString());
+//        System.out.println(this.kQueryData.params);
+//        System.out.println(this.kQueryData.kBaseColums);
+            
+        if (k == null || k.getJdbcTemplates() == null) {
             return null;
         }
         
-        final List<Object> params = new ArrayList<>();
+        final List<String[]> ways = this.getWays(clazz);
         
-        for (final Object param : this.kQueryData.params) {
-            params.add(param);
-        }
+        final T t = k.getJdbcTemplates().get(   
+            k.getJdbcTemplateDefaultName()
+        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs) -> {
+            if (rs == null || !rs.next()) {
+                return this.getKRowNull(clazz);
+            }
+            
+            if (T instanceof KRow) {
+                
+            } else {
+                
+            }
+            
+            final T result = this.mapObject(rs, ways, clazz);
+            
+            if (rs.next()) {
+                return this.getKRowNull(clazz);
+            }
+            
+            return result;
+        });
         
-        final Object[] p = params.toArray();
-        
-        return k.getJdbcTemplates().get(k.getJdbcTemplateDefaultName()).queryForMap(this.kQueryData.sb.toString(), p);
+        return t;
     }
     
     public <T extends KRow> KCollection<T> multiple(
@@ -69,7 +90,7 @@ public abstract class KQuery {
 
         final List<T> list = k.getJdbcTemplates().get(   
             k.getJdbcTemplateDefaultName()
-        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (rs, rowNum) -> {
+        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs, final int rowNum) -> {
             return this.mapObject(rs, ways, clazz);
         });
         
@@ -252,27 +273,20 @@ public abstract class KQuery {
         return ways;
     }
     
-//    public <T extends KMapper> List<Map<String, Object>> multiple(
-//        final Class<T> clazz
-//    ) {
-//        System.out.println(this.kQueryData.sb.toString());
-//        System.out.println(this.kQueryData.params);
-//        System.out.println(this.kQueryData.kBaseColums);
-//        
-//        if (k == null || k.getJdbcTemplates() == null) {
-//            return null;
-//        }
-//        
-//        final List<Object> params = new ArrayList<>();
-//        
-//        for (final Object param : this.kQueryData.params) {
-//            params.add(param);
-//        }
-//        
-//        final Object[] p = params.toArray();
-//        
-//        final List<Map<String, Object>> r = k.getJdbcTemplates().get(k.getJdbcTemplateDefaultName()).queryForList(this.kQueryData.sb.toString(), p);
-//        
-//        return r;
-//    }
+    private <T extends KRow> T getKRowNull(
+        final Class<T> clazz
+    ) throws SQLException {
+        
+        final T t;
+        
+        try {
+            t = (T) clazz.newInstance();  
+        } catch (Exception e) {
+            throw KExceptionHelper.internalServerError(e.getMessage());
+        }
+        
+        t.isNull = true;
+
+        return t;
+    }
 }

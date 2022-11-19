@@ -6,6 +6,7 @@ public abstract class KRow {
     
     public Object[] o;
     public Map<String, Integer> ref;
+    protected boolean isNull = false;
     
     public KRow() {}
 
@@ -33,6 +34,10 @@ public abstract class KRow {
         }
         
         return o[n];
+    }
+    
+    public boolean isNull() {
+        return isNull;
     }
     
     public abstract String[] getWay(

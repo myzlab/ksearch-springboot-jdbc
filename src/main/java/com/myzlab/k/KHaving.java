@@ -2,8 +2,6 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
-import java.util.List;
-import java.util.Map;
 
 public class KHaving extends KQuery {
     
@@ -70,25 +68,25 @@ public class KHaving extends KQuery {
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        this.buildhaving();
+        this.buildHaving();
         
         return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {
-        this.buildhaving();
+        this.buildHaving();
         
         return new KUnion();
     }
     
     public KIntersect intersect() {
-        this.buildhaving();
+        this.buildHaving();
         
         return new KIntersect();
     }
     
     public KExcept except() {
-        this.buildhaving();
+        this.buildHaving();
         
         return new KExcept();
     }
@@ -96,7 +94,7 @@ public class KHaving extends KQuery {
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        this.buildhaving();
+        this.buildHaving();
         
         return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
@@ -104,7 +102,7 @@ public class KHaving extends KQuery {
     public KLimit limit(
         final int count
     ) {
-        this.buildhaving();
+        this.buildHaving();
         
         return KLimit.getInstance(this.k, this.kQueryData, count);
     }
@@ -112,7 +110,7 @@ public class KHaving extends KQuery {
     public KOffset offset(
         final int start
     ) {
-        this.buildhaving();
+        this.buildHaving();
         
         return KOffset.getInstance(this.k, this.kQueryData, start);
     }
@@ -120,12 +118,12 @@ public class KHaving extends KQuery {
     public KFetch fetch(
         final int rowCount
     ) {
-        this.buildhaving();
+        this.buildHaving();
         
         return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
-    private void buildhaving() {
+    private void buildHaving() {
         KUtils.assertNotNull(this.kCondition, "kCondition");
         
         if (this.kCondition.emptyCondition) {
@@ -137,9 +135,11 @@ public class KHaving extends KQuery {
     }
 
     @Override
-    public Map<String, Object> single() {
-        this.buildhaving();
+    public <T extends KRow> T single(
+        final Class<T> clazz
+    ) {
+        this.buildHaving();
         
-        return super.single();
+        return super.single(clazz);
     }
 }

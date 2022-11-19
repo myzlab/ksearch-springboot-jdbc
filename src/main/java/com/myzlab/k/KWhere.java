@@ -146,9 +146,11 @@ public class KWhere extends KQuery {
     }
 
     @Override
-    public Map<String, Object> single() {
+    public <T extends KRow> T single(
+        final Class<T> clazz
+    ) {
         this.buildWhere();
         
-        return super.single();
+        return super.single(clazz);
     }
 }

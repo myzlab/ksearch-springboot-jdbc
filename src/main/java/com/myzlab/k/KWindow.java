@@ -111,9 +111,11 @@ public class KWindow extends KQuery {
     }
     
     @Override
-    public Map<String, Object> single() {
+    public <T extends KRow> T single(
+        final Class<T> clazz
+    ) {
         this.buildWindow();
         
-        return super.single();
+        return super.single(clazz);
     }
 }
