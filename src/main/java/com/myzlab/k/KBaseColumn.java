@@ -10,6 +10,7 @@ public abstract class KBaseColumn {
     protected final List<Object> params;
     protected int operating = 0;
     protected boolean closed = true;
+    protected boolean mappeable = true;
     
     protected KBaseColumn() {
         super();

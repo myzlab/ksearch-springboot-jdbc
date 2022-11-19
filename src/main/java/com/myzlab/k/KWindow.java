@@ -6,16 +6,18 @@ import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class KWindow extends KQuery {
     
     final List<KWindowDefinitionAllowedToWindow> KWindowDefinitionsAllowedToWindow = new ArrayList<>();
     
     private KWindow(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
@@ -23,10 +25,11 @@ public class KWindow extends KQuery {
     }
     
     public static KWindow getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return new KWindow(kQueryData, KWindowDefinitionsAllowedToWindow);
+        return new KWindow(kInitializer, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KWindow window(
@@ -62,7 +65,7 @@ public class KWindow extends KQuery {
     ) {
         this.buildWindow();
         
-        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
@@ -70,7 +73,7 @@ public class KWindow extends KQuery {
     ) {
         this.buildWindow();
         
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
@@ -78,7 +81,7 @@ public class KWindow extends KQuery {
     ) {
         this.buildWindow();
         
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
@@ -86,7 +89,7 @@ public class KWindow extends KQuery {
     ) {
         this.buildWindow();
         
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void buildWindow() {
@@ -108,9 +111,9 @@ public class KWindow extends KQuery {
     }
     
     @Override
-    public void single() {
+    public Map<String, Object> single() {
         this.buildWindow();
         
-        super.single();
+        return super.single();
     }
 }

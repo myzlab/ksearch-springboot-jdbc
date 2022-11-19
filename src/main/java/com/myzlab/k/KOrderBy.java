@@ -10,10 +10,11 @@ public class KOrderBy extends KQuery {
     }
     
     private KOrderBy(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         KUtils.assertNotNull(kColumnsAllowedToOrderBy, "kColumnsAllowedToOrderBy");
         
@@ -21,28 +22,29 @@ public class KOrderBy extends KQuery {
     }
     
     public static KOrderBy getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return new KOrderBy(kQueryData, kColumnsAllowedToOrderBy);
+        return new KOrderBy(kInitializer, kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void process(

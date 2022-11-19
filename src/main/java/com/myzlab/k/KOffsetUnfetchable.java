@@ -7,19 +7,21 @@ public class KOffsetUnfetchable extends KQuery {
     }
     
     private KOffsetUnfetchable(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int start
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         this.process(start);
     }
     
     public static KOffsetUnfetchable getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int start
     ) {
-        return new KOffsetUnfetchable(kQueryData, start);
+        return new KOffsetUnfetchable(kInitializer, kQueryData, start);
     }
     
     private void process(

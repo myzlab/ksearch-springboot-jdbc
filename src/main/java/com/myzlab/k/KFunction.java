@@ -862,7 +862,7 @@ public class KFunction {
         assertNotNull(val, "val");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(null, val);
+        final KColumn castkColumn = new KColumn(null, null, val, null);
         
         castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
@@ -876,7 +876,7 @@ public class KFunction {
         assertNotNull(val, "val");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(null, val);
+        final KColumn castkColumn = new KColumn(null, val, null);
         
         castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         

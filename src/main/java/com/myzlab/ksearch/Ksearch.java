@@ -2,11 +2,8 @@ package com.myzlab.ksearch;
 
 import com.myzlab.k.KColumn;
 import static com.myzlab.k.KFunction.*;
-import com.myzlab.k.KTable;
 import com.myzlab.k.KValNumberField;
 import com.myzlab.k.KValTextField;
-import com.myzlab.k.KWindowDefinitionNamed;
-import com.myzlab.k.KWindowDefinitionNamedFrameExcluded;
 import com.myzlab.k.KWindowDefinitionNamedFrameStarted;
 import com.myzlab.k.KWindowDefinitionNamedOrdered;
 import com.myzlab.k.KWindowDefinitionNamedPartitioned;
@@ -14,6 +11,9 @@ import com.myzlab.k.KWindowDefinitionUnnamedFrameExcluded;
 import com.myzlab.k.KWindowDefinitionUnnamedOrdered;
 import com.myzlab.k.KWindowDefinitionUnnamedPartitioned;
 import static com.myzlab.k.optional.KOptionalHelper.*;
+import com.myzlab.ktest.generated.metadata.AuthorMetadata;
+import com.myzlab.ktest.generated.metadata.BookMetadata;
+import static com.myzlab.ktest.generated.metadata.Tables.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -22,22 +22,6 @@ import org.springframework.http.ResponseEntity;
 public class Ksearch {
 
     public static void main(String[] args) {
-        
-        final KTable author  = new KTable("public", "author", "au");
-        final KColumn authorId = new KColumn("authorId");
-        final KColumn age = new KColumn("age");
-        final KColumn name = new KColumn("name");
-        
-        final KTable book  = new KTable("public", "book", "bo");
-        final KColumn bookId = new KColumn("bookId");
-        final KColumn title = new KColumn("title");
-        final KColumn description = new KColumn("description");
-        final KColumn pages = new KColumn("pages");
-        final KColumn data = new KColumn("data");
-        
-        final KTable editorial  = new KTable("public", "editorial", "au");
-        final KColumn editorialId = new KColumn("editorialId");
-        final KColumn editorialName = new KColumn("editorialName");
         
         final Number nullNumber = null;
         final String nullString = null;
@@ -54,16 +38,16 @@ public class Ksearch {
         
         final List<Long> emptyIds = new ArrayList<>();
         
-        final KWindowDefinitionNamedOrdered wdo1 = wd().name("w1").partitionBy(title).orderBy(age.asc());
-        final KWindowDefinitionNamedOrdered wdo2 = wd("w2").partitionBy(description).orderBy(bookId.desc());
-        final KWindowDefinitionNamedOrdered wdo3 = wd().name("w3").orderBy(pages.asc());
-        final KWindowDefinitionUnnamedOrdered wdo4 = wd().partitionBy(age).orderBy(data.desc());
-        final KWindowDefinitionNamedOrdered wdo5 = wd("w5").orderBy(data.desc());
-        final KWindowDefinitionUnnamedOrdered wdo6 = wd().orderBy(data);
+        final KWindowDefinitionNamedOrdered wdo1 = wd().name("w1").partitionBy(BOOK.TITLE).orderBy(AUTHOR.AGE.asc());
+        final KWindowDefinitionNamedOrdered wdo2 = wd("w2").partitionBy(BOOK.DESCRIPTION).orderBy(BOOK.ID.desc());
+        final KWindowDefinitionNamedOrdered wdo3 = wd().name("w3").orderBy(BOOK.PAGES.asc());
+        final KWindowDefinitionUnnamedOrdered wdo4 = wd().partitionBy(AUTHOR.AGE).orderBy(BOOK.DATA.desc());
+        final KWindowDefinitionNamedOrdered wdo5 = wd("w5").orderBy(BOOK.DATA.desc());
+        final KWindowDefinitionUnnamedOrdered wdo6 = wd().orderBy(BOOK.DATA);
         final KWindowDefinitionNamedFrameStarted wdo7 = wd("w7").rows().currentRow();
         final KWindowDefinitionUnnamedFrameExcluded wdo8 = wd().range().unboundedPreceding().unboundedFollowing().excludeNoOthers();
-        final KWindowDefinitionNamedPartitioned wdo9 = wd("w9").partitionBy(title);
-        final KWindowDefinitionUnnamedPartitioned wdo10 = wd().partitionBy(title);
+        final KWindowDefinitionNamedPartitioned wdo9 = wd("w9").partitionBy(BOOK.TITLE);
+        final KWindowDefinitionUnnamedPartitioned wdo10 = wd().partitionBy(BOOK.TITLE);
         
 //        System.out.println(wdo1.sb.toString());
 //        System.out.println(wdo2.sb.toString());
@@ -83,7 +67,7 @@ public class Ksearch {
 //                title.over(wdo9)
 //                title.over(wdo10)
 //                avg(val(881).add(val(3))),
-                avg(561)
+//                avg(561)
 //                max(pages),
 //                max(val(881).add(val(2))),
 //                max(561)
@@ -442,6 +426,7 @@ public class Ksearch {
 //                dateTrunc(val("2020-10-12").cast(timestamptz()), century())
 //                splitPart(age, "x", 2).as("splitPart_"),
 //                splitPart(val("abc~@~def~@~ghi"), "~@~", 2).as("splitPart_")
+                    BOOK.ID, AUTHOR.NAME, EDITORIAL.NAME
             )
                 
                 
@@ -458,8 +443,9 @@ public class Ksearch {
                 
                 
                 
-            .from(author)
-//            .innerJoin(book.on(authorId.eq(bookId)))
+            .from(BOOK)
+            .innerJoin(BOOK.joinAuthor())
+            .innerJoin(BOOK.joinEditorial())
 //            .leftJoin(editorial.on(editorialId.eq(name).and(pages.gt(55))))
 //            .rightJoin(editorial.on(editorialId.eq(name).and(pages.gt(12))))
 //            .fullJoin(editorial.on(editorialId.eq(name).and(pages.gt(99))))

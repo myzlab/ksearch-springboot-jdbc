@@ -7,25 +7,27 @@ public class KOffset extends KQuery {
     }
     
     private KOffset(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int start
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         this.process(start);
     }
     
     public static KOffset getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int start
     ) {
-        return new KOffset(kQueryData, start);
+        return new KOffset(kInitializer, kQueryData, start);
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void process(

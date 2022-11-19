@@ -3,7 +3,8 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
-import com.myzlab.k.helper.KExceptionHelper;
+import java.util.List;
+import java.util.Map;
 
 public class KWhere extends KQuery {
     
@@ -16,21 +17,23 @@ public class KWhere extends KQuery {
     }
     
     private KWhere(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
-        assertNotNull(kCondition, "kCondition");
+        KUtils.assertNotNull(kCondition, "kCondition");
         
         this.kCondition = kCondition;
     }
     
     public static KWhere getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        return new KWhere(kQueryData, kCondition);
+        return new KWhere(kInitializer, kQueryData, kCondition);
     }
     
     public KWhere andNot(
@@ -70,7 +73,7 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KGroupBy.getInstance(this.kQueryData, KColumnsAllowedToGroupBy);
+        return KGroupBy.getInstance(this.k, this.kQueryData, KColumnsAllowedToGroupBy);
     }
     
     public KWindow window(
@@ -78,7 +81,7 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {
@@ -104,7 +107,7 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
@@ -112,7 +115,7 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
@@ -120,7 +123,7 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
@@ -128,11 +131,11 @@ public class KWhere extends KQuery {
     ) {
         this.buildWhere();
         
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void buildWhere() {
-        assertNotNull(this.kCondition, "kCondition");
+        KUtils.assertNotNull(this.kCondition, "kCondition");
         
         if (this.kCondition.emptyCondition) {
             return;
@@ -141,28 +144,11 @@ public class KWhere extends KQuery {
         this.kQueryData.sb.append(" WHERE ").append(this.kCondition.toSql());
         this.kQueryData.params.addAll(this.kCondition.params);
     }
-    
-    private static void assertNotNull(
-        final Object o,
-        final String name
-    ) {
-        if (o == null) {
-            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
-        }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
-        }
-    }
 
     @Override
-    public void single() {
+    public Map<String, Object> single() {
         this.buildWhere();
         
-        super.single();
+        return super.single();
     }
 }

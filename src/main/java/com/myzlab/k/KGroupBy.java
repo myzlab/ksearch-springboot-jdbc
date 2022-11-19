@@ -8,10 +8,11 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KGroupBy extends KQuery {
     
     private KGroupBy(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         KUtils.assertNotNull(KColumnsAllowedToGroupBy, "KColumnsAllowedToGroupBy");
         
@@ -19,22 +20,23 @@ public class KGroupBy extends KQuery {
     }
     
     public static KGroupBy getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        return new KGroupBy(kQueryData, KColumnsAllowedToGroupBy);
+        return new KGroupBy(kInitializer, kQueryData, KColumnsAllowedToGroupBy);
     }
 
     public KHaving having(
         final KCondition kCondition
     ) {
-        return KHaving.getInstance(this, kCondition);
+        return KHaving.getInstance(this.k, this.kQueryData, kCondition);
     }
     
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {
@@ -52,25 +54,25 @@ public class KGroupBy extends KQuery {
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void process(

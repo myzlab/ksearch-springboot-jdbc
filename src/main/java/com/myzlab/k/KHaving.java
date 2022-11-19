@@ -2,6 +2,8 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
+import java.util.List;
+import java.util.Map;
 
 public class KHaving extends KQuery {
     
@@ -14,10 +16,11 @@ public class KHaving extends KQuery {
     }
     
     private KHaving(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         KUtils.assertNotNull(kCondition, "kCondition");
         
@@ -25,10 +28,11 @@ public class KHaving extends KQuery {
     }
     
     public static KHaving getInstance(
-        final KGroupBy kGroupBy,
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        return new KHaving(kGroupBy.kQueryData, kCondition);
+        return new KHaving(kInitializer, kQueryData, kCondition);
     }
     
     public KHaving andNot(
@@ -68,7 +72,7 @@ public class KHaving extends KQuery {
     ) {
         this.buildhaving();
         
-        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {
@@ -94,7 +98,7 @@ public class KHaving extends KQuery {
     ) {
         this.buildhaving();
         
-        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
@@ -102,7 +106,7 @@ public class KHaving extends KQuery {
     ) {
         this.buildhaving();
         
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
@@ -110,7 +114,7 @@ public class KHaving extends KQuery {
     ) {
         this.buildhaving();
         
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
@@ -118,7 +122,7 @@ public class KHaving extends KQuery {
     ) {
         this.buildhaving();
         
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void buildhaving() {
@@ -133,9 +137,9 @@ public class KHaving extends KQuery {
     }
 
     @Override
-    public void single() {
+    public Map<String, Object> single() {
         this.buildhaving();
         
-        super.single();
+        return super.single();
     }
 }

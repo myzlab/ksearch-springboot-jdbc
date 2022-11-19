@@ -12,19 +12,21 @@ public class KFrom extends KQuery {
     }
     
     private KFrom(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KTable kTable
     ) {
-        super(kQueryData);
+        super(kQueryData, kInitializer);
         
         this.process(kTable);
     }
     
     public static KFrom getInstance(
-        final KSelect kSelect,
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
         final KTable kTable
     ) {
-        return new KFrom(kSelect.kQueryData, kTable);
+        return new KFrom(kInitializer, kQueryData, kTable);
     }
     
     public KFrom crossJoin(
@@ -78,19 +80,19 @@ public class KFrom extends KQuery {
     public KWhere where(
         final KCondition kCondition
     ) {
-        return KWhere.getInstance(this.kQueryData, kCondition);
+        return KWhere.getInstance(this.k, this.kQueryData, kCondition);
     }
     
     public KGroupBy groupBy(
         final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        return KGroupBy.getInstance(this.kQueryData, KColumnsAllowedToGroupBy);
+        return KGroupBy.getInstance(this.k, this.kQueryData, KColumnsAllowedToGroupBy);
     }
     
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return KWindow.getInstance(kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KUnion union() {
@@ -108,25 +110,25 @@ public class KFrom extends KQuery {
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return KOrderBy.getInstance(kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(kQueryData, count);
+        return KLimit.getInstance(this.k, this.kQueryData, count);
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(kQueryData, start);
+        return KOffset.getInstance(this.k, this.kQueryData, start);
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
     }
     
     private void process(
@@ -144,7 +146,7 @@ public class KFrom extends KQuery {
         
         this.kQueryData.tablesAdded++;
             
-        this.kQueryData.sb.append(kTable.toSql());
+        this.kQueryData.sb.append(kTable.toSql(true));
     }
     
     private void processGeneralJoin(
@@ -162,6 +164,6 @@ public class KFrom extends KQuery {
     ) {
         KUtils.assertNotNull(kTable, "kTable");
         
-        this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql());
+        this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql(true));
     }
 }

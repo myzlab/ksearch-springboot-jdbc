@@ -1,10 +1,13 @@
 package com.myzlab.k;
 
+import lombok.Data;
+
+@Data
 public class KTable {
     
-    private final String schema;
-    private final String name;
-    private final String alias;
+    protected final String schema;
+    protected final String name;
+    protected final String alias;
     
     private KTable() {
         this.schema = null;
@@ -25,10 +28,16 @@ public class KTable {
     public KJoinDefinition on(
         final KCondition kCondition
     ) {
-        return KJoinDefinition.getInstance(this.schema + "." + this.name, kCondition);
+        return KJoinDefinition.getInstance(this.toSql(true), kCondition);
     }
     
-    protected String toSql() {
+    public String toSql(
+        final boolean alias
+    ) {
+        if (alias) {
+            return this.schema + "." + this.name + " " + this.alias;
+        }
+        
         return this.schema + "." + this.name;
     }
 }

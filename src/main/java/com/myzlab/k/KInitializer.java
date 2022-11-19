@@ -10,7 +10,7 @@ public abstract class KInitializer {
     }
     
     public KSelect select(final KBaseColumn... kBaseColumns) {
-        return KSelect.getInstance(kBaseColumns);
+        return KSelect.getInstance(this, kBaseColumns);
     }
     
     public void insertInto() {
