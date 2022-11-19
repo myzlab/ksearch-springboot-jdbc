@@ -16,22 +16,22 @@ public class KSelect extends KQuery {
     
     public static KSelect getInstance(
         final KInitializer kInitializer,
-        final KBaseColumn... kBaseColums
+        final KBaseColumn... kBaseColumns
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
-        kSelect.kQueryData.kBaseColums.addAll(Arrays.asList(kBaseColums));
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.process(kBaseColums);
+        kSelect.process(kBaseColumns);
         
         return kSelect;
     }
     
     public KSelect select(
-        final KBaseColumn... kBaseColums
+        final KBaseColumn... kBaseColumns
     ) {
-        this.kQueryData.kBaseColums.addAll(Arrays.asList(kBaseColums));
+        this.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        this.process(kBaseColums);
+        this.process(kBaseColumns);
         
         return this;
     }

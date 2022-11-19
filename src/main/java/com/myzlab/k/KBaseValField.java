@@ -11,10 +11,9 @@ public abstract class KBaseValField extends KBaseColumnCastable {
     protected KBaseValField(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
     }
     
     protected KBaseValField(

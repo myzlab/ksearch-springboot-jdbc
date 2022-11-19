@@ -7,22 +7,22 @@ import java.util.regex.Pattern;
 public class KUtils {
 
     protected static String reverseParams(
-        final KColumnOrdered kColumnOrdered
+        final KBaseColumn kBaseColumn
     ) {
-        return reverseParams(kColumnOrdered.sb.toString(), kColumnOrdered.params);
+        return reverseParams(kBaseColumn.sb.toString(), kBaseColumn.params);
     }
     
-    protected static String reverseParams(
-        final KColumn kColumn
-    ) {
-        return reverseParams(kColumn.sb.toString(), kColumn.params);
-    }
-    
-    protected static String reverseParams(
-        final KValNumberField kValNumberField
-    ) {
-        return reverseParams(kValNumberField.sb.toString(), kValNumberField.params);
-    }
+//    protected static String reverseParams(
+//        final KColumn kColumn
+//    ) {
+//        return reverseParams(kColumn.sb.toString(), kColumn.params);
+//    }
+//    
+//    protected static String reverseParams(
+//        final KValNumberField kValNumberField
+//    ) {
+//        return reverseParams(kValNumberField.sb.toString(), kValNumberField.params);
+//    }
     
     private static String reverseParams(
         final String value,

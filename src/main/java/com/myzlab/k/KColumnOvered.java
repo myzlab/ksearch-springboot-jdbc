@@ -12,27 +12,25 @@ public class KColumnOvered extends KBaseColumn {
     private KColumnOvered(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
     }
     
     protected KColumnOvered(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed,
         final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
         
         this.process(kWindowDefinitionAllowedToOver);
     }
     
     @Override
     protected KColumnOvered cloneMe() {
-        return new KColumnOvered(this.sb, this.params, this.operating, this.closed);
+        return new KColumnOvered(this.sb, this.params, this.closed);
     }
     
     private void process(

@@ -11,10 +11,12 @@ public abstract class KBaseColumnUncastable extends KBaseColumn {
     protected KBaseColumnUncastable(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
-        final boolean closed
+        final boolean closed,
+        final String name,
+        final Class type,
+        final KTable kTable
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed, name, type, kTable);
     }
     
     protected KBaseColumnUncastable(

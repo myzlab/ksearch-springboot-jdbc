@@ -5,7 +5,7 @@ import java.util.List;
 
 public class KQueryData {
 
-    protected List<KBaseColumn> kBaseColums;
+    protected List<KBaseColumn> kBaseColumns;
     protected final StringBuilder sb;
     protected int columnsAdded;
     protected int tablesAdded;
@@ -18,6 +18,6 @@ public class KQueryData {
         this.columnsAdded = 0;
         this.tablesAdded = 0;
         this.params = new ArrayList<>();
-        this.kBaseColums = new ArrayList<>();
+        this.kBaseColumns = new ArrayList<>();
     }
 }

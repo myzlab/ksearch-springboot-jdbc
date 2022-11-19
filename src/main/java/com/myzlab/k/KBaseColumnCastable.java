@@ -22,12 +22,31 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     protected KBaseColumnCastable(
+        final boolean closed,
+        final String name,
+        final Class type,
+        final KTable kTable
+    ) {
+        super(closed, name, type, kTable);
+    }
+    
+    protected KBaseColumnCastable(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
+    }
+    
+    protected KBaseColumnCastable(
+        final StringBuilder sb,
+        final List<Object> params,
+        final boolean closed,
+        final String name,
+        final Class type,
+        final KTable kTable
+    ) {
+        super(sb, params, closed, name, type, kTable);
     }
     
     protected KBaseColumnCastable(

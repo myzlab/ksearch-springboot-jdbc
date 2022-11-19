@@ -14,10 +14,9 @@ public class KValNumberField extends KBaseValField implements KColumnAllowedToOr
     protected KValNumberField(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
     }
     
     protected KValNumberField(
@@ -117,16 +116,16 @@ public class KValNumberField extends KBaseValField implements KColumnAllowedToOr
     }
     
     public KColumnOrdered asc() {
-        return new KColumnOrdered(sb, params, operating, closed, 1);
+        return new KColumnOrdered(sb, params, closed, 1);
     }
     
     public KColumnOrdered desc() {
-        return new KColumnOrdered(sb, params, operating, closed, -1);
+        return new KColumnOrdered(sb, params, closed, -1);
     }
     
     @Override
     protected KValNumberField cloneMe() {
-        return new KValNumberField(this.sb, new ArrayList<>(this.params), this.operating, this.closed);
+        return new KValNumberField(this.sb, new ArrayList<>(this.params), this.closed);
     }
     
     @Override

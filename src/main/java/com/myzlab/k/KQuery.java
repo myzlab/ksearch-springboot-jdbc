@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.SqlTypeValue;
@@ -53,10 +54,10 @@ public abstract class KQuery {
         return k.getJdbcTemplates().get(k.getJdbcTemplateDefaultName()).queryForMap(this.kQueryData.sb.toString(), p);
     }
     
-    public <T extends KMapper> List<T> multiple(
+    public <T extends KRow> KCollection<T> multiple(
         final Class<T> clazz
     ) {
-//        System.out.println(this.kQueryData.sb.toString());
+        System.out.println(this.kQueryData.sb.toString());
 //        System.out.println(this.kQueryData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
             
@@ -72,10 +73,10 @@ public abstract class KQuery {
             return this.mapObject(rs, ways, clazz);
         });
         
-        return list;
+        return new KCollection<>(list);
     }
     
-    private <T extends KMapper> void mapColumn(
+    private <T extends KRow> void mapColumn(
         final T t,
         final Object v,
         final String[] way,
@@ -85,16 +86,14 @@ public abstract class KQuery {
             return;
         }
         
-        final KColumn kColumn = ((KColumn) kBaseColumn);
-        
         Object current = t;
 
         for (final String w : way) {
             if (w.equals("*")) {
                 try {
                     final Method methodSet = current.getClass().getMethod(
-                        kColumn.getSetMethodName(),
-                        kColumn.type
+                        kBaseColumn.getSetMethodName(),
+                        kBaseColumn.type
                     );
 
                     methodSet.invoke(current, v);
@@ -132,7 +131,7 @@ public abstract class KQuery {
         }
     }
     
-    private <T extends KMapper> T mapObject(
+    private <T extends KRow> T mapObject(
         final ResultSet resultSet,
         final List<String[]> ways,
         final Class<T> clazz
@@ -145,17 +144,53 @@ public abstract class KQuery {
         } catch (Exception e) {
             throw KExceptionHelper.internalServerError(e.getMessage());
         }
+        
+        final Object[] o = new Object[this.kQueryData.kBaseColumns.size()];
+        final Map<String, Integer> ref = new HashMap<>();
 
-        for (int i = 0; i < this.kQueryData.kBaseColums.size(); i++) {
+        for (int i = 0; i < this.kQueryData.kBaseColumns.size(); i++) {
+            final Object v = resultSet.getObject(i + 1);
+            final KBaseColumn kBaseColumn = this.kQueryData.kBaseColumns.get(i);
+            
+            if (kBaseColumn == null) {
+                throw KExceptionHelper.internalServerError("The 'kBaseColumn' is required"); 
+            }
+            
             this.mapColumn(
                 t,
-                resultSet.getObject(i + 1),
+                v,
                 ways.get(i),
-                this.kQueryData.kBaseColums.get(i)
+                kBaseColumn
             );
+            
+            o[i] = v;
+            this.fillRef(ref, kBaseColumn, i);
         }
+        
+        t.o = o;
+        t.ref = ref;
 
         return t;
+    }
+    
+    private void fillRef(
+        final Map<String, Integer> ref,
+        final KBaseColumn kBaseColumn,
+        final int i
+    ) {
+        final String nameToRef;
+            
+        if (kBaseColumn instanceof KAliasedColumn) {
+            nameToRef = ((KAliasedColumn) kBaseColumn).alias;
+        } else {
+            nameToRef = KUtils.reverseParams(kBaseColumn);
+        }
+        
+        if (ref.containsKey(nameToRef)) {
+            throw KExceptionHelper.internalServerError("'Ref' value repeated. Please check values of 'SELECT' Clause. Repeated Value: ['" + nameToRef + "']");
+        }
+
+        ref.put(nameToRef, i);
     }
     
     private Object[] getParams() {
@@ -186,7 +221,7 @@ public abstract class KQuery {
         return argTypes;
     }
     
-    private <T extends KMapper> List<String[]> getWays(
+    private <T extends KRow> List<String[]> getWays(
         final Class<T> clazz
     ) {
         final T o;
@@ -199,25 +234,17 @@ public abstract class KQuery {
         
         final List<String[]> ways = new ArrayList<>();
         
-        for (int i = 0; i < this.kQueryData.kBaseColums.size(); i++) {
+        for (int i = 0; i < this.kQueryData.kBaseColumns.size(); i++) {
             
-            final KBaseColumn kBaseColum = this.kQueryData.kBaseColums.get(i);
+            final KBaseColumn kBaseColumn = this.kQueryData.kBaseColumns.get(i);
             
-            if (!(kBaseColum instanceof KColumn)) {
-                ways.add(null);
-                
-                continue;
-            }
-                    
-            final KColumn kColumn = (KColumn) kBaseColum;
-                
-            if (kColumn.kTable == null) {
+            if (kBaseColumn.name == null || kBaseColumn.kTable == null || kBaseColumn.type == null) {
                 ways.add(null);
                 
                 continue;
             }
             
-            final String[] way = o.getWay(kColumn.kTable.toSql(false));
+            final String[] way = o.getWay(kBaseColumn.kTable.toSql(false));
 
             ways.add(way);
         }

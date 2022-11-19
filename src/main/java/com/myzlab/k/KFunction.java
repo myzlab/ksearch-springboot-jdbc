@@ -13,23 +13,23 @@ public class KFunction {
         return new KAliasedColumn(kBaseColumnCastable, alias);
     }
     
-    public static KAliasedColumn as(
-        final Number val,
-        final String alias
-    ) {
-        assertNotNull(val, "val");
-                
-        return new KAliasedColumn(val(val), alias);
-    }
-    
-    public static KAliasedColumn as(
-        final String val,
-        final String alias
-    ) {
-        assertNotNull(val, "val");
-                
-        return new KAliasedColumn(val(val), alias);
-    }
+//    public static KAliasedColumn as(
+//        final Number val,
+//        final String alias
+//    ) {
+//        assertNotNull(val, "val");
+//                
+//        return new KAliasedColumn(val(val), alias);
+//    }
+//    
+//    public static KAliasedColumn as(
+//        final String val,
+//        final String alias
+//    ) {
+//        assertNotNull(val, "val");
+//                
+//        return new KAliasedColumn(val(val), alias);
+//    }
     
     public static KColumn abs(
         final KColumn kColumn
@@ -157,7 +157,7 @@ public class KFunction {
         assertNotNull(kColumn1, "kColumn1");
         assertNotNull(kColumn2, "kColumn2");
         
-        final KColumn operationKColumn = new KColumn(kColumn1.sb, kColumn1.params, kColumn1.operating, false);
+        final KColumn operationKColumn = new KColumn(kColumn1.sb, kColumn1.params, false);
         
         if (!kColumn1.closed) {
             operationKColumn.sb.insert(0, "(").append(")");
@@ -167,7 +167,6 @@ public class KFunction {
         
         operationKColumn.sb.append(" ").append(operator).append(" ").append(closeNextParam ? "(" : "").append(kColumn2.sb).append(closeNextParam ? ")" : "");
         operationKColumn.params.addAll(kColumn2.params);
-        operationKColumn.operating += kColumn2.operating;
         
         return operationKColumn;
     }
@@ -202,7 +201,7 @@ public class KFunction {
         assertNotNull(kValNumberField1, "kValNumberField1");
         assertNotNull(kValNumberField2, "kValNumberField2");
         
-        final KValNumberField newKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, kValNumberField1.operating, false);
+        final KValNumberField newKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, false);
         
         if (!kValNumberField1.closed) {
             newKValNumberField.sb.insert(0, "(").append(")");
@@ -212,7 +211,6 @@ public class KFunction {
         
         newKValNumberField.sb.append(" ").append(operator).append(" ").append(closeNextParam ? "(" : "").append(kValNumberField2.sb).append(closeNextParam ? ")" : "");
         newKValNumberField.params.addAll(kValNumberField2.params);
-        newKValNumberField.operating += kValNumberField2.operating;
         
         return newKValNumberField;
     }
@@ -225,7 +223,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kValNumberField, "kValNumberField");
         
-        final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, false);
+        final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         if (!kColumn.closed) {
             operationKColumn.sb.insert(0, "(").append(")");
@@ -235,7 +233,6 @@ public class KFunction {
         
         operationKColumn.sb.append(" ").append(operator).append(" ").append(closeNextParam ? "(" : "").append(kValNumberField.sb).append(closeNextParam ? ")" : "");
         operationKColumn.params.addAll(kValNumberField.params);
-        operationKColumn.operating += kValNumberField.operating;
         
         return operationKColumn;
     }
@@ -248,7 +245,7 @@ public class KFunction {
         assertNotNull(kValNumberField, "kValNumberField");
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn operationKColumn = new KColumn(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, false);
+        final KColumn operationKColumn = new KColumn(kValNumberField.sb, kValNumberField.params, false);
         
         if (!kValNumberField.closed) {
             operationKColumn.sb.insert(0, "(").append(")");
@@ -258,7 +255,6 @@ public class KFunction {
         
         operationKColumn.sb.append(" ").append(operator).append(" ").append(closeNextParam ? "(" : "").append(kColumn.sb).append(closeNextParam ? ")" : "");
         operationKColumn.params.addAll(kColumn.params);
-        operationKColumn.operating += kColumn.operating;
         
         return operationKColumn;
     }
@@ -270,7 +266,7 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, false);
+        final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         if (!kColumn.closed) {
             operationKColumn.sb.insert(0, "(").append(")");
@@ -288,7 +284,7 @@ public class KFunction {
     ) {
         assertNotNull(kValNumberField, "kValNumberField");
         
-        final KValNumberField operationKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, false);
+        final KValNumberField operationKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, false);
         
         if (!kValNumberField.closed) {
             operationKValNumberField.sb.insert(0, "(").append(")");
@@ -305,7 +301,7 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn functionKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
+        final KColumn functionKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         functionKColumn.sb.insert(0, "(").insert(0, functionName).append(")");
         
@@ -318,7 +314,7 @@ public class KFunction {
     ) {
         assertNotNull(kValNumberField, "kValNumberField");
         
-        final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, true);
+        final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, true);
         
         functionKValNumberField.sb.insert(0, "(").insert(0, functionName).append(")");
         
@@ -331,7 +327,7 @@ public class KFunction {
     ) {
         assertNotNull(kValTextField, "kValTextField");
         
-        final KValTextField functionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
+        final KValTextField functionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         functionKValTextField.sb.insert(0, "(").insert(0, functionName).append(")");
         
@@ -346,11 +342,10 @@ public class KFunction {
         assertNotNull(kBaseColumn1, "kBaseColumn1");
         assertNotNull(kBaseColumn2, "kBaseColumn2");
         
-        final KColumn functionKColumn = new KColumn(kBaseColumn1.sb, kBaseColumn1.params, kBaseColumn1.operating, true);
+        final KColumn functionKColumn = new KColumn(kBaseColumn1.sb, kBaseColumn1.params, true);
         
         functionKColumn.sb.insert(0, "(").insert(0, functionName).append(", ").append(kBaseColumn2.sb).append(")");
         functionKColumn.params.addAll(kBaseColumn2.params);
-        functionKColumn.operating += kBaseColumn2.operating;
         
         return functionKColumn;
     }
@@ -415,11 +410,10 @@ public class KFunction {
         assertNotNull(kValNumberField1, "kValNumberField1");
         assertNotNull(kValNumberField2, "kValNumberField2");
         
-        final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, kValNumberField1.operating, true);
+        final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, true);
         
         functionKValNumberField.sb.insert(0, "(").insert(0, functionName).append(", ").append(kValNumberField2.sb).append(")");
         functionKValNumberField.params.addAll(kValNumberField2.params);
-        functionKValNumberField.operating += kValNumberField2.operating;
         
         return functionKValNumberField;
     }
@@ -844,7 +838,7 @@ public class KFunction {
         assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(kBaseColumnCastable.sb, kBaseColumnCastable.params, kBaseColumnCastable.operating, true);
+        final KColumn castkColumn = new KColumn(kBaseColumnCastable.sb, kBaseColumnCastable.params, true);
         
         if (!kBaseColumnCastable.closed) {
             castkColumn.sb.insert(0, "(").append(")");
@@ -862,7 +856,7 @@ public class KFunction {
         assertNotNull(val, "val");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(null, null, val, null);
+        final KColumn castkColumn = new KColumn(val);
         
         castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
@@ -876,7 +870,7 @@ public class KFunction {
         assertNotNull(val, "val");
         assertNotNull(kDataType, "kDataType");
         
-        final KColumn castkColumn = new KColumn(null, val, null);
+        final KColumn castkColumn = new KColumn(val);
         
         castkColumn.sb.insert(0, "CAST(").append(" AS ").append(kDataType.toSql()).append(")");
         
@@ -1035,7 +1029,6 @@ public class KFunction {
             
             coalesceKColumn.sb.append(kBaseColumnCastable.sb);
             coalesceKColumn.params.addAll(kBaseColumnCastable.params);
-            coalesceKColumn.operating += kBaseColumnCastable.operating;
         }
         
         coalesceKColumn.sb.append(")");
@@ -1104,7 +1097,7 @@ public class KFunction {
     }
     
     public static KColumn count() {
-        return new KColumn(new StringBuilder("COUNT(*)"), 1, true);
+        return new KColumn(new StringBuilder("COUNT(*)"), true);
     }
     
     public static KColumn concat(
@@ -1137,7 +1130,6 @@ public class KFunction {
             
             concatKColumn.sb.append(kBaseColumnCastable.sb);
             concatKColumn.params.addAll(kBaseColumnCastable.params);
-            concatKColumn.operating += kBaseColumnCastable.operating;
         }
         
         concatKColumn.sb.append(")");
@@ -1146,11 +1138,11 @@ public class KFunction {
     }
     
     public static KColumn currentDate() {
-        return new KColumn(new StringBuilder("CURRENT_DATE"), 1, true);
+        return new KColumn(new StringBuilder("CURRENT_DATE"), true);
     }
     
     public static KColumn currentSchema() {
-        return new KColumn(new StringBuilder("CURRENT_SCHEMA"), 1, true);
+        return new KColumn(new StringBuilder("CURRENT_SCHEMA"), true);
     }
     
     public static KColumn currentTime() {
@@ -1160,7 +1152,7 @@ public class KFunction {
     public static KColumn currentTime(
         final Integer precision
     ) {
-        return new KColumn(new StringBuilder("CURRENT_TIME" + ((precision != null) ? "(" + precision + ")": "")), 1, true);
+        return new KColumn(new StringBuilder("CURRENT_TIME" + ((precision != null) ? "(" + precision + ")": "")), true);
     }
     
     public static KColumn currentTimestamp() {
@@ -1170,11 +1162,11 @@ public class KFunction {
     public static KColumn currentTimestamp(
         final Integer precision
     ) {
-        return new KColumn(new StringBuilder("CURRENT_TIMESTAMP" + ((precision != null) ? "(" + precision + ")": "")), 1, true);
+        return new KColumn(new StringBuilder("CURRENT_TIMESTAMP" + ((precision != null) ? "(" + precision + ")": "")), true);
     }
     
     public static KColumn currentUser() {
-        return new KColumn(new StringBuilder("CURRENT_USER"), 1, true);
+        return new KColumn(new StringBuilder("CURRENT_USER"), true);
     }
     
     public static KColumn datePart(
@@ -1184,7 +1176,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
         
-        final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         extractkColumn.sb.insert(0, "', ").insert(0, kExtractField.toSql()).insert(0, "DATE_PART('").append(")");
         
@@ -1198,7 +1190,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
         
-        final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         extractkColumn.sb.insert(0, "', ").insert(0, kExtractField.toSql()).insert(0, "DATE_TRUNC('").append(")");
         
@@ -1368,7 +1360,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(kExtractField, "kExtractField");
         
-        final KColumn extractKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn extractKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         extractKColumn.sb.insert(0, " FROM ").insert(0, kExtractField.toSql()).insert(0, "EXTRACT(").append(")");
         
@@ -1396,7 +1388,7 @@ public class KFunction {
     }
     
     public static KColumn genRandomUuid() {
-        return new KColumn(new StringBuilder("GEN_RANDOM_UUID()"), 1, true);
+        return new KColumn(new StringBuilder("GEN_RANDOM_UUID()"), true);
     }
     
     private static KColumn genericTrim(
@@ -1406,14 +1398,13 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn genericTrimKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
+        final KColumn genericTrimKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         genericTrimKColumn.sb.insert(0, "(").insert(0, trimFunctionName);
                 
         if (characters != null) {
             genericTrimKColumn.sb.append(", ").append("?");
             genericTrimKColumn.params.add(characters);
-            genericTrimKColumn.operating += 1;
         }
                 
         genericTrimKColumn.sb.append(")");
@@ -1428,14 +1419,13 @@ public class KFunction {
     ) {
         assertNotNull(kValTextField, "kValTextField");
         
-        final KValTextField genericTrimKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
+        final KValTextField genericTrimKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         genericTrimKValTextField.sb.insert(0, "(").insert(0, trimFunctionName);
                 
         if (characters != null) {
             genericTrimKValTextField.sb.append(", ").append("?");
             genericTrimKValTextField.params.add(characters);
-            genericTrimKValTextField.operating += 1;
         }
                 
         genericTrimKValTextField.sb.append(")");
@@ -1490,7 +1480,7 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" -> ").append(index);
         
@@ -1503,7 +1493,7 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" ->> ").append(index);
         
@@ -1517,7 +1507,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(name, "name");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" -> '").append(name).append("'");
         
@@ -1531,7 +1521,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(name, "name");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" ->> '").append(name).append("'");
         
@@ -1545,7 +1535,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(path, "path");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" #> '{").append(path).append("}'");
         
@@ -1559,7 +1549,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(path, "path");
         
-        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, false);
+        final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
         jsonKColumn.sb.append(" #>> '{").append(path).append("}'");
         
@@ -1596,7 +1586,6 @@ public class KFunction {
             
             greatestkColumn.sb.append(kBaseColumn.sb);
             greatestkColumn.params.addAll(kBaseColumn.params);
-            greatestkColumn.operating += kBaseColumn.operating;
         }
         
         greatestkColumn.sb.append(")");
@@ -1685,7 +1674,6 @@ public class KFunction {
             
             leastKColumn.sb.append(kBaseColumn.sb);
             leastKColumn.params.addAll(kBaseColumn.params);
-            leastKColumn.operating += kBaseColumn.operating;
         }
         
         leastKColumn.sb.append(")");
@@ -1758,7 +1746,7 @@ public class KFunction {
     public static KColumn localTime(
         final Integer precision
     ) {
-        return new KColumn(new StringBuilder("LOCALTIME" + ((precision != null) ? "(" + precision + ")": "")), 1, true);
+        return new KColumn(new StringBuilder("LOCALTIME" + ((precision != null) ? "(" + precision + ")": "")), true);
     }
     
     public static KColumn localTimestamp() {
@@ -1768,7 +1756,7 @@ public class KFunction {
     public static KColumn localTimestamp(
         final Integer precision
     ) {
-        return new KColumn(new StringBuilder("LOCALTIMESTAMP" + ((precision != null) ? "(" + precision + ")": "")), 1, true);
+        return new KColumn(new StringBuilder("LOCALTIMESTAMP" + ((precision != null) ? "(" + precision + ")": "")), true);
     }
     
     public static KColumn log(
@@ -1881,14 +1869,13 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn lpadKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
+        final KColumn lpadKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         lpadKColumn.sb.insert(0, "LPAD(").append(", ").append(n);
                 
         if (fillText != null) {
             lpadKColumn.sb.append(", ?");
             lpadKColumn.params.add(fillText);
-            lpadKColumn.operating += 1;
         }
                 
         lpadKColumn.sb.append(")");
@@ -1910,14 +1897,13 @@ public class KFunction {
     ) {
         assertNotNull(kValTextField, "kValTextField");
         
-        final KValTextField lpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
+        final KValTextField lpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         lpadKValTextField.sb.insert(0, "LPAD(").append(", ").append(n);
                 
         if (fillText != null) {
             lpadKValTextField.sb.append(", ?");
             lpadKValTextField.params.add(fillText);
-            lpadKValTextField.operating += 1;
         }
                 
         lpadKValTextField.sb.append(")");
@@ -2124,7 +2110,7 @@ public class KFunction {
     }
     
     public static KColumn now() {
-        return new KColumn(new StringBuilder("NOW()"), 1, true);
+        return new KColumn(new StringBuilder("NOW()"), true);
     }
     
     public static KColumn nullif(
@@ -2135,11 +2121,10 @@ public class KFunction {
         assertNotNull(kBaseColumnCastable1, "kBaseColumnCastable1");
         assertNotNull(kBaseColumnCastable2, "kBaseColumnCastable2");
         
-        final KColumn nullifkColumn = new KColumn(kBaseColumnCastable1.sb, kBaseColumnCastable1.params, kBaseColumnCastable1.operating, true);
+        final KColumn nullifkColumn = new KColumn(kBaseColumnCastable1.sb, kBaseColumnCastable1.params, true);
         
         nullifkColumn.sb.insert(0, "NULLIF(").append(", ").append(kBaseColumnCastable2.sb).append(")");
         nullifkColumn.params.addAll(kBaseColumnCastable2.params);
-        nullifkColumn.operating += kBaseColumnCastable2.operating;
         
         return nullifkColumn;
     }
@@ -2170,14 +2155,13 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(value, "value");
         
-        final KColumn overlayKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 2, true);
+        final KColumn overlayKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         overlayKColumn.sb.insert(0, "OVERLAY(").append(" PLACING ?").append(" from ").append(from);
         overlayKColumn.params.add(value);
         
         if (for_ != null) {
             overlayKColumn.sb.append(" for ").append(for_);
-            overlayKColumn.operating += 1;
         }
                 
         overlayKColumn.sb.append(")");
@@ -2203,14 +2187,13 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(value, "value");
         
-        final KValTextField overlayKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 2, true);
+        final KValTextField overlayKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         overlayKValTextField.sb.insert(0, "OVERLAY(").append(" PLACING ?").append(" from ").append(from);
         overlayKValTextField.params.add(value);
         
         if (for_ != null) {
             overlayKValTextField.sb.append(" for ").append(for_);
-            overlayKValTextField.operating += 1;
         }
                 
         overlayKValTextField.sb.append(")");
@@ -2219,7 +2202,7 @@ public class KFunction {
     }
     
     public static KColumn pi() {
-        return new KColumn(new StringBuilder("PI()"), 1, true);
+        return new KColumn(new StringBuilder("PI()"), true);
     }
     
     public static KColumn position(
@@ -2230,7 +2213,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(valueToLocate, "valueToLocate");
         
-        final KColumn positionKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn positionKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         positionKColumn.sb.insert(0, "POSITION(? in ").append(")");
         positionKColumn.params.add(valueToLocate);
@@ -2246,7 +2229,7 @@ public class KFunction {
         assertNotNull(kValTextField, "kValTextField");
         assertNotNull(valueToLocate, "valueToLocate");
         
-        final KValTextField positionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
+        final KValTextField positionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         positionKValTextField.sb.insert(0, "POSITION(? in ").append(")");
         positionKValTextField.params.add(valueToLocate);
@@ -2331,13 +2314,13 @@ public class KFunction {
     }
     
     public static KColumn random() {
-        return new KColumn(new StringBuilder("RANDOM()"), 1, true);
+        return new KColumn(new StringBuilder("RANDOM()"), true);
     }
     
     public static KColumn rawColumn(
         final String content
     ) {
-        return new KColumn(new StringBuilder(content), 1, true);
+        return new KColumn(new StringBuilder(content), true);
     }
     
     public static KCondition rawCondition(
@@ -2356,7 +2339,7 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn repeatKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn repeatKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         repeatKColumn.sb.insert(0, "REPEAT(").append(", ").append(n).append(")");
         
@@ -2369,7 +2352,7 @@ public class KFunction {
     ) {
         assertNotNull(kValTextField, "kValTextField");
         
-        final KValTextField repeatKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
+        final KValTextField repeatKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         repeatKValTextField.sb.insert(0, "REPEAT(").append(", ").append(n).append(")");
         
@@ -2394,7 +2377,7 @@ public class KFunction {
         assertNotNull(pattern, "pattern");
         assertNotNull(replacement, "replacement");
         
-        final KColumn regexpReplaceKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 2, true);
+        final KColumn regexpReplaceKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         regexpReplaceKColumn.sb.insert(0, "REGEXP_REPLACE(").append(", ?, ?");
         regexpReplaceKColumn.params.add(pattern);
@@ -2403,7 +2386,6 @@ public class KFunction {
         if (flags != null) {
             regexpReplaceKColumn.sb.append(", ?");
             regexpReplaceKColumn.params.add(flags);
-            regexpReplaceKColumn.operating += 1;
         }
         
         regexpReplaceKColumn.sb.append(")");
@@ -2429,7 +2411,7 @@ public class KFunction {
         assertNotNull(pattern, "pattern");
         assertNotNull(replacement, "replacement");
         
-        final KValTextField regexpReplaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 2, true);
+        final KValTextField regexpReplaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         regexpReplaceKValTextField.sb.insert(0, "REGEXP_REPLACE(").append(", ?, ?");
         regexpReplaceKValTextField.params.add(pattern);
@@ -2438,7 +2420,6 @@ public class KFunction {
         if (flags != null) {
             regexpReplaceKValTextField.sb.append(", ?");
             regexpReplaceKValTextField.params.add(flags);
-            regexpReplaceKValTextField.operating += 1;
         }
         
         regexpReplaceKValTextField.sb.append(")");
@@ -2455,7 +2436,7 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(to, "to");
         
-        final KColumn replaceKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 2, true);
+        final KColumn replaceKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         replaceKColumn.sb.insert(0, "REPLACE(").append(", ?, ?").append(")");
         replaceKColumn.params.add(from);
@@ -2473,7 +2454,7 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(to, "to");
         
-        final KValTextField replaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 2, true);
+        final KValTextField replaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         replaceKValTextField.sb.insert(0, "REPLACE(").append(", ?, ?").append(")");
         replaceKValTextField.params.add(from);
@@ -2610,14 +2591,13 @@ public class KFunction {
     ) {
         assertNotNull(kColumn, "kColumn");
         
-        final KColumn rpadKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
+        final KColumn rpadKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         rpadKColumn.sb.insert(0, "RPAD(").append(", ").append(n);
                 
         if (fillText != null) {
             rpadKColumn.sb.append(", ?");
             rpadKColumn.params.add(fillText);
-            rpadKColumn.operating += 1;
         }
                 
         rpadKColumn.sb.append(")");
@@ -2639,14 +2619,13 @@ public class KFunction {
     ) {
         assertNotNull(kValTextField, "kValTextField");
         
-        final KValTextField rpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
+        final KValTextField rpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         rpadKValTextField.sb.insert(0, "RPAD(").append(", ").append(n);
                 
         if (fillText != null) {
             rpadKValTextField.sb.append(", ?");
             rpadKValTextField.params.add(fillText);
-            rpadKValTextField.operating += 1;
         }
                 
         rpadKValTextField.sb.append(")");
@@ -2748,7 +2727,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(delimiter, "delimiter");
         
-        final KColumn splitPartKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 2, true);
+        final KColumn splitPartKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         splitPartKColumn.sb.insert(0, "SPLIT_PART(").append(", ?, ").append(field).append(")");
         splitPartKColumn.params.add(delimiter);
@@ -2764,7 +2743,7 @@ public class KFunction {
         assertNotNull(kValTextField, "kValTextField");
         assertNotNull(delimiter, "delimiter");
         
-        final KValTextField splitPartKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 2, true);
+        final KValTextField splitPartKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         splitPartKValTextField.sb.insert(0, "SPLIT_PART(").append(", ?, ").append(field).append(")");
         splitPartKValTextField.params.add(delimiter);
@@ -2810,20 +2789,18 @@ public class KFunction {
             throw KExceptionHelper.internalServerError("Between 'from' and 'for_', at least one is required");
         }
         
-        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
+        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         substringKColumn.sb.insert(0, "SUBSTRING(");
         
         if (from != null) {
             substringKColumn.sb.append(" from ?");
             substringKColumn.params.add(from);
-            substringKColumn.operating += 1;
         }
         
         if (for_ != null) {
             substringKColumn.sb.append(" for ?");
             substringKColumn.params.add(for_);
-            substringKColumn.operating += 1;
         }
                 
         substringKColumn.sb.append(")");
@@ -2868,20 +2845,18 @@ public class KFunction {
             throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least one is required");
         }
         
-        final KValTextField substringKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
+        final KValTextField substringKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         substringKValTextField.sb.insert(0, "SUBSTRING(");
         
         if (from != null) {
             substringKValTextField.sb.append(" from ?");
             substringKValTextField.params.add(from);
-            substringKValTextField.operating += 1;
         }
         
         if (for_ != null) {
             substringKValTextField.sb.append(" for ?");
             substringKValTextField.params.add(for_);
-            substringKValTextField.operating += 1;
         }
                 
         substringKValTextField.sb.append(")");
@@ -2904,7 +2879,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(from, "from");
         
-        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         substringKColumn.sb.insert(0, "SUBSTRING(").append(" from ?");
         substringKColumn.params.add(from);
@@ -2912,7 +2887,6 @@ public class KFunction {
         if (for_ != null) {
             substringKColumn.sb.append(" for ?");
             substringKColumn.params.add(for_);
-            substringKColumn.operating += 1;
         }
         
         substringKColumn.sb.append(")");
@@ -2954,7 +2928,7 @@ public class KFunction {
         assertNotNull(kValTextField, "kValTextField");
         assertNotNull(from, "from");
         
-        final KValTextField substringKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
+        final KValTextField substringKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         substringKValTextField.sb.insert(0, "SUBSTRING(").append(" from ?");
         substringKValTextField.params.add(from);
@@ -2962,7 +2936,6 @@ public class KFunction {
         if (for_ != null) {
             substringKValTextField.sb.append(" for ?");
             substringKValTextField.params.add(for_);
-            substringKValTextField.operating += 1;
         }
         
         substringKValTextField.sb.append(")");
@@ -3037,7 +3010,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(format, "format");
         
-        final KColumn toDateKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn toDateKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         toDateKColumn.sb.insert(0, "TO_DATE(").append(", ?").append(")");
         toDateKColumn.params.add(format);
@@ -3052,7 +3025,7 @@ public class KFunction {
         assertNotNull(kValTextField, "kValTextField");
         assertNotNull(format, "format");
         
-        final KValTextField toDateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
+        final KValTextField toDateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         toDateKValTextField.sb.insert(0, "TO_DATE(").append(", ?").append(")");
         toDateKValTextField.params.add(format);
@@ -3117,7 +3090,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(format, "format");
         
-        final KColumn toTimestampKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn toTimestampKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         toTimestampKColumn.sb.insert(0, "TO_TIMESTAMP(").append(", ?").append(")");
         toTimestampKColumn.params.add(format);
@@ -3132,7 +3105,7 @@ public class KFunction {
         assertNotNull(kValTextField, "kValTextField");
         assertNotNull(format, "format");
         
-        final KValTextField toTimestampKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
+        final KValTextField toTimestampKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         toTimestampKValTextField.sb.insert(0, "TO_TIMESTAMP(").append(", ?").append(")");
         toTimestampKValTextField.params.add(format);
@@ -3149,7 +3122,7 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(to, "to");
         
-        final KColumn translateKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 2, true);
+        final KColumn translateKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         translateKColumn.sb.insert(0, "TRANSLATE(").append(", ?, ?)");
         translateKColumn.params.add(from);
@@ -3167,7 +3140,7 @@ public class KFunction {
         assertNotNull(from, "from");
         assertNotNull(to, "to");
         
-        final KValTextField translateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 2, true);
+        final KValTextField translateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
         translateKValTextField.sb.insert(0, "TRANSLATE(").append(", ?, ?)");
         translateKValTextField.params.add(from);
@@ -3265,7 +3238,7 @@ public class KFunction {
         assertNotNull(kColumn, "kColumn");
         assertNotNull(format, "format");
         
-        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
+        final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
         substringKColumn.sb.insert(0, "TO_CHAR(").append(", ?").append(")");
         substringKColumn.params.add(format);
@@ -3280,7 +3253,7 @@ public class KFunction {
         assertNotNull(kValNumberField, "kValNumberField");
         assertNotNull(format, "format");
         
-        final KValNumberField substringKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, kValNumberField.operating + 1, true);
+        final KValNumberField substringKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, true);
         
         substringKValNumberField.sb.insert(0, "TO_CHAR(").append(", ?").append(")");
         substringKValNumberField.params.add(format);
@@ -3309,11 +3282,11 @@ public class KFunction {
     }
     
     public static KColumn uuidGenerateV1() {
-        return new KColumn(new StringBuilder("UUID_GENERATE_V1()"), 1, true);
+        return new KColumn(new StringBuilder("UUID_GENERATE_V1()"), true);
     }
     
     public static KColumn uuidGenerateV4() {
-        return new KColumn(new StringBuilder("UUID_GENERATE_V4()"), 1, true);
+        return new KColumn(new StringBuilder("UUID_GENERATE_V4()"), true);
     }
     
     public static KColumn upper(
@@ -3379,15 +3352,12 @@ public class KFunction {
         assertNotNull(b2, "b2");
         assertNotNull(count, "count");
         
-        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, op.operating, true);
+        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
         widthBucketkColumn.sb.insert(0, "WIDTH_BUCKET(").append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count.sb).append(")");
         widthBucketkColumn.params.addAll(b1.params);
         widthBucketkColumn.params.addAll(b2.params);
         widthBucketkColumn.params.addAll(count.params);
-        widthBucketkColumn.operating += b1.operating;
-        widthBucketkColumn.operating += b2.operating;
-        widthBucketkColumn.operating += count.operating;
         
         return widthBucketkColumn;
     }
@@ -3402,13 +3372,11 @@ public class KFunction {
         assertNotNull(b1, "b1");
         assertNotNull(b2, "b2");
         
-        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, op.operating + 1, true);
+        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
         widthBucketkColumn.sb.insert(0, "WIDTH_BUCKET(").append(", ").append(b1.sb).append(", ").append(b2.sb).append(", ").append(count).append(")");
         widthBucketkColumn.params.addAll(b1.params);
         widthBucketkColumn.params.addAll(b2.params);
-        widthBucketkColumn.operating += b1.operating;
-        widthBucketkColumn.operating += b2.operating;
         
         return widthBucketkColumn;
     }
@@ -3425,7 +3393,7 @@ public class KFunction {
         assertNotNull(b2, "b2");
         assertNotNull(count, "count");
         
-        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, op.operating + 3, true);
+        final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
         widthBucketkColumn.sb.insert(0, "WIDTH_BUCKET(").append(", ").append(b1).append(", ").append(b2).append(", ").append(count).append(")");
         
@@ -3445,7 +3413,6 @@ public class KFunction {
         assertNotNull(count, "count");
         
         final KColumn widthBucketkColumn = new KColumn();
-        widthBucketkColumn.operating = 4;
         
         widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op).append(", ").append(b1).append(", ").append(b2).append(", ").append(count).append(")");
         

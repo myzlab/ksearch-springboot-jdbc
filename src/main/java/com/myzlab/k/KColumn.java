@@ -8,26 +8,14 @@ import java.util.List;
 
 public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
     
-    protected final KTable kTable;
-    protected final String name;
-    protected final Class type;
-    
     protected KColumn() {
         super();
-        
-        this.kTable = null;
-        this.name = null;
-        this.type = null;
     }
     
     protected KColumn(
         final boolean closed
     ) {
         super(closed);
-        
-        this.kTable = null;
-        this.name = null;
-        this.type = null;
     }
     
     public KColumn(
@@ -35,90 +23,57 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         final String name,
         final Class type
     ) {
-        super();
+        super(true, name, type, kTable);
         
-        this.kTable = kTable;
-        this.name = name;
         this.sb.append(kTable.alias).append(".").append(name);
-        this.operating = 1;
-        this.type = type;
     }
     
     protected KColumn(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
-        
-        this.kTable = null;
-        this.name = null;
-        this.type = null;
+        super(sb, params, closed);
     }
     
     protected KColumn(
         final StringBuilder sb,
-        final int operating,
+        final List<Object> params,
+        final boolean closed,
+        final String name,
+        final Class type,
+        final KTable kTable
+    ) {
+        super(sb, params, closed, name, type, kTable);
+    }
+    
+    protected KColumn(
+        final StringBuilder sb,
         final boolean closed
     ) {
-        super(sb, new ArrayList<>(), operating, closed);
-        
-        this.kTable = null;
-        this.name = null;
-        this.type = null;
+        super(sb, new ArrayList<>(), closed);
     }
     
     protected KColumn(
-        final KTable kTable,
-        final String name,
-        final String val,
-        final Class type
+        final String val
     ) {
         super(val);
-        
-        this.kTable = kTable;
-        this.name = name;
-        this.type = type;
     }
     
     protected KColumn(
-        final KTable kTable,
-        final String name,
-        final Number val,
-        final Class type
+        final Number val
     ) {
         super(val);
-        
-        this.kTable = kTable;
-        this.name = name;
-        this.type = type;
     }
     
     protected KColumn(
         final KTable kTable,
-        final String name,
         final StringBuilder sb,
+        final String name,
         final Class type
     ) {
         this(kTable, name, type);
         this.sb.append(sb);
-    }
-    
-    protected KColumn(
-        final KTable kTable,
-        final String name,
-        final StringBuilder sb,
-        final List<Object> params,
-        final int operating,
-        final boolean closed,
-        final Class type
-    ) {
-        super(sb, params, operating, closed);
-        
-        this.kTable = kTable;
-        this.name = name;
-        this.type = type;
     }
     
     public KColumn add(
@@ -1434,20 +1389,20 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     public KColumnOvered over(
         final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
     ) {
-        return new KColumnOvered(sb, params, operating, closed, kWindowDefinitionAllowedToOver);
+        return new KColumnOvered(this.sb, this.params, this.closed, kWindowDefinitionAllowedToOver);
     }
     
     public KColumnOrdered asc() {
-        return new KColumnOrdered(sb, params, operating, closed, 1);
+        return new KColumnOrdered(this.sb, this.params, this.closed, 1);
     }
     
     public KColumnOrdered desc() {
-        return new KColumnOrdered(sb, params, operating, closed, -1);
+        return new KColumnOrdered(this.sb, this.params, this.closed, -1);
     }
     
     @Override
     protected KColumn cloneMe() {
-        return new KColumn(this.kTable, this.name, this.sb, new ArrayList<>(this.params), this.operating, this.closed, this.type);
+        return new KColumn( this.sb, new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
     }
     
     @Override
@@ -1468,9 +1423,5 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         }
         
         return this.name;
-    }
-    
-    public String getSetMethodName() {
-        return "set" + String.valueOf(name.charAt(0)).toUpperCase() + name.substring(1);
     }
 }

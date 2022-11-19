@@ -12,27 +12,25 @@ public class KColumnOrdered extends KBaseColumn implements KColumnAllowedToOrder
     private KColumnOrdered(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
     }
     
     protected KColumnOrdered(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed,
         final int orientation
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
         
         this.process(orientation);
     }
 
     @Override
     protected KColumnOrdered cloneMe() {
-        return new KColumnOrdered(this.sb, this.params, this.operating, this.closed);
+        return new KColumnOrdered(this.sb, this.params, this.closed);
     }
     
     private void process(

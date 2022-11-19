@@ -12,10 +12,9 @@ public class KValTextField extends KBaseValField implements TextMethods {
     protected KValTextField(
         final StringBuilder sb,
         final List<Object> params,
-        final int operating,
         final boolean closed
     ) {
-        super(sb, params, operating, closed);
+        super(sb, params, closed);
     }
     
     protected KValTextField(
@@ -1214,6 +1213,6 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     protected KValTextField cloneMe() {
-        return new KValTextField(this.sb, new ArrayList<>(this.params), this.operating, this.closed);
+        return new KValTextField(this.sb, new ArrayList<>(this.params), this.closed);
     }
 }
