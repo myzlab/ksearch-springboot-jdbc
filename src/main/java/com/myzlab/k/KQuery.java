@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SqlTypeValue;
 
 public abstract class KQuery {
@@ -37,7 +35,49 @@ public abstract class KQuery {
         this.k = kInitializer;
     }
     
-    public <T extends KRow> T single(
+    private <T extends KRow> T singleMappingKRow(
+        final Class<T> clazz
+    ) {
+        final List<String[]> ways = this.getWays(clazz);
+        
+        final T t = k.getJdbcTemplates().get(   
+            k.getJdbcTemplateDefaultName()
+        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet resultSet) -> {
+            if (resultSet == null || !resultSet.next()) {
+                return this.getKRowNull(clazz);
+            }
+            
+            final T result = this.mapObject(resultSet, ways, clazz);
+            
+            if (resultSet.next()) {
+                return this.getKRowNull(clazz);
+            }
+            
+            return result;
+        });
+        
+        return t;
+    }
+    
+    private <T> T singleMappingSingleType() {
+        return k.getJdbcTemplates().get(   
+            k.getJdbcTemplateDefaultName()
+        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet resultSet) -> {
+            if (resultSet == null || !resultSet.next()) {
+                return null;
+            }
+            
+            final T result = (T) resultSet.getObject(1);
+            
+            if (resultSet.next()) {
+                return null;
+            }
+            
+            return result;
+        });
+    }
+    
+    public <T> T single(
         final Class<T> clazz
     ) {
         System.out.println(this.kQueryData.sb.toString());
@@ -48,31 +88,15 @@ public abstract class KQuery {
             return null;
         }
         
-        final List<String[]> ways = this.getWays(clazz);
+        if (clazz.getSuperclass().equals(KRow.class)) {
+            return (T) this.singleMappingKRow((Class<? extends KRow>) clazz);
+        }
         
-        final T t = k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs) -> {
-            if (rs == null || !rs.next()) {
-                return this.getKRowNull(clazz);
-            }
-            
-            if (T instanceof KRow) {
-                
-            } else {
-                
-            }
-            
-            final T result = this.mapObject(rs, ways, clazz);
-            
-            if (rs.next()) {
-                return this.getKRowNull(clazz);
-            }
-            
-            return result;
-        });
+        if (this.kQueryData.kBaseColumns.size() > 1) {
+            throw KExceptionHelper.internalServerError("Only a single column is allowed in the 'SELECT clause for the requested mapping type");
+        }
         
-        return t;
+        return this.singleMappingSingleType();
     }
     
     public <T extends KRow> KCollection<T> multiple(

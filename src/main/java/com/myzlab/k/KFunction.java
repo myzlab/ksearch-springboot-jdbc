@@ -1100,6 +1100,18 @@ public class KFunction {
         return new KColumn(new StringBuilder("COUNT(*)"), true);
     }
     
+    public static KColumn count(
+        final KColumn kColumn
+    ) {
+        return processCount(kColumn);
+    }
+    
+    public static KColumn countDistinct(
+        final KColumn kColumn
+    ) {
+        return processCountDistinct(kColumn);
+    }
+    
     public static KColumn concat(
         final KBaseColumnCastable... kBaseColumnCastables
     ) {
@@ -2291,6 +2303,34 @@ public class KFunction {
         assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "POWER");
+    }
+    
+    private static KColumn processCount(
+        final KColumn kColumn
+    ) {
+        assertNotNull(kColumn, "kColumn");
+        
+        final KColumn kColumnCount = new KColumn(true);
+        
+        kColumnCount.sb.append("COUNT(").append(kColumn.sb).append(")");
+        
+        kColumnCount.params.addAll(kColumn.params);
+        
+        return kColumnCount;
+    }
+    
+    private static KColumn processCountDistinct(
+        final KColumn kColumn
+    ) {
+        assertNotNull(kColumn, "kColumn");
+        
+        final KColumn kColumnCount = new KColumn(true);
+        
+        kColumnCount.sb.append("COUNT(DISTINCT ").append(kColumn.sb).append(")");
+        
+        kColumnCount.params.addAll(kColumn.params);
+        
+        return kColumnCount;
     }
     
     public static KColumn radians(

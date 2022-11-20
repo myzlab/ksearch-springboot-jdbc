@@ -9,8 +9,34 @@ public abstract class KInitializer {
         return new KWith();
     }
     
-    public KSelect select(final KBaseColumn... kBaseColumns) {
-        return KSelect.getInstance(this, kBaseColumns);
+    public KSelect select(
+        final KBaseColumn... kBaseColumns
+    ) {
+        return KSelect.getSelectInstance(this, kBaseColumns);
+    }
+    
+    public KSelect selectDistinct(
+        final KBaseColumn... kBaseColumns
+    ) {
+        return KSelect.getSelectDistinctInstance(this, kBaseColumns);
+    }
+    
+    public KDistinctOnSelect selectDistinctOn(
+        final KColumn kColumn
+    ) {
+        return KDistinctOnSelect.getSelectDistinctOnInstance(this, kColumn);
+    }
+    
+    public KDistinctOnSelect selectDistinctOn(
+        final KValNumberField kValNumberField
+    ) {
+        return KDistinctOnSelect.getSelectDistinctOnInstance(this, kValNumberField);
+    }
+    
+    public KDistinctOnSelect selectDistinctOn(
+        final Number number
+    ) {
+        return KDistinctOnSelect.getSelectDistinctOnInstance(this, number);
     }
     
     public void insertInto() {

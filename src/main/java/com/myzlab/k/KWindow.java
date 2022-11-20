@@ -111,7 +111,7 @@ public class KWindow extends KQuery {
     }
     
     @Override
-    public <T extends KRow> T single(
+    public <T> T single(
         final Class<T> clazz
     ) {
         this.buildWindow();

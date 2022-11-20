@@ -14,14 +14,46 @@ public class KSelect extends KQuery {
         super(kInitializer);
     }
     
-    public static KSelect getInstance(
+    private KSelect(
+        final KQueryData kQueryData,
+        final KInitializer kInitializer
+    ) {
+        super(kQueryData, kInitializer);
+    }
+    
+    public static KSelect getSelectInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.process(kBaseColumns);
+        kSelect.processSelect(false, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    public static KSelect getSelectDistinctInstance(
+        final KInitializer kInitializer,
+        final KBaseColumn... kBaseColumns
+    ) {
+        final KSelect kSelect = new KSelect(kInitializer);
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
+        
+        kSelect.processSelect(true, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    public static KSelect getSelectInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
+        final KBaseColumn... kBaseColumns
+    ) {
+        final KSelect kSelect = new KSelect(kQueryData, kInitializer);
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
+        
+        kSelect.processWithPreviousSelect(kBaseColumns);
         
         return kSelect;
     }
@@ -31,7 +63,7 @@ public class KSelect extends KQuery {
     ) {
         this.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        this.process(kBaseColumns);
+        this.processSelect(false, kBaseColumns);
         
         return this;
     }
@@ -96,27 +128,48 @@ public class KSelect extends KQuery {
         return KWindow.getInstance(this.k, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
-    private void process(
-        final KBaseColumn... kBaseColums
+    private void processSelect(
+        final boolean distinct,
+        final KBaseColumn... kBaseColumns
     ) {
-        if (kBaseColums == null || kBaseColums.length == 0) {
+        if (kBaseColumns == null || kBaseColumns.length == 0) {
             throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
         }
         
         if (this.kQueryData.columnsAdded == 0) {
-            this.kQueryData.sb.append("SELECT ");
+            this.kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
         }
         
-        for (final KBaseColumn kBaseColum : kBaseColums) {
+        for (final KBaseColumn kBaseColumn : kBaseColumns) {
             if (this.kQueryData.columnsAdded > 0) {
                 this.kQueryData.sb.append(", ");
             }
             
             this.kQueryData.columnsAdded++;
-            this.kQueryData.params.addAll(kBaseColum.params);
+            this.kQueryData.params.addAll(kBaseColumn.params);
             
-            this.kQueryData.sb.append(kBaseColum.toSql());
+            this.kQueryData.sb.append(kBaseColumn.toSql());
         }
     }
     
+    private void processWithPreviousSelect(
+        final KBaseColumn... kBaseColumns
+    ) {
+        if (kBaseColumns == null || kBaseColumns.length == 0) {
+            throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
+        }
+        
+        this.kQueryData.sb.append(" ");
+        
+        for (final KBaseColumn kBaseColumn : kBaseColumns) {
+            if (this.kQueryData.columnsAdded > 0) {
+                this.kQueryData.sb.append(", ");
+            }
+            
+            this.kQueryData.columnsAdded++;
+            this.kQueryData.params.addAll(kBaseColumn.params);
+            
+            this.kQueryData.sb.append(kBaseColumn.toSql());
+        }
+    }
 }
