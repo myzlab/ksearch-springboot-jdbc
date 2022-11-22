@@ -4,17 +4,21 @@ public class KWindowDefinition {
     
     protected final StringBuilder sb;
     
-    protected String name;
+    protected final String name;
     
     protected KWindowDefinition() {
+        super();
+        
         this.sb = new StringBuilder();
+        this.name = null;
     }
 
     protected KWindowDefinition(
         final String name
     ) {
-        this();
+        super();
         
+        this.sb = new StringBuilder();
         this.name = name;
     }
     

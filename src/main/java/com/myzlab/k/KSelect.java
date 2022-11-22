@@ -21,7 +21,7 @@ public class KSelect extends KQuery {
         super(kQueryData, kInitializer);
     }
     
-    public static KSelect getSelectInstance(
+    public static KSelect getInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
     ) {
@@ -33,7 +33,7 @@ public class KSelect extends KQuery {
         return kSelect;
     }
     
-    public static KSelect getSelectDistinctInstance(
+    public static KSelect getDistinctInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
     ) {
@@ -45,7 +45,7 @@ public class KSelect extends KQuery {
         return kSelect;
     }
     
-    public static KSelect getSelectInstance(
+    public static KSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KBaseColumn... kBaseColumns
@@ -53,7 +53,20 @@ public class KSelect extends KQuery {
         final KSelect kSelect = new KSelect(kQueryData, kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.processWithPreviousSelect(kBaseColumns);
+        kSelect.processSelect(false, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    public static KSelect getDistinctInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
+        final KBaseColumn... kBaseColumns
+    ) {
+        final KSelect kSelect = new KSelect(kQueryData, kInitializer);
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
+        
+        kSelect.processSelect(true, kBaseColumns);
         
         return kSelect;
     }
@@ -72,6 +85,12 @@ public class KSelect extends KQuery {
         final KTable kTable
     ) {
         return KFrom.getInstance(this.k, this.kQueryData, kTable);
+    }
+    
+    public KFrom from(
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased
+    ) {
+        return KFrom.getInstance(this.k, this.kQueryData, new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
     }
     
     public KGroupBy groupBy(
@@ -136,7 +155,11 @@ public class KSelect extends KQuery {
             throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
         }
         
-        if (this.kQueryData.columnsAdded == 0) {
+        if (this.kQueryData.sb.length() > 0 && this.kQueryData.columnsAdded == 0) {
+            this.kQueryData.sb.append(" ");
+        }
+        
+        if (this.kQueryData.columnsAdded == 0 && !this.kQueryData.distinctOn) {
             this.kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
         }
         
@@ -152,24 +175,24 @@ public class KSelect extends KQuery {
         }
     }
     
-    private void processWithPreviousSelect(
-        final KBaseColumn... kBaseColumns
-    ) {
-        if (kBaseColumns == null || kBaseColumns.length == 0) {
-            throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
-        }
-        
-        this.kQueryData.sb.append(" ");
-        
-        for (final KBaseColumn kBaseColumn : kBaseColumns) {
-            if (this.kQueryData.columnsAdded > 0) {
-                this.kQueryData.sb.append(", ");
-            }
-            
-            this.kQueryData.columnsAdded++;
-            this.kQueryData.params.addAll(kBaseColumn.params);
-            
-            this.kQueryData.sb.append(kBaseColumn.toSql());
-        }
-    }
+//    private void processWithPreviousSelect(
+//        final KBaseColumn... kBaseColumns
+//    ) {
+//        if (kBaseColumns == null || kBaseColumns.length == 0) {
+//            throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
+//        }
+//        
+//        this.kQueryData.sb.append(" ");
+//        
+//        for (final KBaseColumn kBaseColumn : kBaseColumns) {
+//            if (this.kQueryData.columnsAdded > 0) {
+//                this.kQueryData.sb.append(", ");
+//            }
+//            
+//            this.kQueryData.columnsAdded++;
+//            this.kQueryData.params.addAll(kBaseColumn.params);
+//            
+//            this.kQueryData.sb.append(kBaseColumn.toSql());
+//        }
+//    }
 }

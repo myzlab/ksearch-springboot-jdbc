@@ -5,38 +5,40 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class KInitializer {
     
-    public KWith with() {
-        return new KWith();
+    public KWith with(
+        final KCommonTableExpressionFilled kCommonTableExpressionFilled
+    ) {
+        return KWith.getInstance(this, kCommonTableExpressionFilled);
     }
     
     public KSelect select(
         final KBaseColumn... kBaseColumns
     ) {
-        return KSelect.getSelectInstance(this, kBaseColumns);
+        return KSelect.getInstance(this, kBaseColumns);
     }
     
     public KSelect selectDistinct(
         final KBaseColumn... kBaseColumns
     ) {
-        return KSelect.getSelectDistinctInstance(this, kBaseColumns);
+        return KSelect.getDistinctInstance(this, kBaseColumns);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn
     ) {
-        return KDistinctOnSelect.getSelectDistinctOnInstance(this, kColumn);
+        return KDistinctOnSelect.getInstance(this, kColumn);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KValNumberField kValNumberField
     ) {
-        return KDistinctOnSelect.getSelectDistinctOnInstance(this, kValNumberField);
+        return KDistinctOnSelect.getInstance(this, kValNumberField);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final Number number
     ) {
-        return KDistinctOnSelect.getSelectDistinctOnInstance(this, number);
+        return KDistinctOnSelect.getInstance(this, number);
     }
     
     public void insertInto() {

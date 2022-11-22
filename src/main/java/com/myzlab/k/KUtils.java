@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -53,6 +54,47 @@ public class KUtils {
         
         if (o instanceof Object[]) {
             for (final Object o_ : (Object[]) o) {
+                if (o_ == null) {
+                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
+                }
+            }
+        }
+        
+        if (o instanceof Collection) {
+            for (final Object o_ : (Collection) o) {
+                if (o_ == null) {
+                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
+                }
+            }
+        }
+    }
+    
+    protected static void assertNotNullNotEmpty(
+        final Object o,
+        final String name
+    ) {
+        if (o == null) {
+            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
+        }
+        
+        if (o instanceof Object[]) {
+            if (((Object[]) o).length == 0) {
+                throw KExceptionHelper.internalServerError("The '" + name + "' param cannot be empty");
+            }
+            
+            for (final Object o_ : (Object[]) o) {
+                if (o_ == null) {
+                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
+                }
+            }
+        }
+        
+        if (o instanceof Collection) {
+            if (((Collection) o).isEmpty()) {
+                throw KExceptionHelper.internalServerError("The '" + name + "' param cannot be empty");
+            }
+            
+            for (final Object o_ : (Collection) o) {
                 if (o_ == null) {
                     throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
                 }

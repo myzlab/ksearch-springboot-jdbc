@@ -10,9 +10,10 @@ public class KDistinctOnSelect {
     ) {
         this.k = kInitializer;
         this.kQueryData = new KQueryData();
+        this.kQueryData.distinctOn = true;
     }
     
-    public static KDistinctOnSelect getSelectDistinctOnInstance(
+    public static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KColumn kColumn
     ) {
@@ -23,7 +24,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getSelectDistinctOnInstance(
+    public static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KValNumberField kValNumberField
     ) {
@@ -34,8 +35,44 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getSelectDistinctOnInstance(
+    public static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
+        final Number number
+    ) {
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        
+        kDistinctOnSelect.processSelectDistinctOn(number);
+        
+        return kDistinctOnSelect;
+    }
+    
+    public static KDistinctOnSelect getInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
+        final KColumn kColumn
+    ) {
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        
+        kDistinctOnSelect.processSelectDistinctOn(kColumn);
+        
+        return kDistinctOnSelect;
+    }
+    
+    public static KDistinctOnSelect getInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
+        final KValNumberField kValNumberField
+    ) {
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        
+        kDistinctOnSelect.processSelectDistinctOn(kValNumberField);
+        
+        return kDistinctOnSelect;
+    }
+    
+    public static KDistinctOnSelect getInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
         final Number number
     ) {
         final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
@@ -48,7 +85,7 @@ public class KDistinctOnSelect {
     public KSelect select(
         final KBaseColumn... kBaseColumns
     ) {
-        return KSelect.getSelectInstance(this.k, this.kQueryData, kBaseColumns);
+        return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
     }
     
     private void processSelectDistinctOn(

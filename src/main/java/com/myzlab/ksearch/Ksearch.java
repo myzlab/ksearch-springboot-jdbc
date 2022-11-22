@@ -1,9 +1,15 @@
 package com.myzlab.ksearch;
 
 import com.myzlab.k.KColumn;
+import com.myzlab.k.KCommonTableExpression;
+import com.myzlab.k.KCommonTableExpressionAliased;
+import com.myzlab.k.KCommonTableExpressionColumned;
+import com.myzlab.k.KCommonTableExpressionFilled;
+import com.myzlab.k.KCommonTableExpressionNamed;
 import static com.myzlab.k.KFunction.*;
 import com.myzlab.k.KValNumberField;
 import com.myzlab.k.KValTextField;
+import com.myzlab.k.KValues;
 import com.myzlab.k.KWindowDefinitionNamedFrameStarted;
 import com.myzlab.k.KWindowDefinitionNamedOrdered;
 import com.myzlab.k.KWindowDefinitionNamedPartitioned;
@@ -48,6 +54,21 @@ public class Ksearch {
         final KWindowDefinitionUnnamedFrameExcluded wdo8 = wd().range().unboundedPreceding().unboundedFollowing().excludeNoOthers();
         final KWindowDefinitionNamedPartitioned wdo9 = wd("w9").partitionBy(BOOK.TITLE);
         final KWindowDefinitionUnnamedPartitioned wdo10 = wd().partitionBy(BOOK.TITLE);
+        
+        final List<Object> v1 = new ArrayList<>();
+        v1.add(1);
+        v1.add("A");
+        
+        final List<Object> v2 = new ArrayList<>();
+        v1.add(2);
+        v1.add("B");
+        
+        final KValues values = values().append(v1).append(v2);
+        
+        final KCommonTableExpressionNamed kCommonTableExpressionNamed = cte("a_name");
+        final KCommonTableExpressionColumned kCommonTableExpressionColumned = cte("a_name").columns("a", "b");
+        final KCommonTableExpressionFilled kCommonTableExpressionFilled = cte("a_name").columns("a", "b").as(values);
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased = cte("a_name").columns("a", "b").as(values).as("my-alias");
         
 //        System.out.println(wdo1.sb.toString());
 //        System.out.println(wdo2.sb.toString());

@@ -10,6 +10,7 @@ public class KQueryData {
     protected int columnsAdded;
     protected int tablesAdded;
     protected final List<Object> params;
+    protected boolean distinctOn;
     
     public KQueryData() {
         super();
@@ -19,5 +20,6 @@ public class KQueryData {
         this.tablesAdded = 0;
         this.params = new ArrayList<>();
         this.kBaseColumns = new ArrayList<>();
+        this.distinctOn = false;
     }
 }

@@ -1149,6 +1149,12 @@ public class KFunction {
         return concatKColumn;
     }
     
+    public static KCommonTableExpressionNamed cte(
+        final String name
+    ) {
+        return KCommonTableExpressionNamed.getInstance(name);
+    }
+    
     public static KColumn currentDate() {
         return new KColumn(new StringBuilder("CURRENT_DATE"), true);
     }
@@ -3359,6 +3365,10 @@ public class KFunction {
         final Number val
     ) {
         return new KValNumberField(val);
+    }
+    
+    public static KEmptyValues values() {
+        return KEmptyValues.getInstance();
     }
     
     public static KWindowDefinitionUnnamed wd() {

@@ -35,7 +35,7 @@ public class KTable {
         final boolean alias
     ) {
         if (alias) {
-            return this.schema + "." + this.name + " " + this.alias;
+            return (this.schema != null ? this.schema + "." : "") + this.name + " " + this.alias;
         }
         
         return this.schema + "." + this.name;
