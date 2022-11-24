@@ -3277,6 +3277,13 @@ public class KFunction {
         return applyBinaryOperator(kValNumberField, kColumn, "-");
     }
     
+    public static KTable table(
+        final KQuery kQuery,
+        final String alias
+    ) {
+        return new KTable(kQuery, alias);
+    }
+    
     public static KColumn toChar(
         final KColumn kColumn,
         final String format

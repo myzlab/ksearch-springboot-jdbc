@@ -93,7 +93,13 @@ public class KWindow extends KQuery {
     }
     
     private void buildWindow() {
-        this.kQueryData.sb.append(" WINDOW ");
+        this.buildWindow(this.kQueryData);
+    }
+    
+    private void buildWindow(
+        final KQueryData kQueryData
+    ) {
+        kQueryData.sb.append(" WINDOW ");
         
         for (int i = 0; i < KWindowDefinitionsAllowedToWindow.size(); i++) {
             final KWindowDefinitionAllowedToWindow kWindowDefinitionAllowedToWindow = KWindowDefinitionsAllowedToWindow.get(i);
@@ -103,10 +109,10 @@ public class KWindow extends KQuery {
             }
             
             if (i > 0) {
-                this.kQueryData.sb.append(", ");
+                kQueryData.sb.append(", ");
             }
             
-            this.kQueryData.sb.append(kWindowDefinitionAllowedToWindow.getName()).append(" AS (").append(kWindowDefinitionAllowedToWindow.getSql()).append(")");
+            kQueryData.sb.append(kWindowDefinitionAllowedToWindow.getName()).append(" AS (").append(kWindowDefinitionAllowedToWindow.getSql()).append(")");
         }
     }
     
@@ -117,5 +123,14 @@ public class KWindow extends KQuery {
         this.buildWindow();
         
         return super.single(clazz);
+    }
+    
+    @Override
+    protected KQueryData generateSubQueryData() {
+        final KQueryData newKQueryData = this.kQueryData.cloneMe();
+        
+        this.buildWindow(newKQueryData);
+        
+        return newKQueryData;
     }
 }

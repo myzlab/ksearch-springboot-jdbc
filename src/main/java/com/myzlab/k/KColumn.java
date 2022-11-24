@@ -1402,7 +1402,7 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     protected KColumn cloneMe() {
-        return new KColumn( this.sb, new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
+        return new KColumn(new StringBuilder(this.sb), new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
     }
     
     @Override

@@ -4,6 +4,11 @@ import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class KFrom extends KQuery {
     
@@ -145,6 +150,10 @@ public class KFrom extends KQuery {
         }
         
         this.kQueryData.tablesAdded++;
+        
+        if (kTable.kQueryData != null) {
+            this.kQueryData.params.addAll(kTable.kQueryData.params);
+        }
             
         this.kQueryData.sb.append(kTable.toSql(true));
     }
@@ -155,6 +164,10 @@ public class KFrom extends KQuery {
     ) {
         KUtils.assertNotNull(kJoinDefinition, "kJoinDefinition");
         
+        if (kJoinDefinition.params != null) {
+            this.kQueryData.params.addAll(kJoinDefinition.params);
+        }
+        
         this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kJoinDefinition.table).append(" ON (").append(kJoinDefinition.kCondition.sb).append(")");
         this.kQueryData.params.addAll(kJoinDefinition.kCondition.params);
     }
@@ -164,6 +177,31 @@ public class KFrom extends KQuery {
     ) {
         KUtils.assertNotNull(kTable, "kTable");
         
+        if (kTable.kQueryData != null) {
+            this.kQueryData.params.addAll(kTable.kQueryData.params);
+        }
+        
         this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql(true));
+    }
+    
+    public static void main(String[] args) {
+        
+    }
+    
+    public static File saveToFile(InputStream inputStream, String fileLocation) {
+        File file = new File(fileLocation);
+
+        try (OutputStream out = new FileOutputStream(file)) {
+            int read;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+
+            return file;
+        } catch (IOException ex) {
+            return null;
+        }
     }
 }

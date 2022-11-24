@@ -24,6 +24,12 @@ public class KCommonTableExpressionAliased extends KCommonTableExpression {
         return new KCommonTableExpressionAliased(kValues, name, alias, columns);
     }
     
+    public KColumn c(
+        final String name
+    ) {
+        return this.processColumn(name);
+    }
+    
     public KColumn column(
         final String name
     ) {

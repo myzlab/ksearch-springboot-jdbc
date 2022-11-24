@@ -81,7 +81,7 @@ public abstract class KQuery {
         final Class<T> clazz
     ) {
         System.out.println(this.kQueryData.sb.toString());
-//        System.out.println(this.kQueryData.params);
+        System.out.println(this.kQueryData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
             
         if (k == null || k.getJdbcTemplates() == null) {
@@ -103,7 +103,7 @@ public abstract class KQuery {
         final Class<T> clazz
     ) {
         System.out.println(this.kQueryData.sb.toString());
-//        System.out.println(this.kQueryData.params);
+        System.out.println(this.kQueryData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
             
         if (k == null || k.getJdbcTemplates() == null) {
@@ -137,7 +137,7 @@ public abstract class KQuery {
             if (w.equals("*")) {
                 try {
                     final Method methodSet = current.getClass().getMethod(
-                        kBaseColumn.getSetMethodName(),
+                        KSearchNameHelper.generateSetName(kBaseColumn.name),
                         kBaseColumn.type
                     );
 
@@ -148,7 +148,7 @@ public abstract class KQuery {
             } else {
                 try {
                     final Method methodGet = current.getClass().getMethod(
-                        "get" + String.valueOf(w.charAt(0)).toUpperCase() + w.substring(1)
+                        KSearchNameHelper.generateGetName(w)
                     );
 
                     Object internalObject = methodGet.invoke(current);
@@ -158,7 +158,7 @@ public abstract class KQuery {
                             internalObject = methodGet.getReturnType().newInstance();
 
                             final Method methodSet = current.getClass().getMethod(
-                                "set" + String.valueOf(w.charAt(0)).toUpperCase() + w.substring(1),
+                                KSearchNameHelper.generateSetName(w),
                                 methodGet.getReturnType()
                             );
 
@@ -312,5 +312,9 @@ public abstract class KQuery {
         t.isNull = true;
 
         return t;
+    }
+    
+    protected KQueryData generateSubQueryData() {
+        return this.kQueryData;
     }
 }

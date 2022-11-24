@@ -71,6 +71,32 @@ public class KSelect extends KQuery {
         return kSelect;
     }
     
+    public static KSelect getInstance(
+        final KInitializer kInitializer,
+        final KQuery kQuery,
+        final String alias
+    ) {
+        final KSelect kSelect = new KSelect(kInitializer);
+        kSelect.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
+        
+        kSelect.processSelect(false, kQuery, alias);
+        
+        return kSelect;
+    }
+    
+    public static KSelect getDistinctInstance(
+        final KInitializer kInitializer,
+        final KQuery kQuery,
+        final String alias
+    ) {
+        final KSelect kSelect = new KSelect(kInitializer);
+        kSelect.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
+        
+        kSelect.processSelect(true, kQuery, alias);
+        
+        return kSelect;
+    }
+    
     public KSelect select(
         final KBaseColumn... kBaseColumns
     ) {
@@ -81,6 +107,17 @@ public class KSelect extends KQuery {
         return this;
     }
     
+    public KSelect select(
+        final KQuery kQuery,
+        final String alias
+    ) {
+        this.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
+        
+        this.processSelect(false, kQuery, alias);
+        
+        return this;
+    }
+
     public KFrom from(
         final KTable kTable
     ) {
@@ -175,24 +212,31 @@ public class KSelect extends KQuery {
         }
     }
     
-//    private void processWithPreviousSelect(
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        if (kBaseColumns == null || kBaseColumns.length == 0) {
-//            throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
-//        }
-//        
-//        this.kQueryData.sb.append(" ");
-//        
-//        for (final KBaseColumn kBaseColumn : kBaseColumns) {
-//            if (this.kQueryData.columnsAdded > 0) {
-//                this.kQueryData.sb.append(", ");
-//            }
-//            
-//            this.kQueryData.columnsAdded++;
-//            this.kQueryData.params.addAll(kBaseColumn.params);
-//            
-//            this.kQueryData.sb.append(kBaseColumn.toSql());
-//        }
-//    }
+    private void processSelect(
+        final boolean distinct,
+        final KQuery kQuery,
+        final String alias
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        KUtils.assertNotNull(alias, "alias");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        if (this.kQueryData.sb.length() > 0 && this.kQueryData.columnsAdded == 0) {
+            this.kQueryData.sb.append(" ");
+        }
+        
+        if (this.kQueryData.columnsAdded == 0 && !this.kQueryData.distinctOn) {
+            this.kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
+        }
+        
+        if (this.kQueryData.columnsAdded > 0) {
+            this.kQueryData.sb.append(", ");
+        }
+
+        this.kQueryData.columnsAdded++;
+        this.kQueryData.params.addAll(subQuery.params);
+
+        this.kQueryData.sb.append("(").append(subQuery.sb).append(") AS ").append(alias);
+    }
 }

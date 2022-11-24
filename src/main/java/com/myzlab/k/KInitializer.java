@@ -12,6 +12,20 @@ public abstract class KInitializer {
     }
     
     public KSelect select(
+        final KQuery kQuery,
+        final String alias
+    ) {
+        return KSelect.getInstance(this, kQuery, alias);
+    }
+    
+    public KSelect selectDistinct(
+        final KQuery kQuery,
+        final String alias
+    ) {
+        return KSelect.getDistinctInstance(this, kQuery, alias);
+    }
+    
+    public KSelect select(
         final KBaseColumn... kBaseColumns
     ) {
         return KSelect.getInstance(this, kBaseColumns);

@@ -109,13 +109,5 @@ public abstract class KBaseColumn {
         return sb.toString();
     }
     
-    public String getSetMethodName() {
-        if (name == null) {
-            return null;
-        }
-        
-        return "set" + String.valueOf(name.charAt(0)).toUpperCase() + name.substring(1);
-    }
-    
     protected abstract KBaseColumn cloneMe();
 }

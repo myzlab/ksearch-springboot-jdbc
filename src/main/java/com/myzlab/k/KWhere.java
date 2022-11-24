@@ -3,8 +3,6 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
-import java.util.List;
-import java.util.Map;
 
 public class KWhere extends KQuery {
     
@@ -135,16 +133,22 @@ public class KWhere extends KQuery {
     }
     
     private void buildWhere() {
+        this.buildWhere(this.kQueryData);
+    }
+
+    private void buildWhere(
+        final KQueryData kQueryData
+    ) {
         KUtils.assertNotNull(this.kCondition, "kCondition");
         
         if (this.kCondition.emptyCondition) {
             return;
         }
         
-        this.kQueryData.sb.append(" WHERE ").append(this.kCondition.toSql());
-        this.kQueryData.params.addAll(this.kCondition.params);
+        kQueryData.sb.append(" WHERE ").append(this.kCondition.toSql());
+        kQueryData.params.addAll(this.kCondition.params);
     }
-
+    
     @Override
     public <T> T single(
         final Class<T> clazz
@@ -152,5 +156,14 @@ public class KWhere extends KQuery {
         this.buildWhere();
         
         return super.single(clazz);
+    }
+    
+    @Override
+    protected KQueryData generateSubQueryData() {
+        final KQueryData newKQueryData = this.kQueryData.cloneMe();
+        
+        this.buildWhere(newKQueryData);
+        
+        return newKQueryData;
     }
 }

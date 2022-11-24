@@ -124,14 +124,20 @@ public class KHaving extends KQuery {
     }
     
     private void buildHaving() {
+        this.buildHaving(this.kQueryData);
+    }
+    
+    private void buildHaving(
+        final KQueryData kQueryData
+    ) {
         KUtils.assertNotNull(this.kCondition, "kCondition");
         
         if (this.kCondition.emptyCondition) {
             return;
         }
         
-        this.kQueryData.sb.append(" HAVING ").append(this.kCondition.toSql());
-        this.kQueryData.params.addAll(this.kCondition.params);
+        kQueryData.sb.append(" HAVING ").append(this.kCondition.toSql());
+        kQueryData.params.addAll(this.kCondition.params);
     }
 
     @Override
@@ -141,5 +147,14 @@ public class KHaving extends KQuery {
         this.buildHaving();
         
         return super.single(clazz);
+    }
+    
+    @Override
+    protected KQueryData generateSubQueryData() {
+        final KQueryData newKQueryData = this.kQueryData.cloneMe();
+        
+        this.buildHaving(newKQueryData);
+        
+        return newKQueryData;
     }
 }
