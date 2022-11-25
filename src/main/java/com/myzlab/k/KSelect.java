@@ -77,7 +77,6 @@ public class KSelect extends KQuery {
         final String alias
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
-        kSelect.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
         
         kSelect.processSelect(false, kQuery, alias);
         
@@ -90,7 +89,6 @@ public class KSelect extends KQuery {
         final String alias
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
-        kSelect.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
         
         kSelect.processSelect(true, kQuery, alias);
         
@@ -111,8 +109,6 @@ public class KSelect extends KQuery {
         final KQuery kQuery,
         final String alias
     ) {
-        this.kQueryData.kBaseColumns.add(new KColumn(kQuery.kQueryData.sb, false).as(alias));
-        
         this.processSelect(false, kQuery, alias);
         
         return this;
@@ -221,6 +217,8 @@ public class KSelect extends KQuery {
         KUtils.assertNotNull(alias, "alias");
         
         final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        this.kQueryData.kBaseColumns.add(new KColumn(subQuery.sb, subQuery.params, false).as(alias));
         
         if (this.kQueryData.sb.length() > 0 && this.kQueryData.columnsAdded == 0) {
             this.kQueryData.sb.append(" ");

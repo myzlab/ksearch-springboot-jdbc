@@ -229,6 +229,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return this.eq(kOptionalString.get());
     }
     
+    public KCondition eq(
+        final KQuery kQuery
+    ) {
+        return KCondition.eq(this, kQuery);
+    }
+    
     public KCondition equal(
         final KColumn kColumn
     ) {
@@ -309,6 +315,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.eq(this, KFunction.val(kOptionalString.get()));
     }
     
+    public KCondition equal(
+        final KQuery kQuery
+    ) {
+        return KCondition.eq(this, kQuery);
+    }
+    
     public KCondition greaterThan(
         final KColumn kColumn
     ) {
@@ -337,6 +349,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.gt(this, KFunction.val(value));
+    }
+    
+    public KCondition greaterThan(
+        final KQuery kQuery
+    ) {
+        return KCondition.gt(this, kQuery);
     }
     
     public KCondition greaterThanOrEqualTo(
@@ -369,6 +387,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.gte(this, KFunction.val(value));
     }
     
+    public KCondition greaterThanOrEqualTo(
+        final KQuery kQuery
+    ) {
+        return KCondition.gte(this, kQuery);
+    }
+    
     public KCondition gt(
         final KColumn kColumn
     ) {
@@ -399,6 +423,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.gt(this, KFunction.val(value));
     }
     
+    public KCondition gt(
+        final KQuery kQuery
+    ) {
+        return KCondition.gt(this, kQuery);
+    }
+    
     public KCondition gte(
         final KColumn kColumn
     ) {
@@ -427,6 +457,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.gte(this, KFunction.val(value));
+    }
+    
+    public KCondition gte(
+        final KQuery kQuery
+    ) {
+        return KCondition.gte(this, kQuery);
     }
     
     public KCondition in(
@@ -503,6 +539,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.lt(this, KFunction.val(value));
     }
     
+    public KCondition lessThan(
+        final KQuery kQuery
+    ) {
+        return KCondition.lt(this, kQuery);
+    }
+    
     public KCondition lessThanOrEqualTo(
         final KColumn kColumn
     ) {
@@ -531,6 +573,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.lte(this, KFunction.val(value));
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KQuery kQuery
+    ) {
+        return KCondition.lte(this, kQuery);
     }
     
     public KCondition lt(
@@ -563,6 +611,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.lt(this, KFunction.val(value));
     }
     
+    public KCondition lt(
+        final KQuery kQuery
+    ) {
+        return KCondition.lt(this, kQuery);
+    }
+    
     public KCondition lte(
         final KColumn kColumn
     ) {
@@ -591,6 +645,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.lte(this, KFunction.val(value));
+    }
+    
+    public KCondition lte(
+        final KQuery kQuery
+    ) {
+        return KCondition.lte(this, kQuery);
     }
     
     public KCondition nbt(
@@ -658,6 +718,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.neq(this, KFunction.val(value));
     }
     
+    public KCondition neq(
+        final KQuery kQuery
+    ) {
+        return KCondition.neq(this, kQuery);
+    }
+    
     public KCondition ngt(
         final KColumn kColumn
     ) {
@@ -688,6 +754,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.ngt(this, KFunction.val(value));
     }
     
+    public KCondition ngt(
+        final KQuery kQuery
+    ) {
+        return KCondition.ngt(this, kQuery);
+    }
+    
     public KCondition ngte(
         final KColumn kColumn
     ) {
@@ -716,6 +788,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.ngte(this, KFunction.val(value));
+    }
+    
+    public KCondition ngte(
+        final KQuery kQuery
+    ) {
+        return KCondition.ngte(this, kQuery);
     }
     
     public KCondition nlt(
@@ -748,6 +826,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.nlt(this, KFunction.val(value));
     }
     
+    public KCondition nlt(
+        final KQuery kQuery
+    ) {
+        return KCondition.nlt(this, kQuery);
+    }
+    
     public KCondition nlte(
         final KColumn kColumn
     ) {
@@ -776,6 +860,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.nlte(this, KFunction.val(value));
+    }
+    
+    public KCondition nlte(
+        final KQuery kQuery
+    ) {
+        return KCondition.nlte(this, kQuery);
     }
     
     public KCondition notBetween(
@@ -843,6 +933,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.neq(this, KFunction.val(value));
     }
     
+    public KCondition notEqual(
+        final KQuery kQuery
+    ) {
+        return KCondition.neq(this, kQuery);
+    }
+    
     public KCondition notGreaterThan(
         final KColumn kColumn
     ) {
@@ -873,6 +969,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.ngt(this, KFunction.val(value));
     }
     
+    public KCondition notGreaterThan(
+        final KQuery kQuery
+    ) {
+        return KCondition.ngt(this, kQuery);
+    }
+    
     public KCondition notGreaterThanOrEqualTo(
         final KColumn kColumn
     ) {
@@ -901,6 +1003,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.ngte(this, KFunction.val(value));
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final KQuery kQuery
+    ) {
+        return KCondition.ngte(this, kQuery);
     }
     
     public KCondition notIn(
@@ -945,6 +1053,12 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         return KCondition.nlt(this, KFunction.val(value));
     }
     
+    public KCondition notLessThan(
+        final KQuery kQuery
+    ) {
+        return KCondition.nlt(this, kQuery);
+    }
+    
     public KCondition notLessThanOrEqualTo(
         final KColumn kColumn
     ) {
@@ -973,5 +1087,11 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final String value
     ) {
         return KCondition.nlte(this, KFunction.val(value));
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final KQuery kQuery
+    ) {
+        return KCondition.nlte(this, kQuery);
     }
 }

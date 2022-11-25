@@ -166,6 +166,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition eq(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "=");
+        
+        return kCondition;
+    }
+    
     public static KCondition gt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -173,6 +188,21 @@ public class KCondition {
         final KCondition kCondition = new KCondition();
         
         kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition gt(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), ">");
         
         return kCondition;
     }
@@ -188,6 +218,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition gte(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), ">=");
+        
+        return kCondition;
+    }
+    
     public static KCondition lt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -199,6 +244,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition lt(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<");
+        
+        return kCondition;
+    }
+    
     public static KCondition lte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -206,6 +266,21 @@ public class KCondition {
         final KCondition kCondition = new KCondition();
         
         kCondition.processBinaryOperator(kBaseColumn1, kBaseColumn2, "<=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition lte(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<=");
         
         return kCondition;
     }
@@ -1202,6 +1277,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition neq(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "=");
+        
+        return kCondition;
+    }
+    
     public static KCondition ngt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -1209,6 +1299,21 @@ public class KCondition {
         final KCondition kCondition = new KCondition();
         
         kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, ">");
+        
+        return kCondition;
+    }
+    
+    public static KCondition ngt(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), ">");
         
         return kCondition;
     }
@@ -1224,6 +1329,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition ngte(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), ">=");
+        
+        return kCondition;
+    }
+    
     public static KCondition nlt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -1235,6 +1355,21 @@ public class KCondition {
         return kCondition;
     }
     
+    public static KCondition nlt(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<");
+        
+        return kCondition;
+    }
+    
     public static KCondition nlte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
@@ -1242,6 +1377,21 @@ public class KCondition {
         final KCondition kCondition = new KCondition();
         
         kCondition.processNotBinaryOperator(kBaseColumn1, kBaseColumn2, "<=");
+        
+        return kCondition;
+    }
+    
+    public static KCondition nlte(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<=");
         
         return kCondition;
     }
@@ -2142,7 +2292,31 @@ public class KCondition {
         params.addAll(kBaseColumn1.params);
         params.addAll(kBaseColumn2.params);
         
-        this.sb.append("NOT (").append(kBaseColumn1.sb).append(" ").append(operator).append(" ").append(kBaseColumn2.sb).append(")");
+        this.sb.append("NOT (");
+        
+        if (!kBaseColumn1.closed) {
+            this.sb.append("(");
+        }
+        
+        this.sb.append(kBaseColumn1.sb);
+        
+        if (!kBaseColumn1.closed) {
+            this.sb.append(")");
+        }
+        
+        this.sb.append(" ").append(operator).append(" ");
+        
+        if (!kBaseColumn2.closed) {
+            this.sb.append("(");
+        }
+        
+        this.sb.append(kBaseColumn2.sb);
+        
+        if (!kBaseColumn2.closed) {
+            this.sb.append(")");
+        }
+        
+        this.sb.append(")");
     }
     
     private void processNotIBinaryOperator(

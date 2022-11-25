@@ -126,6 +126,15 @@ public class KWindow extends KQuery {
     }
     
     @Override
+    public <T extends KRow> KCollection<T> multiple(
+        final Class<T> clazz
+    ) {
+        this.buildWindow();
+        
+        return super.multiple(clazz);
+    }
+    
+    @Override
     protected KQueryData generateSubQueryData() {
         final KQueryData newKQueryData = this.kQueryData.cloneMe();
         

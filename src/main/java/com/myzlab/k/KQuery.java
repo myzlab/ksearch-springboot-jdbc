@@ -315,6 +315,6 @@ public abstract class KQuery {
     }
     
     protected KQueryData generateSubQueryData() {
-        return this.kQueryData;
+        return this.kQueryData.cloneMe();
     }
 }
