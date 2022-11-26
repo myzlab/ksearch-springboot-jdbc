@@ -121,6 +121,24 @@ public abstract class KQuery {
         return new KCollection<>(list);
     }
     
+    public KCollection<KRow> multiple() {
+        System.out.println(this.kQueryData.sb.toString());
+        System.out.println(this.kQueryData.params);
+//        System.out.println(this.kQueryData.kBaseColums);
+            
+        if (k == null || k.getJdbcTemplates() == null) {
+            return null;
+        }
+
+        final List<KRow> list = k.getJdbcTemplates().get(   
+            k.getJdbcTemplateDefaultName()
+        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs, final int rowNum) -> {
+            return this.mapObject(rs);
+        });
+        
+        return new KCollection<>(list);
+    }
+    
     private <T extends KRow> void mapColumn(
         final T t,
         final Object v,
@@ -216,6 +234,27 @@ public abstract class KQuery {
         t.ref = ref;
 
         return t;
+    }
+    
+    private KRow mapObject(
+        final ResultSet resultSet
+    ) throws SQLException {
+        final Object[] o = new Object[this.kQueryData.kBaseColumns.size()];
+        final Map<String, Integer> ref = new HashMap<>();
+
+        for (int i = 0; i < this.kQueryData.kBaseColumns.size(); i++) {
+            final Object v = resultSet.getObject(i + 1);
+            final KBaseColumn kBaseColumn = this.kQueryData.kBaseColumns.get(i);
+            
+            if (kBaseColumn == null) {
+                throw KExceptionHelper.internalServerError("The 'kBaseColumn' is required"); 
+            }
+            
+            o[i] = v;
+            this.fillRef(ref, kBaseColumn, i);
+        }
+
+        return KRow.getGenericInstance(o, ref);
     }
     
     private void fillRef(

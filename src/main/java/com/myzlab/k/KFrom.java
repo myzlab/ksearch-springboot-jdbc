@@ -2,6 +2,7 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.io.File;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class KFrom extends KQuery {
+public class KFrom extends KQuery implements KQueryAllowedToCombining {
     
     private KFrom() {
         super();
@@ -100,16 +101,40 @@ public class KFrom extends KQuery {
         return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
-    public KUnion union() {
-        return new KUnion();
+    public KCombining union(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
-    public KIntersect intersect() {
-        return new KIntersect();
+    public KCombining unionAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
-    public KExcept except() {
-        return new KExcept();
+    public KCombining intersect(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+    }
+    
+    public KCombining intersectAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+    }
+    
+    public KCombining except(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+    }
+    
+    public KCombining exceptAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
@@ -203,5 +228,10 @@ public class KFrom extends KQuery {
         } catch (IOException ex) {
             return null;
         }
+    }
+    
+    @Override
+    public KQueryData generateSubQueryData() {
+        return this.kQueryData.cloneMe();
     }
 }

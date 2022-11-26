@@ -127,6 +127,18 @@ public class KFunction {
         return applyBinaryOperator(kValNumberField, kColumn, "+");
     }
     
+    public static KColumn all(
+        final KQuery kQuery
+    ) {
+        return processAll(kQuery);
+    }
+    
+    public static KColumn any(
+        final KQuery kQuery
+    ) {
+        return processAny(kQuery);
+    }
+    
     private static KColumn applyBinaryOperator(
         final KColumn kColumn,
         final Number number,
@@ -2339,6 +2351,30 @@ public class KFunction {
         return applyTwoParameterFunction(val(number1), val(number2), "POWER");
     }
     
+    protected static KColumn processAny(
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        subQuery.sb.insert(0, "ANY (").append(")");
+        
+        return new KColumn(subQuery.sb, subQuery.params, true);
+    }
+    
+    protected static KColumn processAll(
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        subQuery.sb.insert(0, "ALL (").append(")");
+        
+        return new KColumn(subQuery.sb, subQuery.params, true);
+    }
+    
     private static KColumn processBoolAnd(
         final KCondition kCondition
     ) {
@@ -2389,6 +2425,18 @@ public class KFunction {
         kColumnCount.params.addAll(kColumn.params);
         
         return kColumnCount;
+    }
+    
+    private static KColumn processSome(
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        subQuery.sb.insert(0, "SOME (").append(")");
+        
+        return new KColumn(subQuery.sb, subQuery.params, true);
     }
     
     public static KColumn radians(
@@ -2815,6 +2863,12 @@ public class KFunction {
         assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SINH");
+    }
+    
+    public static KColumn some(
+        final KQuery kQuery
+    ) {
+        return processSome(kQuery);
     }
     
     public static KColumn splitPart(

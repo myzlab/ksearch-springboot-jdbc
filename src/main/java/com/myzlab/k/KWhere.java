@@ -2,9 +2,10 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 
-public class KWhere extends KQuery {
+public class KWhere extends KQuery implements KQueryAllowedToCombining {
     
     private final KCondition kCondition;
     
@@ -82,22 +83,52 @@ public class KWhere extends KQuery {
         return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
-    public KUnion union() {
+    public KCombining union(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
         this.buildWhere();
         
-        return new KUnion();
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
-    public KIntersect intersect() {
+    public KCombining unionAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
         this.buildWhere();
         
-        return new KIntersect();
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
-    public KExcept except() {
+    public KCombining intersect(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
         this.buildWhere();
         
-        return new KExcept();
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+    }
+    
+    public KCombining intersectAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        this.buildWhere();
+        
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+    }
+    
+    public KCombining except(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        this.buildWhere();
+        
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+    }
+    
+    public KCombining exceptAll(
+        final KQueryAllowedToCombining kQueryAllowedToCombining
+    ) {
+        this.buildWhere();
+        
+        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
@@ -168,7 +199,7 @@ public class KWhere extends KQuery {
     }
     
     @Override
-    protected KQueryData generateSubQueryData() {
+    public KQueryData generateSubQueryData() {
         final KQueryData newKQueryData = this.kQueryData.cloneMe();
         
         this.buildWhere(newKQueryData);

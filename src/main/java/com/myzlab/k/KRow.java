@@ -18,6 +18,19 @@ public abstract class KRow {
         this.ref = ref;
     }
     
+    public static KRow getGenericInstance(
+        final Object[] o,
+        final Map<String, Integer> ref
+    ) {
+        return new KRow(o, ref) {
+            
+            @Override
+            public String[] getWay(String target) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+    }
+    
     public Object get(final String c) {
         final Integer n = ref.get(c);
         
