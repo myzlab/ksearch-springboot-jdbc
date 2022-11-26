@@ -26,4 +26,10 @@ public class KCommonTableExpressionColumned extends KCommonTableExpression {
         return KCommonTableExpressionFilled.getInstance(kValues, this.name, this.columns);
     }
     
+    public KCommonTableExpressionFilled as(
+        final KQuery kQuery
+    ) {
+        return KCommonTableExpressionFilled.getInstance(kQuery, this.name, this.columns);
+    }
+    
 }

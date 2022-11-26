@@ -6,9 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public abstract class KInitializer {
     
     public KWith with(
-        final KCommonTableExpressionFilled kCommonTableExpressionFilled
+        final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
-        return KWith.getInstance(this, kCommonTableExpressionFilled);
+        return KWith.getInstance(this, kCommonTableExpressionsFilled);
     }
     
     public KSelect select(

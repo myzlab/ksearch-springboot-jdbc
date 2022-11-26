@@ -8,20 +8,22 @@ public class KCommonTableExpressionAliased extends KCommonTableExpression {
     
     protected KCommonTableExpressionAliased(
         final KValues kValues,
+        final KQuery kQuery,
         final String name,
         final String alias,
         final String... columns
     ) {
-        super(kValues, name, alias, columns);
+        super(kValues, kQuery, name, alias, columns);
     }
         
     public static KCommonTableExpressionAliased getInstance(
         final KValues kValues,
+        final KQuery kQuery,
         final String name,
         final String alias,
         final String... columns
     ) {
-        return new KCommonTableExpressionAliased(kValues, name, alias, columns);
+        return new KCommonTableExpressionAliased(kValues, kQuery, name, alias, columns);
     }
     
     public KColumn c(

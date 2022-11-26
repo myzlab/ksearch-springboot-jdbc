@@ -12,11 +12,11 @@ public class KWith extends KQuery {
 
     public static KWith getInstance(
         final KInitializer kInitializer,
-        final KCommonTableExpressionFilled kCommonTableExpressionFilled
+        final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
         final KWith kWith = new KWith(kInitializer);
 
-        kWith.process(kCommonTableExpressionFilled);
+        kWith.process(kCommonTableExpressionsFilled);
 
         return kWith;
     }
@@ -50,39 +50,49 @@ public class KWith extends KQuery {
     ) {
         return KDistinctOnSelect.getInstance(this.k, this.kQueryData, number);
     }
-
+    
     private void process(
-        final KCommonTableExpressionFilled kCommonTableExpressionFilled
+        final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
-        KUtils.assertNotNull(kCommonTableExpressionFilled, "kCommonTableExpressionFilled");
+        KUtils.assertNotNullNotEmpty(kCommonTableExpressionsFilled, "kCommonTableExpressionsFilled");
+        
+        this.kQueryData.sb.append("WITH ");
+        
+        for (int i = 0; i < kCommonTableExpressionsFilled.length; i++) {
+            final KCommonTableExpressionFilled kCommonTableExpressionFilled = kCommonTableExpressionsFilled[i];
+            
+            if (i > 0) {
+                this.kQueryData.sb.append(", ");
+            }
+            
+            this.kQueryData.sb.append(kCommonTableExpressionFilled.name);
+            
+            final String[] columns = kCommonTableExpressionFilled.columns;
+            
+            if (columns != null && columns.length > 0) {
+                this.kQueryData.sb.append(" (");
 
-        this.kQueryData.sb.append("WITH ").append(kCommonTableExpressionFilled.name);
+                for (int j = 0; j < columns.length; j++) {
+                    if (j > 0) {
+                        this.kQueryData.sb.append(", ");
+                    }
 
-        final String[] columns = kCommonTableExpressionFilled.columns;
-
-        if (columns != null && columns.length > 0) {
-            this.kQueryData.sb.append(" (");
-
-            for (int i = 0; i < columns.length; i++) {
-                if (i > 0) {
-                    this.kQueryData.sb.append(", ");
+                    this.kQueryData.sb.append(columns[j]);
                 }
 
-                this.kQueryData.sb.append(columns[i]);
+                this.kQueryData.sb.append(")");
             }
-
-            this.kQueryData.sb.append(")");
-        }
-
-        this.kQueryData.sb.append(" AS ");
-
-        if (kCommonTableExpressionFilled.kValues != null) {
-            this.processValues(kCommonTableExpressionFilled.kValues.values);
             
-            return;
+            this.kQueryData.sb.append(" AS ");
+            
+            if (kCommonTableExpressionFilled.kValues != null) {
+                this.processValues(kCommonTableExpressionFilled.kValues.values);
+
+                return;
+            }
+            
+            this.processKQuery(kCommonTableExpressionFilled.kQuery);
         }
-        
-        //TODO SUBQUERY
     }
     
     private void processValues(
@@ -112,5 +122,15 @@ public class KWith extends KQuery {
         }
 
         this.kQueryData.sb.append(")");
-    } 
+    }
+    
+    private void processKQuery(
+        final KQuery kQuery
+    ) {
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        this.kQueryData.sb.append("(").append(subQuery.sb).append(")");
+        
+        this.kQueryData.params.addAll(subQuery.params);
+    }
 }

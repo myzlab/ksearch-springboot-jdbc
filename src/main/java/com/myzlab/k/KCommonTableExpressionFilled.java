@@ -7,11 +7,27 @@ public class KCommonTableExpressionFilled extends KCommonTableExpression {
     }
     
     protected KCommonTableExpressionFilled(
+        final KQuery kQuery,
+        final String name,
+        final String... columns
+    ) {
+        super(kQuery, name, columns);
+    }
+    
+    protected KCommonTableExpressionFilled(
         final KValues kValues,
         final String name,
         final String... columns
     ) {
         super(kValues, name, columns);
+    }
+    
+    public static KCommonTableExpressionFilled getInstance(
+        final KQuery kQuery,
+        final String name,
+        final String... columns
+    ) {
+        return new KCommonTableExpressionFilled(kQuery, name, columns);
     }
         
     public static KCommonTableExpressionFilled getInstance(
@@ -25,6 +41,6 @@ public class KCommonTableExpressionFilled extends KCommonTableExpression {
     public KCommonTableExpressionAliased as(
         final String alias
     ) {
-        return KCommonTableExpressionAliased.getInstance(kValues, this.name, alias, this.columns);
+        return KCommonTableExpressionAliased.getInstance(this.kValues, this.kQuery, this.name, alias, this.columns);
     }
 }

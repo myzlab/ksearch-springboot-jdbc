@@ -8,6 +8,7 @@ public abstract class KCommonTableExpression {
     protected final String[] columns;
     protected final KValues kValues;
     protected final String alias;
+    protected final KQuery kQuery;
     
     protected KCommonTableExpression() {
         super();
@@ -16,6 +17,7 @@ public abstract class KCommonTableExpression {
         this.columns = null;
         this.kValues = null;
         this.alias = null;
+        this.kQuery = null;
     }
 
     protected KCommonTableExpression(
@@ -29,6 +31,7 @@ public abstract class KCommonTableExpression {
         this.columns = null;
         this.kValues = null;
         this.alias = null;
+        this.kQuery = null;
     }
     
     protected KCommonTableExpression(
@@ -47,6 +50,7 @@ public abstract class KCommonTableExpression {
         this.columns = columns;
         this.kValues = null;
         this.alias = null;
+        this.kQuery = null;
     }
     
     protected KCommonTableExpression(
@@ -67,27 +71,46 @@ public abstract class KCommonTableExpression {
         this.columns = columns;
         this.kValues = kValues;
         this.alias = null;
+        this.kQuery = null;
     }
     
     protected KCommonTableExpression(
         final KValues kValues,
+        final KQuery kQuery,
         final String name,
         final String alias,
         final String... columns
     ) {
         super();
         
-        KUtils.assertNotNull(kValues, "kValues");
+        if (kValues == null && kQuery == null) {
+            throw KExceptionHelper.internalServerError("'KCommonTableExpression' required 'kValues' or 'kQuery' param"); 
+        }
+        
         KUtils.assertNotNull(name, "name");
         KUtils.assertNotNull(alias, "alias");
-        
-        if (columns == null || columns.length == 0) {
-            throw KExceptionHelper.internalServerError("The 'columns' param is required"); 
-        }
         
         this.name = name;
         this.columns = columns;
         this.kValues = kValues;
         this.alias = alias;
+        this.kQuery = kQuery;
+    }
+    
+    protected KCommonTableExpression(
+        final KQuery kQuery,
+        final String name,
+        final String... columns
+    ) {
+        super();
+        
+        KUtils.assertNotNull(kQuery, "kQuery");
+        KUtils.assertNotNull(name, "name");
+        
+        this.name = name;
+        this.columns = columns;
+        this.kValues = null;
+        this.alias = null;
+        this.kQuery = kQuery;
     }
 }
