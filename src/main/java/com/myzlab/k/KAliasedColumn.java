@@ -41,6 +41,23 @@ public class KAliasedColumn extends KBaseColumnUncastable {
         this.process(alias);
     }
     
+    protected KAliasedColumn(
+        final StringBuilder sb,
+        final String alias,
+        final List<Object> params,
+        final boolean closed
+    ) {
+        super(sb, params, closed, null, null, null);
+        
+        if (alias == null) {
+            throw KExceptionHelper.internalServerError("The 'alias' param is required");
+        }
+        
+        this.alias = alias;
+        
+        this.process(alias);
+    }
+    
     private void process(
         final String alias
     ) {

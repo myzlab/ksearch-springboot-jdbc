@@ -61,6 +61,14 @@ public class KCondition {
         return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
     }
     
+    public KAliasedColumn as(
+        final String alias
+    ) {
+        KUtils.assertNotNull(alias, "alias");
+        
+        return new KAliasedColumn(new StringBuilder(this.sb), alias, this.params, false);
+    }
+    
     private KCondition applyLogicOperator(
         final KCondition kCondition,
         final String operator,
@@ -106,7 +114,7 @@ public class KCondition {
         return this;
     }
     
-    public static KCondition bt(
+    protected static KCondition bt(
         final KBaseColumn kBaseColumnValue,
         final KBaseColumn kBaseColumnLow,
         final KBaseColumn kBaseColumnHigh
@@ -155,7 +163,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition eq(
+    protected static KCondition eq(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -166,7 +174,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition eq(
+    protected static KCondition eq(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -181,7 +189,22 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition gt(
+    protected static KCondition nlte(
+        final KBaseColumn kBaseColumn1,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<=");
+        
+        return kCondition;
+    }
+    
+    protected static KCondition gt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -192,7 +215,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition gt(
+    protected static KCondition gt(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -207,7 +230,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition gte(
+    protected static KCondition gte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -218,7 +241,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition gte(
+    protected static KCondition gte(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -233,7 +256,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lt(
+    protected static KCondition lt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -244,7 +267,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lt(
+    protected static KCondition lt(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -259,7 +282,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lte(
+    protected static KCondition lte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -270,7 +293,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lte(
+    protected static KCondition lte(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -297,7 +320,7 @@ public class KCondition {
         return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
     }
     
-    public static KCondition ibt(
+    protected static KCondition ibt(
         final KBaseColumn kBaseColumnValue,
         final KColumn kColumnLow,
         final KColumn kColumnHigh
@@ -344,7 +367,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ibt(
+    protected static KCondition ibt(
         final KBaseColumn kBaseColumnValue,
         final KValTextField kValTextFieldLow,
         final KValTextField kValTextFieldHigh
@@ -409,7 +432,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ieq(
+    protected static KCondition ieq(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -420,7 +443,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ieq(
+    protected static KCondition ieq(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -431,7 +454,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ieq(
+    protected static KCondition ieq(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -442,7 +465,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ieq(
+    protected static KCondition ieq(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -453,7 +476,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igt(
+    protected static KCondition igt(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -464,7 +487,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igt(
+    protected static KCondition igt(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -475,7 +498,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igt(
+    protected static KCondition igt(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -486,7 +509,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igt(
+    protected static KCondition igt(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -497,7 +520,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igte(
+    protected static KCondition igte(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -508,7 +531,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igte(
+    protected static KCondition igte(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -519,7 +542,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igte(
+    protected static KCondition igte(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -530,7 +553,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition igte(
+    protected static KCondition igte(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -541,7 +564,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilt(
+    protected static KCondition ilt(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -552,7 +575,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilt(
+    protected static KCondition ilt(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -563,7 +586,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilt(
+    protected static KCondition ilt(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -574,7 +597,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilt(
+    protected static KCondition ilt(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -585,7 +608,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilte(
+    protected static KCondition ilte(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -596,7 +619,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilte(
+    protected static KCondition ilte(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -607,7 +630,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilte(
+    protected static KCondition ilte(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -618,7 +641,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilte(
+    protected static KCondition ilte(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -629,7 +652,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilk(
+    protected static KCondition ilk(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -640,7 +663,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilk(
+    protected static KCondition ilk(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -651,7 +674,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilk(
+    protected static KCondition ilk(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -662,7 +685,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilk(
+    protected static KCondition ilk(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -673,7 +696,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilka(
+    protected static KCondition ilka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -686,7 +709,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilka(
+    protected static KCondition ilka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -704,7 +727,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilka(
+    protected static KCondition ilka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -717,7 +740,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilka(
+    protected static KCondition ilka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -735,7 +758,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilkew(
+    protected static KCondition ilkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -748,7 +771,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilkew(
+    protected static KCondition ilkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -766,7 +789,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilkew(
+    protected static KCondition ilkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -779,7 +802,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilkew(
+    protected static KCondition ilkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -797,7 +820,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilksw(
+    protected static KCondition ilksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -810,7 +833,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilksw(
+    protected static KCondition ilksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -828,7 +851,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilksw(
+    protected static KCondition ilksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -841,7 +864,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ilksw(
+    protected static KCondition ilksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -859,7 +882,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition in(
+    protected static KCondition in(
         final KBaseColumn kBaseColumn,
         final Collection values
     ) {
@@ -893,7 +916,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isFalse(
+    protected static KCondition isFalse(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -915,7 +938,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isNotFalse(
+    protected static KCondition isNotFalse(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -937,7 +960,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isNotNull(
+    protected static KCondition isNotNull(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -959,7 +982,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isNull(
+    protected static KCondition isNull(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -981,7 +1004,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isNotTrue(
+    protected static KCondition isNotTrue(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -1003,7 +1026,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isTrue(
+    protected static KCondition isTrue(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -1025,7 +1048,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isUnknown(
+    protected static KCondition isUnknown(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -1047,7 +1070,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition isNotUnknown(
+    protected static KCondition isNotUnknown(
         final KBaseColumn kBaseColumn
     ) {
         final KCondition kCondition = new KCondition();
@@ -1069,7 +1092,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lk(
+    protected static KCondition lk(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1080,7 +1103,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lka(
+    protected static KCondition lka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1093,7 +1116,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lka(
+    protected static KCondition lka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1111,7 +1134,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lka(
+    protected static KCondition lka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1124,7 +1147,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lka(
+    protected static KCondition lka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1142,7 +1165,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lkew(
+    protected static KCondition lkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1155,7 +1178,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lkew(
+    protected static KCondition lkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1173,7 +1196,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lkew(
+    protected static KCondition lkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1186,7 +1209,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lkew(
+    protected static KCondition lkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1204,7 +1227,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lksw(
+    protected static KCondition lksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1217,7 +1240,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lksw(
+    protected static KCondition lksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1235,7 +1258,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lksw(
+    protected static KCondition lksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1248,7 +1271,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition lksw(
+    protected static KCondition lksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1266,7 +1289,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition neq(
+    protected static KCondition neq(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1277,7 +1300,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition neq(
+    protected static KCondition neq(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -1292,7 +1315,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ngt(
+    protected static KCondition ngt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1303,7 +1326,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ngt(
+    protected static KCondition ngt(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -1318,7 +1341,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ngte(
+    protected static KCondition ngte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1329,7 +1352,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition ngte(
+    protected static KCondition ngte(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -1344,7 +1367,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlt(
+    protected static KCondition nlt(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1355,7 +1378,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlt(
+    protected static KCondition nlt(
         final KBaseColumn kBaseColumn1,
         final KQuery kQuery
     ) {
@@ -1370,7 +1393,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlte(
+    protected static KCondition nlte(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -1381,8 +1404,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlte(
-        final KBaseColumn kBaseColumn1,
+    protected static KCondition exists(
         final KQuery kQuery
     ) {
         KUtils.assertNotNull(kQuery, "kQuery");
@@ -1391,12 +1413,12 @@ public class KCondition {
         
         final KQueryData subQuery = kQuery.generateSubQueryData();
         
-        kCondition.processNotBinaryOperator(kBaseColumn1, new KColumn(subQuery.sb, subQuery.params, false), "<=");
+        kCondition.processExists(new KColumn(subQuery.sb, subQuery.params, false));
         
         return kCondition;
     }
     
-    public static KCondition nibt(
+    protected static KCondition nibt(
         final KBaseColumn kBaseColumnValue,
         final KColumn kColumnLow,
         final KColumn kColumnHigh
@@ -1447,7 +1469,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nibt(
+    protected static KCondition nibt(
         final KBaseColumn kBaseColumnValue,
         final KValTextField kValTextFieldLow,
         final KValTextField kValTextFieldHigh
@@ -1516,7 +1538,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nieq(
+    protected static KCondition nieq(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1527,7 +1549,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nieq(
+    protected static KCondition nieq(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1538,7 +1560,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nieq(
+    protected static KCondition nieq(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1549,7 +1571,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nieq(
+    protected static KCondition nieq(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1560,7 +1582,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigt(
+    protected static KCondition nigt(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1571,7 +1593,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigt(
+    protected static KCondition nigt(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1582,7 +1604,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigt(
+    protected static KCondition nigt(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1593,7 +1615,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigt(
+    protected static KCondition nigt(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1604,7 +1626,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigte(
+    protected static KCondition nigte(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1615,7 +1637,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigte(
+    protected static KCondition nigte(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1626,7 +1648,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigte(
+    protected static KCondition nigte(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1637,7 +1659,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nigte(
+    protected static KCondition nigte(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1648,7 +1670,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilt(
+    protected static KCondition nilt(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1659,7 +1681,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilt(
+    protected static KCondition nilt(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1670,7 +1692,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilt(
+    protected static KCondition nilt(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1681,7 +1703,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilt(
+    protected static KCondition nilt(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1692,7 +1714,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilte(
+    protected static KCondition nilte(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1703,7 +1725,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilte(
+    protected static KCondition nilte(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1714,7 +1736,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilte(
+    protected static KCondition nilte(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1725,7 +1747,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilte(
+    protected static KCondition nilte(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1736,7 +1758,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nbt(
+    protected static KCondition nbt(
         final KBaseColumn kBaseColumnValue,
         final KBaseColumn kBaseColumnLow,
         final KBaseColumn kBaseColumnHigh
@@ -1788,7 +1810,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilk(
+    protected static KCondition nilk(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1799,7 +1821,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilk(
+    protected static KCondition nilk(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1810,7 +1832,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilk(
+    protected static KCondition nilk(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1821,7 +1843,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilk(
+    protected static KCondition nilk(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1832,7 +1854,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilka(
+    protected static KCondition nilka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1845,7 +1867,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilka(
+    protected static KCondition nilka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1863,7 +1885,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilka(
+    protected static KCondition nilka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1876,7 +1898,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilka(
+    protected static KCondition nilka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1894,7 +1916,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilkew(
+    protected static KCondition nilkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1907,7 +1929,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilkew(
+    protected static KCondition nilkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1925,7 +1947,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilkew(
+    protected static KCondition nilkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -1938,7 +1960,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilkew(
+    protected static KCondition nilkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -1956,7 +1978,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilksw(
+    protected static KCondition nilksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -1969,7 +1991,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilksw(
+    protected static KCondition nilksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -1987,7 +2009,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilksw(
+    protected static KCondition nilksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -2000,7 +2022,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nilksw(
+    protected static KCondition nilksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -2018,7 +2040,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlk(
+    protected static KCondition nlk(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2
     ) {
@@ -2029,7 +2051,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlka(
+    protected static KCondition nlka(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -2042,7 +2064,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlka(
+    protected static KCondition nlka(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -2060,7 +2082,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlka(
+    protected static KCondition nlka(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -2073,7 +2095,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlka(
+    protected static KCondition nlka(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -2091,7 +2113,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlkew(
+    protected static KCondition nlkew(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -2104,7 +2126,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlkew(
+    protected static KCondition nlkew(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -2122,7 +2144,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlkew(
+    protected static KCondition nlkew(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -2135,7 +2157,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlkew(
+    protected static KCondition nlkew(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -2153,7 +2175,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlksw(
+    protected static KCondition nlksw(
         final KColumn kColumn1,
         final KColumn kColumn2
     ) {
@@ -2166,7 +2188,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlksw(
+    protected static KCondition nlksw(
         final KColumn kColumn,
         final KValTextField kValTextField
     ) {
@@ -2184,7 +2206,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlksw(
+    protected static KCondition nlksw(
         final KValTextField kValTextField,
         final KColumn kColumn
     ) {
@@ -2197,7 +2219,7 @@ public class KCondition {
         return kCondition;
     }
     
-    public static KCondition nlksw(
+    protected static KCondition nlksw(
         final KValTextField kValTextField1,
         final KValTextField kValTextField2
     ) {
@@ -2211,6 +2233,20 @@ public class KCondition {
         }
         
         kCondition.processNotBinaryOperator(kValTextField1, newValTextField2, "LIKE");
+        
+        return kCondition;
+    }
+    
+    protected static KCondition notExists(
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KCondition kCondition = new KCondition();
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kCondition.processNotExists(new KColumn(subQuery.sb, subQuery.params, false));
         
         return kCondition;
     }
@@ -2284,6 +2320,14 @@ public class KCondition {
         }
     }
     
+    private void processExists(
+        final KBaseColumn kBaseColumn
+    ) {
+        params.addAll(kBaseColumn.params);
+        
+        this.sb.append("EXISTS (").append(kBaseColumn.sb).append(")");
+    }
+    
     private void processNotBinaryOperator(
         final KBaseColumn kBaseColumn1,
         final KBaseColumn kBaseColumn2,
@@ -2317,6 +2361,14 @@ public class KCondition {
         }
         
         this.sb.append(")");
+    }
+    
+    private void processNotExists(
+        final KBaseColumn kBaseColumn
+    ) {
+        params.addAll(kBaseColumn.params);
+        
+        this.sb.append("NOT EXISTS (").append(kBaseColumn.sb).append(")");
     }
     
     private void processNotIBinaryOperator(

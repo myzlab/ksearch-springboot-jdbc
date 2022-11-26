@@ -831,6 +831,22 @@ public class KFunction {
         return applyBinaryOperator(kValNumberField, kColumn, "#");
     }
     
+    public static KColumn boolAnd(
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        return processBoolAnd(kCondition);
+    }
+    
+    public static KColumn boolOr(
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        return processBoolOr(kCondition);
+    }
+    
     public static KColumn cast(
         final KBaseColumnCastable kBaseColumnCastable,
         final KDataType kDataType    
@@ -1349,6 +1365,12 @@ public class KFunction {
         encodeKValTextField.sb.insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
         return encodeKValTextField;
+    }
+    
+    public static KCondition exists(
+        final KQuery kQuery
+    ) {
+        return KCondition.exists(kQuery);
     }
     
     public static KColumn exp(
@@ -2127,6 +2149,12 @@ public class KFunction {
         return applyBinaryOperator(kValNumberField, kColumn, "*");
     }
     
+    public static KCondition notExists(
+        final KQuery kQuery
+    ) {
+        return KCondition.notExists(kQuery);
+    }
+    
     public static KColumn now() {
         return new KColumn(new StringBuilder("NOW()"), true);
     }
@@ -2309,6 +2337,30 @@ public class KFunction {
         assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "POWER");
+    }
+    
+    private static KColumn processBoolAnd(
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        final StringBuilder sb = new StringBuilder();
+        
+        sb.append("BOOL_AND (").append(kCondition.sb).append(")");
+        
+        return new KColumn(sb, kCondition.params, false);
+    }
+    
+    private static KColumn processBoolOr(
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        final StringBuilder sb = new StringBuilder();
+        
+        sb.append("BOOL_OR (").append(kCondition.sb).append(")");
+        
+        return new KColumn(sb, kCondition.params, false);
     }
     
     private static KColumn processCount(
