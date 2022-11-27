@@ -59,6 +59,24 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KFrom from(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        
+        this.process(new KTable(null, kRaw.content, null));
+        
+        return this;
+    }
+    
+    public KFrom from(
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased
+    ) {
+        this.process( new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
+        
+        return this;
+    }
+    
     public KFrom fullJoin(
         final KJoinDefinition kJoinDefinition
     ) {

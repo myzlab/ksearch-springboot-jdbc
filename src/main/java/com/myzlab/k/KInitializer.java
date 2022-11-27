@@ -8,7 +8,13 @@ public abstract class KInitializer {
     public KWith with(
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
-        return KWith.getInstance(this, kCommonTableExpressionsFilled);
+        return KWith.getInstance(this, false, kCommonTableExpressionsFilled);
+    }
+    
+    public KWith withRecursive(
+        final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
+    ) {
+        return KWith.getInstance(this, true, kCommonTableExpressionsFilled);
     }
     
     public KSelect select(

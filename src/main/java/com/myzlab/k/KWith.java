@@ -12,11 +12,12 @@ public class KWith extends KQuery {
 
     public static KWith getInstance(
         final KInitializer kInitializer,
+        final boolean recursive,
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
         final KWith kWith = new KWith(kInitializer);
 
-        kWith.process(kCommonTableExpressionsFilled);
+        kWith.process(recursive, kCommonTableExpressionsFilled);
 
         return kWith;
     }
@@ -58,11 +59,12 @@ public class KWith extends KQuery {
     }
     
     private void process(
+        final boolean recursive,
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
         KUtils.assertNotNullNotEmpty(kCommonTableExpressionsFilled, "kCommonTableExpressionsFilled");
         
-        this.kQueryData.sb.append("WITH ");
+        this.kQueryData.sb.append("WITH ").append(recursive ? "RECURSIVE " : "");
         
         for (int i = 0; i < kCommonTableExpressionsFilled.length; i++) {
             final KCommonTableExpressionFilled kCommonTableExpressionFilled = kCommonTableExpressionsFilled[i];

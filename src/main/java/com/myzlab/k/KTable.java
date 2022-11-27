@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.helper.KExceptionHelper;
 import lombok.Data;
 
 @Data
@@ -7,7 +8,7 @@ public class KTable {
     
     protected final String schema;
     protected final String name;
-    protected final String alias;
+    protected String alias;
     protected final KQueryData kQueryData;
     
     private KTable() {
@@ -105,4 +106,5 @@ public class KTable {
         
         return new KColumn(sb, true);
     }
+    
 }
