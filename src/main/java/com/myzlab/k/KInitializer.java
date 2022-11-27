@@ -31,6 +31,12 @@ public abstract class KInitializer {
         return KSelect.getInstance(this, kBaseColumns);
     }
     
+    public KSelect select(
+        final KRaw... kRaws
+    ) {
+        return KSelect.getInstance(this, kRaws);
+    }
+    
     public KSelect selectDistinct(
         final KBaseColumn... kBaseColumns
     ) {

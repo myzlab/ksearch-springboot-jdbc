@@ -43,6 +43,14 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KFrom crossJoin(
+        final KRaw kRaw
+    ) {
+        this.processCrossJoin(kRaw);
+        
+        return this;
+    }
+    
     public KFrom from(
         final KTable kTable
     ) {
@@ -52,9 +60,17 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     }
     
     public KFrom fullJoin(
-        final KJoinDefinition kJoinDefinition    
+        final KJoinDefinition kJoinDefinition
     ) {
         this.processGeneralJoin("FULL JOIN", kJoinDefinition);
+        
+        return this;
+    }
+    
+    public KFrom fullJoin(
+        final KRaw kRaw
+    ) {
+        this.processGeneralJoin("FULL JOIN", kRaw);
         
         return this;
     }
@@ -67,10 +83,26 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KFrom innerJoin(
+        final KRaw kRaw
+    ) {
+        this.processGeneralJoin("INNER JOIN", kRaw);
+        
+        return this;
+    }
+    
     public KFrom leftJoin(
         final KJoinDefinition kJoinDefinition
     ) {
         this.processGeneralJoin("LEFT JOIN", kJoinDefinition);
+        
+        return this;
+    }
+    
+    public KFrom leftJoin(
+        final KRaw kRaw
+    ) {
+        this.processGeneralJoin("LEFT JOIN", kRaw);
         
         return this;
     }
@@ -83,9 +115,27 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KFrom rightJoin(
+        final KRaw kRaw
+    ) {
+        this.processGeneralJoin("RIGHT JOIN", kRaw);
+        
+        return this;
+    }
+    
     public KWhere where(
         final KCondition kCondition
     ) {
+        return KWhere.getInstance(this.k, this.kQueryData, kCondition);
+    }
+    
+    public KWhere where(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
         return KWhere.getInstance(this.k, this.kQueryData, kCondition);
     }
     
@@ -197,6 +247,15 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         this.kQueryData.params.addAll(kJoinDefinition.kCondition.params);
     }
     
+    private void processGeneralJoin(
+        final String joinName,
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kRaw.content);
+    }
+    
     private void processCrossJoin(
         final KTable kTable
     ) {
@@ -209,25 +268,12 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql(true));
     }
     
-    public static void main(String[] args) {
+    private void processCrossJoin(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
         
-    }
-    
-    public static File saveToFile(InputStream inputStream, String fileLocation) {
-        File file = new File(fileLocation);
-
-        try (OutputStream out = new FileOutputStream(file)) {
-            int read;
-            byte[] bytes = new byte[1024];
-            while ((read = inputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-
-            return file;
-        } catch (IOException ex) {
-            return null;
-        }
+        this.kQueryData.sb.append(" CROSS JOIN ").append(kRaw.content);
     }
     
     @Override

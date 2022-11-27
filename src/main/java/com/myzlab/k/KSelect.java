@@ -34,6 +34,27 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
+    public static KSelect getInstance(
+        final KInitializer kInitializer,
+        final KRaw... kRaws
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        
+        final KSelect kSelect = new KSelect(kInitializer);
+        
+        final KColumn[] kColumns = new KColumn[kRaws.length];
+        
+        for (int i = 0; i < kRaws.length; i++) {
+            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
+        }
+        
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
+        
+        kSelect.processSelect(false, kColumns);
+        
+        return kSelect;
+    }
+    
     public static KSelect getDistinctInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
@@ -55,6 +76,28 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
         kSelect.processSelect(false, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    public static KSelect getInstance(
+        final KInitializer kInitializer,
+        final KQueryData kQueryData,
+        final KRaw... kRaws
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        
+        final KSelect kSelect = new KSelect(kQueryData, kInitializer);
+        
+        final KColumn[] kColumns = new KColumn[kRaws.length];
+        
+        for (int i = 0; i < kRaws.length; i++) {
+            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
+        }
+        
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
+        
+        kSelect.processSelect(false, kColumns);
         
         return kSelect;
     }
@@ -107,6 +150,24 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     }
     
     public KSelect select(
+        final KRaw... kRaws
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        
+        final KColumn[] kColumns = new KColumn[kRaws.length];
+        
+        for (int i = 0; i < kRaws.length; i++) {
+            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
+        }
+        
+        this.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
+        
+        this.processSelect(false, kColumns);
+        
+        return this;
+    }
+    
+    public KSelect select(
         final KQuery kQuery,
         final String alias
     ) {
@@ -119,6 +180,14 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KTable kTable
     ) {
         return KFrom.getInstance(this.k, this.kQueryData, kTable);
+    }
+    
+    public KFrom from(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        
+        return KFrom.getInstance(this.k, this.kQueryData, new KTable(null, kRaw.content, null));
     }
     
     public KFrom from(

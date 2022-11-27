@@ -43,10 +43,34 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KWhere andNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.andNot(kRawCondition);
+        
+        return this;
+    }
+    
     public KWhere orNot(
         final KCondition kCondition
     ) {
         this.kCondition.orNot(kCondition);
+        
+        return this;
+    }
+    
+    public KWhere orNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.orNot(kRawCondition);
         
         return this;
     }
@@ -59,10 +83,34 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KWhere and(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.and(kRawCondition);
+        
+        return this;
+    }
+    
     public KWhere or(
         final KCondition kCondition
     ) {
         this.kCondition.or(kCondition);
+        
+        return this;
+    }
+    
+    public KWhere or(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.or(kRawCondition);
         
         return this;
     }
@@ -138,6 +186,16 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
         
         return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
     }
+    
+//    public KOrderBy orderBy(
+//        final KRaw kRaw
+//    ) {
+//        KUtils.assertNotNull(kRaw, "kRaw");
+//        
+//        this.buildWhere();
+//        
+//        return KOrderBy.getInstance(this.k, this.kQueryData, new KColumn(new StringBuilder(kRaw.content), false));
+//    }
     
     public KLimit limit(
         final int count

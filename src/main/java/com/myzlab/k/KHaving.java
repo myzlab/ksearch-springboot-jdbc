@@ -42,10 +42,34 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KHaving andNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.andNot(kRawCondition);
+        
+        return this;
+    }
+    
     public KHaving orNot(
         final KCondition kCondition
     ) {
         this.kCondition.orNot(kCondition);
+        
+        return this;
+    }
+    
+    public KHaving orNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.orNot(kRawCondition);
         
         return this;
     }
@@ -58,6 +82,18 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KHaving and(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.and(kRawCondition);
+        
+        return this;
+    }
+    
     public KHaving or(
         final KCondition kCondition
     ) {
@@ -66,6 +102,18 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    
+    public KHaving or(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kRawCondition = new KCondition(kRaw.content);
+        
+        this.kCondition.or(kRawCondition);
+        
+        return this;
+    }
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {

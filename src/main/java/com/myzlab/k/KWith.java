@@ -27,6 +27,12 @@ public class KWith extends KQuery {
         return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
     }
     
+    public KSelect select(
+        final KRaw... kRaws
+    ) {
+        return KSelect.getInstance(this.k, this.kQueryData, kRaws);
+    }
+    
     public KSelect selectDistinct(
         final KBaseColumn... kBaseColumns
     ) {

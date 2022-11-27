@@ -2463,20 +2463,10 @@ public class KFunction {
         return new KColumn(new StringBuilder("RANDOM()"), true);
     }
     
-    public static KColumn rawColumn(
+    public static KRaw raw(
         final String content
     ) {
-        return new KColumn(new StringBuilder(content), true);
-    }
-    
-    public static KCondition rawCondition(
-        final String content
-    ) {
-        final KCondition kCondition = new KCondition();
-        
-        kCondition.sb.append(content);
-        
-        return kCondition;
+        return new KRaw(content);
     }
     
     public static KColumn repeat(

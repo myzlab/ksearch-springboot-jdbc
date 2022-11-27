@@ -27,6 +27,16 @@ public class KCondition {
     }
     
     protected KCondition(
+        final String content
+    ) {
+        super();
+        
+        this.sb = new StringBuilder(content);
+        this.params = new ArrayList<>();
+        this.operator = 1;
+    }
+    
+    protected KCondition(
         final int operator
     ) {
         super();
@@ -55,9 +65,29 @@ public class KCondition {
         return applyLogicOperator(kCondition, "AND", AND_TYPE);
     }
     
+    public KCondition and(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
+        return applyLogicOperator(kCondition, "AND", AND_TYPE);
+    }
+    
     public KCondition andNot(
         final KCondition kCondition
     ) {
+        return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
+    }
+    
+    public KCondition andNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
         return applyLogicOperator(KFunction.not(kCondition), "AND", AND_TYPE);
     }
     
@@ -314,9 +344,29 @@ public class KCondition {
         return applyLogicOperator(kCondition, "OR", OR_TYPE);
     }
     
+    public KCondition or(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
+        return applyLogicOperator(kCondition, "OR", OR_TYPE);
+    }
+    
     public KCondition orNot(
         final KCondition kCondition
     ) {
+        return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
+    }
+    
+    public KCondition orNot(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
         return applyLogicOperator(KFunction.not(kCondition), "OR", OR_TYPE);
     }
     

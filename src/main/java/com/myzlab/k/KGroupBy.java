@@ -34,6 +34,16 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
         return KHaving.getInstance(this.k, this.kQueryData, kCondition);
     }
     
+    public KHaving having(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        final KCondition kCondition = new KCondition(kRaw.content);
+        
+        return KHaving.getInstance(this.k, this.kQueryData, kCondition);
+    }
+    
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {

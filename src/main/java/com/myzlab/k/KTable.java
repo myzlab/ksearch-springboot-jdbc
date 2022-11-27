@@ -79,17 +79,17 @@ public class KTable {
     private String toSqlByName(
         final boolean alias
     ) {
-        if (alias) {
+        if (alias && this.alias != null) {
             return (this.schema != null ? this.schema + "." : "") + this.name + " " + this.alias;
         }
         
-        return this.schema + "." + this.name;
+        return (this.schema != null ? this.schema + "." : "") + this.name;
     }
     
     private String toSqlByKQuery(
         final boolean alias
     ) {
-        if (alias) {
+        if (alias && this.alias != null) {
             return "(" + this.kQueryData.sb.toString() + ") " + this.alias;
         }
         
