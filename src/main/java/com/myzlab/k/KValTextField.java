@@ -1,5 +1,8 @@
 package com.myzlab.k;
 
+import com.myzlab.k.optional.KOptionalKColumn;
+import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalString;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +83,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition ieq(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ieq(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition ieq(
         final KValTextField kValTextField
     ) {
         return KCondition.ieq(this, kValTextField);
@@ -87,9 +101,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition ieq(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ieq(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition ieq(
         final String value
     ) {
         return KCondition.ieq(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition ieq(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ieq(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -101,6 +137,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iEqual(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ieq(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition iEqual(
         final KValTextField kValTextField
     ) {
         return KCondition.ieq(this, kValTextField);
@@ -108,9 +155,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iEqual(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ieq(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition iEqual(
         final String value
     ) {
         return KCondition.ieq(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iEqual(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ieq(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override

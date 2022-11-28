@@ -1,5 +1,9 @@
 package com.myzlab.k;
 
+import com.myzlab.k.optional.KOptionalKColumn;
+import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalString;
+
 public interface TextMethods {
     
     public KCondition iBetween(
@@ -37,11 +41,23 @@ public interface TextMethods {
     );
     
     public KCondition ieq(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition ieq(
         final KValTextField kValTextField
     );
     
     public KCondition ieq(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition ieq(
         final String string
+    );
+    
+    public KCondition ieq(
+        final KOptionalString kOptionalString
     );
     
     public KCondition iEqual(
@@ -49,11 +65,23 @@ public interface TextMethods {
     );
     
     public KCondition iEqual(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition iEqual(
         final KValTextField kValTextField
     );
     
     public KCondition iEqual(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition iEqual(
         final String string
+    );
+    
+    public KCondition iEqual(
+        final KOptionalString kOptionalString
     );
     
     public KCondition iGreaterThan(
