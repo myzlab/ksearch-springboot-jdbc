@@ -16,7 +16,6 @@ import com.myzlab.k.KWindowDefinitionNamedPartitioned;
 import com.myzlab.k.KWindowDefinitionUnnamedFrameExcluded;
 import com.myzlab.k.KWindowDefinitionUnnamedOrdered;
 import com.myzlab.k.KWindowDefinitionUnnamedPartitioned;
-import static com.myzlab.k.optional.KOptionalHelper.*;
 import com.myzlab.ktest.generated.metadata.AuthorMetadata;
 import com.myzlab.ktest.generated.metadata.BookMetadata;
 import static com.myzlab.ktest.generated.metadata.Tables.*;

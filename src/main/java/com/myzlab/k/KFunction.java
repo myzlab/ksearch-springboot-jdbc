@@ -1,6 +1,11 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import com.myzlab.k.optional.KOptionalKColumn;
+import com.myzlab.k.optional.KOptionalKValNumberField;
+import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalNumber;
+import com.myzlab.k.optional.KOptionalString;
 
 public class KFunction {
 
@@ -2193,6 +2198,36 @@ public class KFunction {
         kCondition.sb.insert(0, "NOT (").append(")");
         
         return kCondition;
+    }
+    
+    public static KOptionalKColumn optional(
+        final KColumn kColumn
+    ) {
+        return KOptionalKColumn.getInstance(kColumn);
+    }
+    
+    public static KOptionalKValNumberField optional(
+        final KValNumberField kValNumberField
+    ) {
+        return KOptionalKValNumberField.getInstance(kValNumberField);
+    }
+    
+    public static KOptionalKValTextField optional(
+        final KValTextField kValTextField
+    ) {
+        return KOptionalKValTextField.getInstance(kValTextField);
+    }
+    
+    public static KOptionalNumber optional(
+        final Number number
+    ) {
+        return KOptionalNumber.getInstance(number);
+    }
+    
+    public static KOptionalString optional(
+        final String value
+    ) {
+        return KOptionalString.getInstance(value);
     }
     
     public static KColumn overlay(
