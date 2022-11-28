@@ -716,9 +716,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThan(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKColumn.get());
+    }
+    
+    public KCondition lessThan(
         final KValNumberField kValNumberField
     ) {
         return KCondition.lt(this, kValNumberField);
+    }
+    
+    public KCondition lessThan(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValNumberField.get());
     }
     
     public KCondition lessThan(
@@ -728,15 +748,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValTextField.get());
+    }
+    
+    public KCondition lessThan(
         final Number number
     ) {
         return KCondition.lt(this, KFunction.val(number));
     }
     
     public KCondition lessThan(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalNumber.get());
+    }
+    
+    public KCondition lessThan(
         final String value
     ) {
         return KCondition.lt(this, KFunction.val(value));
+    }
+    
+    public KCondition lessThan(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalString.get());
     }
     
     public KCondition lessThan(
@@ -788,9 +838,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lt(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKColumn.get());
+    }
+    
+    public KCondition lt(
         final KValNumberField kValNumberField
     ) {
         return KCondition.lt(this, kValNumberField);
+    }
+    
+    public KCondition lt(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValNumberField.get());
     }
     
     public KCondition lt(
@@ -800,15 +870,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lt(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValTextField.get());
+    }
+    
+    public KCondition lt(
         final Number number
     ) {
         return KCondition.lt(this, KFunction.val(number));
     }
     
     public KCondition lt(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalNumber.get());
+    }
+    
+    public KCondition lt(
         final String value
     ) {
         return KCondition.lt(this, KFunction.val(value));
+    }
+    
+    public KCondition lt(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalString.get());
     }
     
     public KCondition lt(
