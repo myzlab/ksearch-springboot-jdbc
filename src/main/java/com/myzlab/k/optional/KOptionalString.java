@@ -2,10 +2,12 @@ package com.myzlab.k.optional;
 
 public class KOptionalString {
 
-    private String value;
+    private final String value;
     
     private KOptionalString() {
         super();
+        
+        this.value = null;
     }
     
     private KOptionalString(

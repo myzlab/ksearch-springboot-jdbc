@@ -4,10 +4,12 @@ import com.myzlab.k.KColumn;
 
 public class KOptionalKColumn {
 
-    private KColumn kColumn;
+    private final KColumn kColumn;
     
     private KOptionalKColumn() {
         super();
+        
+        this.kColumn = null;
     }
     
     private KOptionalKColumn(

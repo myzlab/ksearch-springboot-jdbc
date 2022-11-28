@@ -4,10 +4,12 @@ import com.myzlab.k.KValNumberField;
 
 public class KOptionalKValNumberField {
 
-    private KValNumberField kValNumberField;
+    private final KValNumberField kValNumberField;
     
     private KOptionalKValNumberField() {
         super();
+        
+        this.kValNumberField = null;
     }
     
     private KOptionalKValNumberField(

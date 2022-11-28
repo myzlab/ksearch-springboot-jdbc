@@ -4,10 +4,12 @@ import com.myzlab.k.KValTextField;
 
 public class KOptionalKValTextField {
 
-    private KValTextField kValTextField;
+    private final KValTextField kValTextField;
     
     private KOptionalKValTextField() {
         super();
+        
+        this.kValTextField = null;
     }
     
     private KOptionalKValTextField(

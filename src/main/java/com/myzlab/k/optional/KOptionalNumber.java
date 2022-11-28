@@ -2,10 +2,12 @@ package com.myzlab.k.optional;
 
 public class KOptionalNumber {
 
-    private Number number;
+    private final Number number;
     
     private KOptionalNumber() {
         super();
+        
+        this.number = null;
     }
     
     private KOptionalNumber(

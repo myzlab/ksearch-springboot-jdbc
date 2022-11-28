@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import com.myzlab.k.optional.KOptionalArrayObject;
+import com.myzlab.k.optional.KOptionalCollection;
 import com.myzlab.k.optional.KOptionalKColumn;
 import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalNumber;
@@ -672,9 +674,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition in(
+        final KOptionalArrayObject kOptionalArrayObject
+    ) {
+        if (!kOptionalArrayObject.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.in(kOptionalArrayObject.get());
+    }
+    
+    public KCondition in(
         final Collection values
     ) {
         return KCondition.in(this, values);
+    }
+    
+    public KCondition in(
+        final KOptionalCollection kOptionalCollection
+    ) {
+        if (!kOptionalCollection.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.in(kOptionalCollection.get());
     }
     
     public KCondition isFalse() {
@@ -1818,9 +1840,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notIn(
+        final KOptionalArrayObject kOptionalArrayObject
+    ) {
+        if (!kOptionalArrayObject.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.notIn(kOptionalArrayObject.get());
+    }
+    
+    public KCondition notIn(
         final Collection values
     ) {
         return KCondition.notIn(this, values);
+    }
+    
+    public KCondition notIn(
+        final KOptionalCollection kOptionalCollection
+    ) {
+        if (!kOptionalCollection.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.notIn(kOptionalCollection.get());
     }
     
     public KCondition notLessThan(
