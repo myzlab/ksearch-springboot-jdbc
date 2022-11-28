@@ -881,9 +881,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition ngt(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKColumn.get());
+    }
+    
+    public KCondition ngt(
         final KValNumberField kValNumberField
     ) {
         return KCondition.ngt(this, kValNumberField);
+    }
+    
+    public KCondition ngt(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValNumberField.get());
     }
     
     public KCondition ngt(
@@ -893,15 +913,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition ngt(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValTextField.get());
+    }
+    
+    public KCondition ngt(
         final Number number
     ) {
         return KCondition.ngt(this, KFunction.val(number));
     }
     
     public KCondition ngt(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalNumber.get());
+    }
+    
+    public KCondition ngt(
         final String value
     ) {
         return KCondition.ngt(this, KFunction.val(value));
+    }
+    
+    public KCondition ngt(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalString.get());
     }
     
     public KCondition ngt(
@@ -1146,9 +1196,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notGreaterThan(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKColumn.get());
+    }
+    
+    public KCondition notGreaterThan(
         final KValNumberField kValNumberField
     ) {
         return KCondition.ngt(this, kValNumberField);
+    }
+    
+    public KCondition notGreaterThan(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValNumberField.get());
     }
     
     public KCondition notGreaterThan(
@@ -1158,15 +1228,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notGreaterThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValTextField.get());
+    }
+    
+    public KCondition notGreaterThan(
         final Number number
     ) {
         return KCondition.ngt(this, KFunction.val(number));
     }
     
     public KCondition notGreaterThan(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalNumber.get());
+    }
+    
+    public KCondition notGreaterThan(
         final String value
     ) {
         return KCondition.ngt(this, KFunction.val(value));
+    }
+    
+    public KCondition notGreaterThan(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalString.get());
     }
     
     public KCondition notGreaterThan(
