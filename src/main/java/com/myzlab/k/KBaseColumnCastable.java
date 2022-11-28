@@ -802,9 +802,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThanOrEqualTo(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKColumn.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
         final KValNumberField kValNumberField
     ) {
         return KCondition.lte(this, kValNumberField);
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValNumberField.get());
     }
     
     public KCondition lessThanOrEqualTo(
@@ -814,15 +834,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThanOrEqualTo(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValTextField.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
         final Number number
     ) {
         return KCondition.lte(this, KFunction.val(number));
     }
     
     public KCondition lessThanOrEqualTo(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalNumber.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
         final String value
     ) {
         return KCondition.lte(this, KFunction.val(value));
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalString.get());
     }
     
     public KCondition lessThanOrEqualTo(
@@ -924,9 +974,29 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lte(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKColumn.get());
+    }
+    
+    public KCondition lte(
         final KValNumberField kValNumberField
     ) {
         return KCondition.lte(this, kValNumberField);
+    }
+    
+    public KCondition lte(
+        final KOptionalKValNumberField kOptionalKValNumberField
+    ) {
+        if (!kOptionalKValNumberField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValNumberField.get());
     }
     
     public KCondition lte(
@@ -936,15 +1006,45 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lte(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValTextField.get());
+    }
+    
+    public KCondition lte(
         final Number number
     ) {
         return KCondition.lte(this, KFunction.val(number));
     }
     
     public KCondition lte(
+        final KOptionalNumber kOptionalNumber
+    ) {
+        if (!kOptionalNumber.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalNumber.get());
+    }
+    
+    public KCondition lte(
         final String value
     ) {
         return KCondition.lte(this, KFunction.val(value));
+    }
+    
+    public KCondition lte(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalString.get());
     }
     
     public KCondition lte(
