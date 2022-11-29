@@ -245,6 +245,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition igte(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.igte(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition igte(
         final KValTextField kValTextField
     ) {
         return KCondition.igte(this, kValTextField);
@@ -252,9 +263,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition igte(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igte(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition igte(
         final String value
     ) {
         return KCondition.igte(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition igte(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igte(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -320,6 +353,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iGreaterThanOrEqualTo(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.igte(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
         final KValTextField kValTextField
     ) {
         return KCondition.igte(this, kValTextField);
@@ -327,9 +371,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iGreaterThanOrEqualTo(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igte(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
         final String value
     ) {
         return KCondition.igte(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iGreaterThanOrEqualTo(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igte(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
