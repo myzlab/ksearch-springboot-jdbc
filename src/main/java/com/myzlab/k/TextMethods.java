@@ -671,11 +671,23 @@ public interface TextMethods {
     );
     
     public KCondition nilte(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nilte(
         final KValTextField kValTextField
     );
     
     public KCondition nilte(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nilte(
         final String value
+    );
+    
+    public KCondition nilte(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notIGreaterThan(
@@ -755,11 +767,23 @@ public interface TextMethods {
     );
     
     public KCondition notILessThanOrEqualTo(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notILessThanOrEqualTo(
         final KValTextField kValTextField
     );
     
     public KCondition notILessThanOrEqualTo(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notILessThanOrEqualTo(
         final String value
+    );
+    
+    public KCondition notILessThanOrEqualTo(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notILike(
