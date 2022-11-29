@@ -455,13 +455,25 @@ public interface TextMethods {
     );
     
     public KCondition iLike(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition iLike(
         final KValTextField kValTextField
+    );
+    
+    public KCondition iLike(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition iLike(
         final String value
     );
     
+    public KCondition iLike(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition iLikeAny(
         final KColumn kColumn
     );
@@ -503,11 +515,23 @@ public interface TextMethods {
     );
     
     public KCondition ilk(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition ilk(
         final KValTextField kValTextField
     );
     
     public KCondition ilk(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition ilk(
         final String value
+    );
+    
+    public KCondition ilk(
+        final KOptionalString kOptionalString
     );
     
     public KCondition ilka(
