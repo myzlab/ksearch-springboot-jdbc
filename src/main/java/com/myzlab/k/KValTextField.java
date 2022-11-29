@@ -1781,6 +1781,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition nlk(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlk(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nlk(
         final KValTextField kValTextField
     ) {
         return KCondition.nlk(this, kValTextField);
@@ -1788,9 +1799,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition nlk(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nlk(
         final String value
     ) {
         return KCondition.nlk(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nlk(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1878,6 +1911,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     }
     
     @Override
+    public KCondition notLike(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlk(kOptionalKColumn.get());
+    }
+    
+    @Override
     public KCondition notLikeAny(
         final KColumn kColumn
     ) {
@@ -1892,10 +1936,32 @@ public class KValTextField extends KBaseValField implements TextMethods {
     }
     
     @Override
+    public KCondition notLike(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
     public KCondition notLikeAny(
         final String value
     ) {
         return KCondition.nlka(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notLike(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
