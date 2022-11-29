@@ -335,11 +335,23 @@ public interface TextMethods {
     );
     
     public KCondition nigte(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nigte(
         final KValTextField kValTextField
     );
     
     public KCondition nigte(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nigte(
         final String value
+    );
+    
+    public KCondition nigte(
+        final KOptionalString kOptionalString
     );
     
     public KCondition ilt(
@@ -635,11 +647,23 @@ public interface TextMethods {
     );
     
     public KCondition notIGreaterThanOrEqualTo(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notIGreaterThanOrEqualTo(
         final KValTextField kValTextField
     );
     
     public KCondition notIGreaterThanOrEqualTo(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notIGreaterThanOrEqualTo(
         final String value
+    );
+    
+    public KCondition notIGreaterThanOrEqualTo(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notILessThan(
