@@ -407,6 +407,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iLessThan(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ilt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition iLessThan(
         final KValTextField kValTextField
     ) {
         return KCondition.ilt(this, kValTextField);
@@ -414,9 +425,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iLessThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ilt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition iLessThan(
         final String value
     ) {
         return KCondition.ilt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iLessThan(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ilt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -617,6 +650,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition ilt(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ilt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition ilt(
         final KValTextField kValTextField
     ) {
         return KCondition.ilt(this, kValTextField);
@@ -624,9 +668,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition ilt(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ilt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition ilt(
         final String value
     ) {
         return KCondition.ilt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition ilt(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.ilt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override

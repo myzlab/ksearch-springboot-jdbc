@@ -359,13 +359,25 @@ public interface TextMethods {
     );
     
     public KCondition ilt(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition ilt(
         final KValTextField kValTextField
+    );
+    
+    public KCondition ilt(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition ilt(
         final String value
     );
     
+    public KCondition ilt(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition ilte(
         final KColumn kColumn
     );
@@ -383,11 +395,23 @@ public interface TextMethods {
     );
     
     public KCondition iLessThan(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition iLessThan(
         final KValTextField kValTextField
     );
     
     public KCondition iLessThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition iLessThan(
         final String value
+    );
+    
+    public KCondition iLessThan(
+        final KOptionalString kOptionalString
     );
     
     public KCondition iLessThanOrEqualTo(
