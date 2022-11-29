@@ -1091,6 +1091,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition nilk(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nilk(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nilk(
         final KValTextField kValTextField
     ) {
         return KCondition.nilk(this, kValTextField);
@@ -1098,9 +1109,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition nilk(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nilk(
         final String value
     ) {
         return KCondition.nilk(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nilk(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1763,6 +1796,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition notILike(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nilk(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition notILike(
         final KValTextField kValTextField
     ) {
         return KCondition.nilk(this, kValTextField);
@@ -1770,9 +1814,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition notILike(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition notILike(
         final String value
     ) {
         return KCondition.nilk(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notILike(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override

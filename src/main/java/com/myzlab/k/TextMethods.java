@@ -185,13 +185,25 @@ public interface TextMethods {
     );
     
     public KCondition nilk(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nilk(
         final KValTextField kValTextField
+    );
+    
+    public KCondition nilk(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition nilk(
         final String value
     );
     
+    public KCondition nilk(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition nilka(
         final KColumn kColumn
     );
@@ -838,12 +850,24 @@ public interface TextMethods {
         final KColumn kColumn
     );
     
+     public KCondition notILike(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
     public KCondition notILike(
         final KValTextField kValTextField
     );
     
     public KCondition notILike(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notILike(
         final String value
+    );
+    
+    public KCondition notILike(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notILikeAny(
