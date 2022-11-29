@@ -287,13 +287,25 @@ public interface TextMethods {
     );
     
     public KCondition nigt(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nigt(
         final KValTextField kValTextField
+    );
+    
+    public KCondition nigt(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition nigt(
         final String string
     );
     
+    public KCondition nigt(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition nigte(
         final KColumn kColumn
     );
@@ -575,11 +587,23 @@ public interface TextMethods {
     );
     
     public KCondition notIGreaterThan(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notIGreaterThan(
         final KValTextField kValTextField
+    );
+    
+    public KCondition notIGreaterThan(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition notIGreaterThan(
         final String string
+    );
+    
+    public KCondition notIGreaterThan(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notIGreaterThanOrEqualTo(
