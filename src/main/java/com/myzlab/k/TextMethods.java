@@ -215,11 +215,23 @@ public interface TextMethods {
     );
     
     public KCondition nieq(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nieq(
         final KValTextField kValTextField
     );
     
     public KCondition nieq(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nieq(
         final String value
+    );
+    
+    public KCondition nieq(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notIEqual(
@@ -227,11 +239,23 @@ public interface TextMethods {
     );
     
     public KCondition notIEqual(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notIEqual(
         final KValTextField kValTextField
     );
     
     public KCondition notIEqual(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notIEqual(
         final String value
+    );
+    
+    public KCondition notIEqual(
+        final KOptionalString kOptionalString
     );
     
     public KCondition nigt(
