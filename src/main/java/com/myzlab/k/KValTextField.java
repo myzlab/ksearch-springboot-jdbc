@@ -191,6 +191,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition igt(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.igt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition igt(
         final KValTextField kValTextField
     ) {
         return KCondition.igt(this, kValTextField);
@@ -198,9 +209,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition igt(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition igt(
         final String value
     ) {
         return KCondition.igt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition igt(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -233,6 +266,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iGreaterThan(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.igt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
         final KValTextField kValTextField
     ) {
         return KCondition.igt(this, kValTextField);
@@ -240,9 +284,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition iGreaterThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
         final String value
     ) {
         return KCondition.igt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition iGreaterThan(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.igt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override

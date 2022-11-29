@@ -89,13 +89,25 @@ public interface TextMethods {
     );
     
     public KCondition iGreaterThan(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition iGreaterThan(
         final KValTextField kValTextField
+    );
+    
+    public KCondition iGreaterThan(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition iGreaterThan(
         final String string
     );
     
+    public KCondition iGreaterThan(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition iGreaterThanOrEqualTo(
         final KColumn kColumn
     );
@@ -113,11 +125,23 @@ public interface TextMethods {
     );
     
     public KCondition igt(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition igt(
         final KValTextField kValTextField
     );
     
     public KCondition igt(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition igt(
         final String string
+    );
+    
+    public KCondition igt(
+        final KOptionalString kOptionalString
     );
     
     public KCondition igte(
