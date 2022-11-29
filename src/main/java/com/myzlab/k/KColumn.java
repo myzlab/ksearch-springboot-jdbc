@@ -1416,6 +1416,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nilt(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nilt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nilt(
         final KValTextField kValTextField
     ) {
         return KCondition.nilt(this, kValTextField);
@@ -1423,9 +1434,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nilt(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nilt(
         final String value
     ) {
         return KCondition.nilt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nilt(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1566,6 +1599,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notILessThan(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nilt(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition notILessThan(
         final KValTextField kValTextField
     ) {
         return KCondition.nilt(this, kValTextField);
@@ -1573,9 +1617,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notILessThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilt(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition notILessThan(
         final String value
     ) {
         return KCondition.nilt(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notILessThan(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nilt(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override

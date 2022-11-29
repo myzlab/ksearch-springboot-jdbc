@@ -623,11 +623,23 @@ public interface TextMethods {
     );
     
     public KCondition nilt(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nilt(
         final KValTextField kValTextField
     );
     
     public KCondition nilt(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nilt(
         final String value
+    );
+    
+    public KCondition nilt(
+        final KOptionalString kOptionalString
     );
     
     public KCondition nilte(
@@ -695,11 +707,23 @@ public interface TextMethods {
     );
     
     public KCondition notILessThan(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notILessThan(
         final KValTextField kValTextField
     );
     
     public KCondition notILessThan(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notILessThan(
         final String value
+    );
+    
+    public KCondition notILessThan(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notILessThanOrEqualTo(
