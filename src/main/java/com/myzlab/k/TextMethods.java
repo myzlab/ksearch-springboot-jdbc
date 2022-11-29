@@ -551,13 +551,25 @@ public interface TextMethods {
     );
     
     public KCondition like(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition like(
         final KValTextField kValTextField
+    );
+    
+    public KCondition like(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition like(
         final String value
     );
     
+    public KCondition like(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition likeAny(
         final KColumn kColumn
     );
@@ -599,11 +611,23 @@ public interface TextMethods {
     );
     
     public KCondition lk(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition lk(
         final KValTextField kValTextField
     );
     
     public KCondition lk(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition lk(
         final String value
+    );
+    
+    public KCondition lk(
+        final KOptionalString kOptionalString
     );
     
     public KCondition lka(

@@ -912,6 +912,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition like(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lk(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition like(
         final KValTextField kValTextField
     ) {
         return KCondition.lk(this, kValTextField);
@@ -919,9 +930,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition like(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition like(
         final String value
     ) {
         return KCondition.lk(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition like(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -996,6 +1029,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition lk(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lk(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition lk(
         final KValTextField kValTextField
     ) {
         return KCondition.lk(this, kValTextField);
@@ -1003,9 +1047,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition lk(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lk(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition lk(
         final String value
     ) {
         return KCondition.lk(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition lk(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lk(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
