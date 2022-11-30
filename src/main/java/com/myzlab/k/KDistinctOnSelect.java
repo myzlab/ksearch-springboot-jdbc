@@ -93,7 +93,7 @@ public class KDistinctOnSelect {
     ) {
         KUtils.assertNotNull(kColumn, "kColumn");
         
-        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(kColumn.toSql()).append(")");
+        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(KUtils.reverseParams(kColumn)).append(")");
     }
     
     private void processSelectDistinctOn(

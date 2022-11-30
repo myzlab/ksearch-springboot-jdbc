@@ -298,7 +298,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
             this.kQueryData.columnsAdded++;
             this.kQueryData.params.addAll(kBaseColumn.params);
             
-            this.kQueryData.sb.append(kBaseColumn.toSql());
+            this.kQueryData.sb.append(kBaseColumn.sb);
         }
     }
     

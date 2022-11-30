@@ -104,9 +104,14 @@ public abstract class KBaseColumn {
         this.sb.append("?");
         this.params.add(val);
     }
- 
-    protected String toSql() {
-        return sb.toString();
+
+    @Override
+    public String toString() {
+        if (this.kTable != null && this.kTable.alias != null) {
+            return this.kTable.alias + "." + this.name;
+        }
+        
+        return this.name;
     }
     
     protected abstract KBaseColumn cloneMe();

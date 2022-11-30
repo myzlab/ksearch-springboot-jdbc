@@ -52,7 +52,7 @@ public class KWindowDefinitionUnnamedPartitioned extends KWindowDefinition imple
             throw KExceptionHelper.internalServerError("Params in 'kColumn' are not allowed"); 
         }
         
-        this.sb.append("PARTITION BY ").append(kColumn.toSql());
+        this.sb.append("PARTITION BY ").append(kColumn.sb);
     }
     
     @Override

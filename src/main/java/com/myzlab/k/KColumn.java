@@ -3134,13 +3134,4 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         return KUtils.reverseParams(this);
     }
     
-    public String toSql(
-        final boolean aliasTable
-    ) {
-        if (aliasTable && this.kTable != null && this.kTable.alias != null) {
-            return this.kTable.alias + "." + this.name;
-        }
-        
-        return this.name;
-    }
 }

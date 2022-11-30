@@ -64,7 +64,7 @@ public class KWindowDefinitionUnnamedOrdered extends KWindowDefinition implement
             this.sb.append(" ");
         }
         
-        this.sb.append("ORDER BY ").append(kColumn.toSql());
+        this.sb.append("ORDER BY ").append(kColumn.sb);
     }
     
     private void process(
@@ -82,7 +82,7 @@ public class KWindowDefinitionUnnamedOrdered extends KWindowDefinition implement
             this.sb.append(" ");
         }
         
-        this.sb.append("ORDER BY ").append(kColumnOrdered.toSql());
+        this.sb.append("ORDER BY ").append(kColumnOrdered.sb);
     }
     
     @Override
