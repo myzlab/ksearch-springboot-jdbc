@@ -2340,6 +2340,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlka(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlka(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nlka(
         final KValTextField kValTextField
     ) {
         return KCondition.nlka(this, kValTextField);
@@ -2347,9 +2358,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlka(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlka(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nlka(
         final String value
     ) {
         return KCondition.nlka(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nlka(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlka(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -2361,6 +2394,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlkew(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlkew(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nlkew(
         final KValTextField kValTextField
     ) {
         return KCondition.nlkew(this, kValTextField);
@@ -2368,9 +2412,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlkew(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlkew(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nlkew(
         final String value
     ) {
         return KCondition.nlkew(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nlkew(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlkew(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -2382,6 +2448,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlksw(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlksw(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition nlksw(
         final KValTextField kValTextField
     ) {
         return KCondition.nlksw(this, kValTextField);
@@ -2389,9 +2466,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition nlksw(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlksw(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition nlksw(
         final String value
     ) {
         return KCondition.nlksw(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition nlksw(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlksw(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -2457,6 +2556,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeAny(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlka(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition notLikeAny(
         final KValTextField kValTextField
     ) {
         return KCondition.nlka(this, kValTextField);
@@ -2464,9 +2574,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeAny(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlka(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition notLikeAny(
         final String value
     ) {
         return KCondition.nlka(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notLikeAny(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlka(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -2478,6 +2610,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeEndWith(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlkew(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition notLikeEndWith(
         final KValTextField kValTextField
     ) {
         return KCondition.nlkew(this, kValTextField);
@@ -2485,9 +2628,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeEndWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlkew(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition notLikeEndWith(
         final String value
     ) {
         return KCondition.nlkew(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notLikeEndWith(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlkew(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -2499,6 +2664,17 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeStartWith(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlksw(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition notLikeStartWith(
         final KValTextField kValTextField
     ) {
         return KCondition.nlksw(this, kValTextField);
@@ -2506,9 +2682,31 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     
     @Override
     public KCondition notLikeStartWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlksw(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition notLikeStartWith(
         final String value
     ) {
         return KCondition.nlksw(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition notLikeStartWith(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.nlksw(this, KFunction.val(kOptionalString.get()));
     }
     
     public KColumnOvered over(
