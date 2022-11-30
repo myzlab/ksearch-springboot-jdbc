@@ -911,6 +911,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeAny(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lka(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition likeAny(
         final KValTextField kValTextField
     ) {
         return KCondition.lka(this, kValTextField);
@@ -918,9 +929,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeAny(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lka(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition likeAny(
         final String value
     ) {
         return KCondition.lka(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition likeAny(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lka(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -932,6 +965,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeEndWith(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lkew(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition likeEndWith(
         final KValTextField kValTextField
     ) {
         return KCondition.lkew(this, kValTextField);
@@ -939,9 +983,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeEndWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lkew(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition likeEndWith(
         final String value
     ) {
         return KCondition.lkew(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition likeEndWith(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lkew(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -953,6 +1019,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeStartWith(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lksw(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition likeStartWith(
         final KValTextField kValTextField
     ) {
         return KCondition.lksw(this, kValTextField);
@@ -960,9 +1037,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition likeStartWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lksw(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition likeStartWith(
         final String value
     ) {
         return KCondition.lksw(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition likeStartWith(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lksw(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1028,6 +1127,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lka(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lka(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition lka(
         final KValTextField kValTextField
     ) {
         return KCondition.lka(this, kValTextField);
@@ -1035,9 +1145,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lka(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lka(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition lka(
         final String value
     ) {
         return KCondition.lka(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition lka(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lka(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1049,6 +1181,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lkew(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lkew(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition lkew(
         final KValTextField kValTextField
     ) {
         return KCondition.lkew(this, kValTextField);
@@ -1056,9 +1199,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lkew(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lkew(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition lkew(
         final String value
     ) {
         return KCondition.lkew(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition lkew(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lkew(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
@@ -1070,6 +1235,17 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lksw(
+        final KOptionalKColumn kOptionalKColumn
+    ) {
+        if (!kOptionalKColumn.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lksw(kOptionalKColumn.get());
+    }
+    
+    @Override
+    public KCondition lksw(
         final KValTextField kValTextField
     ) {
         return KCondition.lksw(this, kValTextField);
@@ -1077,9 +1253,31 @@ public class KValTextField extends KBaseValField implements TextMethods {
     
     @Override
     public KCondition lksw(
+        final KOptionalKValTextField kOptionalKValTextField
+    ) {
+        if (!kOptionalKValTextField.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lksw(this, kOptionalKValTextField.get());
+    }
+    
+    @Override
+    public KCondition lksw(
         final String value
     ) {
         return KCondition.lksw(this, KFunction.val(value));
+    }
+    
+    @Override
+    public KCondition lksw(
+        final KOptionalString kOptionalString
+    ) {
+        if (!kOptionalString.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.lksw(this, KFunction.val(kOptionalString.get()));
     }
     
     @Override
