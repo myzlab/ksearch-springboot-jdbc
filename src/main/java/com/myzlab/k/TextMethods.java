@@ -209,15 +209,31 @@ public interface TextMethods {
     );
     
     public KCondition nilka(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nilka(
         final KValTextField kValTextField
+    );
+    
+    public KCondition nilka(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition nilka(
         final String value
     );
     
+    public KCondition nilka(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition nilkew(
         final KColumn kColumn
+    );
+    
+    public KCondition nilkew(
+        final KOptionalKColumn kOptionalKColumn
     );
     
     public KCondition nilkew(
@@ -225,7 +241,15 @@ public interface TextMethods {
     );
     
     public KCondition nilkew(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nilkew(
         final String value
+    );
+    
+    public KCondition nilkew(
+        final KOptionalString kOptionalString
     );
     
     public KCondition nilksw(
@@ -233,11 +257,23 @@ public interface TextMethods {
     );
     
     public KCondition nilksw(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition nilksw(
         final KValTextField kValTextField
     );
     
     public KCondition nilksw(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition nilksw(
         final String value
+    );
+    
+    public KCondition nilksw(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notIBetween(
@@ -1019,15 +1055,31 @@ public interface TextMethods {
     );
     
     public KCondition notILikeAny(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notILikeAny(
         final KValTextField kValTextField
+    );
+    
+    public KCondition notILikeAny(
+        final KOptionalKValTextField kOptionalKValTextField
     );
     
     public KCondition notILikeAny(
         final String value
     );
     
+    public KCondition notILikeAny(
+        final KOptionalString kOptionalString
+    );
+    
     public KCondition notILikeEndWith(
         final KColumn kColumn
+    );
+    
+    public KCondition notILikeEndWith(
+        final KOptionalKColumn kOptionalKColumn
     );
     
     public KCondition notILikeEndWith(
@@ -1035,7 +1087,15 @@ public interface TextMethods {
     );
     
     public KCondition notILikeEndWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notILikeEndWith(
         final String value
+    );
+    
+    public KCondition notILikeEndWith(
+        final KOptionalString kOptionalString
     );
     
     public KCondition notILikeStartWith(
@@ -1043,11 +1103,23 @@ public interface TextMethods {
     );
     
     public KCondition notILikeStartWith(
+        final KOptionalKColumn kOptionalKColumn
+    );
+    
+    public KCondition notILikeStartWith(
         final KValTextField kValTextField
     );
     
     public KCondition notILikeStartWith(
+        final KOptionalKValTextField kOptionalKValTextField
+    );
+    
+    public KCondition notILikeStartWith(
         final String value
+    );
+    
+    public KCondition notILikeStartWith(
+        final KOptionalString kOptionalString
     );
     
     public KCondition nlk(
