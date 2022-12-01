@@ -254,7 +254,7 @@ public abstract class KQuery {
             this.fillRef(ref, kBaseColumn, i);
         }
 
-        return KRow.getGenericInstance(o, ref);
+        return new KRow(o, ref);
     }
     
     private void fillRef(
