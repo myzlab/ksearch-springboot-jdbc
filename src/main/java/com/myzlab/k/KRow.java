@@ -117,7 +117,10 @@ public class KRow {
         return this.getCharacter(n, null);
     }
     
-    private Character getCharacter(final int n, final String nameRef) {
+    private Character getCharacter(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -131,7 +134,9 @@ public class KRow {
         }
     }
     
-    public UUID getUUID(final String c) {
+    public UUID getUUID(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -141,11 +146,16 @@ public class KRow {
         return this.getUUID(n, c);
     }
     
-    public UUID getUUID(final int n) {
+    public UUID getUUID(
+        final int n
+    ) {
         return this.getUUID(n, null);
     }
     
-    private UUID getUUID(final int n, final String nameRef) {
+    private UUID getUUID(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -167,7 +177,9 @@ public class KRow {
         }
     }
     
-    public BigDecimal getBigDecimal(final String c) {
+    public BigDecimal getBigDecimal(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -177,11 +189,16 @@ public class KRow {
         return this.getBigDecimal(n, c);
     }
     
-    public BigDecimal getBigDecimal(final int n) {
+    public BigDecimal getBigDecimal(
+        final int n
+    ) {
         return this.getBigDecimal(n, null);
     }
     
-    private BigDecimal getBigDecimal(final int n, final String nameRef) {
+    private BigDecimal getBigDecimal(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -195,7 +212,9 @@ public class KRow {
         }
     }
     
-    public BigInteger getBigInteger(final String c) {
+    public BigInteger getBigInteger(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -205,11 +224,16 @@ public class KRow {
         return this.getBigInteger(n, c);
     }
     
-    public BigInteger getBigInteger(final int n) {
+    public BigInteger getBigInteger(
+        final int n
+    ) {
         return this.getBigInteger(n, null);
     }
     
-    private BigInteger getBigInteger(final int n, final String nameRef) {
+    private BigInteger getBigInteger(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -223,7 +247,9 @@ public class KRow {
         }
     }
     
-    public Long getLong(final String c) {
+    public Long getLong(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -233,11 +259,16 @@ public class KRow {
         return this.getLong(n, c);
     }
     
-    public Long getLong(final int n) {
+    public Long getLong(
+        final int n
+    ) {
         return this.getLong(n, null);
     }
     
-    private Long getLong(final int n, final String nameRef) {
+    private Long getLong(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -259,7 +290,9 @@ public class KRow {
         }
     }
     
-    public Integer getInteger(final String c) {
+    public Integer getInteger(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -269,11 +302,16 @@ public class KRow {
         return this.getInteger(n, c);
     }
     
-    public Integer getInteger(final int n) {
+    public Integer getInteger(
+        final int n
+    ) {
         return this.getInteger(n, null);
     }
     
-    private Integer getInteger(final int n, final String nameRef) {
+    private Integer getInteger(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -299,7 +337,9 @@ public class KRow {
         }
     }
     
-    public Boolean getBoolean(final String c) {
+    public Boolean getBoolean(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -309,11 +349,16 @@ public class KRow {
         return this.getBoolean(n, c);
     }
     
-    public Boolean getBoolean(final int n) {
+    public Boolean getBoolean(
+        final int n
+    ) {
         return this.getBoolean(n, null);
     }
     
-    private Boolean getBoolean(final int n, final String nameRef) {
+    private Boolean getBoolean(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -327,7 +372,9 @@ public class KRow {
         }
     }
     
-    public Double getDouble(final String c) {
+    public Double getDouble(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -337,11 +384,16 @@ public class KRow {
         return this.getDouble(n, c);
     }
     
-    public Double getDouble(final int n) {
+    public Double getDouble(
+        final int n
+    ) {
         return this.getDouble(n, null);
     }
     
-    private Double getDouble(final int n, final String nameRef) {
+    private Double getDouble(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -363,7 +415,9 @@ public class KRow {
         }
     }
     
-    public byte[] getBytea(final String c) {
+    public byte[] getBytea(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -373,11 +427,16 @@ public class KRow {
         return this.getBytea(n, c);
     }
     
-    public byte[] getBytea(final int n) {
+    public byte[] getBytea(
+        final int n
+    ) {
         return this.getBytea(n, null);
     }
     
-    private byte[] getBytea(final int n, final String nameRef) {
+    private byte[] getBytea(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -391,7 +450,9 @@ public class KRow {
         }
     }
     
-    public LocalDateTime getLocalDateTime(final String c) {
+    public LocalDateTime getLocalDateTime(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -401,11 +462,16 @@ public class KRow {
         return this.getLocalDateTime(n, c);
     }
     
-    public LocalDateTime getLocalDateTime(final int n) {
+    public LocalDateTime getLocalDateTime(
+        final int n
+    ) {
         return this.getLocalDateTime(n, null);
     }
     
-    public LocalDateTime getLocalDateTime(final int n, final String nameRef) {
+    public LocalDateTime getLocalDateTime(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -427,7 +493,9 @@ public class KRow {
         }
     }
     
-    public LocalDate getLocalDate(final String c) {
+    public LocalDate getLocalDate(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -437,11 +505,16 @@ public class KRow {
         return this.getLocalDate(n, c);
     }
     
-    public LocalDate getLocalDate(final int n) {
+    public LocalDate getLocalDate(
+        final int n
+    ) {
         return this.getLocalDate(n, null);
     }
     
-    public LocalDate getLocalDate(final int n, final String nameRef) {
+    public LocalDate getLocalDate(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -463,7 +536,9 @@ public class KRow {
         }
     }
     
-    public Date getDate(final String c) {
+    public Date getDate(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -473,11 +548,16 @@ public class KRow {
         return this.getDate(n, c);
     }
     
-    public Date getDate(final int n) {
+    public Date getDate(
+        final int n
+    ) {
         return this.getDate(n, null);
     }
     
-    public Date getDate(final int n, final String nameRef) {
+    public Date getDate(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -491,7 +571,9 @@ public class KRow {
         }
     }
 
-    public Timestamp getTimestamp(final String c) {
+    public Timestamp getTimestamp(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -501,11 +583,16 @@ public class KRow {
         return this.getTimestamp(n, c);
     }
     
-    public Timestamp getTimestamp(final int n) {
+    public Timestamp getTimestamp(
+        final int n
+    ) {
         return this.getTimestamp(n, null);
     }
     
-    public Timestamp getTimestamp(final int n, final String nameRef) {
+    public Timestamp getTimestamp(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -519,7 +606,9 @@ public class KRow {
         }
     }
     
-    public boolean isPresent(final String c) {
+    public boolean isPresent(
+        final String c
+    ) {
         if (o == null) {
             return false;
         }
@@ -531,7 +620,9 @@ public class KRow {
         return isNull;
     }
     
-    public boolean isNull(final String c) {
+    public boolean isNull(
+        final String c
+    ) {
         if (o == null) {
             return true;
         }
@@ -545,7 +636,9 @@ public class KRow {
         return isNull(n);
     }
     
-    public boolean isNull(final int n) {
+    public boolean isNull(
+        final int n
+    ) {
         if (o == null) {
             return true;
         }
@@ -557,7 +650,9 @@ public class KRow {
         return o[n] == null;
     }
     
-    public boolean isNullOrEmpty(final String c) {
+    public boolean isNullOrEmpty(
+        final String c
+    ) {
         if (o == null) {
             return true;
         }
@@ -571,7 +666,9 @@ public class KRow {
         return isNullOrEmpty(n);
     }
     
-    public boolean isNullOrEmpty(final int n) {
+    public boolean isNullOrEmpty(
+        final int n
+    ) {
         if (o == null) {
             return true;
         }
@@ -587,7 +684,11 @@ public class KRow {
         return ((String) o[n]).trim().isEmpty();
     }
     
-    public KRow assertNotNull(final String c, final HttpStatus status, final String message) {
+    public KRow assertNotNull(
+        final String c,
+        final HttpStatus status,
+        final String message
+    ) {
         if (this.isNull) {
             throw new KException(status, message);
         }
@@ -599,7 +700,11 @@ public class KRow {
         return this;
     }
     
-    public KRow assertNotNull(final int n, final HttpStatus status, final String message) {
+    public KRow assertNotNull(
+        final int n,
+        final HttpStatus status,
+        final String message
+    ) {
         if (this.isNull) {
             throw new KException(status, message);
         }
@@ -611,15 +716,24 @@ public class KRow {
         return this;
     }
     
-    public KRow assertNotNull(final String c, final HttpStatus status) {
+    public KRow assertNotNull(
+        final String c,
+        final HttpStatus status
+    ) {
         return assertNotNull(c, status, null);
     }
     
-    public KRow assertNotNull(final int n, final HttpStatus status) {
+    public KRow assertNotNull(
+        final int n,
+        final HttpStatus status
+    ) {
         return assertNotNull(n, status, null);
     }
     
-    public KRow assertNotNull(final HttpStatus status, final String message) {
+    public KRow assertNotNull(
+        final HttpStatus status,
+        final String message
+    ) {
         if (this.isNull) {
             throw new KException(status, message);
         }
@@ -627,11 +741,16 @@ public class KRow {
         return this;
     }
     
-    public KRow assertNotNull(final HttpStatus status) {
+    public KRow assertNotNull(
+        final HttpStatus status
+    ) {
         return assertNotNull(status, null);
     }
     
-    public KRow set(final String property, final Object o) {
+    public KRow set(
+        final String property,
+        final Object o
+    ) {
         final Integer n = ref.get(property);
         
         if (n == null) {
@@ -643,7 +762,10 @@ public class KRow {
         return this;
     }
     
-    public KRow set(final String property, final KRowFunction kRowFunction) {
+    public KRow set(
+        final String property,
+        final KRowFunction kRowFunction
+    ) {
         final Integer n = ref.get(property);
         
         if (n == null) {
@@ -665,7 +787,9 @@ public class KRow {
 //        return toMap(new ArrayList<>());
 //    }
     
-    public Map<String, Object> toMap(final String property) {
+    public Map<String, Object> toMap(
+        final String property
+    ) {
         if (property == null) {
             return toMap();
         }
@@ -756,14 +880,19 @@ public class KRow {
         return ResponseEntity.ok(this.toResponse());
     }
     
-    private void addColumn(final String name, Object value) {
+    private void addColumn(
+        final String name,
+        final Object value
+    ) {
         this.o = Arrays.copyOf(o, o.length + 1);
         this.o[o.length - 1] = value;
         
         this.ref.put(name, o.length - 1);
     }
     
-    public KRow removeProperty(final String name) {
+    public KRow removeProperty(
+        final String name
+    ) {
         if (!this.isPresent(name)) {
             throw KExceptionHelper.internalServerError("The column in KRow [" + name + "] to be removed does not exist. Ref? [" + ref + "]");
         }
@@ -793,13 +922,19 @@ public class KRow {
         return this;
     }
     
-    public KRow addProperty(final String property, final KRowFunction kRowFunction) {
+    public KRow addProperty(
+        final String property,
+        final KRowFunction kRowFunction
+    ) {
         this.addColumn(property, kRowFunction.run(this));
         
         return this;
     }
     
-    public KRow addProperty(final String property, final Object o) {
+    public KRow addProperty(
+        final String property,
+        final Object o
+    ) {
         this.addColumn(property, o);
         
         return this;
@@ -815,7 +950,10 @@ public class KRow {
         return new KRow((this.o != null) ? this.o.clone() : null, (this.ref != null ? new HashMap(this.ref) : null), this.isNull);
     }
     
-    protected <T> T getByClass(final String column, final Class<T> clazz) {
+    protected <T> T getByClass(
+        final String column,
+        final Class<T> clazz
+    ) {
         if (clazz == Object.class) {
             return (T) this.get(column);
         }
