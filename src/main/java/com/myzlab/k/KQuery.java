@@ -77,6 +77,10 @@ public abstract class KQuery {
         });
     }
     
+    public KRow single() {
+        return this.single(KRow.class);
+    }
+    
     public <T> T single(
         final Class<T> clazz
     ) {
@@ -90,7 +94,7 @@ public abstract class KQuery {
             return null;
         }
         
-        if (clazz.getSuperclass().equals(KRow.class)) {
+        if (clazz.getSuperclass().equals(KRow.class) || clazz.equals(KRow.class)) {
             return (T) this.singleMappingKRow((Class<? extends KRow>) clazz);
         }
         
@@ -126,23 +130,24 @@ public abstract class KQuery {
     }
     
     public KCollection<KRow> multiple() {
-        System.out.println(this.kQueryData.sb.toString());
-        System.out.println(this.kQueryData.params);
-//        System.out.println(this.kQueryData.kBaseColums);
-            
-        if (k == null || k.getJdbcTemplates() == null) {
-            System.out.println("JDBC no provided to KSearch!");
-            
-            return null;
-        }
-
-        final List<KRow> list = k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs, final int rowNum) -> {
-            return this.mapObject(rs);
-        });
-        
-        return new KCollection<>(list);
+        return this.multiple(KRow.class);
+//        System.out.println(this.kQueryData.sb.toString());
+//        System.out.println(this.kQueryData.params);
+////        System.out.println(this.kQueryData.kBaseColums);
+//            
+//        if (k == null || k.getJdbcTemplates() == null) {
+//            System.out.println("JDBC no provided to KSearch!");
+//            
+//            return null;
+//        }
+//
+//        final List<KRow> list = k.getJdbcTemplates().get(   
+//            k.getJdbcTemplateDefaultName()
+//        ).query(this.kQueryData.sb.toString(), this.getParams(), this.getArgTypes(), (final ResultSet rs, final int rowNum) -> {
+//            return this.mapObject(rs);
+//        });
+//        
+//        return new KCollection<>(list);
     }
     
     private <T extends KRow> T mapObject(
