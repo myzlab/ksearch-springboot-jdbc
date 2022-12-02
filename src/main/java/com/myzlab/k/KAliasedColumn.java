@@ -1,10 +1,11 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToReturning;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KAliasedColumn extends KBaseColumnUncastable {
+public class KAliasedColumn extends KBaseColumnUncastable implements KColumnAllowedToReturning {
     
     protected String alias;
     
@@ -68,5 +69,15 @@ public class KAliasedColumn extends KBaseColumnUncastable {
     @Override
     protected KAliasedColumn cloneMe() {
         return new KAliasedColumn(this.sb, this.alias, new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
+    }
+
+    @Override
+    public String getSqlToReturning() {
+        return this.sb.toString();
+    }
+
+    @Override
+    public List<Object> getParams() {
+        return this.params;
     }
 }

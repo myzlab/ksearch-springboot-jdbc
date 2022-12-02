@@ -1,46 +1,47 @@
 package com.myzlab.k;
 
-import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KUpdate extends KQueryUpdate {
+public class KFromUpdate extends KQueryUpdate {
 
-    private KUpdate(
-        final KInitializer kInitializer
-    ) {
-        super(kInitializer);
+    private KFromUpdate() {
+        super();
     }
- 
-    private KUpdate(
+    
+    private KFromUpdate(
         final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        super(kInitializer);
+        super(kQueryUpdateData, kInitializer);
         
         this.process(kTable);
     }
     
-    public static KUpdate getInstance(
+    public static KFromUpdate getInstance(
         final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        return new KUpdate(kInitializer, kTable);
+        return new KFromUpdate(kInitializer, kQueryUpdateData, kTable);
     }
     
-    public KSetUpdate set(
-        final KColumn kColumn,
-        final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
+    public KFromUpdate from(
+        final KTable kTable
     ) {
-        return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, kColumnAllowedToSetUpdate);
+        this.process(kTable);
+        
+        return this;
     }
     
-    public KSetUpdate set(
-        final KColumn kColumn,
+    public KFromUpdate from(
         final KRaw kRaw
     ) {
         KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
         
-        return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
+        this.process(new KTable(null, kRaw.content, null));
+        
+        return this;
     }
     
     public KWhereUpdate where(
@@ -66,10 +67,18 @@ public class KUpdate extends KQueryUpdate {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
-        this.kQueryUpdateData.sb.append("UPDATE ").append(kTable.toSql(true));
+        if (this.kQueryUpdateData.fromTablesAdded == 0) {
+            this.kQueryUpdateData.sb.append(" FROM ");
+        } else {
+            this.kQueryUpdateData.sb.append(", ");
+        }
+        
+        this.kQueryUpdateData.fromTablesAdded++;
         
         if (kTable.kQueryData != null) {
             this.kQueryUpdateData.params.addAll(kTable.kQueryData.params);
         }
+            
+        this.kQueryUpdateData.sb.append(kTable.toSql(true));
     }
 }

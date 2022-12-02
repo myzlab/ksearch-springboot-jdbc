@@ -3,18 +3,18 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KReturningDelete extends KQueryDelete {
+public class KReturningUpdate extends KQueryUpdate {
 
-    private KReturningDelete() {
+    private KReturningUpdate() {
         super();
     }
     
-    private KReturningDelete(
+    private KReturningUpdate(
         final KInitializer kInitializer,
-        final KQueryDeleteData kQueryDeleteData,
+        final KQueryUpdateData kQueryUpdateData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        super(kQueryDeleteData, kInitializer);
+        super(kQueryUpdateData, kInitializer);
         
         for (final KColumnAllowedToReturning kColumnAllowedToReturning : kColumnsAllowedToReturning) {
             if (kColumnAllowedToReturning == null) {
@@ -22,21 +22,21 @@ public class KReturningDelete extends KQueryDelete {
             }
             
             if (kColumnAllowedToReturning instanceof KBaseColumn) {
-                this.kQueryDeleteData.kBaseColumns.add((KBaseColumn) kColumnAllowedToReturning);
+                this.kQueryUpdateData.kBaseColumns.add((KBaseColumn) kColumnAllowedToReturning);
             } else {
-                this.kQueryDeleteData.kBaseColumns.add(new KColumn(new StringBuilder(((KRaw) kColumnAllowedToReturning).content), false));
+                this.kQueryUpdateData.kBaseColumns.add(new KColumn(new StringBuilder(((KRaw) kColumnAllowedToReturning).content), false));
             }
         }
         
         this.process(kColumnsAllowedToReturning);
     }
     
-    public static KReturningDelete getInstance(
+    public static KReturningUpdate getInstance(
         final KInitializer kInitializer,
-        final KQueryDeleteData kQueryDeleteData,
+        final KQueryUpdateData kQueryUpdateData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return new KReturningDelete(kInitializer, kQueryDeleteData, kColumnsAllowedToReturning);
+        return new KReturningUpdate(kInitializer, kQueryUpdateData, kColumnsAllowedToReturning);
     }
     
     private void process(
@@ -46,17 +46,17 @@ public class KReturningDelete extends KQueryDelete {
             throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
         }
         
-        this.kQueryDeleteData.sb.append(" RETURNING ");
+        this.kQueryUpdateData.sb.append(" RETURNING ");
         
         for (int i = 0; i < kColumnsAllowedToReturning.length; i++) {
             final KColumnAllowedToReturning kColumnAllowedToReturning = kColumnsAllowedToReturning[i];
             
             if (i > 0) {
-                this.kQueryDeleteData.sb.append(", ");
+                this.kQueryUpdateData.sb.append(", ");
             }
             
-            this.kQueryDeleteData.params.addAll(kColumnAllowedToReturning.getParams());
-            this.kQueryDeleteData.sb.append(kColumnAllowedToReturning.getSqlToReturning());
+            this.kQueryUpdateData.params.addAll(kColumnAllowedToReturning.getParams());
+            this.kQueryUpdateData.sb.append(kColumnAllowedToReturning.getSqlToReturning());
         }
     }
     

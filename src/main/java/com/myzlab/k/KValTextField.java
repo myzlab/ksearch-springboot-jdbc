@@ -1,12 +1,13 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.optional.KOptionalKColumn;
 import com.myzlab.k.optional.KOptionalKValTextField;
 import com.myzlab.k.optional.KOptionalString;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValTextField extends KBaseValField implements TextMethods {
+public class KValTextField extends KBaseValField implements TextMethods, KColumnAllowedToSetUpdate {
     
     protected KValTextField() {
         super();
@@ -2933,5 +2934,15 @@ public class KValTextField extends KBaseValField implements TextMethods {
     @Override
     protected KValTextField cloneMe() {
         return new KValTextField(this.sb, new ArrayList<>(this.params), this.closed);
+    }
+
+    @Override
+    public String getSqlToSet() {
+        return this.sb.toString();
+    }
+
+    @Override
+    public List<Object> getParams() {
+        return this.params;
     }
 }

@@ -71,10 +71,6 @@ public abstract class KInitializer {
         
     }
     
-    public void update() {
-        
-    }
-    
     public KDeleteFrom deleteFrom(
         final KTable kTable
     ) {
@@ -87,6 +83,20 @@ public abstract class KInitializer {
         KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
         
         return KDeleteFrom.getInstance(this, new KTable(null, kRaw.content, null));
+    }
+    
+    public KUpdate update(
+        final KTable kTable
+    ) {
+        return KUpdate.getInstance(this, kTable);
+    }
+    
+    public KUpdate update(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        
+        return KUpdate.getInstance(this, new KTable(null, kRaw.content, null));
     }
     
     public abstract Map<String, JdbcTemplate> getJdbcTemplates();

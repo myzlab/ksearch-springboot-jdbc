@@ -5,7 +5,7 @@ import java.util.List;
 
 public class KQueryDeleteData {
     
-    protected List<KBaseColumn> kBaseColumns;
+    protected final List<KBaseColumn> kBaseColumns;
     protected final StringBuilder sb;
     protected final List<Object> params;
     protected int usingTablesAdded;
@@ -22,17 +22,18 @@ public class KQueryDeleteData {
     public KQueryDeleteData(
         final StringBuilder sb,
         final List<Object> params,
-        final int usingTablesAdded
+        final int usingTablesAdded,
+        final List<KBaseColumn> kBaseColumns
     ) {
         super();
         
-        this.kBaseColumns = new ArrayList<>();
+        this.kBaseColumns = kBaseColumns;
         this.sb = sb;
         this.params = params;
         this.usingTablesAdded = usingTablesAdded;
     }
     
     protected KQueryDeleteData cloneMe() {
-        return new KQueryDeleteData(new StringBuilder(this.sb), new ArrayList<>(this.params), this.usingTablesAdded);
+        return new KQueryDeleteData(new StringBuilder(this.sb), new ArrayList<>(this.params), this.usingTablesAdded, this.kBaseColumns);
     }
 }

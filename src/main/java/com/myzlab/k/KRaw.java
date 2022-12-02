@@ -3,10 +3,11 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
+import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToReturning {
+public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToReturning, KColumnAllowedToSetUpdate {
 
     protected String content;
 
@@ -32,5 +33,10 @@ public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, K
     @Override
     public List<Object> getParams() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public String getSqlToSet() {
+        return content;
     }
 }
