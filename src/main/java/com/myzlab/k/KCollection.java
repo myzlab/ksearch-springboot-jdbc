@@ -723,7 +723,7 @@ public class KCollection<T extends KRow> {
             response.add("metadata", metadata);
         }
         
-        return ResponseEntity.ok(response.buildResponse());
+        return response.buildResponse();
     }
     
     public List<Map<String, Object>> toList() {

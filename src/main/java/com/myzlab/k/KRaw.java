@@ -2,8 +2,11 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KColumnAllowedToReturning;
+import java.util.ArrayList;
+import java.util.List;
 
-public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
+public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToReturning {
 
     protected String content;
 
@@ -21,4 +24,13 @@ public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
         return content;
     }
     
+    @Override
+    public String getSqlToReturning() {
+        return content;
+    }
+
+    @Override
+    public List<Object> getParams() {
+        return new ArrayList<>();
+    }
 }

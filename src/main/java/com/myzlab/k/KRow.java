@@ -42,7 +42,9 @@ public class KRow {
         this.isNull = isNull;
     }
     
-    public Object get(final String c) {
+    public Object get(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -52,7 +54,9 @@ public class KRow {
         return this.get(n);
     }
     
-    public Object get(final int n) {
+    public Object get(
+        final int n
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -60,7 +64,9 @@ public class KRow {
         return o[n];
     }
     
-    public String getString(final String c) {
+    public String getString(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -70,11 +76,16 @@ public class KRow {
         return this.getString(n, c);
     }
     
-    public String getString(final int n) {
+    public String getString(
+        final int n
+    ) {
         return this.getString(n, null);
     }
     
-    private String getString(final int n, final String nameRef) {
+    private String getString(
+        final int n,
+        final String nameRef
+    ) {
         if (n >= o.length) {
             return null;
         }
@@ -88,7 +99,9 @@ public class KRow {
         }
     }
     
-    public Character getCharacter(final String c) {
+    public Character getCharacter(
+        final String c
+    ) {
         final Integer n = ref.get(c);
         
         if (n == null) {
@@ -98,7 +111,9 @@ public class KRow {
         return this.getCharacter(n, c);
     }
     
-    public Character getCharacter(final int n) {
+    public Character getCharacter(
+        final int n
+    ) {
         return this.getCharacter(n, null);
     }
     

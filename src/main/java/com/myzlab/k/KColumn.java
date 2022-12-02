@@ -2,6 +2,7 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KColumnAllowedToReturning;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import com.myzlab.k.optional.KOptionalKColumn;
 import com.myzlab.k.optional.KOptionalKValTextField;
@@ -9,7 +10,7 @@ import com.myzlab.k.optional.KOptionalString;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy, KColumnAllowedToGroupBy {
+public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToReturning {
     
     protected KColumn() {
         super();
@@ -3132,6 +3133,16 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     @Override
     public String getSqlToGroupBy() {
         return KUtils.reverseParams(this);
+    }
+
+    @Override
+    public String getSqlToReturning() {
+        return KUtils.reverseParams(this);
+    }
+
+    @Override
+    public List<Object> getParams() {
+        return this.params;
     }
     
 }

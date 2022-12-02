@@ -5,11 +5,6 @@ import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class KFrom extends KQuery implements KQueryAllowedToCombining {
     
@@ -158,9 +153,9 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     }
     
     public KGroupBy groupBy(
-        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
+        final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        return KGroupBy.getInstance(this.k, this.kQueryData, KColumnsAllowedToGroupBy);
+        return KGroupBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToGroupBy);
     }
     
     public KWindow window(

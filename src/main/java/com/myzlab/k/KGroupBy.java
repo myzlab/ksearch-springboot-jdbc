@@ -11,21 +11,21 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
     private KGroupBy(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
-        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
+        final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
         super(kQueryData, kInitializer);
         
-        KUtils.assertNotNull(KColumnsAllowedToGroupBy, "KColumnsAllowedToGroupBy");
+        KUtils.assertNotNull(kColumnsAllowedToGroupBy, "kColumnsAllowedToGroupBy");
         
-        this.process(KColumnsAllowedToGroupBy);
+        this.process(kColumnsAllowedToGroupBy);
     }
     
     public static KGroupBy getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
-        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
+        final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        return new KGroupBy(kInitializer, kQueryData, KColumnsAllowedToGroupBy);
+        return new KGroupBy(kInitializer, kQueryData, kColumnsAllowedToGroupBy);
     }
 
     public KHaving having(
@@ -111,16 +111,16 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
     }
     
     private void process(
-        final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
+        final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        if (KColumnsAllowedToGroupBy == null || KColumnsAllowedToGroupBy.length == 0) {
+        if (kColumnsAllowedToGroupBy == null || kColumnsAllowedToGroupBy.length == 0) {
             throw KExceptionHelper.internalServerError("The 'KColumnsAllowedToGroupBy' param is required"); 
         }
         
         this.kQueryData.sb.append(" GROUP BY ");
         
-        for (int i = 0; i < KColumnsAllowedToGroupBy.length; i++) {
-            final KColumnAllowedToGroupBy kColumnAllowedToGroupBy = KColumnsAllowedToGroupBy[i];
+        for (int i = 0; i < kColumnsAllowedToGroupBy.length; i++) {
+            final KColumnAllowedToGroupBy kColumnAllowedToGroupBy = kColumnsAllowedToGroupBy[i];
             
             if (kColumnAllowedToGroupBy == null) {
                 throw KExceptionHelper.internalServerError("'kColumnAllowedToGroupBy' is required");
