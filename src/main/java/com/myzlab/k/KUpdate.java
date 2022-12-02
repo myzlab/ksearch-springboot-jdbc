@@ -43,22 +43,6 @@ public class KUpdate extends KQueryUpdate {
         return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
     }
     
-    public KWhereUpdate where(
-        final KCondition kCondition
-    ) {
-        return KWhereUpdate.getInstance(this.k, this.kQueryUpdateData, kCondition);
-    }
-    
-    public KWhereUpdate where(
-        final KRaw kRaw
-    ) {
-        KUtils.assertNotNull(kRaw, "kRaw");
-        
-        final KCondition kCondition = new KCondition(kRaw.content);
-        
-        return KWhereUpdate.getInstance(this.k, this.kQueryUpdateData, kCondition);
-    }
-    
     private void process(
         final KTable kTable
     ) {
