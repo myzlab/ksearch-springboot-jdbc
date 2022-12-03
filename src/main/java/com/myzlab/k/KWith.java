@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KWith extends KQuery {
@@ -20,6 +21,16 @@ public class KWith extends KQuery {
         kWith.process(recursive, kCommonTableExpressionsFilled);
 
         return kWith;
+    }
+    
+    public KInsertInto insertInto(
+        final KTable kTable
+    ) {
+        return KInsertInto.getInstance(
+            this.k,
+            new KQueryInsertIntoData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            kTable
+        );
     }
     
     public KSelect select(

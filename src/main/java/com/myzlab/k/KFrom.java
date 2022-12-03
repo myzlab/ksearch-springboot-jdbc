@@ -67,7 +67,7 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     public KFrom from(
         final KCommonTableExpressionAliased kCommonTableExpressionAliased
     ) {
-        this.process( new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
+        this.process(new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
         
         return this;
     }

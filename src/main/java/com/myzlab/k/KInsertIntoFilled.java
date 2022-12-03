@@ -14,11 +14,29 @@ public class KInsertIntoFilled extends KQueryInsertInto {
     private KInsertIntoFilled(
         final KInitializer kInitializer,
         final KQueryInsertIntoData kQueryInsertIntoData,
+        final KQuery kQuery
+    ) {
+        super(kQueryInsertIntoData, kInitializer);
+        
+        this.process(kQuery);
+    }
+    
+    private KInsertIntoFilled(
+        final KInitializer kInitializer,
+        final KQueryInsertIntoData kQueryInsertIntoData,
         final KValues kValues
     ) {
         super(kQueryInsertIntoData, kInitializer);
         
         this.process(kValues);
+    }
+    
+    protected static KInsertIntoFilled getInstance(
+        final KInitializer kInitializer,
+        final KQueryInsertIntoData kQueryInsertIntoData,
+        final KQuery kQuery
+    ) {
+        return new KInsertIntoFilled(kInitializer, kQueryInsertIntoData, kQuery);
     }
     
     protected static KInsertIntoFilled getInstance(
@@ -70,6 +88,15 @@ public class KInsertIntoFilled extends KQueryInsertInto {
 
             this.kQueryInsertIntoData.sb.append(")");
         }
+    }
+    
+    private void process(
+        final KQuery kQuery
+    ) {
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        this.kQueryInsertIntoData.params.addAll(subQuery.params);
+        this.kQueryInsertIntoData.sb.append(" ").append(subQuery.sb);
     }
     
     public int execute() {

@@ -9,6 +9,16 @@ public class KInsertInto extends KQueryInsertInto {
     ) {
         super(kInitializer);
     }
+    
+    private KInsertInto(
+        final KInitializer kInitializer,
+        final KQueryInsertIntoData kQueryInsertIntoData,
+        final KTable kTable
+    ) {
+        super(kQueryInsertIntoData, kInitializer);
+        
+        this.process(kTable);
+    }
  
     private KInsertInto(
         final KInitializer kInitializer,
@@ -26,6 +36,14 @@ public class KInsertInto extends KQueryInsertInto {
         return new KInsertInto(kInitializer, kTable);
     }
     
+    protected static KInsertInto getInstance(
+        final KInitializer kInitializer,
+        final KQueryInsertIntoData kQueryInsertIntoData,
+        final KTable kTable
+    ) {
+        return new KInsertInto(kInitializer, kQueryInsertIntoData, kTable);
+    }
+    
     public KInsertIntoColumned columns(
         final KColumn... kColumns
     ) {
@@ -39,7 +57,7 @@ public class KInsertInto extends KQueryInsertInto {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
-        this.kQueryInsertIntoData.sb.append("INSERT INTO ").append(kTable.toSql(false));
+        this.kQueryInsertIntoData.sb.append(kQueryInsertIntoData.sb.length() > 0 ? " " : "").append("INSERT INTO ").append(kTable.toSql(false));
         
         if (kTable.kQueryData != null) {
             this.kQueryInsertIntoData.params.addAll(kTable.kQueryData.params);

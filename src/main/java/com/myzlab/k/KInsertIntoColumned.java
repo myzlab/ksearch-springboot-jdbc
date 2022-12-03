@@ -32,6 +32,12 @@ public class KInsertIntoColumned extends KQueryInsertInto {
         return KInsertIntoFilled.getInstance(this.k, this.kQueryInsertIntoData, kValues);
     }
     
+    public KInsertIntoFilled select(
+        final KQuery kQuery
+    ) {
+        return KInsertIntoFilled.getInstance(this.k, this.kQueryInsertIntoData, kQuery);
+    }
+    
     private void process(
         final KColumn... kColumns
     ) {
