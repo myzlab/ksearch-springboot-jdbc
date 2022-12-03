@@ -13,7 +13,7 @@ public class KCommonTableExpressionColumned extends KCommonTableExpression {
         super(name, columns);
     }
         
-    public static KCommonTableExpressionColumned getInstance(
+    protected static KCommonTableExpressionColumned getInstance(
         final String name,
         final String... columns
     ) {

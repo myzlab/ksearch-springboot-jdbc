@@ -22,14 +22,14 @@ public class KWindowDefinitionNamed extends KWindowDefinition implements KWindow
         super(sb, name);
     }
     
-    public static KWindowDefinitionNamed getInstance(
+    protected static KWindowDefinitionNamed getInstance(
         final StringBuilder sb,
         final String name
     ) {
         return new KWindowDefinitionNamed(sb, name);
     }
     
-    public static KWindowDefinitionNamed getInstance(
+    protected static KWindowDefinitionNamed getInstance(
         final String name
     ) {
         return new KWindowDefinitionNamed(name);

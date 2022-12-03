@@ -22,7 +22,7 @@ public class KCommonTableExpressionFilled extends KCommonTableExpression {
         super(kValues, name, columns);
     }
     
-    public static KCommonTableExpressionFilled getInstance(
+    protected static KCommonTableExpressionFilled getInstance(
         final KQuery kQuery,
         final String name,
         final String... columns
@@ -30,7 +30,7 @@ public class KCommonTableExpressionFilled extends KCommonTableExpression {
         return new KCommonTableExpressionFilled(kQuery, name, columns);
     }
         
-    public static KCommonTableExpressionFilled getInstance(
+    protected static KCommonTableExpressionFilled getInstance(
         final KValues kValues,
         final String name,
         final String... columns

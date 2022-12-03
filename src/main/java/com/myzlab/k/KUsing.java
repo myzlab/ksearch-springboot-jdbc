@@ -18,7 +18,7 @@ public class KUsing extends KQueryDelete {
         this.process(kTable);
     }
     
-    public static KUsing getInstance(
+    protected static KUsing getInstance(
         final KInitializer kInitializer,
         final KQueryDeleteData kQueryDeleteData,
         final KTable kTable
@@ -37,7 +37,7 @@ public class KUsing extends KQueryDelete {
     public KUsing using(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         this.process(new KTable(null, kRaw.content, null));
         

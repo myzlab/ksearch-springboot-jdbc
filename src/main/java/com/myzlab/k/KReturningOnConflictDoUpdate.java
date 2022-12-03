@@ -3,18 +3,18 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
 import com.myzlab.k.helper.KExceptionHelper;
 
-public class KReturningUpdate extends KQueryUpdate {
+public class KReturningOnConflictDoUpdate extends KQueryInsertInto {
 
-    private KReturningUpdate() {
+    private KReturningOnConflictDoUpdate() {
         super();
     }
     
-    private KReturningUpdate(
+    private KReturningOnConflictDoUpdate(
         final KInitializer kInitializer,
-        final KQueryUpdateData kQueryUpdateData,
+        final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryInsertIntoData, kInitializer);
         
         for (final KColumnAllowedToReturning kColumnAllowedToReturning : kColumnsAllowedToReturning) {
             if (kColumnAllowedToReturning == null) {
@@ -22,21 +22,21 @@ public class KReturningUpdate extends KQueryUpdate {
             }
             
             if (kColumnAllowedToReturning instanceof KBaseColumn) {
-                this.kQueryUpdateData.kBaseColumns.add((KBaseColumn) kColumnAllowedToReturning);
+                this.kQueryInsertIntoData.kBaseColumns.add((KBaseColumn) kColumnAllowedToReturning);
             } else {
-                this.kQueryUpdateData.kBaseColumns.add(new KColumn(new StringBuilder(((KRaw) kColumnAllowedToReturning).content), false));
+                this.kQueryInsertIntoData.kBaseColumns.add(new KColumn(new StringBuilder(((KRaw) kColumnAllowedToReturning).content), false));
             }
         }
         
         this.process(kColumnsAllowedToReturning);
     }
     
-    protected static KReturningUpdate getInstance(
+    protected static KReturningOnConflictDoUpdate getInstance(
         final KInitializer kInitializer,
-        final KQueryUpdateData kQueryUpdateData,
+        final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return new KReturningUpdate(kInitializer, kQueryUpdateData, kColumnsAllowedToReturning);
+        return new KReturningOnConflictDoUpdate(kInitializer, kQueryInsertIntoData, kColumnsAllowedToReturning);
     }
     
     private void process(
@@ -46,17 +46,17 @@ public class KReturningUpdate extends KQueryUpdate {
             throw KExceptionHelper.internalServerError("The 'kBaseColums' param is required"); 
         }
         
-        this.kQueryUpdateData.sb.append(" RETURNING ");
+        this.kQueryInsertIntoData.sb.append(" RETURNING ");
         
         for (int i = 0; i < kColumnsAllowedToReturning.length; i++) {
             final KColumnAllowedToReturning kColumnAllowedToReturning = kColumnsAllowedToReturning[i];
             
             if (i > 0) {
-                this.kQueryUpdateData.sb.append(", ");
+                this.kQueryInsertIntoData.sb.append(", ");
             }
             
-            this.kQueryUpdateData.params.addAll(kColumnAllowedToReturning.getParams());
-            this.kQueryUpdateData.sb.append(kColumnAllowedToReturning.getSqlToReturning());
+            this.kQueryInsertIntoData.params.addAll(kColumnAllowedToReturning.getParams());
+            this.kQueryInsertIntoData.sb.append(kColumnAllowedToReturning.getSqlToReturning());
         }
     }
     

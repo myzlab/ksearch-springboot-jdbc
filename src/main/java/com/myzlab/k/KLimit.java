@@ -16,7 +16,7 @@ public class KLimit extends KQuery {
         this.process(count);
     }
     
-    public static KLimit getInstance(
+    protected static KLimit getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int count

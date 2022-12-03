@@ -67,10 +67,6 @@ public abstract class KInitializer {
         return KDistinctOnSelect.getInstance(this, number);
     }
     
-    public void insertInto() {
-        
-    }
-    
     public KDeleteFrom deleteFrom(
         final KTable kTable
     ) {
@@ -80,9 +76,15 @@ public abstract class KInitializer {
     public KDeleteFrom deleteFrom(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         return KDeleteFrom.getInstance(this, new KTable(null, kRaw.content, null));
+    }
+    
+    public KInsertInto insertInto(
+        final KTable kTable
+    ) {
+        return KInsertInto.getInstance(this, kTable);
     }
     
     public KUpdate update(
@@ -94,7 +96,7 @@ public abstract class KInitializer {
     public KUpdate update(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         return KUpdate.getInstance(this, new KTable(null, kRaw.content, null));
     }

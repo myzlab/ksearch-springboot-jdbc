@@ -12,13 +12,13 @@ public class KValues {
     ) {
         super();
         
-        KUtils.assertNotNullNotEmpty(value, "value");
+        KUtils.assertNotNullNotEmpty(value, "value", false);
         
         this.values = new ArrayList<>();
         this.values.add(value);
     }
     
-    public static KValues getInstance(
+    protected static KValues getInstance(
         final List<Object> value
     ) {
         return new KValues(value);
@@ -27,9 +27,25 @@ public class KValues {
     public KValues append(
         final List<Object> value
     ) {
-        KUtils.assertNotNullNotEmpty(value, "value");
+        KUtils.assertNotNullNotEmpty(value, "value", false);
         
         this.values.add(value);
+        
+        return this;
+    }
+    
+    public KValues append(
+        final Object... value
+    ) {
+        KUtils.assertNotNullNotEmpty(value, "value", false);
+        
+        final List<Object> v = new ArrayList<>();
+        
+        for (final Object o : value) {
+            v.add(o);
+        }
+        
+        this.values.add(v);
         
         return this;
     }

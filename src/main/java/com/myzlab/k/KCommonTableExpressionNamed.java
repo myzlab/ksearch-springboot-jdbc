@@ -13,7 +13,7 @@ public class KCommonTableExpressionNamed extends KCommonTableExpression {
         super(name);
     }
         
-    public static KCommonTableExpressionNamed getInstance(
+    protected static KCommonTableExpressionNamed getInstance(
         final String name
     ) {
         return new KCommonTableExpressionNamed(name);

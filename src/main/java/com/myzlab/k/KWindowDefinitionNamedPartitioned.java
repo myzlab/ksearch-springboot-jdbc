@@ -16,7 +16,7 @@ public class KWindowDefinitionNamedPartitioned extends KWindowDefinition impleme
         this.process(kColumn);
     }
     
-    public static KWindowDefinitionNamedPartitioned getInstance(
+    protected static KWindowDefinitionNamedPartitioned getInstance(
         final StringBuilder sb,
         final String name,
         final KColumn kColumn

@@ -73,6 +73,14 @@ public class KUtils {
         final Object o,
         final String name
     ) {
+        assertNotNullNotEmpty(o, name, true);
+    }
+    
+    protected static void assertNotNullNotEmpty(
+        final Object o,
+        final String name,
+        final boolean canContainNullvalues
+    ) {
         if (o == null) {
             throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
         }
@@ -95,6 +103,10 @@ public class KUtils {
             }
             
             for (final Object o_ : (Collection) o) {
+                if (canContainNullvalues) {
+                    continue;
+                }
+                
                 if (o_ == null) {
                     throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
                 }

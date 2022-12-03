@@ -25,7 +25,7 @@ public class KWhereDelete extends KQueryDelete {
         this.kCondition = kCondition;
     }
     
-    public static KWhereDelete getInstance(
+    protected static KWhereDelete getInstance(
         final KInitializer kInitializer,
         final KQueryDeleteData kQueryDeleteData,
         final KCondition kCondition

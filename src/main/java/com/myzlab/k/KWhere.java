@@ -27,7 +27,7 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
         this.kCondition = kCondition;
     }
     
-    public static KWhere getInstance(
+    protected static KWhere getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KCondition kCondition

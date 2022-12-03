@@ -15,7 +15,7 @@ public class KWindowDefinitionNamedFrameExcluded extends KWindowDefinition imple
         this.process(excluding);
     }
     
-    public static KWindowDefinitionNamedFrameExcluded getInstance(
+    protected static KWindowDefinitionNamedFrameExcluded getInstance(
         final StringBuilder sb,
         final String name,
         final String excluding

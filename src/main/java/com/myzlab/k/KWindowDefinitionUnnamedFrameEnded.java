@@ -14,7 +14,7 @@ public class KWindowDefinitionUnnamedFrameEnded extends KWindowDefinition implem
         this.process(frameStart, frameEnd);
     }
     
-    public static KWindowDefinitionUnnamedFrameEnded getInstance(
+    protected static KWindowDefinitionUnnamedFrameEnded getInstance(
         final StringBuilder sb,
         final String frameStart,
         final String frameEnd

@@ -25,7 +25,7 @@ public class KWhereUpdate extends KQueryUpdate {
         this.kCondition = kCondition;
     }
     
-    public static KWhereUpdate getInstance(
+    protected static KWhereUpdate getInstance(
         final KInitializer kInitializer,
         final KQueryUpdateData kQueryUpdateData,
         final KCondition kCondition

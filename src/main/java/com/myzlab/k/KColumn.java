@@ -121,6 +121,14 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
         return KFunction.div(this, number);
     }
     
+    public KColumn excluded() {
+        return KFunction.excluded(this);
+    }
+    
+    public KColumn noTableAlias() {
+        return KFunction.noTableAlias(this);
+    }
+    
     @Override
     public KCondition iBetween(
         final KColumn kColumnLow,

@@ -38,7 +38,7 @@ public class KUpdate extends KQueryUpdate {
         final KColumn kColumn,
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
     }

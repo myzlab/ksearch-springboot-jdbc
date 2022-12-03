@@ -23,14 +23,14 @@ public class KWindowDefinitionUnnamedOrdered extends KWindowDefinition implement
         this.process(kColumnOrdered);
     }
     
-    public static KWindowDefinitionUnnamedOrdered getInstance(
+    protected static KWindowDefinitionUnnamedOrdered getInstance(
         final StringBuilder sb,
         final KColumn kColumn
     ) {
         return new KWindowDefinitionUnnamedOrdered(sb, kColumn);
     }
     
-    public static KWindowDefinitionUnnamedOrdered getInstance(
+    protected static KWindowDefinitionUnnamedOrdered getInstance(
         final StringBuilder sb,
         final KColumnOrdered kColumnOrdered
     ) {

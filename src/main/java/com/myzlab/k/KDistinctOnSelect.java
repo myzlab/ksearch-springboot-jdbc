@@ -13,7 +13,7 @@ public class KDistinctOnSelect {
         this.kQueryData.distinctOn = true;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KColumn kColumn
     ) {
@@ -24,7 +24,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KValNumberField kValNumberField
     ) {
@@ -35,7 +35,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final Number number
     ) {
@@ -46,7 +46,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumn kColumn
@@ -58,7 +58,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KValNumberField kValNumberField
@@ -70,7 +70,7 @@ public class KDistinctOnSelect {
         return kDistinctOnSelect;
     }
     
-    public static KDistinctOnSelect getInstance(
+    protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final Number number

@@ -16,7 +16,7 @@ public class KWindowDefinitionNamedFrameEnded extends KWindowDefinition implemen
         this.process(frameStart, frameEnd);
     }
     
-    public static KWindowDefinitionNamedFrameEnded getInstance(
+    protected static KWindowDefinitionNamedFrameEnded getInstance(
         final StringBuilder sb,
         final String name,
         final String frameStart,

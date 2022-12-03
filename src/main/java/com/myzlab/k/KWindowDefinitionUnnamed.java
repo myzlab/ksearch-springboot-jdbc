@@ -6,7 +6,7 @@ public class KWindowDefinitionUnnamed extends KWindowDefinition {
         super();
     }
     
-    public static KWindowDefinitionUnnamed getInstance() {
+    protected static KWindowDefinitionUnnamed getInstance() {
         return new KWindowDefinitionUnnamed();
     }
     

@@ -14,7 +14,7 @@ public class KWindowDefinitionUnnamedPartitioned extends KWindowDefinition imple
         this.process(kColumn);
     }
     
-    public static KWindowDefinitionUnnamedPartitioned getInstance(
+    protected static KWindowDefinitionUnnamedPartitioned getInstance(
         final StringBuilder sb,
         final KColumn kColumn
     ) {

@@ -6,6 +6,8 @@ import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalKValTextField;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalString;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KFunction {
 
@@ -13,7 +15,7 @@ public class KFunction {
         final KBaseColumnCastable kBaseColumnCastable,
         final String alias
     ) {
-        assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
+        KUtils.assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
                 
         return new KAliasedColumn(kBaseColumnCastable, alias);
     }
@@ -22,7 +24,7 @@ public class KFunction {
 //        final Number val,
 //        final String alias
 //    ) {
-//        assertNotNull(val, "val");
+//        KUtils.assertNotNull(val, "val");
 //                
 //        return new KAliasedColumn(val(val), alias);
 //    }
@@ -31,7 +33,7 @@ public class KFunction {
 //        final String val,
 //        final String alias
 //    ) {
-//        assertNotNull(val, "val");
+//        KUtils.assertNotNull(val, "val");
 //                
 //        return new KAliasedColumn(val(val), alias);
 //    }
@@ -51,7 +53,7 @@ public class KFunction {
     public static KValNumberField abs(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "ABS");
     }
@@ -71,7 +73,7 @@ public class KFunction {
     public static KValNumberField acos(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "ACOS");
     }
@@ -149,8 +151,8 @@ public class KFunction {
         final Number number,
         final String operator
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(number, "number");
         
         return applyBinaryOperator(kColumn, new KValNumberField(number), operator);
     }
@@ -160,8 +162,8 @@ public class KFunction {
         final KColumn kColumn,
         final String operator
     ) {
-        assertNotNull(number, "number");
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(number, "number");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyBinaryOperator(new KValNumberField(number), kColumn, operator);
     }
@@ -171,8 +173,8 @@ public class KFunction {
         final KColumn kColumn2,
         final String operator
     ) {
-        assertNotNull(kColumn1, "kColumn1");
-        assertNotNull(kColumn2, "kColumn2");
+        KUtils.assertNotNull(kColumn1, "kColumn1");
+        KUtils.assertNotNull(kColumn2, "kColumn2");
         
         final KColumn operationKColumn = new KColumn(kColumn1.sb, kColumn1.params, false);
         
@@ -193,8 +195,8 @@ public class KFunction {
         final Number number,
         final String operator
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(number, "number");
         
         return applyBinaryOperator(kValNumberField, new KValNumberField(number), operator);
     }
@@ -204,8 +206,8 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final String operator
     ) {
-        assertNotNull(number, "number");
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(number, "number");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         return applyBinaryOperator(new KValNumberField(number), kValNumberField, operator);
     }
@@ -215,8 +217,8 @@ public class KFunction {
         final KValNumberField kValNumberField2,
         final String operator
     ) {
-        assertNotNull(kValNumberField1, "kValNumberField1");
-        assertNotNull(kValNumberField2, "kValNumberField2");
+        KUtils.assertNotNull(kValNumberField1, "kValNumberField1");
+        KUtils.assertNotNull(kValNumberField2, "kValNumberField2");
         
         final KValNumberField newKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, false);
         
@@ -237,8 +239,8 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final String operator
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -259,8 +261,8 @@ public class KFunction {
         final KColumn kColumn,
         final String operator
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn operationKColumn = new KColumn(kValNumberField.sb, kValNumberField.params, false);
         
@@ -281,7 +283,7 @@ public class KFunction {
         final String operator,
         final boolean addToRightSide
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn operationKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -299,7 +301,7 @@ public class KFunction {
         final String operator,
         final boolean addToRightSide
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         final KValNumberField operationKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, false);
         
@@ -316,7 +318,7 @@ public class KFunction {
         final KColumn kColumn,
         final String functionName
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn functionKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -329,7 +331,7 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final String functionName
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, true);
         
@@ -342,7 +344,7 @@ public class KFunction {
         final KValTextField kValTextField,
         final String functionName
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField functionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -356,8 +358,8 @@ public class KFunction {
         final KBaseColumn kBaseColumn2,
         final String functionName
     ) {
-        assertNotNull(kBaseColumn1, "kBaseColumn1");
-        assertNotNull(kBaseColumn2, "kBaseColumn2");
+        KUtils.assertNotNull(kBaseColumn1, "kBaseColumn1");
+        KUtils.assertNotNull(kBaseColumn2, "kBaseColumn2");
         
         final KColumn functionKColumn = new KColumn(kBaseColumn1.sb, kBaseColumn1.params, true);
         
@@ -372,8 +374,8 @@ public class KFunction {
 //        final KColumn kColumn2,
 //        final String functionName
 //    ) {
-//        assertNotNull(kColumn1, "kColumn1");
-//        assertNotNull(kColumn2, "kColumn2");
+//        KUtils.assertNotNull(kColumn1, "kColumn1");
+//        KUtils.assertNotNull(kColumn2, "kColumn2");
 //        
 //        final KColumn functionKColumn = new KColumn(kColumn1.sb, kColumn1.params, kColumn1.operating, true);
 //        
@@ -389,8 +391,8 @@ public class KFunction {
 //        final KColumn kColumn,
 //        final String functionName
 //    ) {
-//        assertNotNull(kValNumberField, "kValNumberField");
-//        assertNotNull(kColumn, "kColumn");
+//        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+//        KUtils.assertNotNull(kColumn, "kColumn");
 //        
 //        final KColumn functionKColumn = new KColumn(kValNumberField.sb, kValNumberField.params, kValNumberField.operating, true);
 //        
@@ -406,8 +408,8 @@ public class KFunction {
 //        final KValNumberField kValNumberField,
 //        final String functionName
 //    ) {
-//        assertNotNull(kColumn, "kColumn");
-//        assertNotNull(kValNumberField, "kValNumberField");
+//        KUtils.assertNotNull(kColumn, "kColumn");
+//        KUtils.assertNotNull(kValNumberField, "kValNumberField");
 //        
 //        final KColumn functionKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
 //        
@@ -424,8 +426,8 @@ public class KFunction {
         final String functionName
     ) {
         
-        assertNotNull(kValNumberField1, "kValNumberField1");
-        assertNotNull(kValNumberField2, "kValNumberField2");
+        KUtils.assertNotNull(kValNumberField1, "kValNumberField1");
+        KUtils.assertNotNull(kValNumberField2, "kValNumberField2");
         
         final KValNumberField functionKValNumberField = new KValNumberField(kValNumberField1.sb, kValNumberField1.params, true);
         
@@ -440,8 +442,8 @@ public class KFunction {
 //        final KColumn kColumn,
 //        final String functionName
 //    ) {
-//        assertNotNull(kValTextField, "kValTextField");
-//        assertNotNull(kColumn, "kColumn");
+//        KUtils.assertNotNull(kValTextField, "kValTextField");
+//        KUtils.assertNotNull(kColumn, "kColumn");
 //        
 //        final KColumn functionKColumn = new KColumn(kValTextField.sb, kValTextField.params, kValTextField.operating, true);
 //        
@@ -457,8 +459,8 @@ public class KFunction {
 //        final KValTextField kValTextField,
 //        final String functionName
 //    ) {
-//        assertNotNull(kColumn, "kColumn");
-//        assertNotNull(kValTextField, "kValTextField");
+//        KUtils.assertNotNull(kColumn, "kColumn");
+//        KUtils.assertNotNull(kValTextField, "kValTextField");
 //        
 //        final KColumn functionKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating, true);
 //        
@@ -484,7 +486,7 @@ public class KFunction {
     public static KValTextField ascii(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "ASCII");
     }
@@ -504,7 +506,7 @@ public class KFunction {
     public static KValNumberField asin(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "ASIN");
     }
@@ -524,7 +526,7 @@ public class KFunction {
     public static KValNumberField atan(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "ATAN");
     }
@@ -540,7 +542,7 @@ public class KFunction {
         final KColumn kColumn,
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(kColumn, val(number), "ATAN2");
     }
@@ -549,7 +551,7 @@ public class KFunction {
         final Number number,
         final KColumn kColumn
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(val(number), kColumn, "ATAN2");
     }
@@ -580,8 +582,8 @@ public class KFunction {
         final Number number1,
         final Number number2
     ) {
-        assertNotNull(number1, "number1");
-        assertNotNull(number2, "number2");
+        KUtils.assertNotNull(number1, "number1");
+        KUtils.assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "ATAN2");
     }
@@ -601,7 +603,7 @@ public class KFunction {
     public static KValNumberField avg(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "AVG");
     }
@@ -665,7 +667,7 @@ public class KFunction {
     public static KColumn bitNot(
         final KColumn kColumn
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyUnaryOperator(kColumn, "~", false);
     }
@@ -673,7 +675,7 @@ public class KFunction {
     public static KValNumberField bitNot(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyUnaryOperator(val(number), "~", false);
     }
@@ -681,7 +683,7 @@ public class KFunction {
     public static KValNumberField bitNot(
         final KValNumberField kValNumberField
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         return applyUnaryOperator(kValNumberField, "~", false);
     }
@@ -753,7 +755,7 @@ public class KFunction {
         final KColumn kColumn,
         final int n
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyBinaryOperator(kColumn, n, "<<");
     }
@@ -762,7 +764,7 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final int n
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         return applyBinaryOperator(kValNumberField, n, "<<");
     }
@@ -778,7 +780,7 @@ public class KFunction {
         final KColumn kColumn,
         final int n
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyBinaryOperator(kColumn, n, ">>");
     }
@@ -787,7 +789,7 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final int n
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         return applyBinaryOperator(kValNumberField, n, ">>");
     }
@@ -868,8 +870,8 @@ public class KFunction {
         final KBaseColumnCastable kBaseColumnCastable,
         final KDataType kDataType    
     ) {
-        assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
-        assertNotNull(kDataType, "kDataType");
+        KUtils.assertNotNull(kBaseColumnCastable, "kBaseColumnCastable");
+        KUtils.assertNotNull(kDataType, "kDataType");
         
         final KColumn castkColumn = new KColumn(kBaseColumnCastable.sb, kBaseColumnCastable.params, true);
         
@@ -886,8 +888,8 @@ public class KFunction {
         final Number val,
         final KDataType kDataType    
     ) {
-        assertNotNull(val, "val");
-        assertNotNull(kDataType, "kDataType");
+        KUtils.assertNotNull(val, "val");
+        KUtils.assertNotNull(kDataType, "kDataType");
         
         final KColumn castkColumn = new KColumn(val);
         
@@ -900,8 +902,8 @@ public class KFunction {
         final String val,
         final KDataType kDataType    
     ) {
-        assertNotNull(val, "val");
-        assertNotNull(kDataType, "kDataType");
+        KUtils.assertNotNull(val, "val");
+        KUtils.assertNotNull(kDataType, "kDataType");
         
         final KColumn castkColumn = new KColumn(val);
         
@@ -914,8 +916,8 @@ public class KFunction {
 //        final KColumn kColumn,
 //        final KDataType kDataType    
 //    ) {
-//        assertNotNull(kColumn, "kColumn");
-//        assertNotNull(kDataType, "kDataType");
+//        KUtils.assertNotNull(kColumn, "kColumn");
+//        KUtils.assertNotNull(kDataType, "kDataType");
 //        
 //        final KColumn castkColumn = kColumn.cloneMe();
 //        
@@ -928,8 +930,8 @@ public class KFunction {
 //        final KValNumberField kValNumberField,
 //        final KDataType kDataType    
 //    ) {
-//        assertNotNull(kValNumberField, "kValNumberField");
-//        assertNotNull(kDataType, "kDataType");
+//        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+//        KUtils.assertNotNull(kDataType, "kDataType");
 //        
 //        final KColumn castkColumn = new KColumn(kValNumberField.sb);
 //        
@@ -942,8 +944,8 @@ public class KFunction {
 //        final KValTextField kValTextField,
 //        final KDataType kDataType    
 //    ) {
-//        assertNotNull(kValTextField, "kValTextField");
-//        assertNotNull(kDataType, "kDataType");
+//        KUtils.assertNotNull(kValTextField, "kValTextField");
+//        KUtils.assertNotNull(kDataType, "kDataType");
 //        
 //        final KColumn castkColumn = new KColumn(kValTextField.sb);
 //        
@@ -967,7 +969,7 @@ public class KFunction {
     public static KValNumberField cbrt(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "CBRT");
     }
@@ -987,7 +989,7 @@ public class KFunction {
     public static KValNumberField ceil(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "CEIL");
     }
@@ -1007,7 +1009,7 @@ public class KFunction {
     public static KValNumberField ceiling(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "CEILING");
     }
@@ -1027,7 +1029,7 @@ public class KFunction {
     public static KValTextField chr(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "CHR");
     }
@@ -1035,7 +1037,7 @@ public class KFunction {
     public static KColumn coalesce(
         final KBaseColumnCastable... kBaseColumnCastables
     ) {
-        assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
+        KUtils.assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
         
         if (kBaseColumnCastables.length < 2) {
             throw KExceptionHelper.internalServerError("'COALESCE' function requires at least two kBaseColumnCastables");
@@ -1084,7 +1086,7 @@ public class KFunction {
     public static KValNumberField cos(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "COS");
     }
@@ -1104,7 +1106,7 @@ public class KFunction {
     public static KValNumberField cosh(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "COSH");
     }
@@ -1124,7 +1126,7 @@ public class KFunction {
     public static KValNumberField cot(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "COT");
     }
@@ -1148,7 +1150,7 @@ public class KFunction {
     public static KColumn concat(
         final KBaseColumnCastable... kBaseColumnCastables
     ) {
-        assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
+        KUtils.assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
         
         if (kBaseColumnCastables.length < 2) {
             throw KExceptionHelper.internalServerError("'CONCAT' function requires at least two kBaseColumnCastables");
@@ -1224,8 +1226,8 @@ public class KFunction {
         final KColumn kColumn,
         final KExtractField kExtractField
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kExtractField, "kExtractField");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kExtractField, "kExtractField");
         
         final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -1238,8 +1240,8 @@ public class KFunction {
         final KColumn kColumn,
         final KExtractField kExtractField
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kExtractField, "kExtractField");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kExtractField, "kExtractField");
         
         final KColumn extractkColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -1252,8 +1254,8 @@ public class KFunction {
         final KColumn kColumn,
         final KFormat kFormat
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kFormat, "kFormat");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kFormat, "kFormat");
         
         final KColumn decodeKColumn = kColumn.cloneMe();
         decodeKColumn.closed = true;
@@ -1267,8 +1269,8 @@ public class KFunction {
         final KValTextField kValTextField,
         final KFormat kFormat
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(kFormat, "kFormat");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kFormat, "kFormat");
         
         final KValTextField decodeKValTextField = kValTextField.cloneMe();
         decodeKValTextField.closed = true;
@@ -1293,7 +1295,7 @@ public class KFunction {
     public static KValNumberField degrees(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "DEGREES");
     }
@@ -1358,8 +1360,8 @@ public class KFunction {
         final KColumn kColumn,
         final KFormat kFormat
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kFormat, "kFormat");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kFormat, "kFormat");
         
         final KColumn encodeKColumn = kColumn.cloneMe();
         encodeKColumn.closed = true;
@@ -1373,8 +1375,8 @@ public class KFunction {
         final KValTextField kValTextField,
         final KFormat kFormat
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(kFormat, "kFormat");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kFormat, "kFormat");
         
         final KValTextField encodeKValTextField = kValTextField.cloneMe();
         encodeKValTextField.closed = true;
@@ -1382,6 +1384,22 @@ public class KFunction {
         encodeKValTextField.sb.insert(0, "ENCODE(").append(", '").append(kFormat.toSql()).append("'").append(")");
         
         return encodeKValTextField;
+    }
+    
+    public static KColumn excluded(
+        final KColumn kColumn
+    ) {
+        final KColumn newKColumn = kColumn.cloneMe();
+        
+        if (newKColumn.kTable != null) {
+            final String content = newKColumn.sb.toString().replaceAll(newKColumn.kTable.alias + ".", "EXCLUDED.");
+            
+            newKColumn.sb.setLength(0);
+            
+            newKColumn.sb.append(content);
+        }
+        
+        return newKColumn;
     }
     
     public static KCondition exists(
@@ -1405,7 +1423,7 @@ public class KFunction {
     public static KValNumberField exp(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "EXP");
     }
@@ -1414,8 +1432,8 @@ public class KFunction {
         final KColumn kColumn,
         final KExtractField kExtractField
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(kExtractField, "kExtractField");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kExtractField, "kExtractField");
         
         final KColumn extractKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -1439,7 +1457,7 @@ public class KFunction {
     public static KValNumberField floor(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "FLOOR");
     }
@@ -1453,7 +1471,7 @@ public class KFunction {
         final String characters,
         final String trimFunctionName
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn genericTrimKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -1474,7 +1492,7 @@ public class KFunction {
         final String characters,
         final String trimFunctionName
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField genericTrimKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -1535,7 +1553,7 @@ public class KFunction {
         final KColumn kColumn,
         final int index
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1548,7 +1566,7 @@ public class KFunction {
         final KColumn kColumn,
         final int index
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1561,8 +1579,8 @@ public class KFunction {
         final KColumn kColumn,
         final String name
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(name, "name");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(name, "name");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1575,8 +1593,8 @@ public class KFunction {
         final KColumn kColumn,
         final String name
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(name, "name");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(name, "name");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1589,8 +1607,8 @@ public class KFunction {
         final KColumn kColumn,
         final String path
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(path, "path");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(path, "path");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1603,8 +1621,8 @@ public class KFunction {
         final KColumn kColumn,
         final String path
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(path, "path");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(path, "path");
         
         final KColumn jsonKColumn = new KColumn(kColumn.sb, kColumn.params, false);
         
@@ -1616,7 +1634,7 @@ public class KFunction {
     public static KColumn greatest(
         final KBaseColumn... KBaseColumns
     ) {
-        assertNotNull(KBaseColumns, "KBaseColumns");
+        KUtils.assertNotNull(KBaseColumns, "KBaseColumns");
         
         if (KBaseColumns.length < 2) {
             throw KExceptionHelper.internalServerError("'GREATEST' function requires at least two KBaseColumns");
@@ -1665,7 +1683,7 @@ public class KFunction {
     public static KColumn isolate(
         final KColumn kColumn
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn isolatekColumn = kColumn.cloneMe();
         isolatekColumn.closed = true;
@@ -1678,7 +1696,7 @@ public class KFunction {
     public static KValTextField isolate(
         final KValTextField kValTextField
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField isolateKValTextField = kValTextField.cloneMe();
         isolateKValTextField.closed = true;
@@ -1691,7 +1709,7 @@ public class KFunction {
     public static KValNumberField isolate(
         final KValNumberField kValNumberField
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
         
         final KValNumberField isolateKValNumberField = kValNumberField.cloneMe();
         isolateKValNumberField.closed = true;
@@ -1704,7 +1722,7 @@ public class KFunction {
     public static KColumn least(
         final KBaseColumn... KBaseColumns
     ) {
-        assertNotNull(KBaseColumns, "KBaseColumns");
+        KUtils.assertNotNull(KBaseColumns, "KBaseColumns");
         
         if (KBaseColumns.length < 2) {
             throw KExceptionHelper.internalServerError("'LEAST' function requires at least two KBaseColumns");
@@ -1742,7 +1760,7 @@ public class KFunction {
         final KColumn kColumn,
         final int n
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyTwoParameterFunction(kColumn, val(n), "LEFT");
     }
@@ -1751,7 +1769,7 @@ public class KFunction {
         final KValTextField kValTextField,
         final int n
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         return applyTwoParameterFunction(kValTextField, val(n), "LEFT");
     }
@@ -1771,7 +1789,7 @@ public class KFunction {
     public static KValTextField length(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "LENGTH");
     }
@@ -1791,7 +1809,7 @@ public class KFunction {
     public static KValNumberField ln(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "LN");
     }
@@ -1827,7 +1845,7 @@ public class KFunction {
         final Number number,
         final KColumn kColumn
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(val(number), kColumn, "LOG");
     }
@@ -1836,7 +1854,7 @@ public class KFunction {
         final KColumn kColumn,
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(kColumn, val(number), "LOG");
     }
@@ -1859,8 +1877,8 @@ public class KFunction {
         final Number number1,
         final Number number2
     ) {
-        assertNotNull(number1, "number1");
-        assertNotNull(number2, "number2");
+        KUtils.assertNotNull(number1, "number1");
+        KUtils.assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "LOG");
     }
@@ -1887,7 +1905,7 @@ public class KFunction {
     public static KValNumberField log10(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "LOG10");
     }
@@ -1907,7 +1925,7 @@ public class KFunction {
     public static KValTextField lower(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "LOWER");
     }
@@ -1924,7 +1942,7 @@ public class KFunction {
         final int n,
         final String fillText
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn lpadKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -1952,7 +1970,7 @@ public class KFunction {
         final int n,
         final String fillText
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField lpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2009,7 +2027,7 @@ public class KFunction {
     public static KValNumberField max(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "MAX");
     }
@@ -2029,7 +2047,7 @@ public class KFunction {
     public static KValTextField md5(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "MD5");
     }
@@ -2049,7 +2067,7 @@ public class KFunction {
     public static KValNumberField min(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "MIN");
     }
@@ -2176,13 +2194,17 @@ public class KFunction {
         return new KColumn(new StringBuilder("NOW()"), true);
     }
     
+    public static KRaw nullValue() {
+        return new KRaw("NULL");
+    }
+    
     public static KColumn nullif(
         final KBaseColumnCastable kBaseColumnCastable1,
         final KBaseColumnCastable kBaseColumnCastable2
     ) {
         
-        assertNotNull(kBaseColumnCastable1, "kBaseColumnCastable1");
-        assertNotNull(kBaseColumnCastable2, "kBaseColumnCastable2");
+        KUtils.assertNotNull(kBaseColumnCastable1, "kBaseColumnCastable1");
+        KUtils.assertNotNull(kBaseColumnCastable2, "kBaseColumnCastable2");
         
         final KColumn nullifkColumn = new KColumn(kBaseColumnCastable1.sb, kBaseColumnCastable1.params, true);
         
@@ -2190,6 +2212,22 @@ public class KFunction {
         nullifkColumn.params.addAll(kBaseColumnCastable2.params);
         
         return nullifkColumn;
+    }
+    
+    public static KColumn noTableAlias(
+        final KColumn kColumn
+    ) {
+        final KColumn newKColumn = kColumn.cloneMe();
+        
+        if (newKColumn.kTable != null) {
+            final String content = newKColumn.sb.toString().replaceAll(newKColumn.kTable.alias + ".", "");
+            
+            newKColumn.sb.setLength(0);
+            
+            newKColumn.sb.append(content);
+        }
+        
+        return newKColumn;
     }
     
     public static KCondition not(
@@ -2244,9 +2282,9 @@ public class KFunction {
         final int from,
         final Integer for_
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(from, "from");
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(value, "value");
         
         final KColumn overlayKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2276,9 +2314,9 @@ public class KFunction {
         final Integer from,
         final Integer for_
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(from, "from");
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(value, "value");
         
         final KValTextField overlayKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2303,8 +2341,8 @@ public class KFunction {
         final String valueToLocate
     ) {
         
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(valueToLocate, "valueToLocate");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(valueToLocate, "valueToLocate");
         
         final KColumn positionKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2319,8 +2357,8 @@ public class KFunction {
         final String valueToLocate
     ) {
         
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(valueToLocate, "valueToLocate");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(valueToLocate, "valueToLocate");
         
         final KValTextField positionKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2341,7 +2379,7 @@ public class KFunction {
         final Number number,
         final KColumn kColumn
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(val(number), kColumn, "POWER");
     }
@@ -2350,7 +2388,7 @@ public class KFunction {
         final KColumn kColumn,
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(kColumn, val(number), "POWER");
     }
@@ -2380,8 +2418,8 @@ public class KFunction {
         final Number number1,
         final Number number2
     ) {
-        assertNotNull(number1, "number1");
-        assertNotNull(number2, "number2");
+        KUtils.assertNotNull(number1, "number1");
+        KUtils.assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "POWER");
     }
@@ -2437,7 +2475,7 @@ public class KFunction {
     private static KColumn processCount(
         final KColumn kColumn
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn kColumnCount = new KColumn(true);
         
@@ -2451,7 +2489,7 @@ public class KFunction {
     private static KColumn processCountDistinct(
         final KColumn kColumn
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn kColumnCount = new KColumn(true);
         
@@ -2489,7 +2527,7 @@ public class KFunction {
     public static KValNumberField radians(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "RADIANS");
     }
@@ -2508,7 +2546,7 @@ public class KFunction {
         final KColumn kColumn,
         final int n
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn repeatKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2521,7 +2559,7 @@ public class KFunction {
         final KValTextField kValTextField,
         final int n
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField repeatKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2544,9 +2582,9 @@ public class KFunction {
         final String replacement,
         final String flags
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(pattern, "pattern");
-        assertNotNull(replacement, "replacement");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(pattern, "pattern");
+        KUtils.assertNotNull(replacement, "replacement");
         
         final KColumn regexpReplaceKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2578,9 +2616,9 @@ public class KFunction {
         final String replacement,
         final String flags
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(pattern, "pattern");
-        assertNotNull(replacement, "replacement");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(pattern, "pattern");
+        KUtils.assertNotNull(replacement, "replacement");
         
         final KValTextField regexpReplaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2603,9 +2641,9 @@ public class KFunction {
         final String from,
         final String to
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(from, "from");
-        assertNotNull(to, "to");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(to, "to");
         
         final KColumn replaceKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2621,9 +2659,9 @@ public class KFunction {
         final String from,
         final String to
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(from, "from");
-        assertNotNull(to, "to");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(to, "to");
         
         final KValTextField replaceKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2649,7 +2687,7 @@ public class KFunction {
     public static KValTextField reverse(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "REVERSE");
     }
@@ -2658,7 +2696,7 @@ public class KFunction {
         final KColumn kColumn,
         final int n
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         return applyTwoParameterFunction(kColumn, val(n), "RIGHT");
     }
@@ -2667,7 +2705,7 @@ public class KFunction {
         final KValTextField kValTextField,
         final int n
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         return applyTwoParameterFunction(kValTextField, val(n), "RIGHT");
     }
@@ -2687,7 +2725,7 @@ public class KFunction {
     public static KValNumberField round(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "ROUND");
     }
@@ -2703,7 +2741,7 @@ public class KFunction {
         final Number number,
         final KColumn kColumn
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(val(number), kColumn, "ROUND");
     }
@@ -2712,7 +2750,7 @@ public class KFunction {
         final KColumn kColumn,
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyTwoParameterFunction(kColumn, val(number), "ROUND");
     }
@@ -2742,8 +2780,8 @@ public class KFunction {
         final Number number1,
         final Number number2
     ) {
-        assertNotNull(number1, "number1");
-        assertNotNull(number2, "number2");
+        KUtils.assertNotNull(number1, "number1");
+        KUtils.assertNotNull(number2, "number2");
         
         return applyTwoParameterFunction(val(number1), val(number2), "ROUND");
     }
@@ -2760,7 +2798,7 @@ public class KFunction {
         final int n,
         final String fillText
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         final KColumn rpadKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2788,7 +2826,7 @@ public class KFunction {
         final int n,
         final String fillText
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         final KValTextField rpadKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2845,7 +2883,7 @@ public class KFunction {
     public static KValNumberField sign(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SIGN");
     }
@@ -2865,7 +2903,7 @@ public class KFunction {
     public static KValNumberField sin(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SIN");
     }
@@ -2885,7 +2923,7 @@ public class KFunction {
     public static KValNumberField sinh(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SINH");
     }
@@ -2901,8 +2939,8 @@ public class KFunction {
         final String delimiter,
         final int field
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(delimiter, "delimiter");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(delimiter, "delimiter");
         
         final KColumn splitPartKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -2917,8 +2955,8 @@ public class KFunction {
         final String delimiter,
         final int field
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(delimiter, "delimiter");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(delimiter, "delimiter");
         
         final KValTextField splitPartKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -2943,7 +2981,7 @@ public class KFunction {
     public static KValNumberField sqrt(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SQRT");
     }
@@ -2960,7 +2998,7 @@ public class KFunction {
         final Integer from,
         final Integer for_
     ) {
-        assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kColumn, "kColumn");
         
         if (from == null && for_ == null) {
             throw KExceptionHelper.internalServerError("Between 'from' and 'for_', at least one is required");
@@ -2989,7 +3027,7 @@ public class KFunction {
         final String value,
         final Integer from
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return substring(val(value), from, null);
     }
@@ -3006,7 +3044,7 @@ public class KFunction {
         final Integer from,
         final Integer for_
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return substring(val(value), from, for_);
     }
@@ -3016,7 +3054,7 @@ public class KFunction {
         final Integer from,
         final Integer for_
     ) {
-        assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
         
         if (from == null && for_ == null) {
             throw KExceptionHelper.internalServerError("Between 'from' and 'for', at least one is required");
@@ -3053,8 +3091,8 @@ public class KFunction {
         final String from,
         final String for_
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(from, "from");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(from, "from");
         
         final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -3075,7 +3113,7 @@ public class KFunction {
         final String value,
         final String from
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return substring(val(value), from);
     }
@@ -3092,7 +3130,7 @@ public class KFunction {
         final String from,
         final String for_
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return substring(val(value), from, for_);
     }
@@ -3102,8 +3140,8 @@ public class KFunction {
         final String from,
         final String for_
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(from, "from");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(from, "from");
         
         final KValTextField substringKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -3135,7 +3173,7 @@ public class KFunction {
     public static KValNumberField sum(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "SUM");
     }
@@ -3155,7 +3193,7 @@ public class KFunction {
     public static KValNumberField tan(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "TAN");
     }
@@ -3175,7 +3213,7 @@ public class KFunction {
     public static KValNumberField tanh(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "TANH");
     }
@@ -3184,8 +3222,8 @@ public class KFunction {
         final KColumn kColumn,
         final String format
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(format, "format");
         
         final KColumn toDateKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -3199,8 +3237,8 @@ public class KFunction {
         final KValTextField kValTextField,
         final String format
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(format, "format");
         
         final KValTextField toDateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -3225,7 +3263,7 @@ public class KFunction {
     public static KValNumberField toHex(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "TO_HEX");
     }
@@ -3234,8 +3272,8 @@ public class KFunction {
         final KColumn kColumn,
         final String format
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(format, "format");
         
         final KColumn toDateKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
         
@@ -3249,8 +3287,8 @@ public class KFunction {
         final KValTextField kValTextField,
         final String format
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(format, "format");
         
         final KValTextField toDateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
         
@@ -3264,8 +3302,8 @@ public class KFunction {
         final KColumn kColumn,
         final String format
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(format, "format");
         
         final KColumn toTimestampKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -3279,8 +3317,8 @@ public class KFunction {
         final KValTextField kValTextField,
         final String format
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(format, "format");
         
         final KValTextField toTimestampKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -3295,9 +3333,9 @@ public class KFunction {
         final String from,
         final String to
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(from, "from");
-        assertNotNull(to, "to");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(to, "to");
         
         final KColumn translateKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -3313,9 +3351,9 @@ public class KFunction {
         final String from,
         final String to
     ) {
-        assertNotNull(kValTextField, "kValTextField");
-        assertNotNull(from, "from");
-        assertNotNull(to, "to");
+        KUtils.assertNotNull(kValTextField, "kValTextField");
+        KUtils.assertNotNull(from, "from");
+        KUtils.assertNotNull(to, "to");
         
         final KValTextField translateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, true);
         
@@ -3419,8 +3457,8 @@ public class KFunction {
         final KColumn kColumn,
         final String format
     ) {
-        assertNotNull(kColumn, "kColumn");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(format, "format");
         
         final KColumn substringKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
@@ -3434,8 +3472,8 @@ public class KFunction {
         final KValNumberField kValNumberField,
         final String format
     ) {
-        assertNotNull(kValNumberField, "kValNumberField");
-        assertNotNull(format, "format");
+        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(format, "format");
         
         final KValNumberField substringKValNumberField = new KValNumberField(kValNumberField.sb, kValNumberField.params, true);
         
@@ -3460,7 +3498,7 @@ public class KFunction {
     public static KValNumberField trunc(
         final Number number
     ) {
-        assertNotNull(number, "number");
+        KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "TRUNC");
     }
@@ -3488,7 +3526,7 @@ public class KFunction {
     public static KValTextField upper(
         final String value
     ) {
-        assertNotNull(value, "value");
+        KUtils.assertNotNull(value, "value");
         
         return applyOneParameterFunction(val(value), "UPPER");
     }
@@ -3535,10 +3573,10 @@ public class KFunction {
         final KColumn b2,
         final KColumn count
     ) {
-        assertNotNull(op, "op");
-        assertNotNull(b1, "b1");
-        assertNotNull(b2, "b2");
-        assertNotNull(count, "count");
+        KUtils.assertNotNull(op, "op");
+        KUtils.assertNotNull(b1, "b1");
+        KUtils.assertNotNull(b2, "b2");
+        KUtils.assertNotNull(count, "count");
         
         final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
@@ -3556,9 +3594,9 @@ public class KFunction {
         final KColumn b2,
         final int count
     ) {
-        assertNotNull(op, "op");
-        assertNotNull(b1, "b1");
-        assertNotNull(b2, "b2");
+        KUtils.assertNotNull(op, "op");
+        KUtils.assertNotNull(b1, "b1");
+        KUtils.assertNotNull(b2, "b2");
         
         final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
@@ -3576,10 +3614,10 @@ public class KFunction {
         final int count
     ) {
         
-        assertNotNull(op, "op");
-        assertNotNull(b1, "b1");
-        assertNotNull(b2, "b2");
-        assertNotNull(count, "count");
+        KUtils.assertNotNull(op, "op");
+        KUtils.assertNotNull(b1, "b1");
+        KUtils.assertNotNull(b2, "b2");
+        KUtils.assertNotNull(count, "count");
         
         final KColumn widthBucketkColumn = new KColumn(op.sb, op.params, true);
         
@@ -3595,32 +3633,15 @@ public class KFunction {
         final int count
     ) {
         
-        assertNotNull(op, "op");
-        assertNotNull(b1, "b1");
-        assertNotNull(b2, "b2");
-        assertNotNull(count, "count");
+        KUtils.assertNotNull(op, "op");
+        KUtils.assertNotNull(b1, "b1");
+        KUtils.assertNotNull(b2, "b2");
+        KUtils.assertNotNull(count, "count");
         
         final KColumn widthBucketkColumn = new KColumn();
         
         widthBucketkColumn.sb.append("WIDTH_BUCKET(").append(op).append(", ").append(b1).append(", ").append(b2).append(", ").append(count).append(")");
         
         return widthBucketkColumn;
-    }
-    
-    private static void assertNotNull(
-        final Object o,
-        final String name
-    ) {
-        if (o == null) {
-            throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
-        }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
-        }
     }
 }

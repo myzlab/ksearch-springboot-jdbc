@@ -21,7 +21,7 @@ public class KOrderBy extends KQuery {
         this.process(kColumnsAllowedToOrderBy);
     }
     
-    public static KOrderBy getInstance(
+    protected static KOrderBy getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy

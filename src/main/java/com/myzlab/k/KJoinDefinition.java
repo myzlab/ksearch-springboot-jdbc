@@ -40,7 +40,7 @@ public class KJoinDefinition {
         this.kCondition = kCondition;
     }
     
-    public static KJoinDefinition getInstance(
+    protected static KJoinDefinition getInstance(
         final String table,
         final KCondition kCondition
     ) {
@@ -53,7 +53,7 @@ public class KJoinDefinition {
         return new KJoinDefinition(table, kCondition);
     }
     
-    public static KJoinDefinition getInstance(
+    protected static KJoinDefinition getInstance(
         final List<Object> params,
         final String table,
         final KCondition kCondition

@@ -16,7 +16,7 @@ public class KCommonTableExpressionAliased extends KCommonTableExpression {
         super(kValues, kQuery, name, alias, columns);
     }
         
-    public static KCommonTableExpressionAliased getInstance(
+    protected static KCommonTableExpressionAliased getInstance(
         final KValues kValues,
         final KQuery kQuery,
         final String name,

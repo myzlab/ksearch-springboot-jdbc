@@ -17,7 +17,7 @@ public class KWindowDefinitionUnnamedFrameStarted extends KWindowDefinition impl
         this.process();
     }
     
-    public static KWindowDefinitionUnnamedFrameStarted getInstance(
+    protected static KWindowDefinitionUnnamedFrameStarted getInstance(
         final StringBuilder sb,
         final String frameStart
     ) {

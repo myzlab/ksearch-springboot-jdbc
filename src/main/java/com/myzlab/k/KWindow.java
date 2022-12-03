@@ -24,7 +24,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
         this.KWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
     }
     
-    public static KWindow getInstance(
+    protected static KWindow getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow

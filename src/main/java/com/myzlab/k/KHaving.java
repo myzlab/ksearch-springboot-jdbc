@@ -26,7 +26,7 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
         this.kCondition = kCondition;
     }
     
-    public static KHaving getInstance(
+    protected static KHaving getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KCondition kCondition

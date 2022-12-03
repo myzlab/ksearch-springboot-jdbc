@@ -18,7 +18,7 @@ public class KFromUpdate extends KQueryUpdate {
         this.process(kTable);
     }
     
-    public static KFromUpdate getInstance(
+    protected static KFromUpdate getInstance(
         final KInitializer kInitializer,
         final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
@@ -37,7 +37,7 @@ public class KFromUpdate extends KQueryUpdate {
     public KFromUpdate from(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         this.process(new KTable(null, kRaw.content, null));
         

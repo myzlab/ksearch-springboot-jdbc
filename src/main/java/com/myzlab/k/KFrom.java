@@ -22,7 +22,7 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         this.process(kTable);
     }
     
-    public static KFrom getInstance(
+    protected static KFrom getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KTable kTable
@@ -57,7 +57,7 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     public KFrom from(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         this.process(new KTable(null, kRaw.content, null));
         

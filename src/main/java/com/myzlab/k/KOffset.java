@@ -16,7 +16,7 @@ public class KOffset extends KQuery {
         this.process(start);
     }
     
-    public static KOffset getInstance(
+    protected static KOffset getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final int start

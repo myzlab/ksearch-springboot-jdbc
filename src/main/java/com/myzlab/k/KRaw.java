@@ -39,4 +39,5 @@ public class KRaw implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, K
     public String getSqlToSet() {
         return content;
     }
+    
 }

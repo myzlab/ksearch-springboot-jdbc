@@ -39,7 +39,9 @@ public class KCollection<T extends KRow> {
         this.metadata = new HashMap<>(metadata);
     }
     
-    public List<Object> take(final String c) {
+    public List<Object> take(
+        final String c
+    ) {
         final List<Object> taked = new ArrayList<>();
         
         for (final KRow kRow : list) {
@@ -49,7 +51,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Object> take(final String c, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<Object> take(
+        final String c,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<Object> taked = new ArrayList<>();
         
         for (final KRow kRow : list) {
@@ -61,7 +66,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Object> take(final int n) {
+    public List<Object> take(
+        final int n
+    ) {
         final List<Object> taked = new ArrayList<>();
         
         for (final KRow kRow : list) {
@@ -71,7 +78,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Object> take(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<Object> take(
+        final int n,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<Object> taked = new ArrayList<>();
         
         for (final KRow kRow : list) {
@@ -83,7 +93,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<String> takeString(final String c) {
+    public List<String> takeString(
+        final String c
+    ) {
         final List<String> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -93,7 +105,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<String> takeString(final String c, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<String> takeString(
+        final String c,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<String> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -105,7 +120,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<String> takeString(final int n) {
+    public List<String> takeString(
+        final int n
+    ) {
         final List<String> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -115,7 +132,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<String> takeString(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<String> takeString(
+        final int n,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<String> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -127,7 +147,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Character> takeCharacter(final String c) {
+    public List<Character> takeCharacter(
+        final String c
+    ) {
         final List<Character> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -137,7 +159,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Character> takeCharacter(final String c, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<Character> takeCharacter(
+        final String c,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<Character> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -149,7 +174,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Character> takeCharacter(final int n) {
+    public List<Character> takeCharacter(
+        final int n
+    ) {
         final List<Character> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -159,7 +186,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<Character> takeCharacter(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<Character> takeCharacter(
+        final int n,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<Character> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -171,7 +201,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<BigDecimal> takeBigDecimal(final String c) {
+    public List<BigDecimal> takeBigDecimal(
+        final String c
+    ) {
         final List<BigDecimal> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -181,7 +213,10 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<BigDecimal> takeBigDecimal(final String c, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<BigDecimal> takeBigDecimal(
+        final String c,
+        final KRowFunction<KRow, Boolean> kRowFunction
+    ) {
         final List<BigDecimal> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -193,7 +228,9 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<BigDecimal> takeBigDecimal(final int n) {
+    public List<BigDecimal> takeBigDecimal(
+        final int n
+    ) {
         final List<BigDecimal> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
@@ -203,7 +240,7 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<BigDecimal> takeBigDecimal(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {
+    public List<BigDecimal> takeBigDecimal(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {//HERE
         final List<BigDecimal> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {

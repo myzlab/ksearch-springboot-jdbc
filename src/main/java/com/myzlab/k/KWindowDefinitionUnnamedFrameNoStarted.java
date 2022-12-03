@@ -12,7 +12,7 @@ public class KWindowDefinitionUnnamedFrameNoStarted extends KWindowDefinition {
         this.process(method, whiteSpace);
     }
     
-    public static KWindowDefinitionUnnamedFrameNoStarted getInstance(
+    protected static KWindowDefinitionUnnamedFrameNoStarted getInstance(
         final StringBuilder sb,
         final String method,
         final boolean whiteSpace

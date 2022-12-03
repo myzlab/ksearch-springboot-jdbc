@@ -22,7 +22,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         super(kQueryData, kInitializer);
     }
     
-    public static KSelect getInstance(
+    protected static KSelect getInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
     ) {
@@ -34,11 +34,11 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getInstance(
+    protected static KSelect getInstance(
         final KInitializer kInitializer,
         final KRaw... kRaws
     ) {
-        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
         
         final KSelect kSelect = new KSelect(kInitializer);
         
@@ -55,7 +55,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getDistinctInstance(
+    protected static KSelect getDistinctInstance(
         final KInitializer kInitializer,
         final KBaseColumn... kBaseColumns
     ) {
@@ -67,7 +67,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getInstance(
+    protected static KSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KBaseColumn... kBaseColumns
@@ -80,12 +80,12 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getInstance(
+    protected static KSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KRaw... kRaws
     ) {
-        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
         
         final KSelect kSelect = new KSelect(kQueryData, kInitializer);
         
@@ -102,7 +102,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getDistinctInstance(
+    protected static KSelect getDistinctInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KBaseColumn... kBaseColumns
@@ -115,7 +115,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getInstance(
+    protected static KSelect getInstance(
         final KInitializer kInitializer,
         final KQuery kQuery,
         final String alias
@@ -127,7 +127,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return kSelect;
     }
     
-    public static KSelect getDistinctInstance(
+    protected static KSelect getDistinctInstance(
         final KInitializer kInitializer,
         final KQuery kQuery,
         final String alias
@@ -152,7 +152,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     public KSelect select(
         final KRaw... kRaws
     ) {
-        KUtils.assertNotNullNotEmpty(kRaws, "kRaws");
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
         
         final KColumn[] kColumns = new KColumn[kRaws.length];
         
@@ -185,7 +185,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     public KFrom from(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNullNotEmpty(kRaw, "kRaw", false);
         
         return KFrom.getInstance(this.k, this.kQueryData, new KTable(null, kRaw.content, null));
     }

@@ -20,7 +20,7 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
         this.process(kColumnsAllowedToGroupBy);
     }
     
-    public static KGroupBy getInstance(
+    protected static KGroupBy getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy

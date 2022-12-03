@@ -26,7 +26,7 @@ public class KWindowDefinitionNamedOrdered extends KWindowDefinition implements 
         this.process(kColumnOrdered);
     }
     
-    public static KWindowDefinitionNamedOrdered getInstance(
+    protected static KWindowDefinitionNamedOrdered getInstance(
         final StringBuilder sb,
         final String name,
         final KColumn kColumn
@@ -34,7 +34,7 @@ public class KWindowDefinitionNamedOrdered extends KWindowDefinition implements 
         return new KWindowDefinitionNamedOrdered(sb, name, kColumn);
     }
     
-    public static KWindowDefinitionNamedOrdered getInstance(
+    protected static KWindowDefinitionNamedOrdered getInstance(
         final StringBuilder sb,
         final String name,
         final KColumnOrdered kColumnOrdered

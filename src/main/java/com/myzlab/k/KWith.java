@@ -10,7 +10,7 @@ public class KWith extends KQuery {
         super(kInitializer);
     }
 
-    public static KWith getInstance(
+    protected static KWith getInstance(
         final KInitializer kInitializer,
         final boolean recursive,
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
@@ -62,7 +62,7 @@ public class KWith extends KQuery {
         final boolean recursive,
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
-        KUtils.assertNotNullNotEmpty(kCommonTableExpressionsFilled, "kCommonTableExpressionsFilled");
+        KUtils.assertNotNullNotEmpty(kCommonTableExpressionsFilled, "kCommonTableExpressionsFilled", false);
         
         this.kQueryData.sb.append("WITH ").append(recursive ? "RECURSIVE " : "");
         
@@ -121,9 +121,14 @@ public class KWith extends KQuery {
                 if (j > 0) {
                     this.kQueryData.sb.append(", ");
                 }
-
-                this.kQueryData.sb.append("?");
-                this.kQueryData.params.add(values.get(j));
+                
+                if (values.get(j) instanceof KRaw) {
+                    this.kQueryData.sb.append(((KRaw) values.get(j)).content);
+                } else {
+                    this.kQueryData.sb.append("?");
+                    this.kQueryData.params.add(values.get(j));
+                }
+                
             }
 
             this.kQueryData.sb.append(")");

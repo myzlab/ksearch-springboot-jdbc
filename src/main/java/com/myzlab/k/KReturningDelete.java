@@ -31,7 +31,7 @@ public class KReturningDelete extends KQueryDelete {
         this.process(kColumnsAllowedToReturning);
     }
     
-    public static KReturningDelete getInstance(
+    protected static KReturningDelete getInstance(
         final KInitializer kInitializer,
         final KQueryDeleteData kQueryDeleteData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning

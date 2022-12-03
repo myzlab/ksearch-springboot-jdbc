@@ -30,7 +30,7 @@ public class KSetUpdate extends KQueryUpdate {
         this.process(kColumn, kQuery);
     }
     
-    public static KSetUpdate getInstance(
+    protected static KSetUpdate getInstance(
         final KInitializer kInitializer,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
@@ -39,7 +39,7 @@ public class KSetUpdate extends KQueryUpdate {
         return new KSetUpdate(kInitializer, kQueryUpdateData, kColumn, kColumnAllowedToSetUpdate);
     }
     
-    public static KSetUpdate getInstance(
+    protected static KSetUpdate getInstance(
         final KInitializer kInitializer,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
@@ -57,7 +57,7 @@ public class KSetUpdate extends KQueryUpdate {
     public KFromUpdate from(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         return KFromUpdate.getInstance(this.k, this.kQueryUpdateData, new KTable(null, kRaw.content, null));
     }
@@ -75,7 +75,7 @@ public class KSetUpdate extends KQueryUpdate {
         final KColumn kColumn,
         final KRaw kRaw
     ) {
-        KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
+        KUtils.assertNotNull(kRaw, "kRaw");
         
         this.process(kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
         

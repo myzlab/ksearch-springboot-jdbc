@@ -13,7 +13,7 @@ public class KWindowDefinitionUnnamedFrameExcluded extends KWindowDefinition imp
         this.process(excluding);
     }
     
-    public static KWindowDefinitionUnnamedFrameExcluded getInstance(
+    protected static KWindowDefinitionUnnamedFrameExcluded getInstance(
         final StringBuilder sb,
         final String excluding
     ) {

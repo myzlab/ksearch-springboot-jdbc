@@ -3,28 +3,27 @@ package com.myzlab.k;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KQueryUpdateData {
+public class KQueryInsertIntoData {
     
-    protected List<KBaseColumn> kBaseColumns;
+    protected final List<KBaseColumn> kBaseColumns;
     protected final StringBuilder sb;
     protected final List<Object> params;
-    protected int fromTablesAdded;
+//    protected int usingTablesAdded;
     protected int setValuesAdded;
     
-    public KQueryUpdateData() {
+    public KQueryInsertIntoData() {
         super();
         
         this.kBaseColumns = new ArrayList<>();
         this.sb = new StringBuilder();
         this.params = new ArrayList<>();
-        this.fromTablesAdded = 0;
+//        this.usingTablesAdded = 0;
         this.setValuesAdded = 0;
     }
 
-    public KQueryUpdateData(
+    public KQueryInsertIntoData(
         final StringBuilder sb,
         final List<Object> params,
-        final int fromTablesAdded,
         final int setValuesAdded,
         final List<KBaseColumn> kBaseColumns
     ) {
@@ -33,11 +32,11 @@ public class KQueryUpdateData {
         this.kBaseColumns = kBaseColumns;
         this.sb = sb;
         this.params = params;
-        this.fromTablesAdded = fromTablesAdded;
+//        this.usingTablesAdded = usingTablesAdded;
         this.setValuesAdded = setValuesAdded;
     }
     
-    protected KQueryUpdateData cloneMe() {
-        return new KQueryUpdateData(new StringBuilder(this.sb), new ArrayList<>(this.params), this.fromTablesAdded, this.setValuesAdded, this.kBaseColumns);
+    protected KQueryInsertIntoData cloneMe() {
+        return new KQueryInsertIntoData(new StringBuilder(this.sb), new ArrayList<>(this.params), this.setValuesAdded, this.kBaseColumns);
     }
 }

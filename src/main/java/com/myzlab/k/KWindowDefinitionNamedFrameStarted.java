@@ -19,7 +19,7 @@ public class KWindowDefinitionNamedFrameStarted extends KWindowDefinition implem
         this.process();
     }
     
-    public static KWindowDefinitionNamedFrameStarted getInstance(
+    protected static KWindowDefinitionNamedFrameStarted getInstance(
         final StringBuilder sb,
         final String name,
         final String frameStart
