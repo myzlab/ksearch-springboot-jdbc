@@ -43,6 +43,13 @@ public class KUpdate extends KQueryUpdate {
         return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
     }
     
+    public KSetUpdate set(
+        final KColumn kColumn,
+        final KQuery kQuery
+    ) {
+        return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, kQuery);
+    }
+    
     private void process(
         final KTable kTable
     ) {

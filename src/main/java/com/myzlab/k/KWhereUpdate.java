@@ -138,10 +138,9 @@ public class KWhereUpdate extends KQueryUpdate {
         kQueryUpdateData.params.addAll(this.kCondition.params);
     }
     
-    @Override
     public int execute() {
         this.buildWhere();
         
-        return super.execute();
+        return super.executeSingle();
     }
 }

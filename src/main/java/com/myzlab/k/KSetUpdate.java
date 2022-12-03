@@ -19,6 +19,17 @@ public class KSetUpdate extends KQueryUpdate {
         this.process(kColumn, kColumnAllowedToSetUpdate);
     }
     
+    private KSetUpdate(
+        final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
+        final KColumn kColumn,
+        final KQuery kQuery
+    ) {
+        super(kQueryUpdateData, kInitializer);
+        
+        this.process(kColumn, kQuery);
+    }
+    
     public static KSetUpdate getInstance(
         final KInitializer kInitializer,
         final KQueryUpdateData kQueryUpdateData,
@@ -26,6 +37,15 @@ public class KSetUpdate extends KQueryUpdate {
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
         return new KSetUpdate(kInitializer, kQueryUpdateData, kColumn, kColumnAllowedToSetUpdate);
+    }
+    
+    public static KSetUpdate getInstance(
+        final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
+        final KColumn kColumn,
+        final KQuery kQuery
+    ) {
+        return new KSetUpdate(kInitializer, kQueryUpdateData, kColumn, kQuery);
     }
     
     public KFromUpdate from(
@@ -58,6 +78,15 @@ public class KSetUpdate extends KQueryUpdate {
         KUtils.assertNotNullNotEmpty(kRaw, "kRaw");
         
         this.process(kColumn, new KColumn(new StringBuilder(((KRaw) kRaw).content), false));
+        
+        return this;
+    }
+    
+    public KSetUpdate set(
+        final KColumn kColumn,
+        final KQuery kQuery
+    ) {
+        this.process(kColumn, kQuery);
         
         return this;
     }
@@ -97,4 +126,24 @@ public class KSetUpdate extends KQueryUpdate {
         this.kQueryUpdateData.sb.append(kColumn.name).append(" = ").append(kColumnAllowedToSetUpdate.getSqlToSet());
     }
     
+    private void process(
+        final KColumn kColumn,
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        if (this.kQueryUpdateData.setValuesAdded == 0) {
+            this.kQueryUpdateData.sb.append(" SET ");
+        } else {
+            this.kQueryUpdateData.sb.append(", ");
+        }
+        
+        this.kQueryUpdateData.setValuesAdded++;
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        this.kQueryUpdateData.params.addAll(subQuery.params);
+        this.kQueryUpdateData.sb.append(kColumn.name).append(" = (").append(subQuery.sb).append(")");
+    }
 }

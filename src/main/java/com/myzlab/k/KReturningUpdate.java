@@ -60,10 +60,13 @@ public class KReturningUpdate extends KQueryUpdate {
         }
     }
     
-    @Override
     public <T extends KRow> KCollection<T> execute(
         final Class<T> clazz
     ) {
-        return super.execute(clazz);
+        return super.executeMapping(clazz);
+    }
+    
+    public KCollection<KRow> execute() {
+        return super.executeMapping();
     }
 }

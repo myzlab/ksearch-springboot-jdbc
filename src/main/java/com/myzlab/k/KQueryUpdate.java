@@ -35,7 +35,7 @@ public abstract class KQueryUpdate {
         this.k = kInitializer;
     }
     
-    protected int execute() {
+    protected int executeSingle() {
         System.out.println(this.kQueryUpdateData.sb.toString());
         System.out.println(this.kQueryUpdateData.params);
         
@@ -44,7 +44,11 @@ public abstract class KQueryUpdate {
         ).update(this.kQueryUpdateData.sb.toString(), this.getParams(), this.getArgTypes());
     }
     
-    protected <T extends KRow> KCollection<T> execute(
+    protected KCollection<KRow> executeMapping() {
+        return this.executeMapping(KRow.class);
+    }
+    
+    protected <T extends KRow> KCollection<T> executeMapping(
         final Class<T> clazz
     ) {
         System.out.println(this.kQueryUpdateData.sb.toString());
