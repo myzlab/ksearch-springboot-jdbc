@@ -72,6 +72,15 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         return this;
     }
     
+    public KFrom from(
+        final KQuery kQuery,
+        final String alias
+    ) {
+        this.process(new KTable(kQuery, alias));//TEST ME
+        
+        return this;
+    }
+    
     public KFrom fullJoin(
         final KJoinDefinition kJoinDefinition
     ) {

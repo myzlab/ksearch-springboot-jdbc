@@ -29,7 +29,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KSelect kSelect = new KSelect(kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.processSelect(false, kBaseColumns);
+        kSelect.process(false, kBaseColumns);
         
         return kSelect;
     }
@@ -50,7 +50,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
         
-        kSelect.processSelect(false, kColumns);
+        kSelect.process(false, kColumns);
         
         return kSelect;
     }
@@ -62,7 +62,28 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KSelect kSelect = new KSelect(kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.processSelect(true, kBaseColumns);
+        kSelect.process(true, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    protected static KSelect getDistinctInstance(
+        final KInitializer kInitializer,
+        final KRaw... kRaws
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
+        
+        final KSelect kSelect = new KSelect(kInitializer);
+        
+        final KColumn[] kColumns = new KColumn[kRaws.length];
+        
+        for (int i = 0; i < kRaws.length; i++) {
+            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
+        }
+        
+        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
+        
+        kSelect.process(true, kColumns);
         
         return kSelect;
     }
@@ -75,7 +96,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KSelect kSelect = new KSelect(kQueryData, kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.processSelect(false, kBaseColumns);
+        kSelect.process(false, kBaseColumns);
         
         return kSelect;
     }
@@ -97,7 +118,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
         
-        kSelect.processSelect(false, kColumns);
+        kSelect.process(false, kColumns);
         
         return kSelect;
     }
@@ -110,7 +131,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KSelect kSelect = new KSelect(kQueryData, kInitializer);
         kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        kSelect.processSelect(true, kBaseColumns);
+        kSelect.process(true, kBaseColumns);
         
         return kSelect;
     }
@@ -122,7 +143,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
         
-        kSelect.processSelect(false, kQuery, alias);
+        kSelect.process(false, kQuery, alias);
         
         return kSelect;
     }
@@ -134,7 +155,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     ) {
         final KSelect kSelect = new KSelect(kInitializer);
         
-        kSelect.processSelect(true, kQuery, alias);
+        kSelect.process(true, kQuery, alias);
         
         return kSelect;
     }
@@ -144,7 +165,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
         
-        this.processSelect(false, kBaseColumns);
+        this.process(false, kBaseColumns);
         
         return this;
     }
@@ -162,7 +183,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         
         this.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
         
-        this.processSelect(false, kColumns);
+        this.process(false, kColumns);
         
         return this;
     }
@@ -171,7 +192,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KQuery kQuery,
         final String alias
     ) {
-        this.processSelect(false, kQuery, alias);
+        this.process(false, kQuery, alias);
         
         return this;
     }
@@ -274,7 +295,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         return KWindow.getInstance(this.k, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
-    private void processSelect(
+    private void process(
         final boolean distinct,
         final KBaseColumn... kBaseColumns
     ) {
@@ -302,7 +323,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         }
     }
     
-    private void processSelect(
+    private void process(
         final boolean distinct,
         final KQuery kQuery,
         final String alias

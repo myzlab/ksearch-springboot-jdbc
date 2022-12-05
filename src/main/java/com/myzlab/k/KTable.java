@@ -67,6 +67,14 @@ public class KTable {
         return KJoinDefinition.getInstance(this.kQueryData.params, this.toSql(true), kCondition);
     }
     
+    public KJoinDefinition on(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        return on(new KCondition(kRaw.content));
+    }
+    
     public String toSql(
         final boolean alias
     ) {

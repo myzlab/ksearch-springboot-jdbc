@@ -48,6 +48,19 @@ public class KDistinctOnSelect {
     
     protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNullNotEmpty(kRaw, "kRaw", false);
+        
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        
+        kDistinctOnSelect.processSelectDistinctOn(new KColumn(new StringBuilder(kRaw.content), false));
+        
+        return kDistinctOnSelect;
+    }
+    
+    protected static KDistinctOnSelect getInstance(
+        final KInitializer kInitializer,
         final KQueryData kQueryData,
         final KColumn kColumn
     ) {
@@ -86,6 +99,12 @@ public class KDistinctOnSelect {
         final KBaseColumn... kBaseColumns
     ) {
         return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
+    }
+    
+    public KSelect select(
+        final KRaw... kRaws
+    ) {
+        return KSelect.getInstance(this.k, this.kQueryData, kRaws);
     }
     
     private void processSelectDistinctOn(

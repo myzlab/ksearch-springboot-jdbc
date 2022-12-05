@@ -49,6 +49,12 @@ public abstract class KInitializer {
         return KSelect.getDistinctInstance(this, kBaseColumns);
     }
     
+    public KSelect selectDistinct(
+        final KRaw... kRaws
+    ) {
+        return KSelect.getDistinctInstance(this, kRaws);
+    }
+    
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn
     ) {
@@ -59,6 +65,12 @@ public abstract class KInitializer {
         final KValNumberField kValNumberField
     ) {
         return KDistinctOnSelect.getInstance(this, kValNumberField);
+    }
+    
+    public KDistinctOnSelect selectDistinctOn(
+        final KRaw kRaw
+    ) {
+        return KDistinctOnSelect.getInstance(this, kRaw);
     }
     
     public KDistinctOnSelect selectDistinctOn(
