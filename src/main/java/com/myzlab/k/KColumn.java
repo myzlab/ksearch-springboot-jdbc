@@ -3,6 +3,7 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import com.myzlab.k.optional.KOptionalKColumn;
@@ -11,7 +12,14 @@ import com.myzlab.k.optional.KOptionalString;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KColumn extends KBaseColumnCastable implements TextMethods, KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToReturning, KColumnAllowedToSetUpdate {
+public class KColumn extends KBaseColumnCastable implements 
+    TextMethods,
+    KColumnAllowedToOrderBy,
+    KColumnAllowedToGroupBy,
+    KColumnAllowedToReturning,
+    KColumnAllowedToSetUpdate,
+    KColumnAllowedToSelect 
+{
     
     protected KColumn() {
         super();
@@ -3157,6 +3165,11 @@ public class KColumn extends KBaseColumnCastable implements TextMethods, KColumn
     @Override
     public String getSqlToSet() {
         return sb.toString();
+    }
+
+    @Override
+    public KBaseColumn getKBaseColumn() {
+        return this;
     }
     
 }

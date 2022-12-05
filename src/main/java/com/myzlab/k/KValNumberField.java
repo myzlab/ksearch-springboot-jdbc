@@ -2,11 +2,12 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValNumberField extends KBaseValField implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToSetUpdate {
+public class KValNumberField extends KBaseValField implements KColumnAllowedToOrderBy, KColumnAllowedToGroupBy, KColumnAllowedToSetUpdate, KColumnAllowedToSelect {
     
     protected KValNumberField() {
         super();
@@ -147,5 +148,10 @@ public class KValNumberField extends KBaseValField implements KColumnAllowedToOr
     @Override
     public List<Object> getParams() {
         return this.params;
+    }
+    
+    @Override
+    public KBaseColumn getKBaseColumn() {
+        return this;
     }
 }

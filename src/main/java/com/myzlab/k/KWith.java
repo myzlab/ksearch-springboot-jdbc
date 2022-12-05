@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,22 +56,48 @@ public class KWith extends KQuery {
         );
     }
     
+//    public KSelect select(
+//        final KBaseColumn... kBaseColumns
+//    ) {
+//        return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
+//    }
+//    
+//    public KSelect select(
+//        final KRaw... kRaws
+//    ) {
+//        return KSelect.getInstance(this.k, this.kQueryData, kRaws);
+//    }
+    
     public KSelect select(
-        final KBaseColumn... kBaseColumns
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
+        return KSelect.getInstance(this.k, this.kQueryData, kColumnsAllowedToSelect);
     }
     
     public KSelect select(
-        final KRaw... kRaws
+        final KQuery kQuery,
+        final String alias
     ) {
-        return KSelect.getInstance(this.k, this.kQueryData, kRaws);
+        return KSelect.getInstance(this.k, this.kQueryData, kQuery, alias);
+    }
+    
+//    public KSelect selectDistinct(
+//        final KBaseColumn... kBaseColumns
+//    ) {
+//        return KSelect.getDistinctInstance(this.k, this.kQueryData, kBaseColumns);
+//    }
+    
+    public KSelect selectDistinct(
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
+    ) {
+        return KSelect.getDistinctInstance(this.k, this.kQueryData, kColumnsAllowedToSelect);
     }
     
     public KSelect selectDistinct(
-        final KBaseColumn... kBaseColumns
+        final KQuery kQuery,
+        final String alias
     ) {
-        return KSelect.getDistinctInstance(this.k, this.kQueryData, kBaseColumns);
+        return KSelect.getDistinctInstance(this.k, this.kQueryData, kQuery, alias);
     }
     
     public KDistinctOnSelect selectDistinctOn(
@@ -89,6 +116,12 @@ public class KWith extends KQuery {
         final Number number
     ) {
         return KDistinctOnSelect.getInstance(this.k, this.kQueryData, number);
+    }
+    
+    public KDistinctOnSelect selectDistinctOn(
+        final KRaw kRaw
+    ) {
+        return KDistinctOnSelect.getInstance(this.k, this.kQueryData, kRaw);
     }
     
     public KUpdate update(

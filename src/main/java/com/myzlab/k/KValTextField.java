@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.optional.KOptionalKColumn;
 import com.myzlab.k.optional.KOptionalKValTextField;
@@ -7,7 +8,7 @@ import com.myzlab.k.optional.KOptionalString;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KValTextField extends KBaseValField implements TextMethods, KColumnAllowedToSetUpdate {
+public class KValTextField extends KBaseValField implements TextMethods, KColumnAllowedToSetUpdate, KColumnAllowedToSelect {
     
     protected KValTextField() {
         super();
@@ -2944,5 +2945,10 @@ public class KValTextField extends KBaseValField implements TextMethods, KColumn
     @Override
     public List<Object> getParams() {
         return this.params;
+    }
+    
+    @Override
+    public KBaseColumn getKBaseColumn() {
+        return this;
     }
 }

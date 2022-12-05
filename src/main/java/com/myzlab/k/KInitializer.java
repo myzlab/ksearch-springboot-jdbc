@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -32,28 +33,40 @@ public abstract class KInitializer {
     }
     
     public KSelect select(
-        final KBaseColumn... kBaseColumns
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getInstance(this, kBaseColumns);
+        return KSelect.getInstance(this, kColumnsAllowedToSelect);
     }
     
-    public KSelect select(
-        final KRaw... kRaws
-    ) {
-        return KSelect.getInstance(this, kRaws);
-    }
+//    public KSelect select(
+//        final KBaseColumn... kBaseColumns
+//    ) {
+//        return KSelect.getInstance(this, kBaseColumns);
+//    }
+//    
+//    public KSelect select(
+//        final KRaw... kRaws
+//    ) {
+//        return KSelect.getInstance(this, kRaws);
+//    }
     
     public KSelect selectDistinct(
-        final KBaseColumn... kBaseColumns
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getDistinctInstance(this, kBaseColumns);
+        return KSelect.getDistinctInstance(this, kColumnsAllowedToSelect);
     }
     
-    public KSelect selectDistinct(
-        final KRaw... kRaws
-    ) {
-        return KSelect.getDistinctInstance(this, kRaws);
-    }
+//    public KSelect selectDistinct(
+//        final KBaseColumn... kBaseColumns
+//    ) {
+//        return KSelect.getDistinctInstance(this, kBaseColumns);
+//    }
+//    
+//    public KSelect selectDistinct(
+//        final KRaw... kRaws
+//    ) {
+//        return KSelect.getDistinctInstance(this, kRaws);
+//    }
     
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn

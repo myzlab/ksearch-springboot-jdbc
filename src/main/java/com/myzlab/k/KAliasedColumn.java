@@ -1,11 +1,12 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
+import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KAliasedColumn extends KBaseColumnUncastable implements KColumnAllowedToReturning {
+public class KAliasedColumn extends KBaseColumnUncastable implements KColumnAllowedToReturning, KColumnAllowedToSelect {
     
     protected String alias;
     
@@ -79,5 +80,10 @@ public class KAliasedColumn extends KBaseColumnUncastable implements KColumnAllo
     @Override
     public List<Object> getParams() {
         return this.params;
+    }
+    
+    @Override
+    public KBaseColumn getKBaseColumn() {
+        return this;
     }
 }
