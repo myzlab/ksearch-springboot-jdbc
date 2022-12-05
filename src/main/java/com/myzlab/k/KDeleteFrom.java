@@ -19,11 +19,29 @@ public class KDeleteFrom extends KQueryDelete {
         this.process(kTable);
     }
     
+    private KDeleteFrom(
+        final KInitializer kInitializer,
+        final KQueryDeleteData kQueryDeleteData,
+        final KTable kTable
+    ) {
+        super(kQueryDeleteData, kInitializer);
+        
+        this.process(kTable);
+    }
+    
     protected static KDeleteFrom getInstance(
         final KInitializer kInitializer,
         final KTable kTable
     ) {
         return new KDeleteFrom(kInitializer, kTable);
+    }
+    
+    protected static KDeleteFrom getInstance(
+        final KInitializer kInitializer,
+        final KQueryDeleteData kQueryDeleteData,
+        final KTable kTable
+    ) {
+        return new KDeleteFrom(kInitializer, kQueryDeleteData, kTable);
     }
     
     public KUsing using(
@@ -38,6 +56,12 @@ public class KDeleteFrom extends KQueryDelete {
         KUtils.assertNotNull(kRaw, "kRaw");
         
         return KUsing.getInstance(this.k, this.kQueryDeleteData, new KTable(null, kRaw.content, null));
+    }
+    
+    public KUsing using(
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased
+    ) {
+        return KUsing.getInstance(this.k, this.kQueryDeleteData, new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
     }
     
     public KWhereDelete where(
@@ -63,7 +87,7 @@ public class KDeleteFrom extends KQueryDelete {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
-        this.kQueryDeleteData.sb.append("DELETE FROM ").append(kTable.toSql(true));
+        this.kQueryDeleteData.sb.append(kQueryDeleteData.sb.length() > 0 ? " " : "").append("DELETE FROM ").append(kTable.toSql(true));
         
         if (kTable.kQueryData != null) {
             this.kQueryDeleteData.params.addAll(kTable.kQueryData.params);

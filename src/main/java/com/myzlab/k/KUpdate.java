@@ -20,11 +20,29 @@ public class KUpdate extends KQueryUpdate {
         this.process(kTable);
     }
     
+    private KUpdate(
+        final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
+        final KTable kTable
+    ) {
+        super(kQueryUpdateData, kInitializer);
+        
+        this.process(kTable);
+    }
+    
     public static KUpdate getInstance(
         final KInitializer kInitializer,
         final KTable kTable
     ) {
         return new KUpdate(kInitializer, kTable);
+    }
+    
+    public static KUpdate getInstance(
+        final KInitializer kInitializer,
+        final KQueryUpdateData kQueryUpdateData,
+        final KTable kTable
+    ) {
+        return new KUpdate(kInitializer, kQueryUpdateData, kTable);
     }
     
     public KSetUpdate set(
@@ -57,7 +75,7 @@ public class KUpdate extends KQueryUpdate {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
-        this.kQueryUpdateData.sb.append("UPDATE ").append(kTable.toSql(true));
+        this.kQueryUpdateData.sb.append(kQueryUpdateData.sb.length() > 0 ? " " : "").append("UPDATE ").append(kTable.toSql(true));
         
         if (kTable.kQueryData != null) {
             this.kQueryUpdateData.params.addAll(kTable.kQueryData.params);

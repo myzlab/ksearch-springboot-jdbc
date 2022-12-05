@@ -23,6 +23,28 @@ public class KWith extends KQuery {
         return kWith;
     }
     
+    public KDeleteFrom deleteFrom(
+        final KTable kTable
+    ) {
+        return KDeleteFrom.getInstance(
+            this.k,
+            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            kTable
+        );
+    }
+    
+    public KDeleteFrom deleteFrom(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        return KDeleteFrom.getInstance(
+            this.k,
+            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            new KTable(null, kRaw.content, null)
+        );
+    }
+    
     public KInsertInto insertInto(
         final KTable kTable
     ) {
@@ -67,6 +89,28 @@ public class KWith extends KQuery {
         final Number number
     ) {
         return KDistinctOnSelect.getInstance(this.k, this.kQueryData, number);
+    }
+    
+    public KUpdate update(
+        final KTable kTable
+    ) {
+        return KUpdate.getInstance(
+            this.k,
+            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, 0, new ArrayList()),
+            kTable
+        );
+    }
+    
+    public KUpdate update(
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        return KUpdate.getInstance(
+            this.k,
+            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, 0, new ArrayList()),
+            new KTable(null, kRaw.content, null)
+        );
     }
     
     private void process(

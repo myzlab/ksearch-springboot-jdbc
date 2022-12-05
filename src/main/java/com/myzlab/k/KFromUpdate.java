@@ -44,6 +44,14 @@ public class KFromUpdate extends KQueryUpdate {
         return this;
     }
     
+    public KFromUpdate from(
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased
+    ) {
+        this.process(new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
+        
+        return this;
+    }
+    
     public KWhereUpdate where(
         final KCondition kCondition
     ) {

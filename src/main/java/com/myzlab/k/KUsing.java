@@ -44,6 +44,14 @@ public class KUsing extends KQueryDelete {
         return this;
     }
     
+    public KUsing using(
+        final KCommonTableExpressionAliased kCommonTableExpressionAliased
+    ) {
+        this.process(new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
+        
+        return this;
+    }
+    
     public KWhereDelete where(
         final KCondition kCondition
     ) {
