@@ -18,8 +18,8 @@ import org.springframework.http.ResponseEntity;
 
 public class KRow {
     
-    public Object[] o;
-    public Map<String, Integer> ref;
+    protected Object[] o;
+    protected Map<String, Integer> ref;
     protected boolean isNull = false;
     
     public KRow() {}
@@ -43,6 +43,12 @@ public class KRow {
     }
     
     public Object get(
+        final KTableColumn kTableColumn
+    ) {
+        return this.get(kTableColumn.name);
+    }
+    
+    public Object get(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -62,6 +68,12 @@ public class KRow {
         }
         
         return o[n];
+    }
+    
+    public String getString(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getString(kTableColumn.name);
     }
     
     public String getString(
@@ -100,6 +112,12 @@ public class KRow {
     }
     
     public Character getCharacter(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getCharacter(kTableColumn.name);
+    }
+    
+    public Character getCharacter(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -132,6 +150,12 @@ public class KRow {
             
             return null;
         }
+    }
+    
+    public UUID getUUID(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getUUID(kTableColumn.name);
     }
     
     public UUID getUUID(
@@ -178,6 +202,12 @@ public class KRow {
     }
     
     public BigDecimal getBigDecimal(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getBigDecimal(kTableColumn.name);
+    }
+    
+    public BigDecimal getBigDecimal(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -213,6 +243,12 @@ public class KRow {
     }
     
     public BigInteger getBigInteger(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getBigInteger(kTableColumn.name);
+    }
+    
+    public BigInteger getBigInteger(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -245,6 +281,12 @@ public class KRow {
             
             return null;
         }
+    }
+    
+    public Long getLong(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getLong(kTableColumn.name);
     }
     
     public Long getLong(
@@ -288,6 +330,12 @@ public class KRow {
             
             return null;
         }
+    }
+    
+    public Integer getInteger(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getInteger(kTableColumn.name);
     }
     
     public Integer getInteger(
@@ -338,6 +386,12 @@ public class KRow {
     }
     
     public Boolean getBoolean(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getBoolean(kTableColumn.name);
+    }
+    
+    public Boolean getBoolean(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -370,6 +424,12 @@ public class KRow {
             
             return null;
         }
+    }
+    
+    public Double getDouble(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getDouble(kTableColumn.name);
     }
     
     public Double getDouble(
@@ -416,6 +476,12 @@ public class KRow {
     }
     
     public byte[] getBytea(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getBytea(kTableColumn.name);
+    }
+    
+    public byte[] getBytea(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -448,6 +514,12 @@ public class KRow {
             
             return null;
         }
+    }
+    
+    public LocalDateTime getLocalDateTime(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getLocalDateTime(kTableColumn.name);
     }
     
     public LocalDateTime getLocalDateTime(
@@ -494,6 +566,12 @@ public class KRow {
     }
     
     public LocalDate getLocalDate(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getLocalDate(kTableColumn.name);
+    }
+    
+    public LocalDate getLocalDate(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -537,6 +615,12 @@ public class KRow {
     }
     
     public Date getDate(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getDate(kTableColumn.name);
+    }
+    
+    public Date getDate(
         final String c
     ) {
         final Integer n = ref.get(c);
@@ -571,6 +655,12 @@ public class KRow {
         }
     }
 
+    public Timestamp getTimestamp(
+        final KTableColumn kTableColumn
+    ) {
+        return this.getTimestamp(kTableColumn.name);
+    }
+    
     public Timestamp getTimestamp(
         final String c
     ) {
@@ -607,6 +697,12 @@ public class KRow {
     }
     
     public boolean isPresent(
+        final KTableColumn kTableColumn
+    ) {
+        return this.isPresent(kTableColumn.name);
+    }
+    
+    public boolean isPresent(
         final String c
     ) {
         if (o == null) {
@@ -618,6 +714,12 @@ public class KRow {
     
     public boolean isNull() {
         return isNull;
+    }
+    
+    public boolean isNull(
+        final KTableColumn kTableColumn
+    ) {
+        return this.isNull(kTableColumn.name);
     }
     
     public boolean isNull(
@@ -648,6 +750,12 @@ public class KRow {
         }
         
         return o[n] == null;
+    }
+    
+    public boolean isNullOrEmpty(
+        final KTableColumn kTableColumn
+    ) {
+        return this.isNullOrEmpty(kTableColumn.name);
     }
     
     public boolean isNullOrEmpty(
@@ -682,6 +790,22 @@ public class KRow {
         }
         
         return ((String) o[n]).trim().isEmpty();
+    }
+    
+    public KRow assertNotNull(
+        final KTableColumn kTableColumn,
+        final HttpStatus status,
+        final String message
+    ) {
+        if (this.isNull) {
+            throw new KException(status, message);
+        }
+        
+        if (this.isNull(kTableColumn.name)) {
+            throw new KException(status, message);
+        }
+        
+        return this;
     }
     
     public KRow assertNotNull(
@@ -748,6 +872,21 @@ public class KRow {
     }
     
     public KRow set(
+        final KTableColumn kTableColumn,
+        final Object o
+    ) {
+        final Integer n = ref.get(kTableColumn.name);
+        
+        if (n == null) {
+            throw KExceptionHelper.internalServerError("Property '" + kTableColumn.name + "' used in 'set' method not found");
+        }
+        
+        this.o[n] = o;
+        
+        return this;
+    }
+    
+    public KRow set(
         final String property,
         final Object o
     ) {
@@ -758,6 +897,27 @@ public class KRow {
         }
         
         this.o[n] = o;
+        
+        return this;
+    }
+    
+    public KRow set(
+        final KTableColumn kTableColumn,
+        final KRowFunction kRowFunction
+    ) {
+        final Integer n = ref.get(kTableColumn.name);
+        
+        if (n == null) {
+            throw KExceptionHelper.internalServerError("Property '" + kTableColumn.name + "' used in 'set' method not found");
+        }
+        
+        if (kRowFunction == null) {
+            this.o[n] = null;
+            
+            return this;
+        }
+        
+        this.o[n] = kRowFunction.run(this);
         
         return this;
     }
@@ -888,6 +1048,12 @@ public class KRow {
         this.o[o.length - 1] = value;
         
         this.ref.put(name, o.length - 1);
+    }
+    
+    public KRow removeProperty(
+        final KTableColumn kTableColumn
+    ) {
+        return this.removeProperty(kTableColumn.name);
     }
     
     public KRow removeProperty(

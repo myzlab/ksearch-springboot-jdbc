@@ -23,9 +23,7 @@ public class KQueryUtils {
         if (kBaseColumn instanceof KAliasedColumn) {
             nameToRef = ((KAliasedColumn) kBaseColumn).alias;
         } else if (kBaseColumn instanceof KTableColumn) {
-            final String previousName = kBaseColumn.sb.toString();
-            
-            nameToRef = previousName.substring(previousName.indexOf(".") + 1);
+            nameToRef = kBaseColumn.name;
         } else {
             nameToRef = KUtils.reverseParams(kBaseColumn);
         }
