@@ -864,6 +864,10 @@ public class KFunction {
         return processBoolOr(kCondition);
     }
     
+    public static KCase caseConditional() {
+        return KCase.getInstance();
+    }
+    
     public static KColumn cast(
         final KBaseColumnCastable kBaseColumnCastable,
         final KDataType kDataType    

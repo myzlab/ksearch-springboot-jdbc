@@ -64,7 +64,16 @@ public class KAliasedColumn extends KBaseColumnUncastable implements KColumnAllo
         final String alias
     ) {
         this.sb.append(" AS ");
+        
+        if (alias.contains(" ")) {
+            this.sb.append("\"");
+        }
+        
         this.sb.append(alias);
+        
+        if (alias.contains(" ")) {
+            this.sb.append("\"");
+        }
     }
     
     @Override
