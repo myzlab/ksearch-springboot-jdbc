@@ -14,11 +14,11 @@ public class KWhereDelete extends KQueryDelete {
     }
     
     private KWhereDelete(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KCondition kCondition
     ) {
-        super(kQueryDeleteData, kInitializer);
+        super(kQueryDeleteData, kExecutor);
         
         KUtils.assertNotNull(kCondition, "kCondition");
         
@@ -26,11 +26,11 @@ public class KWhereDelete extends KQueryDelete {
     }
     
     protected static KWhereDelete getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KCondition kCondition
     ) {
-        return new KWhereDelete(kInitializer, kQueryDeleteData, kCondition);
+        return new KWhereDelete(kExecutor, kQueryDeleteData, kCondition);
     }
     
     public KWhereDelete andNot(

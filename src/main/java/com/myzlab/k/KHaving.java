@@ -15,11 +15,11 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
     }
     
     private KHaving(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         KUtils.assertNotNull(kCondition, "kCondition");
         
@@ -27,11 +27,11 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
     }
     
     protected static KHaving getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        return new KHaving(kInitializer, kQueryData, kCondition);
+        return new KHaving(kExecutor, kQueryData, kCondition);
     }
     
     public KHaving andNot(

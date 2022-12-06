@@ -10,11 +10,11 @@ public class KOrderBy extends KQuery {
     }
     
     private KOrderBy(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         KUtils.assertNotNull(kColumnsAllowedToOrderBy, "kColumnsAllowedToOrderBy");
         
@@ -22,11 +22,11 @@ public class KOrderBy extends KQuery {
     }
     
     protected static KOrderBy getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return new KOrderBy(kInitializer, kQueryData, kColumnsAllowedToOrderBy);
+        return new KOrderBy(kExecutor, kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(

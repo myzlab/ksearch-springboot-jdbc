@@ -3,27 +3,27 @@ package com.myzlab.k;
 public class KInsertIntoColumned extends KQueryInsertInto {
 
     private KInsertIntoColumned(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoColumned(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn... kColumns
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kColumns);
     }
     
     protected static KInsertIntoColumned getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn... kColumns
     ) {
-        return new KInsertIntoColumned(kInitializer, kQueryInsertIntoData, kColumns);
+        return new KInsertIntoColumned(kExecutor, kQueryInsertIntoData, kColumns);
     }
     
     public KInsertIntoFilled values(

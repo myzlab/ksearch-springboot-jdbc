@@ -5,43 +5,43 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KDeleteFrom extends KQueryDelete {
 
     private KDeleteFrom(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KDeleteFrom(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        super(kInitializer);
+        super(kExecutor);
         
         this.process(kTable);
     }
     
     private KDeleteFrom(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KTable kTable
     ) {
-        super(kQueryDeleteData, kInitializer);
+        super(kQueryDeleteData, kExecutor);
         
         this.process(kTable);
     }
     
     protected static KDeleteFrom getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        return new KDeleteFrom(kInitializer, kTable);
+        return new KDeleteFrom(kExecutor, kTable);
     }
     
     protected static KDeleteFrom getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KTable kTable
     ) {
-        return new KDeleteFrom(kInitializer, kQueryDeleteData, kTable);
+        return new KDeleteFrom(kExecutor, kQueryDeleteData, kTable);
     }
     
     public KUsing using(

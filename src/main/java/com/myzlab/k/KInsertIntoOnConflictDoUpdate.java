@@ -5,25 +5,25 @@ import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 public class KInsertIntoOnConflictDoUpdate extends KQueryInsertInto {
 
     private KInsertIntoOnConflictDoUpdate(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoOnConflictDoUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process();
     }
     
     protected static KInsertIntoOnConflictDoUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        return new KInsertIntoOnConflictDoUpdate(kInitializer, kQueryInsertIntoData);
+        return new KInsertIntoOnConflictDoUpdate(kExecutor, kQueryInsertIntoData);
     }
     
     public KSetOnConflictDoUpdate set(

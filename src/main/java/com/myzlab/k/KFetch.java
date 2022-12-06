@@ -7,21 +7,21 @@ public class KFetch extends KQuery {
     }
     
     private KFetch(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int rowCount
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         this.process(rowCount);
     }
     
     public static KFetch getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int rowCount
     ) {
-        return new KFetch(kInitializer, kQueryData, rowCount);
+        return new KFetch(kExecutor, kQueryData, rowCount);
     }
     
     private void process(

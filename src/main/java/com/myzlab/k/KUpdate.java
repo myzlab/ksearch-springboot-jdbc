@@ -6,43 +6,43 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KUpdate extends KQueryUpdate {
 
     private KUpdate(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        super(kInitializer);
+        super(kExecutor);
         
         this.process(kTable);
     }
     
     private KUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         this.process(kTable);
     }
     
     public static KUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        return new KUpdate(kInitializer, kTable);
+        return new KUpdate(kExecutor, kTable);
     }
     
     public static KUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        return new KUpdate(kInitializer, kQueryUpdateData, kTable);
+        return new KUpdate(kExecutor, kQueryUpdateData, kTable);
     }
     
     public KSetUpdate set(

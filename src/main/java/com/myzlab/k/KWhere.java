@@ -16,11 +16,11 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
     }
     
     private KWhere(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         KUtils.assertNotNull(kCondition, "kCondition");
         
@@ -28,11 +28,11 @@ public class KWhere extends KQuery implements KQueryAllowedToCombining {
     }
     
     protected static KWhere getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KCondition kCondition
     ) {
-        return new KWhere(kInitializer, kQueryData, kCondition);
+        return new KWhere(kExecutor, kQueryData, kCondition);
     }
     
     public KWhere andNot(

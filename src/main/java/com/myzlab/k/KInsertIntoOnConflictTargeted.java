@@ -3,17 +3,17 @@ package com.myzlab.k;
 public class KInsertIntoOnConflictTargeted extends KQueryInsertInto {
 
     private KInsertIntoOnConflictTargeted(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoOnConflictTargeted(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         KUtils.assertNotNull(kColumn, "kColumn");
         
@@ -21,11 +21,11 @@ public class KInsertIntoOnConflictTargeted extends KQueryInsertInto {
     }
     
     private KInsertIntoOnConflictTargeted(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final String constraint
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         KUtils.assertNotNull(constraint, "constraint");
         
@@ -33,19 +33,19 @@ public class KInsertIntoOnConflictTargeted extends KQueryInsertInto {
     }
     
     protected static KInsertIntoOnConflictTargeted getInstanceOnColumn(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn
     ) {
-        return new KInsertIntoOnConflictTargeted(kInitializer, kQueryInsertIntoData, kColumn);
+        return new KInsertIntoOnConflictTargeted(kExecutor, kQueryInsertIntoData, kColumn);
     }
     
     protected static KInsertIntoOnConflictTargeted getInstanceOnConstraint(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final String constraint
     ) {
-        return new KInsertIntoOnConflictTargeted(kInitializer, kQueryInsertIntoData, constraint);
+        return new KInsertIntoOnConflictTargeted(kExecutor, kQueryInsertIntoData, constraint);
     }
     
     public KInsertIntoOnConflictDoNothing doNothing() {

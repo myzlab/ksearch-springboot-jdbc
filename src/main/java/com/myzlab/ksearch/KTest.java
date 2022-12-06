@@ -1,10 +1,10 @@
 package com.myzlab.ksearch;
 
-import com.myzlab.k.KInitializer;
+import com.myzlab.k.KBuilder;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class KTest extends KInitializer {
+public class KTest extends KBuilder {
 
     @Override
     public Map<String, JdbcTemplate> getJdbcTemplates() {

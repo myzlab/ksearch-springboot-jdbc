@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 public abstract class KQueryUpdate {
     
-    protected KInitializer k;
+    protected KExecutor k;
     protected KQueryUpdateData kQueryUpdateData;
 
     protected KQueryUpdate() {
@@ -10,18 +10,18 @@ public abstract class KQueryUpdate {
     }
     
     protected KQueryUpdate(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryUpdateData = new KQueryUpdateData();
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     public KQueryUpdate(
         final KQueryUpdateData kQueryUpdateData,
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryUpdateData = kQueryUpdateData;
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     protected int executeSingle() {

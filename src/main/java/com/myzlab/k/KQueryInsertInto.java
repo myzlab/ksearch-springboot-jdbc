@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 public abstract class KQueryInsertInto {
     
-    protected KInitializer k;
+    protected KExecutor k;
     protected KQueryInsertIntoData kQueryInsertIntoData;
 
     protected KQueryInsertInto() {
@@ -10,18 +10,18 @@ public abstract class KQueryInsertInto {
     }
     
     protected KQueryInsertInto(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryInsertIntoData = new KQueryInsertIntoData();
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     public KQueryInsertInto(
         final KQueryInsertIntoData kQueryInsertIntoData,
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryInsertIntoData = kQueryInsertIntoData;
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     protected int executeSingle() {

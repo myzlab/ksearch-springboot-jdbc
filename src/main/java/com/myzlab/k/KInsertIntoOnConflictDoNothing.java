@@ -5,25 +5,25 @@ import com.myzlab.k.allowed.KColumnAllowedToReturning;
 public class KInsertIntoOnConflictDoNothing extends KQueryInsertInto {
 
     private KInsertIntoOnConflictDoNothing(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoOnConflictDoNothing(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process();
     }
     
     protected static KInsertIntoOnConflictDoNothing getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        return new KInsertIntoOnConflictDoNothing(kInitializer, kQueryInsertIntoData);
+        return new KInsertIntoOnConflictDoNothing(kExecutor, kQueryInsertIntoData);
     }
     
     public KReturningOnConflictDoUpdate returning(

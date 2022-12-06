@@ -13,11 +13,11 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     final List<KWindowDefinitionAllowedToWindow> KWindowDefinitionsAllowedToWindow = new ArrayList<>();
     
     private KWindow(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
@@ -25,11 +25,11 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     }
     
     protected static KWindow getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return new KWindow(kInitializer, kQueryData, KWindowDefinitionsAllowedToWindow);
+        return new KWindow(kExecutor, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KWindow window(

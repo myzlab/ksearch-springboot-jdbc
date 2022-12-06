@@ -1,10 +1,31 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
-import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public abstract class KInitializer {
+public class KExecutor {
+    
+    private final KBuilder k;
+    private final String jdbc;
+
+    private KExecutor(
+        final KBuilder k,
+        final String jdbc
+    ) {
+        this.k =  k;
+        this.jdbc = jdbc;
+    }
+    
+    protected JdbcTemplate getJdbc() {
+        return k.getJdbcTemplates().get(jdbc);
+    }
+    
+    protected static KExecutor getInstance(
+        final KBuilder kBuilder,
+        final String jdbc
+    ) {
+        return new KExecutor(kBuilder, jdbc);
+    }
     
     public KWith with(
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
@@ -38,35 +59,11 @@ public abstract class KInitializer {
         return KSelect.getInstance(this, kColumnsAllowedToSelect);
     }
     
-//    public KSelect select(
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        return KSelect.getInstance(this, kBaseColumns);
-//    }
-//    
-//    public KSelect select(
-//        final KRaw... kRaws
-//    ) {
-//        return KSelect.getInstance(this, kRaws);
-//    }
-    
     public KSelect selectDistinct(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
         return KSelect.getDistinctInstance(this, kColumnsAllowedToSelect);
     }
-    
-//    public KSelect selectDistinct(
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        return KSelect.getDistinctInstance(this, kBaseColumns);
-//    }
-//    
-//    public KSelect selectDistinct(
-//        final KRaw... kRaws
-//    ) {
-//        return KSelect.getDistinctInstance(this, kRaws);
-//    }
     
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn
@@ -120,7 +117,4 @@ public abstract class KInitializer {
         return KUpdate.getInstance(this, new KTable(null, kRaw.content, null));
     }
     
-    public abstract Map<String, JdbcTemplate> getJdbcTemplates();
-    
-    public abstract String getJdbcTemplateDefaultName();
 }

@@ -9,21 +9,21 @@ public class KUsing extends KQueryDelete {
     }
     
     private KUsing(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KTable kTable
     ) {
-        super(kQueryDeleteData, kInitializer);
+        super(kQueryDeleteData, kExecutor);
         
         this.process(kTable);
     }
     
     protected static KUsing getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KTable kTable
     ) {
-        return new KUsing(kInitializer, kQueryDeleteData, kTable);
+        return new KUsing(kExecutor, kQueryDeleteData, kTable);
     }
     
     public KUsing using(

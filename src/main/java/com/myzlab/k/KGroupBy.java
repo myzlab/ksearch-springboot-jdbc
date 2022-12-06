@@ -9,11 +9,11 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
     
     private KGroupBy(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         KUtils.assertNotNull(kColumnsAllowedToGroupBy, "kColumnsAllowedToGroupBy");
         
@@ -21,11 +21,11 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
     }
     
     protected static KGroupBy getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        return new KGroupBy(kInitializer, kQueryData, kColumnsAllowedToGroupBy);
+        return new KGroupBy(kExecutor, kQueryData, kColumnsAllowedToGroupBy);
     }
 
     public KHaving having(

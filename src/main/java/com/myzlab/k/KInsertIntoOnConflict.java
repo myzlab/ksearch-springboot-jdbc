@@ -3,25 +3,25 @@ package com.myzlab.k;
 public class KInsertIntoOnConflict extends KQueryInsertInto {
 
     private KInsertIntoOnConflict(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoOnConflict(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process();
     }
     
     protected static KInsertIntoOnConflict getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData
     ) {
-        return new KInsertIntoOnConflict(kInitializer, kQueryInsertIntoData);
+        return new KInsertIntoOnConflict(kExecutor, kQueryInsertIntoData);
     }
     
     public KInsertIntoOnConflictDoNothing doNothing() {

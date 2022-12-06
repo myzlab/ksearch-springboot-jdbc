@@ -7,21 +7,21 @@ public class KLimit extends KQuery {
     }
     
     private KLimit(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int count
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         this.process(count);
     }
     
     protected static KLimit getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int count
     ) {
-        return new KLimit(kInitializer, kQueryData, count);
+        return new KLimit(kExecutor, kQueryData, count);
     }
     
     public KOffsetUnfetchable offset(

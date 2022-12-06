@@ -5,43 +5,43 @@ import com.myzlab.k.helper.KExceptionHelper;
 public class KInsertInto extends KQueryInsertInto {
 
     private KInsertInto(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
     
     private KInsertInto(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KTable kTable
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kTable);
     }
  
     private KInsertInto(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        super(kInitializer);
+        super(kExecutor);
         
         this.process(kTable);
     }
     
     protected static KInsertInto getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KTable kTable
     ) {
-        return new KInsertInto(kInitializer, kTable);
+        return new KInsertInto(kExecutor, kTable);
     }
     
     protected static KInsertInto getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KTable kTable
     ) {
-        return new KInsertInto(kInitializer, kQueryInsertIntoData, kTable);
+        return new KInsertInto(kExecutor, kQueryInsertIntoData, kTable);
     }
     
     public KInsertIntoColumned columns(

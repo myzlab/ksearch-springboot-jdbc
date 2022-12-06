@@ -2,7 +2,7 @@ package com.myzlab.k;
 
 public abstract class KQueryDelete {
     
-    protected KInitializer k;
+    protected KExecutor k;
     protected KQueryDeleteData kQueryDeleteData;
 
     protected KQueryDelete() {
@@ -10,18 +10,18 @@ public abstract class KQueryDelete {
     }
     
     protected KQueryDelete(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryDeleteData = new KQueryDeleteData();
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     public KQueryDelete(
         final KQueryDeleteData kQueryDeleteData,
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryDeleteData = kQueryDeleteData;
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     protected int executeSingle() {

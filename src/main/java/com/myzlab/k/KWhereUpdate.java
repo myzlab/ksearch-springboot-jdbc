@@ -14,11 +14,11 @@ public class KWhereUpdate extends KQueryUpdate {
     }
     
     private KWhereUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KCondition kCondition
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         KUtils.assertNotNull(kCondition, "kCondition");
         
@@ -26,11 +26,11 @@ public class KWhereUpdate extends KQueryUpdate {
     }
     
     protected static KWhereUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KCondition kCondition
     ) {
-        return new KWhereUpdate(kInitializer, kQueryUpdateData, kCondition);
+        return new KWhereUpdate(kExecutor, kQueryUpdateData, kCondition);
     }
     
     public KWhereUpdate andNot(

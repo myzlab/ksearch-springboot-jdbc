@@ -7,17 +7,17 @@ import java.util.List;
 public class KWith extends KQuery {
 
     private KWith(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
 
     protected static KWith getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final boolean recursive,
         final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
     ) {
-        final KWith kWith = new KWith(kInitializer);
+        final KWith kWith = new KWith(kExecutor);
 
         kWith.process(recursive, kCommonTableExpressionsFilled);
 

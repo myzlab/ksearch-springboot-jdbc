@@ -7,21 +7,21 @@ public class KOffset extends KQuery {
     }
     
     private KOffset(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int start
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         this.process(start);
     }
     
     protected static KOffset getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int start
     ) {
-        return new KOffset(kInitializer, kQueryData, start);
+        return new KOffset(kExecutor, kQueryData, start);
     }
     
     public KFetch fetch(

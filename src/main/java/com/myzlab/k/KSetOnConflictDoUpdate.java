@@ -10,43 +10,43 @@ public class KSetOnConflictDoUpdate extends KQueryInsertInto {
     }
     
     private KSetOnConflictDoUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn,
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kColumn, kColumnAllowedToSetUpdate);
     }
     
     private KSetOnConflictDoUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn,
         final KQuery kQuery
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kColumn, kQuery);
     }
     
     protected static KSetOnConflictDoUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn,
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
-        return new KSetOnConflictDoUpdate(kInitializer, kQueryInsertIntoData, kColumn, kColumnAllowedToSetUpdate);
+        return new KSetOnConflictDoUpdate(kExecutor, kQueryInsertIntoData, kColumn, kColumnAllowedToSetUpdate);
     }
     
     protected static KSetOnConflictDoUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumn kColumn,
         final KQuery kQuery
     ) {
-        return new KSetOnConflictDoUpdate(kInitializer, kQueryInsertIntoData, kColumn, kQuery);
+        return new KSetOnConflictDoUpdate(kExecutor, kQueryInsertIntoData, kColumn, kQuery);
     }
     
     public KSetOnConflictDoUpdate set(

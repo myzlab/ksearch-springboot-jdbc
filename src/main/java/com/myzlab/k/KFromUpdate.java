@@ -9,21 +9,21 @@ public class KFromUpdate extends KQueryUpdate {
     }
     
     private KFromUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         this.process(kTable);
     }
     
     protected static KFromUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KTable kTable
     ) {
-        return new KFromUpdate(kInitializer, kQueryUpdateData, kTable);
+        return new KFromUpdate(kExecutor, kQueryUpdateData, kTable);
     }
     
     public KFromUpdate from(

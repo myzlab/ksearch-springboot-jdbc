@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlTypeValue;
 
 public class KQueryUtils {
@@ -198,40 +199,43 @@ public class KQueryUtils {
     }
     
     protected static <T extends KRow> KCollection<T> multipleMapping(
-        final KInitializer k,
+        final KExecutor k,
         final KQueryGenericData kQueryGenericData,
         final Class<T> clazz
     ) {
         System.out.println(kQueryGenericData.sb.toString());
         System.out.println(kQueryGenericData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
-            
-        if (k == null || k.getJdbcTemplates() == null) {
-            System.out.println("JDBC no provided to KSearch!");
+        
+        if (k == null || k.getJdbc() == null) {
+             System.err.println("JDBC no provided to KSearch!");
             
             return null;
         }
         
         final List<String[]> ways = KQueryUtils.getWays(kQueryGenericData, clazz);
 
-        final List<T> list = k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).query(kQueryGenericData.sb.toString(), getParams(kQueryGenericData), getArgTypes(kQueryGenericData), (final ResultSet resultSet, final int rowNum) -> {
-            return mapObject(kQueryGenericData, resultSet, ways, clazz);
-        });
+        final List<T> list = 
+            k.getJdbc().query(kQueryGenericData.sb.toString(), getParams(kQueryGenericData), getArgTypes(kQueryGenericData), (final ResultSet resultSet, final int rowNum) -> {
+                return mapObject(kQueryGenericData, resultSet, ways, clazz);
+            });
         
         return new KCollection<>(list);
     }
     
     protected static int executeSingle(
-        final KInitializer k,
+        final KExecutor k,
         final KQueryGenericData kQueryGenericData
     ) {
         System.out.println(kQueryGenericData.sb.toString());
         System.out.println(kQueryGenericData.params);
         
-        return k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).update(kQueryGenericData.sb.toString(), KQueryUtils.getParams(kQueryGenericData), KQueryUtils.getArgTypes(kQueryGenericData));
+        if (k == null || k.getJdbc() == null) {
+            System.err.println("JDBC no provided to KSearch!");
+            
+            return -1;
+        }
+        
+        return k.getJdbc().update(kQueryGenericData.sb.toString(), KQueryUtils.getParams(kQueryGenericData), KQueryUtils.getArgTypes(kQueryGenericData));
     }
 }

@@ -10,11 +10,11 @@ public class KReturningDelete extends KQueryDelete {
     }
     
     private KReturningDelete(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        super(kQueryDeleteData, kInitializer);
+        super(kQueryDeleteData, kExecutor);
         
         for (final KColumnAllowedToReturning kColumnAllowedToReturning : kColumnsAllowedToReturning) {
             if (kColumnAllowedToReturning == null) {
@@ -32,11 +32,11 @@ public class KReturningDelete extends KQueryDelete {
     }
     
     protected static KReturningDelete getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryDeleteData kQueryDeleteData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return new KReturningDelete(kInitializer, kQueryDeleteData, kColumnsAllowedToReturning);
+        return new KReturningDelete(kExecutor, kQueryDeleteData, kColumnsAllowedToReturning);
     }
     
     private void process(

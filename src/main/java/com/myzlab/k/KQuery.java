@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class KQuery {
     
-    protected KInitializer k;
+    protected KExecutor k;
     protected KQueryData kQueryData;
 
     protected KQuery() {
@@ -15,18 +15,18 @@ public abstract class KQuery {
     }
     
     protected KQuery(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryData = new KQueryData();
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     public KQuery(
         final KQueryData kQueryData,
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
         this.kQueryData = kQueryData;
-        this.k = kInitializer;
+        this.k = kExecutor;
     }
     
     private <T extends KRow> T singleMappingKRow(
@@ -34,41 +34,43 @@ public abstract class KQuery {
     ) {
         final List<String[]> ways = KQueryUtils.getWays(this.kQueryData, clazz);
         
-        final T t = k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
-            if (resultSet == null || !resultSet.next()) {
-                return this.getKRowNull(clazz);
-            }
-            
-            final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, ways, clazz);
-            
-            if (resultSet.next()) {
-                return this.getKRowNull(clazz);
-            }
-            
-            return result;
-        });
+        final T t = 
+            k
+            .getJdbc()
+            .query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
+                if (resultSet == null || !resultSet.next()) {
+                    return this.getKRowNull(clazz);
+                }
+
+                final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, ways, clazz);
+
+                if (resultSet.next()) {
+                    return this.getKRowNull(clazz);
+                }
+
+                return result;
+            });
         
         return t;
     }
     
     private <T> T singleMappingSingleType() {
-        return k.getJdbcTemplates().get(   
-            k.getJdbcTemplateDefaultName()
-        ).query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
-            if (resultSet == null || !resultSet.next()) {
-                return null;
-            }
-            
-            final T result = (T) resultSet.getObject(1);
-            
-            if (resultSet.next()) {
-                return null;
-            }
-            
-            return result;
-        });
+        return 
+            k
+            .getJdbc()
+            .query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
+                if (resultSet == null || !resultSet.next()) {
+                    return null;
+                }
+
+                final T result = (T) resultSet.getObject(1);
+
+                if (resultSet.next()) {
+                    return null;
+                }
+
+                return result;
+            });
     }
     
     public KRow single() {
@@ -82,8 +84,8 @@ public abstract class KQuery {
         System.out.println(this.kQueryData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
             
-        if (k == null || k.getJdbcTemplates() == null) {
-            System.out.println("JDBC no provided to KSearch!");
+        if (k == null || k.getJdbc() == null) {
+            System.err.println("JDBC no provided to KSearch!");
             
             return null;
         }

@@ -6,25 +6,25 @@ import com.myzlab.k.allowed.KQueryAllowedToCombining;
 public class KCombining extends KQuery {
     
     private KCombining(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KQueryAllowedToCombining kQueryAllowedToCombining,
         final String function,
         final boolean all
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         this.process(kQueryAllowedToCombining, function, all);
     }
     
     protected static KCombining getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KQueryAllowedToCombining kQueryAllowedToCombining,
         final String function,
         final boolean all
     ) {
-        return new KCombining(kInitializer, kQueryData, kQueryAllowedToCombining, function, all);
+        return new KCombining(kExecutor, kQueryData, kQueryAllowedToCombining, function, all);
     }
 
     public KCombining union(

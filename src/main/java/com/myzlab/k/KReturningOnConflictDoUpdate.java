@@ -10,11 +10,11 @@ public class KReturningOnConflictDoUpdate extends KQueryInsertInto {
     }
     
     private KReturningOnConflictDoUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         for (final KColumnAllowedToReturning kColumnAllowedToReturning : kColumnsAllowedToReturning) {
             if (kColumnAllowedToReturning == null) {
@@ -32,11 +32,11 @@ public class KReturningOnConflictDoUpdate extends KQueryInsertInto {
     }
     
     protected static KReturningOnConflictDoUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return new KReturningOnConflictDoUpdate(kInitializer, kQueryInsertIntoData, kColumnsAllowedToReturning);
+        return new KReturningOnConflictDoUpdate(kExecutor, kQueryInsertIntoData, kColumnsAllowedToReturning);
     }
     
     private void process(

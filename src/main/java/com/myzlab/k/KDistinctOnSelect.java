@@ -4,31 +4,31 @@ import com.myzlab.k.allowed.KColumnAllowedToSelect;
 
 public class KDistinctOnSelect {
     
-    private final KInitializer k;
+    private final KExecutor k;
     private final KQueryData kQueryData;
     
     private KDistinctOnSelect(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        this.k = kInitializer;
+        this.k = kExecutor;
         this.kQueryData = new KQueryData();
         this.kQueryData.distinctOn = true;
     }
     
     private KDistinctOnSelect(
         final KQueryData kQueryData,
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        this.k = kInitializer;
+        this.k = kExecutor;
         this.kQueryData = kQueryData;
         this.kQueryData.distinctOn = true;
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KColumn kColumn
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(kColumn);
         
@@ -36,10 +36,10 @@ public class KDistinctOnSelect {
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final int n
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(n);
         
@@ -47,12 +47,12 @@ public class KDistinctOnSelect {
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KRaw kRaw
     ) {
         KUtils.assertNotNull(kRaw, "kRaw");
         
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(new KColumn(new StringBuilder(kRaw.content), false));
         
@@ -60,11 +60,11 @@ public class KDistinctOnSelect {
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KColumn kColumn
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(kColumn);
         
@@ -72,11 +72,11 @@ public class KDistinctOnSelect {
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final int n
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(n);
         
@@ -84,13 +84,13 @@ public class KDistinctOnSelect {
     }
     
     protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KRaw kRaw
     ) {
         KUtils.assertNotNull(kRaw, "kRaw");
         
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kInitializer);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
         
         kDistinctOnSelect.processSelectDistinctOn(new KColumn(new StringBuilder(kRaw.content), false));
         

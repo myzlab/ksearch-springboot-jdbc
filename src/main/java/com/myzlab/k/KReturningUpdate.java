@@ -10,11 +10,11 @@ public class KReturningUpdate extends KQueryUpdate {
     }
     
     private KReturningUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         for (final KColumnAllowedToReturning kColumnAllowedToReturning : kColumnsAllowedToReturning) {
             if (kColumnAllowedToReturning == null) {
@@ -32,11 +32,11 @@ public class KReturningUpdate extends KQueryUpdate {
     }
     
     protected static KReturningUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return new KReturningUpdate(kInitializer, kQueryUpdateData, kColumnsAllowedToReturning);
+        return new KReturningUpdate(kExecutor, kQueryUpdateData, kColumnsAllowedToReturning);
     }
     
     private void process(

@@ -13,21 +13,21 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     }
     
     private KFrom(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KTable kTable
     ) {
-        super(kQueryData, kInitializer);
+        super(kQueryData, kExecutor);
         
         this.process(kTable);
     }
     
     protected static KFrom getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryData kQueryData,
         final KTable kTable
     ) {
-        return new KFrom(kInitializer, kQueryData, kTable);
+        return new KFrom(kExecutor, kQueryData, kTable);
     }
     
     public KFrom crossJoin(

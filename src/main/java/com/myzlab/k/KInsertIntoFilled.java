@@ -6,45 +6,45 @@ import java.util.List;
 public class KInsertIntoFilled extends KQueryInsertInto {
 
     private KInsertIntoFilled(
-        final KInitializer kInitializer
+        final KExecutor kExecutor
     ) {
-        super(kInitializer);
+        super(kExecutor);
     }
  
     private KInsertIntoFilled(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KQuery kQuery
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kQuery);
     }
     
     private KInsertIntoFilled(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KValues kValues
     ) {
-        super(kQueryInsertIntoData, kInitializer);
+        super(kQueryInsertIntoData, kExecutor);
         
         this.process(kValues);
     }
     
     protected static KInsertIntoFilled getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KQuery kQuery
     ) {
-        return new KInsertIntoFilled(kInitializer, kQueryInsertIntoData, kQuery);
+        return new KInsertIntoFilled(kExecutor, kQueryInsertIntoData, kQuery);
     }
     
     protected static KInsertIntoFilled getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryInsertIntoData kQueryInsertIntoData,
         final KValues kValues
     ) {
-        return new KInsertIntoFilled(kInitializer, kQueryInsertIntoData, kValues);
+        return new KInsertIntoFilled(kExecutor, kQueryInsertIntoData, kValues);
     }
     
     public KInsertIntoOnConflict onConflict() {

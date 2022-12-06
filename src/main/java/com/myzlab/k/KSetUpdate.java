@@ -9,43 +9,43 @@ public class KSetUpdate extends KQueryUpdate {
     }
     
     private KSetUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         this.process(kColumn, kColumnAllowedToSetUpdate);
     }
     
     private KSetUpdate(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
         final KQuery kQuery
     ) {
-        super(kQueryUpdateData, kInitializer);
+        super(kQueryUpdateData, kExecutor);
         
         this.process(kColumn, kQuery);
     }
     
     protected static KSetUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
-        return new KSetUpdate(kInitializer, kQueryUpdateData, kColumn, kColumnAllowedToSetUpdate);
+        return new KSetUpdate(kExecutor, kQueryUpdateData, kColumn, kColumnAllowedToSetUpdate);
     }
     
     protected static KSetUpdate getInstance(
-        final KInitializer kInitializer,
+        final KExecutor kExecutor,
         final KQueryUpdateData kQueryUpdateData,
         final KColumn kColumn,
         final KQuery kQuery
     ) {
-        return new KSetUpdate(kInitializer, kQueryUpdateData, kColumn, kQuery);
+        return new KSetUpdate(kExecutor, kQueryUpdateData, kColumn, kQuery);
     }
     
     public KFromUpdate from(
