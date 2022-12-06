@@ -3,21 +3,13 @@ package com.myzlab.k;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KQueryInsertIntoData {
+public class KQueryInsertIntoData extends KQueryGenericData {
     
-    protected final List<KBaseColumn> kBaseColumns;
-    protected final StringBuilder sb;
-    protected final List<Object> params;
-//    protected int usingTablesAdded;
     protected int setValuesAdded;
     
     public KQueryInsertIntoData() {
         super();
         
-        this.kBaseColumns = new ArrayList<>();
-        this.sb = new StringBuilder();
-        this.params = new ArrayList<>();
-//        this.usingTablesAdded = 0;
         this.setValuesAdded = 0;
     }
 
@@ -27,12 +19,8 @@ public class KQueryInsertIntoData {
         final int setValuesAdded,
         final List<KBaseColumn> kBaseColumns
     ) {
-        super();
+        super(kBaseColumns, sb, params);
         
-        this.kBaseColumns = kBaseColumns;
-        this.sb = sb;
-        this.params = params;
-//        this.usingTablesAdded = usingTablesAdded;
         this.setValuesAdded = setValuesAdded;
     }
     

@@ -6,8 +6,6 @@ import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalKValTextField;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalString;
-import java.util.ArrayList;
-import java.util.List;
 
 public class KFunction {
 

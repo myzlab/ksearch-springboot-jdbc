@@ -3,20 +3,14 @@ package com.myzlab.k;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KQueryUpdateData {
+public class KQueryUpdateData extends KQueryGenericData {
     
-    protected List<KBaseColumn> kBaseColumns;
-    protected final StringBuilder sb;
-    protected final List<Object> params;
     protected int fromTablesAdded;
     protected int setValuesAdded;
     
     public KQueryUpdateData() {
         super();
         
-        this.kBaseColumns = new ArrayList<>();
-        this.sb = new StringBuilder();
-        this.params = new ArrayList<>();
         this.fromTablesAdded = 0;
         this.setValuesAdded = 0;
     }
@@ -28,11 +22,8 @@ public class KQueryUpdateData {
         final int setValuesAdded,
         final List<KBaseColumn> kBaseColumns
     ) {
-        super();
+        super(kBaseColumns, sb, params);
         
-        this.kBaseColumns = kBaseColumns;
-        this.sb = sb;
-        this.params = params;
         this.fromTablesAdded = fromTablesAdded;
         this.setValuesAdded = setValuesAdded;
     }

@@ -3,23 +3,17 @@ package com.myzlab.k;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KQueryData {
+public class KQueryData extends KQueryGenericData {
 
-    protected List<KBaseColumn> kBaseColumns;
-    protected final StringBuilder sb;
     protected int columnsAdded;
     protected int tablesAdded;
-    protected final List<Object> params;
     protected boolean distinctOn;
     
     public KQueryData() {
         super();
         
-        this.kBaseColumns = new ArrayList<>();
-        this.sb = new StringBuilder();
         this.columnsAdded = 0;
         this.tablesAdded = 0;
-        this.params = new ArrayList<>();
         this.distinctOn = false;
     }
 
@@ -31,13 +25,10 @@ public class KQueryData {
         final List<Object> params,
         final boolean distinctOn
     ) {
-        super();
+        super(kBaseColumns, sb, params);
         
-        this.kBaseColumns = kBaseColumns;
-        this.sb = sb;
         this.columnsAdded = columnsAdded;
         this.tablesAdded = tablesAdded;
-        this.params = params;
         this.distinctOn = distinctOn;
     }
     

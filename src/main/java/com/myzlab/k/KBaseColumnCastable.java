@@ -49,6 +49,10 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         final KTable kTable
     ) {
         super(sb, params, closed, name, type, kTable);
+        
+        KUtils.assertNotNull(kTable, "kTable");
+        KUtils.assertNotNull(name, "name");
+        KUtils.assertNotNull(type, "type");
     }
     
     protected KBaseColumnCastable(

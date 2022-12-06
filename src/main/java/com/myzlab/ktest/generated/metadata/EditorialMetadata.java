@@ -2,6 +2,7 @@ package com.myzlab.ktest.generated.metadata;
 
 import com.myzlab.k.KColumn;
 import com.myzlab.k.KTable;
+import com.myzlab.k.KTableColumn;
 
 public class EditorialMetadata extends KTable {
     
@@ -21,6 +22,6 @@ public class EditorialMetadata extends KTable {
         return instance;
     }
     
-    public final KColumn ID = new KColumn(this, "id", Long.class);
-    public final KColumn NAME = new KColumn(this, "name", String.class);
+    public final KTableColumn ID = new KTableColumn(this, "id", Long.class);
+    public final KTableColumn NAME = new KTableColumn(this, "name", String.class);
 }

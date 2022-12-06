@@ -3,19 +3,13 @@ package com.myzlab.k;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KQueryDeleteData {
+public class KQueryDeleteData extends KQueryGenericData {
     
-    protected final List<KBaseColumn> kBaseColumns;
-    protected final StringBuilder sb;
-    protected final List<Object> params;
     protected int usingTablesAdded;
     
     public KQueryDeleteData() {
         super();
         
-        this.kBaseColumns = new ArrayList<>();
-        this.sb = new StringBuilder();
-        this.params = new ArrayList<>();
         this.usingTablesAdded = 0;
     }
 
@@ -25,11 +19,8 @@ public class KQueryDeleteData {
         final int usingTablesAdded,
         final List<KBaseColumn> kBaseColumns
     ) {
-        super();
+        super(kBaseColumns, sb, params);
         
-        this.kBaseColumns = kBaseColumns;
-        this.sb = sb;
-        this.params = params;
         this.usingTablesAdded = usingTablesAdded;
     }
     

@@ -31,7 +31,7 @@ public class KColumn extends KBaseColumnCastable implements
         super(closed);
     }
     
-    public KColumn(
+    protected KColumn(
         final KTable kTable,
         final String name,
         final Class type
@@ -79,15 +79,15 @@ public class KColumn extends KBaseColumnCastable implements
         super(val);
     }
     
-    protected KColumn(
-        final KTable kTable,
-        final StringBuilder sb,
-        final String name,
-        final Class type
-    ) {
-        this(kTable, name, type);
-        this.sb.append(sb);
-    }
+//    protected KColumn(
+//        final KTable kTable,
+//        final StringBuilder sb,
+//        final String name,
+//        final Class type
+//    ) {
+//        this(kTable, name, type);
+//        this.sb.append(sb);
+//    }
     
     public KColumn add(
         final KColumn kColumn
@@ -3139,7 +3139,7 @@ public class KColumn extends KBaseColumnCastable implements
     
     @Override
     protected KColumn cloneMe() {
-        return new KColumn(new StringBuilder(this.sb), new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
+        return new KColumn(new StringBuilder(this.sb), new ArrayList<>(this.params), this.closed);
     }
     
     @Override
