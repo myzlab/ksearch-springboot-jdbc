@@ -130,6 +130,7 @@ public class KGroupBy extends KQuery implements KQueryAllowedToCombining {
                 this.kQueryData.sb.append(", ");
             }
             
+            this.kQueryData.params.addAll(kColumnAllowedToGroupBy.getParams());
             this.kQueryData.sb.append(kColumnAllowedToGroupBy.getSqlToGroupBy());
         }
     }

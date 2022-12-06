@@ -107,15 +107,9 @@ public class KWith extends KQuery {
     }
     
     public KDistinctOnSelect selectDistinctOn(
-        final KValNumberField kValNumberField
+        final int n
     ) {
-        return KDistinctOnSelect.getInstance(this.k, this.kQueryData, kValNumberField);
-    }
-    
-    public KDistinctOnSelect selectDistinctOn(
-        final Number number
-    ) {
-        return KDistinctOnSelect.getInstance(this.k, this.kQueryData, number);
+        return KDistinctOnSelect.getInstance(this.k, this.kQueryData, n);
     }
     
     public KDistinctOnSelect selectDistinctOn(

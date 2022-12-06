@@ -4,8 +4,8 @@ import com.myzlab.k.allowed.KColumnAllowedToSelect;
 
 public class KDistinctOnSelect {
     
-    private KInitializer k;
-    private KQueryData kQueryData;
+    private final KInitializer k;
+    private final KQueryData kQueryData;
     
     private KDistinctOnSelect(
         final KInitializer kInitializer
@@ -37,22 +37,11 @@ public class KDistinctOnSelect {
     
     protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
-        final KValNumberField kValNumberField
+        final int n
     ) {
         final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
         
-        kDistinctOnSelect.processSelectDistinctOn(kValNumberField);
-        
-        return kDistinctOnSelect;
-    }
-    
-    protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
-        final Number number
-    ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kInitializer);
-        
-        kDistinctOnSelect.processSelectDistinctOn(number);
+        kDistinctOnSelect.processSelectDistinctOn(n);
         
         return kDistinctOnSelect;
     }
@@ -85,23 +74,11 @@ public class KDistinctOnSelect {
     protected static KDistinctOnSelect getInstance(
         final KInitializer kInitializer,
         final KQueryData kQueryData,
-        final KValNumberField kValNumberField
+        final int n
     ) {
         final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kInitializer);
         
-        kDistinctOnSelect.processSelectDistinctOn(kValNumberField);
-        
-        return kDistinctOnSelect;
-    }
-    
-    protected static KDistinctOnSelect getInstance(
-        final KInitializer kInitializer,
-        final KQueryData kQueryData,
-        final Number number
-    ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kInitializer);
-        
-        kDistinctOnSelect.processSelectDistinctOn(number);
+        kDistinctOnSelect.processSelectDistinctOn(n);
         
         return kDistinctOnSelect;
     }
@@ -150,22 +127,15 @@ public class KDistinctOnSelect {
     ) {
         KUtils.assertNotNull(kColumn, "kColumn");
         
-        this.kQueryData.sb.append(this.kQueryData.sb.length() > 0 ? " " : "").append("SELECT DISTINCT ON (").append(KUtils.reverseParams(kColumn)).append(")");
+        this.kQueryData.params.addAll(kColumn.params);
+        this.kQueryData.sb.append(this.kQueryData.sb.length() > 0 ? " " : "").append("SELECT DISTINCT ON (").append(kColumn.sb).append(")");
     }
     
     private void processSelectDistinctOn(
-        final KValNumberField kValNumberField
+        final int n
     ) {
-        KUtils.assertNotNull(kValNumberField, "kValNumberField");
+        KUtils.assertNotNull(n, "n");
         
-        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(KUtils.reverseParams(kValNumberField)).append(")");
-    }
-    
-    private void processSelectDistinctOn(
-        final Number number
-    ) {
-        KUtils.assertNotNull(number, "number");
-        
-        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(number).append(")");
+        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(n).append(")");
     }
 }

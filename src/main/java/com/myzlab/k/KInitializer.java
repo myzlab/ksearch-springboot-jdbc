@@ -75,21 +75,15 @@ public abstract class KInitializer {
     }
     
     public KDistinctOnSelect selectDistinctOn(
-        final KValNumberField kValNumberField
-    ) {
-        return KDistinctOnSelect.getInstance(this, kValNumberField);
-    }
-    
-    public KDistinctOnSelect selectDistinctOn(
         final KRaw kRaw
     ) {
         return KDistinctOnSelect.getInstance(this, kRaw);
     }
     
     public KDistinctOnSelect selectDistinctOn(
-        final Number number
+        final int n
     ) {
-        return KDistinctOnSelect.getInstance(this, number);
+        return KDistinctOnSelect.getInstance(this, n);
     }
     
     public KDeleteFrom deleteFrom(

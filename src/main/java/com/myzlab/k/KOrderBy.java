@@ -63,6 +63,7 @@ public class KOrderBy extends KQuery {
                 this.kQueryData.sb.append(", ");
             }
             
+            this.kQueryData.params.addAll(kColumnAllowedToOrderBy.getParams());
             this.kQueryData.sb.append(kColumnAllowedToOrderBy.getSqlToOrderBy());
         }
     }

@@ -41,6 +41,11 @@ public class KColumnOrdered extends KBaseColumn implements KColumnAllowedToOrder
     
     @Override
     public String getSqlToOrderBy() {
-        return KUtils.reverseParams(this);
+        return this.sb.toString();
+    }
+
+    @Override
+    public List<Object> getParams() {
+        return this.params;
     }
 }

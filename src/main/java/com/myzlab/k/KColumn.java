@@ -3144,12 +3144,12 @@ public class KColumn extends KBaseColumnCastable implements
     
     @Override
     public String getSqlToOrderBy() {
-        return KUtils.reverseParams(this);
+        return this.sb.toString();
     }
     
     @Override
     public String getSqlToGroupBy() {
-        return KUtils.reverseParams(this);
+        return this.sb.toString();
     }
 
     @Override

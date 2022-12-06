@@ -62,12 +62,12 @@ public class KTableColumn extends KColumn implements
     
     @Override
     public String getSqlToOrderBy() {
-        return KUtils.reverseParams(this);
+        return sb.toString();
     }
     
     @Override
     public String getSqlToGroupBy() {
-        return KUtils.reverseParams(this);
+        return sb.toString();
     }
 
     @Override
