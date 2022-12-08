@@ -29,7 +29,7 @@ public class KWith extends KQuery {
     ) {
         return KDeleteFrom.getInstance(
             this.k,
-            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), new ArrayList<>(), new ArrayList<>(), 0, new ArrayList()),
             kTable
         );
     }
@@ -41,7 +41,7 @@ public class KWith extends KQuery {
         
         return KDeleteFrom.getInstance(
             this.k,
-            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            new KQueryDeleteData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), new ArrayList<>(), new ArrayList<>(), 0, new ArrayList()),
             new KTable(null, kRaw.content, null)
         );
     }
@@ -51,7 +51,7 @@ public class KWith extends KQuery {
     ) {
         return KInsertInto.getInstance(
             this.k,
-            new KQueryInsertIntoData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, new ArrayList()),
+            new KQueryInsertIntoData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), new ArrayList<>(), new ArrayList<>(), 0, new ArrayList()),
             kTable
         );
     }
@@ -123,7 +123,7 @@ public class KWith extends KQuery {
     ) {
         return KUpdate.getInstance(
             this.k,
-            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, 0, new ArrayList()),
+            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), new ArrayList<>(), new ArrayList<>(), 0, 0, new ArrayList()),
             kTable
         );
     }
@@ -135,7 +135,7 @@ public class KWith extends KQuery {
         
         return KUpdate.getInstance(
             this.k,
-            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), 0, 0, new ArrayList()),
+            new KQueryUpdateData(new StringBuilder(this.kQueryData.sb), new ArrayList<>(this.kQueryData.params), new ArrayList<>(), new ArrayList<>(), 0, 0, new ArrayList()),
             new KTable(null, kRaw.content, null)
         );
     }

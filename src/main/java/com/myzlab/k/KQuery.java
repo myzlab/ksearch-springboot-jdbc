@@ -32,7 +32,7 @@ public abstract class KQuery {
     private <T extends KRow> T singleMappingKRow(
         final Class<T> clazz
     ) {
-        final List<String[]> ways = KQueryUtils.getWays(this.kQueryData, clazz);
+        final List<String[]> paths = KQueryUtils.getPaths(this.kQueryData, clazz);
         
         final T t = 
             k
@@ -42,7 +42,7 @@ public abstract class KQuery {
                     return this.getKRowNull(clazz);
                 }
 
-                final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, ways, clazz);
+                final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, paths, clazz);
 
                 if (resultSet.next()) {
                     return this.getKRowNull(clazz);

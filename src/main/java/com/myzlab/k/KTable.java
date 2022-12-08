@@ -1,6 +1,5 @@
 package com.myzlab.k;
 
-import com.myzlab.k.helper.KExceptionHelper;
 import lombok.Data;
 
 @Data
@@ -10,6 +9,7 @@ public class KTable {
     protected final String name;
     protected String alias;
     protected final KQueryData kQueryData;
+    protected final boolean isRoot;
     
     private KTable() {
         super();
@@ -18,6 +18,7 @@ public class KTable {
         this.name = null;
         this.alias = null;
         this.kQueryData = null;
+        this.isRoot = false;
     }
     
     public KTable(
@@ -31,6 +32,7 @@ public class KTable {
         this.name = name;
         this.alias = alias;
         this.kQueryData = null;
+        this.isRoot = schema != null && name != null && alias != null;
     }
     
     public KTable(
@@ -43,6 +45,7 @@ public class KTable {
         this.name = null;
         this.alias = alias;
         this.kQueryData = kQuery.generateSubQueryData();
+        this.isRoot = false;
     }
     
     public KColumn c(
@@ -68,11 +71,31 @@ public class KTable {
     }
     
     public KJoinDefinition on(
+        final KCondition kCondition,
+        final KEdge kEdge
+    ) {
+        if (this.kQueryData == null) {
+            return KJoinDefinition.getInstance(this.toSql(true), kCondition, kEdge);
+        }
+        
+        return KJoinDefinition.getInstance(this.kQueryData.params, this.toSql(true), kCondition, kEdge);
+    }
+    
+    public KJoinDefinition on(
         final KRaw kRaw
     ) {
         KUtils.assertNotNull(kRaw, "kRaw");
         
         return on(new KCondition(kRaw.content));
+    }
+    
+    public KJoinDefinition on(
+        final KRaw kRaw,
+        final KEdge kEdge
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        return on(new KCondition(kRaw.content), kEdge);
     }
     
     public String toSql(
@@ -115,4 +138,7 @@ public class KTable {
         return new KColumn(sb, true);
     }
     
+    protected Class<? extends KRow> getKRowClass() {
+        return null;
+    }
 }

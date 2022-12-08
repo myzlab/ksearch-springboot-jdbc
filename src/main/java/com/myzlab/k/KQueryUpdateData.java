@@ -18,17 +18,27 @@ public class KQueryUpdateData extends KQueryGenericData {
     public KQueryUpdateData(
         final StringBuilder sb,
         final List<Object> params,
+        final List<KEdge> kEdges,
+        final List<KNode> kNodes,
         final int fromTablesAdded,
         final int setValuesAdded,
         final List<KBaseColumn> kBaseColumns
     ) {
-        super(kBaseColumns, sb, params);
+        super(kBaseColumns, sb, params, kEdges, kNodes);
         
         this.fromTablesAdded = fromTablesAdded;
         this.setValuesAdded = setValuesAdded;
     }
     
     protected KQueryUpdateData cloneMe() {
-        return new KQueryUpdateData(new StringBuilder(this.sb), new ArrayList<>(this.params), this.fromTablesAdded, this.setValuesAdded, this.kBaseColumns);
+        return new KQueryUpdateData(
+            new StringBuilder(this.sb),
+            new ArrayList<>(this.params),
+            new ArrayList<>(this.kEdges),
+            new ArrayList<>(this.kNodes),
+            this.fromTablesAdded,
+            this.setValuesAdded,
+            this.kBaseColumns
+        );
     }
 }

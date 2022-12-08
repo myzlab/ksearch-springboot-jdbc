@@ -1106,12 +1106,6 @@ public class KRow {
         return this;
     }
     
-    public String[] getWay(
-        final String target
-    ) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
     public KRow cloneMe() {
         return new KRow((this.o != null) ? this.o.clone() : null, (this.ref != null ? new HashMap(this.ref) : null), this.isNull);
     }

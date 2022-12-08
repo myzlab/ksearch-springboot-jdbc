@@ -68,51 +68,132 @@ public class KQueryUtils {
         return params.toArray();
     }
     
-    protected static <T extends KRow> List<String[]> getWays(
+    private static List<KPath> getNewPathsByAliasSource(
+        final List<KPath> kPaths,
+        final String aliasSource,
+        final String aliasTarget,
+        final String path
+    ) {
+        final List<KPath> newKPaths = new ArrayList<>();
+        
+        for (final KPath kPath : kPaths) {
+            if (aliasSource.equals(kPath.aliasTarget)) {
+                newKPaths.add(KPath.getInstance(kPath.aliasSource, aliasTarget, kPath.path + "," + path));
+            }
+        }
+        
+        return newKPaths;
+    }
+    
+    private static List<KPath> getNewPathsByAliasTarget(
+        final List<KPath> kPaths,
+        final String aliasSource,
+        final String aliasTarget,
+        final String path
+    ) {
+        final List<KPath> newKPaths = new ArrayList<>();
+        
+        for (final KPath kPath : kPaths) {
+            if (kPath.aliasSource.equals(aliasTarget)) {
+                newKPaths.add(KPath.getInstance(aliasSource, kPath.aliasTarget, path + "," + kPath.path));
+            }
+        }
+        
+        return newKPaths;
+    }
+    
+    private static <T extends KRow> String getCurrentAlias(
+        final List<KNode> kNodes,
+        final Class<T> clazz
+    ) {
+        for (final KNode kNode : kNodes) {
+            if (kNode.source.equals(clazz)) {
+                return kNode.aliasSource;
+            }
+        }
+        
+        return null;
+    }
+    
+    protected static <T extends KRow> List<String[]> getPaths(
         final KQueryGenericData kQueryGenericData,
         final Class<T> clazz
     ) {
-        final T o;
         
-        try {
-            o = (T) clazz.newInstance();  
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError(e.getMessage());
+        if (clazz.equals(KRow.class)) {
+            return new ArrayList<>();
         }
         
-        final List<String[]> ways = new ArrayList<>();
+        final List<KPath> kPaths = new ArrayList<>();
+        
+        for (final KEdge kEdge : kQueryGenericData.kEdges) {
+            final KNode kNodeSource = KNode.getInstance(kEdge.source, kEdge.aliasSource);
+            final KNode kNodeTarget = KNode.getInstance(kEdge.target, kEdge.aliasTarget);
+            
+            if (!kQueryGenericData.kNodes.contains(kNodeSource)) {
+                kQueryGenericData.kNodes.add(kNodeSource);
+            }
+            
+            if (!kQueryGenericData.kNodes.contains(kNodeTarget)) {
+                kQueryGenericData.kNodes.add(kNodeTarget);
+            }
+            
+            final List<KPath> newKPaths = new ArrayList<>();
+            
+            newKPaths.add(KPath.getInstance(kEdge.aliasSource, kEdge.aliasTarget, kEdge.path));
+            
+            newKPaths.addAll(getNewPathsByAliasSource(kPaths, kEdge.aliasSource, kEdge.aliasTarget, kEdge.path));
+            newKPaths.addAll(getNewPathsByAliasTarget(kPaths, kEdge.aliasSource, kEdge.aliasTarget, kEdge.path));
+            
+            kPaths.addAll(newKPaths);
+        }
+        
+        final String currentAlias = getCurrentAlias(kQueryGenericData.kNodes, clazz);
+        
+        final List<String[]> paths = new ArrayList<>();
+        
+        if (currentAlias == null) {
+            return paths;
+        }
+        
+        final Map<String, String[]> allPaths = new HashMap<>();
+        
+        allPaths.put(currentAlias, "*".split(","));
+        
+        for (final KPath kPath : kPaths) {
+            if (kPath.aliasSource.equals(currentAlias)) {
+                allPaths.put(kPath.aliasTarget, (kPath.path + ",*").split(","));
+            }
+        }
         
         for (int i = 0; i < kQueryGenericData.kBaseColumns.size(); i++) {
-            
             final KBaseColumn kBaseColumn = kQueryGenericData.kBaseColumns.get(i);
             
-            if (kBaseColumn.name == null || kBaseColumn.kTable == null || kBaseColumn.type == null) {
-                ways.add(null);
+            if (kBaseColumn.name == null || kBaseColumn.kTable == null || kBaseColumn.type == null || kBaseColumn.kTable.alias == null) {
+                paths.add(null);
                 
                 continue;
             }
             
-            final String[] way = o.getWay(kBaseColumn.kTable.toSql(false));
-
-            ways.add(way);
+            paths.add(allPaths.get(kBaseColumn.kTable.alias));
         }
         
-        return ways;
+        return paths;
     }
     
     protected static <T extends KRow> void mapColumn(
         final T t,
         final Object v,
-        final String[] way,
+        final String[] path,
         final KBaseColumn kBaseColumn
     ) {
-        if (way == null) {
+        if (path == null) {
             return;
         }
         
         Object current = t;
 
-        for (final String w : way) {
+        for (final String w : path) {
             if (w.equals("*")) {
                 try {
                     final Method methodSet = current.getClass().getMethod(
@@ -158,7 +239,7 @@ public class KQueryUtils {
     protected static <T extends KRow> T mapObject(
         final KQueryGenericData kQueryGenericData,
         final ResultSet resultSet,
-        final List<String[]> ways,
+        final List<String[]> paths,
         final Class<T> clazz
     ) throws SQLException {
         
@@ -184,7 +265,7 @@ public class KQueryUtils {
             KQueryUtils.mapColumn(
                 t,
                 v,
-                ways.get(i),
+                paths.isEmpty() ? null : paths.get(i),
                 kBaseColumn
             );
             
@@ -205,7 +286,8 @@ public class KQueryUtils {
     ) {
         System.out.println(kQueryGenericData.sb.toString());
         System.out.println(kQueryGenericData.params);
-//        System.out.println(this.kQueryData.kBaseColums);
+//        System.out.println(kQueryGenericData.kEdges);
+//        System.out.println(kQueryGenericData.kNodes);
         
         if (k == null || k.getJdbc() == null) {
              System.err.println("JDBC no provided to KSearch!");
@@ -213,11 +295,11 @@ public class KQueryUtils {
             return null;
         }
         
-        final List<String[]> ways = KQueryUtils.getWays(kQueryGenericData, clazz);
+        final List<String[]> paths = KQueryUtils.getPaths(kQueryGenericData, clazz);
 
         final List<T> list = 
             k.getJdbc().query(kQueryGenericData.sb.toString(), getParams(kQueryGenericData), getArgTypes(kQueryGenericData), (final ResultSet resultSet, final int rowNum) -> {
-                return mapObject(kQueryGenericData, resultSet, ways, clazz);
+                return mapObject(kQueryGenericData, resultSet, paths, clazz);
             });
         
         return new KCollection<>(list);

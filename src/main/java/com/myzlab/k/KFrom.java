@@ -240,6 +240,10 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
+        if (kTable.isRoot) {
+            this.kQueryData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        }
+        
         if (this.kQueryData.tablesAdded == 0) {
             this.kQueryData.sb.append(" FROM ");
         } else {
@@ -267,6 +271,10 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         
         this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kJoinDefinition.table).append(" ON (").append(kJoinDefinition.kCondition.sb).append(")");
         this.kQueryData.params.addAll(kJoinDefinition.kCondition.params);
+        
+        if (kJoinDefinition.kEdge != null) {
+            this.kQueryData.kEdges.add(kJoinDefinition.kEdge);
+        }
     }
     
     private void processGeneralJoin(

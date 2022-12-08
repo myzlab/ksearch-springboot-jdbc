@@ -240,7 +240,7 @@ public class KCollection<T extends KRow> {
         return taked;
     }
     
-    public List<BigDecimal> takeBigDecimal(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {//HERE
+    public List<BigDecimal> takeBigDecimal(final int n, final KRowFunction<KRow, Boolean> kRowFunction) {
         final List<BigDecimal> taked = new ArrayList<>();
         
        for (final KRow kRow : list) {
