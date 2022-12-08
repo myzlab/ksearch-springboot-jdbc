@@ -75,6 +75,10 @@ public class KUpdate extends KQueryUpdate {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
+        if (kTable.isRoot) {
+            this.kQueryUpdateData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        }
+        
         this.kQueryUpdateData.sb.append(kQueryUpdateData.sb.length() > 0 ? " " : "").append("UPDATE ").append(kTable.toSql(true));
         
         if (kTable.kQueryData != null) {

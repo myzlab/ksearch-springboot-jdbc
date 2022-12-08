@@ -87,6 +87,10 @@ public class KDeleteFrom extends KQueryDelete {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
+        if (kTable.isRoot) {
+            this.kQueryDeleteData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        }
+        
         this.kQueryDeleteData.sb.append(kQueryDeleteData.sb.length() > 0 ? " " : "").append("DELETE FROM ").append(kTable.toSql(true));
         
         if (kTable.kQueryData != null) {

@@ -57,6 +57,10 @@ public class KInsertInto extends KQueryInsertInto {
             throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
         }
         
+        if (kTable.isRoot) {
+            this.kQueryInsertIntoData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        }
+        
         this.kQueryInsertIntoData.sb.append(kQueryInsertIntoData.sb.length() > 0 ? " " : "").append("INSERT INTO ").append(kTable.toSql(false));
         
         if (kTable.kQueryData != null) {
