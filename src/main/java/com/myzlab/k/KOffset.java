@@ -1,5 +1,8 @@
 package com.myzlab.k;
 
+import com.myzlab.k.optional.KOptionalLong;
+import java.util.List;
+
 public class KOffset extends KQuery {
     
     private KOffset() {
@@ -8,31 +11,66 @@ public class KOffset extends KQuery {
     
     private KOffset(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
-        final int start
+        final long start
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
         
         this.process(start);
     }
     
+    private KOffset(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData
+    ) {
+        super(kQueryData, kExecutor, kSpecialFunctions);
+    }
+    
     protected static KOffset getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
-        final int start
+        final long start
     ) {
-        return new KOffset(kExecutor, kQueryData, start);
+        return new KOffset(kExecutor, kSpecialFunctions, kQueryData, start);
+    }
+    
+    protected static KOffset getInstance(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData
+    ) {
+        return new KOffset(kExecutor, kSpecialFunctions, kQueryData);
     }
     
     public KFetch fetch(
-        final int rowCount
+        final long rowCount
     ) {
-        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, rowCount);
+    }
+    
+    public KFetch fetch(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     private void process(
-        final int start
+        final long start
     ) {
-        this.kQueryData.sb.append(" OFFSET ").append(start);
+        KQueryUtils.processOffset(
+            this.kQueryData, 
+            start
+        );
+        
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessOffset(start);
+        }
     }
 }

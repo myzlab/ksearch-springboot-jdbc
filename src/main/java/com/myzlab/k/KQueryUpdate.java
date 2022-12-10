@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import java.util.ArrayList;
+
 public abstract class KQueryUpdate {
     
     protected KExecutor k;
@@ -35,7 +37,7 @@ public abstract class KQueryUpdate {
     protected <T extends KRow> KCollection<T> executeMapping(
         final Class<T> clazz
     ) {
-        return KQueryUtils.multipleMapping(this.k, this.kQueryUpdateData, clazz);
+        return KQueryUtils.multipleMapping(this.k, new ArrayList<>(), this.kQueryUpdateData, clazz);
     }
     
 }

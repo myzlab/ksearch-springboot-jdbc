@@ -792,7 +792,7 @@ public class KRow {
         return ((String) o[n]).trim().isEmpty();
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final KTableColumn kTableColumn,
         final HttpStatus status,
         final String message
@@ -805,10 +805,10 @@ public class KRow {
             throw new KException(status, message);
         }
         
-        return this;
+        return (T) this;
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final String c,
         final HttpStatus status,
         final String message
@@ -821,10 +821,10 @@ public class KRow {
             throw new KException(status, message);
         }
         
-        return this;
+        return (T) this;
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final int n,
         final HttpStatus status,
         final String message
@@ -837,24 +837,24 @@ public class KRow {
             throw new KException(status, message);
         }
         
-        return this;
+        return (T) this;
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final String c,
         final HttpStatus status
     ) {
-        return assertNotNull(c, status, null);
+        return (T) assertNotNull(c, status, null);
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final int n,
         final HttpStatus status
     ) {
         return assertNotNull(n, status, null);
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final HttpStatus status,
         final String message
     ) {
@@ -862,16 +862,16 @@ public class KRow {
             throw new KException(status, message);
         }
         
-        return this;
+        return (T) this;
     }
     
-    public KRow assertNotNull(
+    public <T extends KRow> T assertNotNull(
         final HttpStatus status
     ) {
-        return assertNotNull(status, null);
+        return (T) assertNotNull(status, null);
     }
     
-    public KRow set(
+    public <T extends KRow> T set(
         final KTableColumn kTableColumn,
         final Object o
     ) {
@@ -883,10 +883,10 @@ public class KRow {
         
         this.o[n] = o;
         
-        return this;
+        return (T) this;
     }
     
-    public KRow set(
+    public <T extends KRow> T set(
         final String property,
         final Object o
     ) {
@@ -898,10 +898,10 @@ public class KRow {
         
         this.o[n] = o;
         
-        return this;
+        return (T) this;
     }
     
-    public KRow set(
+    public <T extends KRow> T set(
         final KTableColumn kTableColumn,
         final KRowFunction kRowFunction
     ) {
@@ -914,15 +914,15 @@ public class KRow {
         if (kRowFunction == null) {
             this.o[n] = null;
             
-            return this;
+            return (T) this;
         }
         
         this.o[n] = kRowFunction.run(this);
         
-        return this;
+        return (T) this;
     }
     
-    public KRow set(
+    public <T extends KRow> T set(
         final String property,
         final KRowFunction kRowFunction
     ) {
@@ -935,12 +935,12 @@ public class KRow {
         if (kRowFunction == null) {
             this.o[n] = null;
             
-            return this;
+            return (T) this;
         }
         
         this.o[n] = kRowFunction.run(this);
         
-        return this;
+        return (T) this;
     }
     
 //    public Map<String, Object> toMap() {

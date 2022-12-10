@@ -1,98 +1,108 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
+import java.util.List;
 
 public class KDistinctOnSelect {
     
     private final KExecutor k;
     private final KQueryData kQueryData;
+    private final List<KSpecialFunction> kSpecialFunctions;
     
     private KDistinctOnSelect(
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
         this.k = kExecutor;
         this.kQueryData = new KQueryData();
-        this.kQueryData.distinctOn = true;
+        this.kSpecialFunctions = kSpecialFunctions;
     }
     
     private KDistinctOnSelect(
         final KQueryData kQueryData,
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
         this.k = kExecutor;
         this.kQueryData = kQueryData;
-        this.kQueryData.distinctOn = true;
+        this.kSpecialFunctions = kSpecialFunctions;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KColumn kColumn
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(kColumn);
+        kDistinctOnSelect.process(kColumn);
         
         return kDistinctOnSelect;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final int n
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(n);
+        kDistinctOnSelect.process(n);
         
         return kDistinctOnSelect;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KRaw kRaw
     ) {
         KUtils.assertNotNull(kRaw, "kRaw");
         
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(new KColumn(new StringBuilder(kRaw.content), false));
+        kDistinctOnSelect.process(new KColumn(new StringBuilder(kRaw.content), false));
         
         return kDistinctOnSelect;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KColumn kColumn
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(kColumn);
+        kDistinctOnSelect.process(kColumn);
         
         return kDistinctOnSelect;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final int n
     ) {
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(n);
+        kDistinctOnSelect.process(n);
         
         return kDistinctOnSelect;
     }
     
     protected static KDistinctOnSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KRaw kRaw
     ) {
         KUtils.assertNotNull(kRaw, "kRaw");
         
-        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor);
+        final KDistinctOnSelect kDistinctOnSelect = new KDistinctOnSelect(kQueryData, kExecutor, kSpecialFunctions);
         
-        kDistinctOnSelect.processSelectDistinctOn(new KColumn(new StringBuilder(kRaw.content), false));
+        kDistinctOnSelect.process(new KColumn(new StringBuilder(kRaw.content), false));
         
         return kDistinctOnSelect;
     }
@@ -100,42 +110,39 @@ public class KDistinctOnSelect {
     public KSelect select(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getInstance(this.k, this.kQueryData, kColumnsAllowedToSelect);
+        return KSelect.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kColumnsAllowedToSelect);
     }
     
     public KSelect select(
         final KQuery kQuery,
         final String alias
     ) {
-        return KSelect.getInstance(this.k, this.kQueryData, kQuery, alias);
+        return KSelect.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQuery, alias);
     }
     
-//    public KSelect select(
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        return KSelect.getInstance(this.k, this.kQueryData, kBaseColumns);
-//    }
-//    
-//    public KSelect select(
-//        final KRaw... kRaws
-//    ) {
-//        return KSelect.getInstance(this.k, this.kQueryData, kRaws);
-//    }
-    
-    private void processSelectDistinctOn(
+    private void process(
         final KColumn kColumn
     ) {
-        KUtils.assertNotNull(kColumn, "kColumn");
+        KQueryUtils.processSelectDistinctOn(
+            this.kQueryData, 
+            kColumn
+        );
         
-        this.kQueryData.params.addAll(kColumn.params);
-        this.kQueryData.sb.append(this.kQueryData.sb.length() > 0 ? " " : "").append("SELECT DISTINCT ON (").append(kColumn.sb).append(")");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessSelectDistinctOn(kColumn);
+        }
     }
     
-    private void processSelectDistinctOn(
+    private void process(
         final int n
     ) {
-        KUtils.assertNotNull(n, "n");
+        KQueryUtils.processSelectDistinctOn(
+            this.kQueryData, 
+            n
+        );
         
-        this.kQueryData.sb.append("SELECT DISTINCT ON (").append(n).append(")");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessSelectDistinctOn(n);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import java.util.ArrayList;
+
 public abstract class KQueryDelete {
     
     protected KExecutor k;
@@ -35,7 +37,7 @@ public abstract class KQueryDelete {
     protected <T extends KRow> KCollection<T> executeMapping(
         final Class<T> clazz
     ) {
-        return KQueryUtils.multipleMapping(this.k, this.kQueryDeleteData, clazz);
+        return KQueryUtils.multipleMapping(this.k, new ArrayList<>(), this.kQueryDeleteData, clazz);
     }
     
 }

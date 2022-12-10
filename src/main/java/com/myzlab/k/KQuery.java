@@ -3,30 +3,37 @@ package com.myzlab.k;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class KQuery {
     
     protected KExecutor k;
     protected KQueryData kQueryData;
+    protected final List<KSpecialFunction> kSpecialFunctions;
 
     protected KQuery() {
         this.kQueryData = new KQueryData();
+        this.kSpecialFunctions = new ArrayList<>();
     }
     
     protected KQuery(
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
-        this.kQueryData = new KQueryData();
         this.k = kExecutor;
+        this.kQueryData = new KQueryData();
+        this.kSpecialFunctions = kSpecialFunctions;
     }
     
     public KQuery(
         final KQueryData kQueryData,
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
-        this.kQueryData = kQueryData;
         this.k = kExecutor;
+        this.kQueryData = kQueryData;
+        this.kSpecialFunctions = kSpecialFunctions;
     }
     
     private <T extends KRow> T singleMappingKRow(
@@ -104,7 +111,7 @@ public abstract class KQuery {
     public <T extends KRow> KCollection<T> multiple(
         final Class<T> clazz
     ) {
-        return KQueryUtils.multipleMapping(this.k, this.kQueryData, clazz);
+        return KQueryUtils.multipleMapping(this.k, this.kSpecialFunctions, this.kQueryData, clazz);
     }
     
     public KCollection<KRow> multiple() {

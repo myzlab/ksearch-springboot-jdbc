@@ -1,15 +1,20 @@
 package com.myzlab.k;
 
+import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
+import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
+import com.myzlab.k.allowed.KQueryAllowedToCombining;
+import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.stream.Collectors;
 import org.springframework.jdbc.core.SqlTypeValue;
 
 public class KQueryUtils {
@@ -281,6 +286,7 @@ public class KQueryUtils {
     
     protected static <T extends KRow> KCollection<T> multipleMapping(
         final KExecutor k,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryGenericData kQueryGenericData,
         final Class<T> clazz
     ) {
@@ -302,7 +308,13 @@ public class KQueryUtils {
                 return mapObject(kQueryGenericData, resultSet, paths, clazz);
             });
         
-        return new KCollection<>(list);
+        final KCollection kCollection = new KCollection<>(list);
+        
+        for (KSpecialFunction kSpecialFunction : kSpecialFunctions) {
+            kSpecialFunction.executeOnMultipleMapping(k, kCollection);
+        }
+        
+        return kCollection;
     }
     
     protected static int executeSingle(
@@ -319,5 +331,407 @@ public class KQueryUtils {
         }
         
         return k.getJdbc().update(kQueryGenericData.sb.toString(), KQueryUtils.getParams(kQueryGenericData), KQueryUtils.getArgTypes(kQueryGenericData));
+    }
+    
+    protected static void processWith(
+        final KQueryData kQueryData,
+        final boolean recursive,
+        final KCommonTableExpressionFilled... kCommonTableExpressionsFilled
+    ) {
+        KUtils.assertNotNullNotEmpty(kCommonTableExpressionsFilled, "kCommonTableExpressionsFilled", false);
+        
+        kQueryData.sb.append("WITH ").append(recursive ? "RECURSIVE " : "");
+        
+        for (int i = 0; i < kCommonTableExpressionsFilled.length; i++) {
+            final KCommonTableExpressionFilled kCommonTableExpressionFilled = kCommonTableExpressionsFilled[i];
+            
+            if (i > 0) {
+                kQueryData.sb.append(", ");
+            }
+            
+            kQueryData.sb.append(kCommonTableExpressionFilled.name);
+            
+            final String[] columns = kCommonTableExpressionFilled.columns;
+            
+            if (columns != null && columns.length > 0) {
+                kQueryData.sb.append(" (");
+
+                for (int j = 0; j < columns.length; j++) {
+                    if (j > 0) {
+                        kQueryData.sb.append(", ");
+                    }
+
+                    kQueryData.sb.append(columns[j]);
+                }
+
+                kQueryData.sb.append(")");
+            }
+            
+            kQueryData.sb.append(" AS ");
+            
+            if (kCommonTableExpressionFilled.kValues != null) {
+                KQueryUtils.processValuesWith(kQueryData, kCommonTableExpressionFilled.kValues.values);
+
+                return;
+            }
+            
+            KQueryUtils.processKQueryWith(kQueryData, kCommonTableExpressionFilled.kQuery);
+        }
+    }
+    
+    protected static void processValuesWith(
+        final KQueryData kQueryData,
+        final List<List<Object>> allValues
+    ) {
+        kQueryData.sb.append("(VALUES ");
+            
+        for (int i = 0; i < allValues.size(); i++) {
+            final List<Object> values = allValues.get(i);
+            
+            if (i > 0) {
+                kQueryData.sb.append(", ");
+            }
+
+            kQueryData.sb.append("(");
+
+            for (int j = 0; j < values.size(); j++) {
+                if (j > 0) {
+                    kQueryData.sb.append(", ");
+                }
+                
+                if (values.get(j) instanceof KRaw) {
+                    kQueryData.sb.append(((KRaw) values.get(j)).content);
+                } else {
+                    kQueryData.sb.append("?");
+                    kQueryData.params.add(values.get(j));
+                }
+                
+            }
+
+            kQueryData.sb.append(")");
+        }
+
+        kQueryData.sb.append(")");
+    }
+    
+    protected static void processKQueryWith(
+        final KQueryData kQueryData,
+        final KQuery kQuery
+    ) {
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kQueryData.sb.append("(").append(subQuery.sb).append(")");
+        
+        kQueryData.params.addAll(subQuery.params);
+    }
+    
+    protected static void processSelectDistinctOn(
+        final KQueryData kQueryData,
+        final KColumn kColumn
+    ) {
+        KUtils.assertNotNull(kColumn, "kColumn");
+        
+        kQueryData.distinctOn = true;
+        kQueryData.params.addAll(kColumn.params);
+        kQueryData.sb.append(kQueryData.sb.length() > 0 ? " " : "").append("SELECT DISTINCT ON (").append(kColumn.sb).append(")");
+    }
+    
+    protected static void processSelectDistinctOn(
+        final KQueryData kQueryData,
+        final int n
+    ) {
+        KUtils.assertNotNull(n, "n");
+        
+        kQueryData.sb.append("SELECT DISTINCT ON (").append(n).append(")");
+    }
+    
+    protected static void processSelect(
+        final KQueryData kQueryData,
+        final boolean distinct,
+        final List<KBaseColumn> kBaseColumns
+    ) {
+        kQueryData.kBaseColumns.addAll(kBaseColumns);
+        
+        if (kQueryData.sb.length() > 0 && kQueryData.columnsAdded == 0) {
+            kQueryData.sb.append(" ");
+        }
+        
+        if (kQueryData.columnsAdded == 0 && !kQueryData.distinctOn) {
+            kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
+        }
+        
+        for (final KBaseColumn kBaseColumn : kBaseColumns) {
+            if (kQueryData.columnsAdded > 0) {
+                kQueryData.sb.append(", ");
+            }
+            
+            kQueryData.columnsAdded++;
+            kQueryData.params.addAll(kBaseColumn.params);
+            
+            kQueryData.sb.append(kBaseColumn.sb);
+        }
+    }
+    
+    protected static void processSelect(
+        final KQueryData kQueryData,
+        final boolean distinct,
+        final KQuery kQuery,
+        final String alias
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        KUtils.assertNotNull(alias, "alias");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        kQueryData.kBaseColumns.add(new KColumn(subQuery.sb, subQuery.params, false).as(alias));
+        
+        if (kQueryData.sb.length() > 0 && kQueryData.columnsAdded == 0) {
+            kQueryData.sb.append(" ");
+        }
+        
+        if (kQueryData.columnsAdded == 0 && !kQueryData.distinctOn) {
+            kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
+        }
+        
+        if (kQueryData.columnsAdded > 0) {
+            kQueryData.sb.append(", ");
+        }
+
+        kQueryData.columnsAdded++;
+        kQueryData.params.addAll(subQuery.params);
+
+        kQueryData.sb.append("(").append(subQuery.sb).append(") AS ").append(alias);
+    }
+    
+    protected static void processFrom(
+        final KQueryData kQueryData,
+        final KTable kTable
+    ) {
+        if (kTable == null) {
+            throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
+        }
+        
+        if (kTable.isRoot) {
+            kQueryData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        }
+        
+        if (kQueryData.tablesAdded == 0) {
+            kQueryData.sb.append(" FROM ");
+        } else {
+            kQueryData.sb.append(", ");
+        }
+        
+        kQueryData.tablesAdded++;
+        
+        if (kTable.kQueryData != null) {
+            kQueryData.params.addAll(kTable.kQueryData.params);
+        }
+            
+        kQueryData.sb.append(kTable.toSql(true));
+    }
+    
+    protected static void processGeneralJoinFrom(
+        final KQueryData kQueryData,
+        final String joinName,
+        final KJoinDefinition kJoinDefinition
+    ) {
+        KUtils.assertNotNull(kJoinDefinition, "kJoinDefinition");
+        
+        if (kJoinDefinition.params != null) {
+            kQueryData.params.addAll(kJoinDefinition.params);
+        }
+        
+        kQueryData.sb.append(" ").append(joinName).append(" ").append(kJoinDefinition.table).append(" ON (").append(kJoinDefinition.kCondition.sb).append(")");
+        kQueryData.params.addAll(kJoinDefinition.kCondition.params);
+        
+        if (kJoinDefinition.kEdge != null) {
+            kQueryData.kEdges.add(kJoinDefinition.kEdge);
+        }
+    }
+    
+    protected static void processGeneralJoinFrom(
+        final KQueryData kQueryData,
+        final String joinName,
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        kQueryData.sb.append(" ").append(joinName).append(" ").append(kRaw.content);
+    }
+    
+    protected static void processCrossJoinFrom(
+        final KQueryData kQueryData,
+        final KTable kTable
+    ) {
+        KUtils.assertNotNull(kTable, "kTable");
+        
+        if (kTable.kQueryData != null) {
+            kQueryData.params.addAll(kTable.kQueryData.params);
+        }
+        
+        kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql(true));
+    }
+    
+    protected static void processCrossJoinFrom(
+        final KQueryData kQueryData,
+        final KRaw kRaw
+    ) {
+        KUtils.assertNotNull(kRaw, "kRaw");
+        
+        kQueryData.sb.append(" CROSS JOIN ").append(kRaw.content);
+    }
+    
+    protected static void buildWhere(
+        final KQueryData kQueryData,
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        if (kCondition.emptyCondition) {
+            return;
+        }
+        
+        kQueryData.sb.append(" WHERE ").append(kCondition.toSql());
+        kQueryData.params.addAll(kCondition.params);
+    }
+    
+    protected static void processGroupBy(
+        final KQueryData kQueryData,
+        final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
+    ) {
+        if (kColumnsAllowedToGroupBy == null || kColumnsAllowedToGroupBy.length == 0) {
+            throw KExceptionHelper.internalServerError("The 'KColumnsAllowedToGroupBy' param is required"); 
+        }
+        
+        kQueryData.sb.append(" GROUP BY ");
+        
+        for (int i = 0; i < kColumnsAllowedToGroupBy.length; i++) {
+            final KColumnAllowedToGroupBy kColumnAllowedToGroupBy = kColumnsAllowedToGroupBy[i];
+            
+            if (kColumnAllowedToGroupBy == null) {
+                throw KExceptionHelper.internalServerError("'kColumnAllowedToGroupBy' is required");
+            }
+            
+            if (i > 0) {
+                kQueryData.sb.append(", ");
+            }
+            
+            kQueryData.params.addAll(kColumnAllowedToGroupBy.getParams());
+            kQueryData.sb.append(kColumnAllowedToGroupBy.getSqlToGroupBy());
+        }
+    }
+    
+    protected static void buildHaving(
+        final KQueryData kQueryData,
+        final KCondition kCondition
+    ) {
+        KUtils.assertNotNull(kCondition, "kCondition");
+        
+        if (kCondition.emptyCondition) {
+            return;
+        }
+        
+        kQueryData.sb.append(" HAVING ").append(kCondition.toSql());
+        kQueryData.params.addAll(kCondition.params);
+    }
+    
+    protected static void buildWindow(
+        final KQueryData kQueryData,
+        final List<KWindowDefinitionAllowedToWindow> kWindowDefinitionsAllowedToWindow
+    ) {
+        kQueryData.sb.append(" WINDOW ");
+        
+        for (int i = 0; i < kWindowDefinitionsAllowedToWindow.size(); i++) {
+            final KWindowDefinitionAllowedToWindow kWindowDefinitionAllowedToWindow = kWindowDefinitionsAllowedToWindow.get(i);
+
+            if (kWindowDefinitionAllowedToWindow == null) {
+                throw KExceptionHelper.internalServerError("'kWindowDefinitionAllowedToWindow' is required");
+            }
+            
+            if (i > 0) {
+                kQueryData.sb.append(", ");
+            }
+            
+            kQueryData.sb.append(kWindowDefinitionAllowedToWindow.getName()).append(" AS (").append(kWindowDefinitionAllowedToWindow.getSql()).append(")");
+        }
+    }
+    
+    protected static void processCombining(
+        final KQueryData kQueryData,
+        final KQueryAllowedToCombining kQueryAllowedToCombining,
+        final String function,
+        final boolean all
+    ) {
+        KUtils.assertNotNull(kQueryAllowedToCombining, "kQueryAllowedToCombining");
+        
+        final KQueryData subQuery = kQueryAllowedToCombining.generateSubQueryData();
+        
+        kQueryData.params.addAll(subQuery.params);
+        
+        kQueryData.sb.append(" ").append(function).append(all ? " ALL" : "").append(" (").append(subQuery.sb).append(")");
+    }
+    
+    protected static void processOrderBy(
+        final KQueryData kQueryData,
+        final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
+    ) {
+        KUtils.assertNotNullNotEmpty(kColumnsAllowedToOrderBy, "kColumnsAllowedToOrderBy", false);
+        
+        final List<KColumnAllowedToOrderBy> kColumnsAllowedToOrderByList =
+            Arrays.asList(kColumnsAllowedToOrderBy)
+                .stream()
+                .filter(s-> s.getSqlToOrderBy() != null)
+                .collect(Collectors.toList());
+        
+        if (kColumnsAllowedToOrderByList.isEmpty()) {
+            return;
+        }
+        
+        kQueryData.sb.append(" ORDER BY ");
+        
+        for (int i = 0; i < kColumnsAllowedToOrderByList.size(); i++) {
+            final KColumnAllowedToOrderBy kColumnAllowedToOrderBy = kColumnsAllowedToOrderByList.get(i);
+            
+            if (i > 0) {
+                kQueryData.sb.append(", ");
+            }
+            
+            kQueryData.params.addAll(kColumnAllowedToOrderBy.getParams());
+            kQueryData.sb.append(kColumnAllowedToOrderBy.getSqlToOrderBy());
+        }
+    }
+    
+    protected static void processLimit(
+        final KQueryData kQueryData,
+        final long count
+    ) {
+        kQueryData.sb.append(" LIMIT ").append(count);
+    }
+    
+    protected static void processOffset(
+        final KQueryData kQueryData,
+        final long start
+    ) {
+        kQueryData.sb.append(" OFFSET ").append(start);
+    }
+    
+    protected static void processFetch(
+        final KQueryData kQueryData,
+        final long rowCount
+    ) {
+        
+        kQueryData.sb.append(" FETCH FIRST ");
+        
+        if (rowCount > 1L) {
+            kQueryData.sb.append(rowCount).append(" ");
+        }
+        
+        kQueryData.sb.append("ROW");
+        
+        if (rowCount > 1L) {
+            kQueryData.sb.append("S");
+        }
+        
+        kQueryData.sb.append(" ONLY");
     }
 }

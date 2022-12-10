@@ -35,22 +35,6 @@ public class KUtils {
         if (o == null) {
             throw KExceptionHelper.internalServerError("The '" + name + "' param is required"); 
         }
-        
-        if (o instanceof Object[]) {
-            for (final Object o_ : (Object[]) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
-        }
-        
-        if (o instanceof Collection) {
-            for (final Object o_ : (Collection) o) {
-                if (o_ == null) {
-                    throw KExceptionHelper.internalServerError("The '" + name + "' param cannot contain null values"); 
-                }
-            }
-        }
     }
     
     protected static void assertNotNullNotEmpty(

@@ -5,26 +5,30 @@ import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
+import com.myzlab.k.optional.KOptionalLong;
 import java.util.ArrayList;
 import java.util.List;
 
 public class KSelect extends KQuery implements KQueryAllowedToCombining {
     
     private KSelect(
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
-        super(kExecutor);
+        super(kExecutor, kSpecialFunctions);
     }
     
     private KSelect(
         final KQueryData kQueryData,
-        final KExecutor kExecutor
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
     }
     
     protected static KSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
         KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
@@ -35,49 +39,16 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
             kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
         }
          
-        final KSelect kSelect = new KSelect(kExecutor);
-        kSelect.kQueryData.kBaseColumns.addAll(kBaseColumns);
+        final KSelect kSelect = new KSelect(kExecutor, kSpecialFunctions);
         
         kSelect.process(false, kBaseColumns);
         
         return kSelect;
     }
     
-//    protected static KSelect getInstance(
-//        final KInitializer kBuilder,
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        final KSelect kSelect = new KSelect(kExecutor);
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
-//        
-//        kSelect.process(false, kBaseColumns);
-//        
-//        return kSelect;
-//    }
-//    
-//    protected static KSelect getInstance(
-//        final KInitializer kBuilder,
-//        final KRaw... kRaws
-//    ) {
-//        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
-//        
-//        final KSelect kSelect = new KSelect(kExecutor);
-//        
-//        final KColumn[] kColumns = new KColumn[kRaws.length];
-//        
-//        for (int i = 0; i < kRaws.length; i++) {
-//            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
-//        }
-//        
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
-//        
-//        kSelect.process(false, kColumns);
-//        
-//        return kSelect;
-//    }
-    
     protected static KSelect getDistinctInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
         KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
@@ -88,118 +59,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
             kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
         }
          
-        final KSelect kSelect = new KSelect(kExecutor);
-        kSelect.kQueryData.kBaseColumns.addAll(kBaseColumns);
-        
-        kSelect.process(true, kBaseColumns);
-        
-        return kSelect;
-    }
-    
-//    protected static KSelect getDistinctInstance(
-//        final KInitializer kBuilder,
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        final KSelect kSelect = new KSelect(kExecutor);
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
-//        
-//        kSelect.process(true, kBaseColumns);
-//        
-//        return kSelect;
-//    }
-//    
-//    protected static KSelect getDistinctInstance(
-//        final KInitializer kBuilder,
-//        final KRaw... kRaws
-//    ) {
-//        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
-//        
-//        final KSelect kSelect = new KSelect(kExecutor);
-//        
-//        final KColumn[] kColumns = new KColumn[kRaws.length];
-//        
-//        for (int i = 0; i < kRaws.length; i++) {
-//            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
-//        }
-//        
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
-//        
-//        kSelect.process(true, kColumns);
-//        
-//        return kSelect;
-//    }
-    
-//    protected static KSelect getInstance(
-//        final KInitializer kBuilder,
-//        final KQueryData kQueryData,
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
-//        
-//        kSelect.process(false, kBaseColumns);
-//        
-//        return kSelect;
-//    }
-    
-    protected static KSelect getInstance(
-        final KExecutor kExecutor,
-        final KQueryData kQueryData,
-        final KColumnAllowedToSelect... kColumnsAllowedToSelect
-    ) {
-        KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
-         
-        final List<KBaseColumn> kBaseColumns = new ArrayList<>();
-        
-        for (final KColumnAllowedToSelect kColumnAllowedToSelect : kColumnsAllowedToSelect) {
-            kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
-        }
-         
-        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
-        kSelect.kQueryData.kBaseColumns.addAll(kBaseColumns);
-        
-        kSelect.process(false, kBaseColumns);
-        
-        return kSelect;
-    }
-    
-//    protected static KSelect getInstance(
-//        final KInitializer kBuilder,
-//        final KQueryData kQueryData,
-//        final KRaw... kRaws
-//    ) {
-//        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
-//        
-//        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
-//        
-//        final KColumn[] kColumns = new KColumn[kRaws.length];
-//        
-//        for (int i = 0; i < kRaws.length; i++) {
-//            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
-//        }
-//        
-//        kSelect.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
-//        
-//        kSelect.process(false, kColumns);
-//        
-//        return kSelect;
-//    }
-    
-    protected static KSelect getDistinctInstance(
-        final KExecutor kExecutor,
-        final KQueryData kQueryData,
-        final KColumnAllowedToSelect... kColumnsAllowedToSelect
-    ) {
-        KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
-        
-        final List<KBaseColumn> kBaseColumns = new ArrayList<>();
-        
-        for (final KColumnAllowedToSelect kColumnAllowedToSelect : kColumnsAllowedToSelect) {
-            kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
-        }
-        
-        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
-        kSelect.kQueryData.kBaseColumns.addAll(kBaseColumns);
+        final KSelect kSelect = new KSelect(kExecutor, kSpecialFunctions);
         
         kSelect.process(true, kBaseColumns);
         
@@ -208,10 +68,53 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     
     protected static KSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData,
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
+    ) {
+        KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
+         
+        final List<KBaseColumn> kBaseColumns = new ArrayList<>();
+        
+        for (final KColumnAllowedToSelect kColumnAllowedToSelect : kColumnsAllowedToSelect) {
+            kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
+        }
+         
+        final KSelect kSelect = new KSelect(kQueryData, kExecutor, kSpecialFunctions);
+        
+        kSelect.process(false, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    protected static KSelect getDistinctInstance(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData,
+        final KColumnAllowedToSelect... kColumnsAllowedToSelect
+    ) {
+        KUtils.assertNotNullNotEmpty(kColumnsAllowedToSelect, "kColumnsAllowedToSelect", false);
+        
+        final List<KBaseColumn> kBaseColumns = new ArrayList<>();
+        
+        for (final KColumnAllowedToSelect kColumnAllowedToSelect : kColumnsAllowedToSelect) {
+            kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
+        }
+        
+        final KSelect kSelect = new KSelect(kQueryData, kExecutor, kSpecialFunctions);
+        
+        kSelect.process(true, kBaseColumns);
+        
+        return kSelect;
+    }
+    
+    protected static KSelect getInstance(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQuery kQuery,
         final String alias
     ) {
-        final KSelect kSelect = new KSelect(kExecutor);
+        final KSelect kSelect = new KSelect(kExecutor, kSpecialFunctions);
         
         kSelect.process(false, kQuery, alias);
         
@@ -220,11 +123,12 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     
     protected static KSelect getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KQuery kQuery,
         final String alias
     ) {
-        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
+        final KSelect kSelect = new KSelect(kQueryData, kExecutor, kSpecialFunctions);
         
         kSelect.process(false, kQuery, alias);
         
@@ -233,10 +137,11 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     
     protected static KSelect getDistinctInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQuery kQuery,
         final String alias
     ) {
-        final KSelect kSelect = new KSelect(kExecutor);
+        final KSelect kSelect = new KSelect(kExecutor, kSpecialFunctions);
         
         kSelect.process(true, kQuery, alias);
         
@@ -245,11 +150,12 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     
     protected static KSelect getDistinctInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KQuery kQuery,
         final String alias
     ) {
-        final KSelect kSelect = new KSelect(kQueryData, kExecutor);
+        final KSelect kSelect = new KSelect(kQueryData, kExecutor, kSpecialFunctions);
         
         kSelect.process(true, kQuery, alias);
         
@@ -267,40 +173,10 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
             kBaseColumns.add(kColumnAllowedToSelect.getKBaseColumn());
         }
         
-        this.kQueryData.kBaseColumns.addAll(kBaseColumns);
-        
         this.process(false, kBaseColumns);
         
         return this;
     }
-    
-//    public KSelect select(
-//        final KBaseColumn... kBaseColumns
-//    ) {
-//        this.kQueryData.kBaseColumns.addAll(Arrays.asList(kBaseColumns));
-//        
-//        this.process(false, kBaseColumns);
-//        
-//        return this;
-//    }
-//    
-//    public KSelect select(
-//        final KRaw... kRaws
-//    ) {
-//        KUtils.assertNotNullNotEmpty(kRaws, "kRaws", false);
-//        
-//        final KColumn[] kColumns = new KColumn[kRaws.length];
-//        
-//        for (int i = 0; i < kRaws.length; i++) {
-//            kColumns[i] = new KColumn(new StringBuilder(kRaws[i].content), false);
-//        }
-//        
-//        this.kQueryData.kBaseColumns.addAll(Arrays.asList(kColumns));
-//        
-//        this.process(false, kColumns);
-//        
-//        return this;
-//    }
     
     public KSelect select(
         final KQuery kQuery,
@@ -314,7 +190,7 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     public KFrom from(
         final KTable kTable
     ) {
-        return KFrom.getInstance(this.k, this.kQueryData, kTable);
+        return KFrom.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kTable);
     }
     
     public KFrom from(
@@ -322,114 +198,135 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
     ) {
         KUtils.assertNotNullNotEmpty(kRaw, "kRaw", false);
         
-        return KFrom.getInstance(this.k, this.kQueryData, new KTable(null, kRaw.content, null));
+        return KFrom.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, new KTable(null, kRaw.content, null));
     }
     
     public KFrom from(
         final KCommonTableExpressionAliased kCommonTableExpressionAliased
     ) {
-        return KFrom.getInstance(this.k, this.kQueryData, new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
+        return KFrom.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, new KTable(null, kCommonTableExpressionAliased.name, kCommonTableExpressionAliased.alias));
     }
     
     public KGroupBy groupBy(
         final KColumnAllowedToGroupBy... KColumnsAllowedToGroupBy
     ) {
-        return KGroupBy.getInstance(this.k, this.kQueryData, KColumnsAllowedToGroupBy);
+        return KGroupBy.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, KColumnsAllowedToGroupBy);
     }
     
     public KCombining union(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
     public KCombining unionAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
     public KCombining intersect(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
     }
     
     public KCombining intersectAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
     }
     
     public KCombining except(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
     }
     
     public KCombining exceptAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return KOrderBy.getInstance(this.k, kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kSpecialFunctions, kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(this.k, kQueryData, count);
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, kQueryData, count);
+    }
+    
+    public KLimit limit(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(this.k, kQueryData, start);
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, kQueryData, start);
+    }
+    
+    public KOffset offset(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(this.k, kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, kQueryData, rowCount);
+    }
+    
+    public KFetch fetch(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KWhere where(
         final KCondition kCondition
     ) {
-        return KWhere.getInstance(this.k, this.kQueryData, kCondition);
+        return KWhere.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kCondition);
     }
     
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return KWindow.getInstance(this.k, kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kSpecialFunctions, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     private void process(
         final boolean distinct,
         final List<KBaseColumn> kBaseColumns
-    ) { 
-        if (this.kQueryData.sb.length() > 0 && this.kQueryData.columnsAdded == 0) {
-            this.kQueryData.sb.append(" ");
-        }
+    ) {
+        KQueryUtils.processSelect(
+            this.kQueryData, 
+            distinct,
+            kBaseColumns
+        );
         
-        if (this.kQueryData.columnsAdded == 0 && !this.kQueryData.distinctOn) {
-            this.kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
-        }
-        
-        for (final KBaseColumn kBaseColumn : kBaseColumns) {
-            if (this.kQueryData.columnsAdded > 0) {
-                this.kQueryData.sb.append(", ");
-            }
-            
-            this.kQueryData.columnsAdded++;
-            this.kQueryData.params.addAll(kBaseColumn.params);
-            
-            this.kQueryData.sb.append(kBaseColumn.sb);
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessSelect(distinct, kBaseColumns);
         }
     }
     
@@ -438,29 +335,16 @@ public class KSelect extends KQuery implements KQueryAllowedToCombining {
         final KQuery kQuery,
         final String alias
     ) {
-        KUtils.assertNotNull(kQuery, "kQuery");
-        KUtils.assertNotNull(alias, "alias");
+        KQueryUtils.processSelect(
+            this.kQueryData, 
+            distinct,
+            kQuery,
+            alias
+        );
         
-        final KQueryData subQuery = kQuery.generateSubQueryData();
-        
-        this.kQueryData.kBaseColumns.add(new KColumn(subQuery.sb, subQuery.params, false).as(alias));
-        
-        if (this.kQueryData.sb.length() > 0 && this.kQueryData.columnsAdded == 0) {
-            this.kQueryData.sb.append(" ");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessSelect(distinct, kQuery, alias);
         }
-        
-        if (this.kQueryData.columnsAdded == 0 && !this.kQueryData.distinctOn) {
-            this.kQueryData.sb.append("SELECT ").append(distinct ? "DISTINCT " : "");
-        }
-        
-        if (this.kQueryData.columnsAdded > 0) {
-            this.kQueryData.sb.append(", ");
-        }
-
-        this.kQueryData.columnsAdded++;
-        this.kQueryData.params.addAll(subQuery.params);
-
-        this.kQueryData.sb.append("(").append(subQuery.sb).append(") AS ").append(alias);
     }
 
     @Override

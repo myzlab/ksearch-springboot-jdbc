@@ -3,33 +3,35 @@ package com.myzlab.k;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
-import com.myzlab.k.helper.KExceptionHelper;
+import com.myzlab.k.optional.KOptionalLong;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class KWindow extends KQuery implements KQueryAllowedToCombining {
     
-    final List<KWindowDefinitionAllowedToWindow> KWindowDefinitionsAllowedToWindow = new ArrayList<>();
+    final List<KWindowDefinitionAllowedToWindow> kWindowDefinitionsAllowedToWindow = new ArrayList<>();
     
     private KWindow(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
         
         KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
-        this.KWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
+        this.kWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
     }
     
     protected static KWindow getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return new KWindow(kExecutor, kQueryData, KWindowDefinitionsAllowedToWindow);
+        return new KWindow(kExecutor, kSpecialFunctions, kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KWindow window(
@@ -37,7 +39,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         KUtils.assertNotNull(KWindowDefinitionsAllowedToWindow, "KWindowDefinitionsAllowedToWindow");
         
-        this.KWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
+        this.kWindowDefinitionsAllowedToWindow.addAll(Arrays.asList(KWindowDefinitionsAllowedToWindow));
         
         return this;
     }
@@ -47,7 +49,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
     public KCombining unionAll(
@@ -55,7 +57,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
     public KCombining intersect(
@@ -63,7 +65,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
     }
     
     public KCombining intersectAll(
@@ -71,7 +73,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
     }
     
     public KCombining except(
@@ -79,7 +81,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
     }
     
     public KCombining exceptAll(
@@ -87,7 +89,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
@@ -95,7 +97,7 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
@@ -103,7 +105,19 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KLimit.getInstance(this.k, this.kQueryData, count);
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, count);
+    }
+    
+    public KLimit limit(
+        final KOptionalLong kOptionalLong
+    ) {
+        this.buildWindow();
+        
+        if (!kOptionalLong.isPresent()) {
+            return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KOffset offset(
@@ -111,7 +125,19 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KOffset.getInstance(this.k, this.kQueryData, start);
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, start);
+    }
+    
+    public KOffset offset(
+        final KOptionalLong kOptionalLong
+    ) {
+        this.buildWindow();
+        
+        if (!kOptionalLong.isPresent()) {
+            return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KFetch fetch(
@@ -119,30 +145,27 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     ) {
         this.buildWindow();
         
-        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, rowCount);
+    }
+    
+    public KFetch fetch(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     private void buildWindow() {
-        this.buildWindow(this.kQueryData);
-    }
-    
-    private void buildWindow(
-        final KQueryData kQueryData
-    ) {
-        kQueryData.sb.append(" WINDOW ");
+        KQueryUtils.buildWindow(
+            this.kQueryData, 
+            this.kWindowDefinitionsAllowedToWindow
+        );
         
-        for (int i = 0; i < KWindowDefinitionsAllowedToWindow.size(); i++) {
-            final KWindowDefinitionAllowedToWindow kWindowDefinitionAllowedToWindow = KWindowDefinitionsAllowedToWindow.get(i);
-
-            if (kWindowDefinitionAllowedToWindow == null) {
-                throw KExceptionHelper.internalServerError("'kWindowDefinitionAllowedToWindow' is required");
-            }
-            
-            if (i > 0) {
-                kQueryData.sb.append(", ");
-            }
-            
-            kQueryData.sb.append(kWindowDefinitionAllowedToWindow.getName()).append(" AS (").append(kWindowDefinitionAllowedToWindow.getSql()).append(")");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onBuildWindow(this.kWindowDefinitionsAllowedToWindow);
         }
     }
     
@@ -168,7 +191,10 @@ public class KWindow extends KQuery implements KQueryAllowedToCombining {
     public KQueryData generateSubQueryData() {
         final KQueryData newKQueryData = this.kQueryData.cloneMe();
         
-        this.buildWindow(newKQueryData);
+        KQueryUtils.buildWindow(
+            newKQueryData, 
+            this.kWindowDefinitionsAllowedToWindow
+        );
         
         return newKQueryData;
     }

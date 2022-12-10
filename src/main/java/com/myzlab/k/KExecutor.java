@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
+import java.util.ArrayList;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class KExecutor {
@@ -43,44 +44,44 @@ public class KExecutor {
         final KQuery kQuery,
         final String alias
     ) {
-        return KSelect.getInstance(this, kQuery, alias);
+        return KSelect.getInstance(this, new ArrayList<>(), kQuery, alias);
     }
     
     public KSelect selectDistinct(
         final KQuery kQuery,
         final String alias
     ) {
-        return KSelect.getDistinctInstance(this, kQuery, alias);
+        return KSelect.getDistinctInstance(this, new ArrayList<>(), kQuery, alias);
     }
     
     public KSelect select(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getInstance(this, kColumnsAllowedToSelect);
+        return KSelect.getInstance(this, new ArrayList<>(), kColumnsAllowedToSelect);
     }
     
     public KSelect selectDistinct(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getDistinctInstance(this, kColumnsAllowedToSelect);
+        return KSelect.getDistinctInstance(this, new ArrayList<>(), kColumnsAllowedToSelect);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn
     ) {
-        return KDistinctOnSelect.getInstance(this, kColumn);
+        return KDistinctOnSelect.getInstance(this, new ArrayList<>(), kColumn);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KRaw kRaw
     ) {
-        return KDistinctOnSelect.getInstance(this, kRaw);
+        return KDistinctOnSelect.getInstance(this, new ArrayList<>(), kRaw);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final int n
     ) {
-        return KDistinctOnSelect.getInstance(this, n);
+        return KDistinctOnSelect.getInstance(this, new ArrayList<>(), n);
     }
     
     public KDeleteFrom deleteFrom(

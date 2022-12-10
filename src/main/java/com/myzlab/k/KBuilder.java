@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
+import java.util.ArrayList;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -12,8 +13,14 @@ public abstract class KBuilder {
         return KExecutor.getInstance(this, jdbc);
     }
     
-    private KExecutor jdbc() {
+    protected KExecutor jdbc() {
         return KExecutor.getInstance(this, this.getJdbcTemplateDefaultName());
+    }
+    
+    public KSpecialBuilder sf(
+        final KSpecialFunction kSpecialFunction
+    ) {
+        return KSpecialBuilder.getInstance(this, kSpecialFunction);
     }
     
     public KWith with(
@@ -32,44 +39,44 @@ public abstract class KBuilder {
         final KQuery kQuery,
         final String alias
     ) {
-        return KSelect.getInstance(jdbc(), kQuery, alias);
+        return KSelect.getInstance(jdbc(), new ArrayList<>(), kQuery, alias);
     }
     
     public KSelect selectDistinct(
         final KQuery kQuery,
         final String alias
     ) {
-        return KSelect.getDistinctInstance(jdbc(), kQuery, alias);
+        return KSelect.getDistinctInstance(jdbc(), new ArrayList<>(), kQuery, alias);
     }
     
     public KSelect select(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getInstance(jdbc(), kColumnsAllowedToSelect);
+        return KSelect.getInstance(jdbc(), new ArrayList<>(), kColumnsAllowedToSelect);
     }
     
     public KSelect selectDistinct(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {
-        return KSelect.getDistinctInstance(jdbc(), kColumnsAllowedToSelect);
+        return KSelect.getDistinctInstance(jdbc(), new ArrayList<>(), kColumnsAllowedToSelect);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KColumn kColumn
     ) {
-        return KDistinctOnSelect.getInstance(jdbc(), kColumn);
+        return KDistinctOnSelect.getInstance(jdbc(), new ArrayList<>(), kColumn);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final KRaw kRaw
     ) {
-        return KDistinctOnSelect.getInstance(jdbc(), kRaw);
+        return KDistinctOnSelect.getInstance(jdbc(), new ArrayList<>(), kRaw);
     }
     
     public KDistinctOnSelect selectDistinctOn(
         final int n
     ) {
-        return KDistinctOnSelect.getInstance(jdbc(), n);
+        return KDistinctOnSelect.getInstance(jdbc(), new ArrayList<>(), n);
     }
     
     public KDeleteFrom deleteFrom(

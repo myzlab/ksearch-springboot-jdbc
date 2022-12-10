@@ -72,6 +72,8 @@ public class KSetUpdate extends KQueryUpdate {
         final KColumn kColumn,
         final KColumnAllowedToSetUpdate kColumnAllowedToSetUpdate
     ) {
+        KUtils.assertNotNull(kColumnAllowedToSetUpdate, "kColumnAllowedToSetUpdate");
+        
         this.process(kColumn, kColumnAllowedToSetUpdate);
         
         return this;
@@ -92,7 +94,20 @@ public class KSetUpdate extends KQueryUpdate {
         final KColumn kColumn,
         final KQuery kQuery
     ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
         this.process(kColumn, kQuery);
+        
+        return this;
+    }
+    
+    public KSetUpdate set(
+        final KColumn kColumn,
+        final Object object
+    ) {
+        KUtils.assertNotNull(object, "object");
+        
+        this.process(kColumn, new KColumn(new StringBuilder(object.toString()), false));
         
         return this;
     }

@@ -5,6 +5,8 @@ import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
+import com.myzlab.k.optional.KOptionalLong;
+import java.util.List;
 
 public class KFrom extends KQuery implements KQueryAllowedToCombining {
     
@@ -14,20 +16,22 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     
     private KFrom(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KTable kTable
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
         
         this.process(kTable);
     }
     
     protected static KFrom getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KTable kTable
     ) {
-        return new KFrom(kExecutor, kQueryData, kTable);
+        return new KFrom(kExecutor, kSpecialFunctions, kQueryData, kTable);
     }
     
     public KFrom crossJoin(
@@ -148,7 +152,7 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
     public KWhere where(
         final KCondition kCondition
     ) {
-        return KWhere.getInstance(this.k, this.kQueryData, kCondition);
+        return KWhere.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kCondition);
     }
     
     public KWhere where(
@@ -158,122 +162,136 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         
         final KCondition kCondition = new KCondition(kRaw.content);
         
-        return KWhere.getInstance(this.k, this.kQueryData, kCondition);
+        return KWhere.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kCondition);
     }
     
     public KGroupBy groupBy(
         final KColumnAllowedToGroupBy... kColumnsAllowedToGroupBy
     ) {
-        return KGroupBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToGroupBy);
+        return KGroupBy.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kColumnsAllowedToGroupBy);
     }
     
     public KWindow window(
         final KWindowDefinitionAllowedToWindow... KWindowDefinitionsAllowedToWindow
     ) {
-        return KWindow.getInstance(this.k, this.kQueryData, KWindowDefinitionsAllowedToWindow);
+        return KWindow.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, KWindowDefinitionsAllowedToWindow);
     }
     
     public KCombining union(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
     public KCombining unionAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
     public KCombining intersect(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
     }
     
     public KCombining intersectAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
     }
     
     public KCombining except(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
     }
     
     public KCombining exceptAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(this.k, this.kQueryData, count);
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, count);
+    }
+    
+    public KLimit limit(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(this.k, this.kQueryData, start);
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, start);
+    }
+    
+    public KOffset offset(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, rowCount);
+    }
+    
+    public KFetch fetch(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     private void process(
         final KTable kTable
     ) {
-        if (kTable == null) {
-            throw KExceptionHelper.internalServerError("The 'kTable' param is required"); 
-        }
+        KQueryUtils.processFrom(
+            this.kQueryData, 
+            kTable
+        );
         
-        if (kTable.isRoot) {
-            this.kQueryData.kNodes.add(KNode.getInstance(kTable.getKRowClass(), kTable.alias));
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessFrom(kTable);
         }
-        
-        if (this.kQueryData.tablesAdded == 0) {
-            this.kQueryData.sb.append(" FROM ");
-        } else {
-            this.kQueryData.sb.append(", ");
-        }
-        
-        this.kQueryData.tablesAdded++;
-        
-        if (kTable.kQueryData != null) {
-            this.kQueryData.params.addAll(kTable.kQueryData.params);
-        }
-            
-        this.kQueryData.sb.append(kTable.toSql(true));
     }
     
     private void processGeneralJoin(
         final String joinName,
         final KJoinDefinition kJoinDefinition
     ) {
-        KUtils.assertNotNull(kJoinDefinition, "kJoinDefinition");
+        KQueryUtils.processGeneralJoinFrom(
+            this.kQueryData, 
+            joinName,
+            kJoinDefinition
+        );
         
-        if (kJoinDefinition.params != null) {
-            this.kQueryData.params.addAll(kJoinDefinition.params);
-        }
-        
-        this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kJoinDefinition.table).append(" ON (").append(kJoinDefinition.kCondition.sb).append(")");
-        this.kQueryData.params.addAll(kJoinDefinition.kCondition.params);
-        
-        if (kJoinDefinition.kEdge != null) {
-            this.kQueryData.kEdges.add(kJoinDefinition.kEdge);
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessGeneralJoinFrom(joinName, kJoinDefinition);
         }
     }
     
@@ -281,29 +299,41 @@ public class KFrom extends KQuery implements KQueryAllowedToCombining {
         final String joinName,
         final KRaw kRaw
     ) {
-        KUtils.assertNotNull(kRaw, "kRaw");
+        KQueryUtils.processGeneralJoinFrom(
+            this.kQueryData, 
+            joinName,
+            kRaw
+        );
         
-        this.kQueryData.sb.append(" ").append(joinName).append(" ").append(kRaw.content);
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessGeneralJoinFrom(joinName, kRaw);
+        }
     }
     
     private void processCrossJoin(
         final KTable kTable
     ) {
-        KUtils.assertNotNull(kTable, "kTable");
+        KQueryUtils.processCrossJoinFrom(
+            this.kQueryData, 
+            kTable
+        );
         
-        if (kTable.kQueryData != null) {
-            this.kQueryData.params.addAll(kTable.kQueryData.params);
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessCrossJoinFrom(kTable);
         }
-        
-        this.kQueryData.sb.append(" CROSS JOIN ").append(kTable.toSql(true));
     }
     
     private void processCrossJoin(
         final KRaw kRaw
     ) {
-        KUtils.assertNotNull(kRaw, "kRaw");
+        KQueryUtils.processCrossJoinFrom(
+            this.kQueryData, 
+            kRaw
+        );
         
-        this.kQueryData.sb.append(" CROSS JOIN ").append(kRaw.content);
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessCrossJoinFrom(kRaw);
+        }
     }
     
     @Override

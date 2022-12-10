@@ -2,89 +2,123 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
+import com.myzlab.k.optional.KOptionalLong;
+import java.util.List;
 
 public class KCombining extends KQuery {
     
     private KCombining(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KQueryAllowedToCombining kQueryAllowedToCombining,
         final String function,
         final boolean all
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
         
         this.process(kQueryAllowedToCombining, function, all);
     }
     
     protected static KCombining getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
         final KQueryAllowedToCombining kQueryAllowedToCombining,
         final String function,
         final boolean all
     ) {
-        return new KCombining(kExecutor, kQueryData, kQueryAllowedToCombining, function, all);
+        return new KCombining(kExecutor, kSpecialFunctions, kQueryData, kQueryAllowedToCombining, function, all);
     }
 
     public KCombining union(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", false);
     }
     
     public KCombining unionAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "UNION", true);
     }
     
     public KCombining intersect(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", false);
     }
     
     public KCombining intersectAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "INTERSECT", true);
     }
     
     public KCombining except(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", false);
     }
     
     public KCombining exceptAll(
         final KQueryAllowedToCombining kQueryAllowedToCombining
     ) {
-        return KCombining.getInstance(this.k, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
+        return KCombining.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kQueryAllowedToCombining, "EXCEPT", true);
     }
     
     public KOrderBy orderBy(
         final KColumnAllowedToOrderBy... kColumnsAllowedToOrderBy
     ) {
-        return KOrderBy.getInstance(this.k, this.kQueryData, kColumnsAllowedToOrderBy);
+        return KOrderBy.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kColumnsAllowedToOrderBy);
     }
     
     public KLimit limit(
         final int count
     ) {
-        return KLimit.getInstance(this.k, this.kQueryData, count);
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, count);
+    }
+    
+    public KLimit limit(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KOffset offset(
         final int start
     ) {
-        return KOffset.getInstance(this.k, this.kQueryData, start);
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, start);
+    }
+    
+    public KOffset offset(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KOffset.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     public KFetch fetch(
         final int rowCount
     ) {
-        return KFetch.getInstance(this.k, this.kQueryData, rowCount);
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, rowCount);
+    }
+    
+    public KFetch fetch(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData);
+        }
+        
+        return KFetch.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, kOptionalLong.get());
     }
     
     private void process(
@@ -92,12 +126,15 @@ public class KCombining extends KQuery {
         final String function,
         final boolean all
     ) {
-        KUtils.assertNotNull(kQueryAllowedToCombining, "kQueryAllowedToCombining");
+        KQueryUtils.processCombining(
+            this.kQueryData, 
+            kQueryAllowedToCombining,
+            function,
+            all
+        );
         
-        final KQueryData subQuery = kQueryAllowedToCombining.generateSubQueryData();
-        
-        this.kQueryData.params.addAll(subQuery.params);
-        
-        this.kQueryData.sb.append(" ").append(function).append(all ? " ALL" : "").append(" (").append(subQuery.sb).append(")");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessCombining(kQueryAllowedToCombining, function, all);
+        }
     }
 }

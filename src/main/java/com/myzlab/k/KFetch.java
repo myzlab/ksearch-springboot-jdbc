@@ -1,5 +1,7 @@
 package com.myzlab.k;
 
+import java.util.List;
+
 public class KFetch extends KQuery {
 
     private KFetch() {
@@ -8,38 +10,50 @@ public class KFetch extends KQuery {
     
     private KFetch(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
-        final int rowCount
+        final long rowCount
     ) {
-        super(kQueryData, kExecutor);
+        super(kQueryData, kExecutor, kSpecialFunctions);
         
         this.process(rowCount);
     }
     
+    private KFetch(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData
+    ) {
+        super(kQueryData, kExecutor, kSpecialFunctions);
+    }
+    
     public static KFetch getInstance(
         final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
         final KQueryData kQueryData,
-        final int rowCount
+        final long rowCount
     ) {
-        return new KFetch(kExecutor, kQueryData, rowCount);
+        return new KFetch(kExecutor, kSpecialFunctions, kQueryData, rowCount);
+    }
+    
+    public static KFetch getInstance(
+        final KExecutor kExecutor,
+        final List<KSpecialFunction> kSpecialFunctions,
+        final KQueryData kQueryData
+    ) {
+        return new KFetch(kExecutor, kSpecialFunctions, kQueryData);
     }
     
     private void process(
-        final int rowCount
+        final long rowCount
     ) {
+        KQueryUtils.processFetch(
+            this.kQueryData, 
+            rowCount
+        );
         
-        this.kQueryData.sb.append(" FETCH FIRST ");
-        
-        if (rowCount > 1) {
-            this.kQueryData.sb.append(rowCount).append(" ");
+        for (final KSpecialFunction kSpecialFunction : this.kSpecialFunctions) {
+            kSpecialFunction.onProcessFetch(rowCount);
         }
-        
-        this.kQueryData.sb.append("ROW");
-        
-        if (rowCount > 1) {
-            this.kQueryData.sb.append("S");
-        }
-        
-        this.kQueryData.sb.append(" ONLY");
     }
 }

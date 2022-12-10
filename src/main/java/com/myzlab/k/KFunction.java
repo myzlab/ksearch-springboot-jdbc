@@ -2,8 +2,10 @@ package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
 import com.myzlab.k.optional.KOptionalKColumn;
+import com.myzlab.k.optional.KOptionalKColumnOrdered;
 import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalLong;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalString;
 
@@ -17,24 +19,6 @@ public class KFunction {
                 
         return new KAliasedColumn(kBaseColumnCastable, alias);
     }
-    
-//    public static KAliasedColumn as(
-//        final Number val,
-//        final String alias
-//    ) {
-//        KUtils.assertNotNull(val, "val");
-//                
-//        return new KAliasedColumn(val(val), alias);
-//    }
-//    
-//    public static KAliasedColumn as(
-//        final String val,
-//        final String alias
-//    ) {
-//        KUtils.assertNotNull(val, "val");
-//                
-//        return new KAliasedColumn(val(val), alias);
-//    }
     
     public static KColumn abs(
         final KColumn kColumn
@@ -1510,6 +1494,28 @@ public class KFunction {
         return genericTrimKValTextField;
     }
     
+    public static KOptionalKColumnOrdered getKColumnOrderedByName(
+        final String orderBy,
+        final Integer order,
+        final KTable... kTables
+    ) {
+        KUtils.assertNotNull(kTables, "kTables");
+        
+        if (orderBy == null || order == null) {
+            return KOptionalKColumnOrdered.getNullInstance();
+        }
+        
+        for (final KTable kTable : kTables) {
+            final KOptionalKColumnOrdered kOptionalKColumnOrdered = kTable.getOrderBy(orderBy, order);
+            
+            if (kOptionalKColumnOrdered.isPresent()) {
+                return kOptionalKColumnOrdered;
+            }
+        }
+        
+        return KOptionalKColumnOrdered.getNullInstance();
+    }
+    
 //    private static String getErrorMessageFunctionTextType(
 //        final String functionName,
 //        final KColumn kColumn
@@ -2240,6 +2246,24 @@ public class KFunction {
         return kCondition;
     }
     
+    public static KOptionalLong calculateOffset(
+        final Long page,
+        final Long limit
+    ) {
+        return KOptionalLong.getInstance((page - 1) * limit);
+    }
+    
+    public static KOptionalLong calculateOffset(
+        final KOptionalLong page,
+        final KOptionalLong limit
+    ) {
+        if (!limit.isPresent() || !page.isPresent()) {
+            return KOptionalLong.getNullInstance();
+        }
+        
+        return KOptionalLong.getInstance((page.get() - 1) * limit.get());
+    }
+    
     public static KOptionalKColumn optional(
         final KColumn kColumn
     ) {
@@ -2262,6 +2286,12 @@ public class KFunction {
         final Number number
     ) {
         return KOptionalNumber.getInstance(number);
+    }
+    
+    public static KOptionalLong optional(
+        final Long value
+    ) {
+        return KOptionalLong.getInstance(value);
     }
     
     public static KOptionalString optional(
@@ -3268,6 +3298,10 @@ public class KFunction {
         KUtils.assertNotNull(number, "number");
         
         return applyOneParameterFunction(val(number), "TO_HEX");
+    }
+    
+    public static KTotalCount totalCount() {
+        return new KTotalCount();
     }
     /*
     public static KColumn toDate(

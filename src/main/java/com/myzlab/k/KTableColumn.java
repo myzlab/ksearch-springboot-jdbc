@@ -5,7 +5,6 @@ import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KColumnAllowedToReturning;
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
-import com.myzlab.k.allowed.KWindowDefinitionAllowedToOver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,20 +38,6 @@ public class KTableColumn extends KColumn implements
         final KTable kTable
     ) {
         super(sb, params, closed, name, type, kTable);
-    }
-    
-    public KColumnOvered over(
-        final KWindowDefinitionAllowedToOver kWindowDefinitionAllowedToOver
-    ) {
-        return new KColumnOvered(this.sb, this.params, this.closed, kWindowDefinitionAllowedToOver);
-    }
-    
-    public KColumnOrdered asc() {
-        return new KColumnOrdered(this.sb, this.params, this.closed, 1);
-    }
-    
-    public KColumnOrdered desc() {
-        return new KColumnOrdered(this.sb, this.params, this.closed, -1);
     }
     
     @Override
