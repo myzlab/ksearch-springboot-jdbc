@@ -7,6 +7,7 @@ import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalString;
 import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalLong;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -236,6 +237,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition eq(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalLong.get());
+    }
+    
+    public KCondition eq(
         final KQuery kQuery
     ) {
         return KCondition.eq(this, kQuery);
@@ -319,6 +330,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return KCondition.eq(this, KFunction.val(kOptionalString.get()));
+    }
+    
+    public KCondition equal(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalLong.get()));
     }
     
     public KCondition equal(
@@ -408,6 +429,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition greaterThan(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalLong.get());
+    }
+    
+    public KCondition greaterThan(
         final KQuery kQuery
     ) {
         return KCondition.gt(this, kQuery);
@@ -491,6 +522,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.gte(kOptionalString.get());
+    }
+    
+    public KCondition greaterThanOrEqualTo(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalLong.get());
     }
     
     public KCondition greaterThanOrEqualTo(
@@ -580,6 +621,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition gt(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalLong.get());
+    }
+    
+    public KCondition gt(
         final KQuery kQuery
     ) {
         return KCondition.gt(this, kQuery);
@@ -663,6 +714,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.gte(kOptionalString.get());
+    }
+    
+    public KCondition gte(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalLong.get());
     }
     
     public KCondition gte(
@@ -816,6 +877,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThan(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalLong.get());
+    }
+    
+    public KCondition lessThan(
         final KQuery kQuery
     ) {
         return KCondition.lt(this, kQuery);
@@ -899,6 +970,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.lte(kOptionalString.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalLong.get());
     }
     
     public KCondition lessThanOrEqualTo(
@@ -988,6 +1069,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lt(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalLong.get());
+    }
+    
+    public KCondition lt(
         final KQuery kQuery
     ) {
         return KCondition.lt(this, kQuery);
@@ -1071,6 +1162,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.lte(kOptionalString.get());
+    }
+    
+    public KCondition lte(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalLong.get());
     }
     
     public KCondition lte(
@@ -1195,6 +1296,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition neq(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalLong.get()));
+    }
+    
+    public KCondition neq(
         final KQuery kQuery
     ) {
         return KCondition.neq(this, kQuery);
@@ -1278,6 +1389,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.ngt(kOptionalString.get());
+    }
+    
+    public KCondition ngt(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalLong.get());
     }
     
     public KCondition ngt(
@@ -1367,6 +1488,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition ngte(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalLong.get());
+    }
+    
+    public KCondition ngte(
         final KQuery kQuery
     ) {
         return KCondition.ngte(this, kQuery);
@@ -1453,6 +1584,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition nlt(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalLong.get());
+    }
+    
+    public KCondition nlt(
         final KQuery kQuery
     ) {
         return KCondition.nlt(this, kQuery);
@@ -1536,6 +1677,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.nlte(kOptionalString.get());
+    }
+    
+    public KCondition nlte(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalLong.get());
     }
     
     public KCondition nlte(
@@ -1660,6 +1811,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notEqual(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalLong.get()));
+    }
+    
+    public KCondition notEqual(
         final KQuery kQuery
     ) {
         return KCondition.neq(this, kQuery);
@@ -1746,6 +1907,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notGreaterThan(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalLong.get());
+    }
+    
+    public KCondition notGreaterThan(
         final KQuery kQuery
     ) {
         return KCondition.ngt(this, kQuery);
@@ -1829,6 +2000,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.ngte(kOptionalString.get());
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalLong.get());
     }
     
     public KCondition notGreaterThanOrEqualTo(
@@ -1950,6 +2131,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notLessThan(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalLong.get());
+    }
+    
+    public KCondition notLessThan(
         final KQuery kQuery
     ) {
         return KCondition.nlt(this, kQuery);
@@ -2033,6 +2224,16 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.nlte(kOptionalString.get());
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final KOptionalLong kOptionalLong
+    ) {
+        if (!kOptionalLong.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalLong.get());
     }
     
     public KCondition notLessThanOrEqualTo(

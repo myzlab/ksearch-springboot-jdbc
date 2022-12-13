@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
+import com.myzlab.k.optional.KOptionalSpecialFunction;
 import java.util.ArrayList;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,12 @@ public abstract class KBuilder {
         final KSpecialFunction kSpecialFunction
     ) {
         return KSpecialBuilder.getInstance(this, kSpecialFunction);
+    }
+    
+    public KSpecialBuilder sf(
+        final KOptionalSpecialFunction kOptionalSpecialFunction
+    ) {
+        return KSpecialBuilder.getInstance(this, kOptionalSpecialFunction);
     }
     
     public KWith with(

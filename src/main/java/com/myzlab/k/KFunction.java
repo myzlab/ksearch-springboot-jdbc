@@ -7,6 +7,7 @@ import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalKValTextField;
 import com.myzlab.k.optional.KOptionalLong;
 import com.myzlab.k.optional.KOptionalNumber;
+import com.myzlab.k.optional.KOptionalSpecialFunction;
 import com.myzlab.k.optional.KOptionalString;
 
 public class KFunction {
@@ -2298,6 +2299,12 @@ public class KFunction {
         final String value
     ) {
         return KOptionalString.getInstance(value);
+    }
+    
+    public static KOptionalSpecialFunction optional(
+        final KSpecialFunction kSpecialFunction
+    ) {
+        return KOptionalSpecialFunction.getInstance(kSpecialFunction);
     }
     
     public static KColumn overlay(

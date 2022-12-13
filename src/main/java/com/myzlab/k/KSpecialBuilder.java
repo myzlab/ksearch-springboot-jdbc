@@ -1,6 +1,7 @@
 package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
+import com.myzlab.k.optional.KOptionalSpecialFunction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,17 +14,34 @@ public class KSpecialBuilder {
         final KBuilder k,
         final KSpecialFunction kSpecialFunction
     ) {
-        this.k = k;
-        this.kSpecialFunctions = new ArrayList<>();
+        this(k);
         
         this.kSpecialFunctions.add(kSpecialFunction);
     }
     
+    private KSpecialBuilder(
+        final KBuilder k
+    ) {
+        this.k = k;
+        this.kSpecialFunctions = new ArrayList<>();
+    }
+    
     protected static KSpecialBuilder getInstance(
-         final KBuilder k,
+        final KBuilder k,
         final KSpecialFunction kSpecialFunction
     ) {
         return new KSpecialBuilder(k, kSpecialFunction);
+    }
+    
+    protected static KSpecialBuilder getInstance(
+        final KBuilder k,
+        final KOptionalSpecialFunction kOptionalSpecialFunction
+    ) {
+        if (kOptionalSpecialFunction.isPresent()) {
+            return new KSpecialBuilder(k, kOptionalSpecialFunction.get());
+        }
+        
+        return new KSpecialBuilder(k);
     }
     
     public KSpecialBuilder sf(
