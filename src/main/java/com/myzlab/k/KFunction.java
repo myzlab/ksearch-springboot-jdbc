@@ -1677,16 +1677,12 @@ public class KFunction {
         return greatestkColumn;
     }
     
-    private static boolean isCasteableToANumber(
-        final String text
-    ) {
-        try {
-            Double.parseDouble(text);
-            
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public static String iso8601DateUTCFormat() {
+        return "YYYY-MM-DD";
+    }
+    
+    public static String iso8601DateAndTimeUTCFormat() {
+        return "YYYY-MM-DD\"T\"HH24:MI:SS.MS\"Z\"";
     }
     
     public static KColumn isolate(
