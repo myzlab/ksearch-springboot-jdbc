@@ -290,8 +290,8 @@ public class KQueryUtils {
         final KQueryGenericData kQueryGenericData,
         final Class<T> clazz
     ) {
-        System.out.println(kQueryGenericData.sb.toString());
-        System.out.println(kQueryGenericData.params);
+//        System.out.println(kQueryGenericData.sb.toString());
+//        System.out.println(kQueryGenericData.params);
 //        System.out.println(kQueryGenericData.kEdges);
 //        System.out.println(kQueryGenericData.kNodes);
         
@@ -321,8 +321,8 @@ public class KQueryUtils {
         final KExecutor k,
         final KQueryGenericData kQueryGenericData
     ) {
-        System.out.println(kQueryGenericData.sb.toString());
-        System.out.println(kQueryGenericData.params);
+//        System.out.println(kQueryGenericData.sb.toString());
+//        System.out.println(kQueryGenericData.params);
         
         if (k == null || k.getJdbc() == null) {
             System.err.println("JDBC no provided to KSearch!");

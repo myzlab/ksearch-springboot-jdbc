@@ -87,8 +87,8 @@ public abstract class KQuery {
     public <T> T single(
         final Class<T> clazz
     ) {
-        System.out.println(this.kQueryData.sb.toString());
-        System.out.println(this.kQueryData.params);
+//        System.out.println(this.kQueryData.sb.toString());
+//        System.out.println(this.kQueryData.params);
 //        System.out.println(this.kQueryData.kBaseColums);
             
         if (k == null || k.getJdbc() == null) {

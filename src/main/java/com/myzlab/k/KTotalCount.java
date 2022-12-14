@@ -213,8 +213,8 @@ public class KTotalCount extends KSpecialFunction {
         
         sb.insert(0, "SELECT COUNT(*) FROM (").append(") AS GOD_BLESS_YOU");
         
-        System.out.println(sb.toString());
-        System.out.println(this.kQueryData.params);
+//        System.out.println(sb.toString());
+//        System.out.println(this.kQueryData.params);
 //        System.out.println(kQueryGenericData.kEdges);
 //        System.out.println(kQueryGenericData.kNodes);
         
