@@ -1,8 +1,11 @@
 package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class KBaseColumn {
 
@@ -94,6 +97,45 @@ public abstract class KBaseColumn {
     
     protected KBaseColumn(
         final Number val
+    ) {
+        this();
+        
+        if (val == null) {
+            throw KExceptionHelper.internalServerError("The 'val' param cannot be null");
+        }
+        
+        this.sb.append("?");
+        this.params.add(val);
+    }
+    
+    protected KBaseColumn(
+        final UUID val
+    ) {
+        this();
+        
+        if (val == null) {
+            throw KExceptionHelper.internalServerError("The 'val' param cannot be null");
+        }
+        
+        this.sb.append("?");
+        this.params.add(val);
+    }
+    
+    protected KBaseColumn(
+        final LocalDate val
+    ) {
+        this();
+        
+        if (val == null) {
+            throw KExceptionHelper.internalServerError("The 'val' param cannot be null");
+        }
+        
+        this.sb.append("?");
+        this.params.add(val);
+    }
+    
+    protected KBaseColumn(
+        final LocalDateTime val
     ) {
         this();
         

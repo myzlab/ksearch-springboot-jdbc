@@ -9,6 +9,9 @@ import com.myzlab.k.optional.KOptionalLong;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalSpecialFunction;
 import com.myzlab.k.optional.KOptionalString;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class KFunction {
 
@@ -3580,6 +3583,24 @@ public class KFunction {
         final Number val
     ) {
         return new KValNumberField(val);
+    }
+    
+    public static KValLocalDateField val(
+        final LocalDate val
+    ) {
+        return new KValLocalDateField(val);
+    }
+    
+    public static KValLocalDateTimeField val(
+        final LocalDateTime val
+    ) {
+        return new KValLocalDateTimeField(val);
+    }
+    
+    public static KValUuidField val(
+        final UUID val
+    ) {
+        return new KValUuidField(val);
     }
     
     public static KEmptyValues values() {

@@ -7,10 +7,16 @@ import com.myzlab.k.optional.KOptionalKValNumberField;
 import com.myzlab.k.optional.KOptionalNumber;
 import com.myzlab.k.optional.KOptionalString;
 import com.myzlab.k.optional.KOptionalKValTextField;
+import com.myzlab.k.optional.KOptionalLocalDate;
+import com.myzlab.k.optional.KOptionalLocalDateTime;
 import com.myzlab.k.optional.KOptionalLong;
+import com.myzlab.k.optional.KOptionalUuid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class KBaseColumnCastable extends KBaseColumn {
     
@@ -70,6 +76,24 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     
     protected KBaseColumnCastable(
         final Number val
+    ) {
+        super(val);
+    }
+    
+    protected KBaseColumnCastable(
+        final UUID val
+    ) {
+        super(val);
+    }
+    
+    protected KBaseColumnCastable(
+        final LocalDate val
+    ) {
+        super(val);
+    }
+    
+    protected KBaseColumnCastable(
+        final LocalDateTime val
     ) {
         super(val);
     }
@@ -146,6 +170,20 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     public KCondition bt(
         final String valueLow,
         final String valueHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
+    }
+    
+    public KCondition bt(
+        final LocalDate valueLow,
+        final LocalDate valueHigh
+    ) {
+        return KCondition.bt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
+    }
+    
+    public KCondition bt(
+        final LocalDateTime valueLow,
+        final LocalDateTime valueHigh
     ) {
         return KCondition.bt(this, KFunction.val(valueLow), KFunction.val(valueHigh));
     }
@@ -234,6 +272,54 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.eq(kOptionalString.get());
+    }
+    
+    public KCondition eq(
+        final LocalDate localDate
+    ) {
+        return KCondition.eq(this, KFunction.val(localDate));
+    }
+    
+    public KCondition eq(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition eq(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.eq(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition eq(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition eq(
+        final UUID uuid
+    ) {
+        return KCondition.eq(this, KFunction.val(uuid));
+    }
+    
+    public KCondition eq(
+        final KOptionalUuid kOptionalUuid
+    ) {
+        if (!kOptionalUuid.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.eq(kOptionalUuid.get());
     }
     
     public KCondition eq(
@@ -333,6 +419,54 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition equal(
+        final LocalDate localDate
+    ) {
+        return KCondition.eq(this, KFunction.val(localDate));
+    }
+    
+    public KCondition equal(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalKValLocalDate.get()));
+    }
+    
+    public KCondition equal(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.eq(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition equal(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalKValLocalDateTime.get()));
+    }
+    
+    public KCondition equal(
+        final UUID uuid
+    ) {
+        return KCondition.eq(this, KFunction.val(uuid));
+    }
+    
+    public KCondition equal(
+        final KOptionalUuid kOptionalUuid
+    ) {
+        if (!kOptionalUuid.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.eq(this, KFunction.val(kOptionalUuid.get()));
+    }
+    
+    public KCondition equal(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -429,6 +563,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition greaterThan(
+        final LocalDate localDate
+    ) {
+        return KCondition.gt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition greaterThan(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition greaterThan(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.gt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition greaterThan(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition greaterThan(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -522,6 +688,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.gte(kOptionalString.get());
+    }
+    
+    public KCondition greaterThanOrEqualTo(
+        final LocalDate localDate
+    ) {
+        return KCondition.gte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition greaterThanOrEqualTo(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition greaterThanOrEqualTo(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.gte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition greaterThanOrEqualTo(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition greaterThanOrEqualTo(
@@ -621,6 +819,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition gt(
+        final LocalDate localDate
+    ) {
+        return KCondition.gt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition gt(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition gt(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.gt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition gt(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition gt(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -714,6 +944,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.gte(kOptionalString.get());
+    }
+    
+    public KCondition gte(
+        final LocalDate localDate
+    ) {
+        return KCondition.gte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition gte(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition gte(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.gte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition gte(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.gte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition gte(
@@ -877,6 +1139,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lessThan(
+        final LocalDate localDate
+    ) {
+        return KCondition.lt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition lessThan(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition lessThan(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.lt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition lessThan(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition lessThan(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -970,6 +1264,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.lte(kOptionalString.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final LocalDate localDate
+    ) {
+        return KCondition.lte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.lte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition lessThanOrEqualTo(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition lessThanOrEqualTo(
@@ -1069,6 +1395,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition lt(
+        final LocalDate localDate
+    ) {
+        return KCondition.lt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition lt(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition lt(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.lt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition lt(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition lt(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -1162,6 +1520,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.lte(kOptionalString.get());
+    }
+    
+    public KCondition lte(
+        final LocalDate localDate
+    ) {
+        return KCondition.lte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition lte(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition lte(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.lte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition lte(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.lte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition lte(
@@ -1296,6 +1686,54 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition neq(
+        final LocalDate localDate
+    ) {
+        return KCondition.neq(this, KFunction.val(localDate));
+    }
+    
+    public KCondition neq(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalKValLocalDate.get()));
+    }
+    
+    public KCondition neq(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.neq(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition neq(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalKValLocalDateTime.get()));
+    }
+    
+    public KCondition neq(
+        final UUID uuid
+    ) {
+        return KCondition.neq(this, KFunction.val(uuid));
+    }
+    
+    public KCondition neq(
+        final KOptionalUuid kOptionalUuid
+    ) {
+        if (!kOptionalUuid.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalUuid.get()));
+    }
+    
+    public KCondition neq(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -1389,6 +1827,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.ngt(kOptionalString.get());
+    }
+    
+    public KCondition ngt(
+        final LocalDate localDate
+    ) {
+        return KCondition.ngt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition ngt(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition ngt(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.ngt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition ngt(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition ngt(
@@ -1488,6 +1958,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition ngte(
+        final LocalDate localDate
+    ) {
+        return KCondition.ngte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition ngte(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition ngte(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.ngte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition ngte(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition ngte(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -1584,6 +2086,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition nlt(
+        final LocalDate localDate
+    ) {
+        return KCondition.nlt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition nlt(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition nlt(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.nlt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition nlt(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition nlt(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -1677,6 +2211,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.nlte(kOptionalString.get());
+    }
+    
+    public KCondition nlte(
+        final LocalDate localDate
+    ) {
+        return KCondition.nlte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition nlte(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition nlte(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.nlte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition nlte(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition nlte(
@@ -1811,6 +2377,54 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notEqual(
+        final LocalDate localDate
+    ) {
+        return KCondition.neq(this, KFunction.val(localDate));
+    }
+    
+    public KCondition notEqual(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalKValLocalDate.get()));
+    }
+    
+    public KCondition notEqual(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.neq(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition notEqual(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalKValLocalDateTime.get()));
+    }
+    
+    public KCondition notEqual(
+        final UUID uuid
+    ) {
+        return KCondition.neq(this, KFunction.val(uuid));
+    }
+    
+    public KCondition notEqual(
+        final KOptionalUuid kOptionalUuid
+    ) {
+        if (!kOptionalUuid.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return KCondition.neq(this, KFunction.val(kOptionalUuid.get()));
+    }
+    
+    public KCondition notEqual(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -1907,6 +2521,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notGreaterThan(
+        final LocalDate localDate
+    ) {
+        return KCondition.ngt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition notGreaterThan(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition notGreaterThan(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.ngt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition notGreaterThan(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngt(kOptionalKValLocalDateTime.get());
+    }
+    
+    public KCondition notGreaterThan(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -2000,6 +2646,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.ngte(kOptionalString.get());
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final LocalDate localDate
+    ) {
+        return KCondition.ngte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.ngte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition notGreaterThanOrEqualTo(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.ngte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition notGreaterThanOrEqualTo(
@@ -2131,6 +2809,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
     }
     
     public KCondition notLessThan(
+        final LocalDate localDate
+    ) {
+        return KCondition.nlt(this, KFunction.val(localDate));
+    }
+    
+    public KCondition notLessThan(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalKValLocalDate.get());
+    }
+    public KCondition notLessThan(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.nlt(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition notLessThan(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlt(kOptionalKValLocalDateTime.get());
+    }
+    
+    
+    public KCondition notLessThan(
         final KOptionalLong kOptionalLong
     ) {
         if (!kOptionalLong.isPresent()) {
@@ -2224,6 +2934,38 @@ public abstract class KBaseColumnCastable extends KBaseColumn {
         }
         
         return this.nlte(kOptionalString.get());
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final LocalDate localDate
+    ) {
+        return KCondition.nlte(this, KFunction.val(localDate));
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final KOptionalLocalDate kOptionalKValLocalDate
+    ) {
+        if (!kOptionalKValLocalDate.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalKValLocalDate.get());
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final LocalDateTime localDateTime
+    ) {
+        return KCondition.nlte(this, KFunction.val(localDateTime));
+    }
+    
+    public KCondition notLessThanOrEqualTo(
+        final KOptionalLocalDateTime kOptionalKValLocalDateTime
+    ) {
+        if (!kOptionalKValLocalDateTime.isPresent()) {
+            return KCondition.getEmptyInstance();
+        }
+        
+        return this.nlte(kOptionalKValLocalDateTime.get());
     }
     
     public KCondition notLessThanOrEqualTo(
