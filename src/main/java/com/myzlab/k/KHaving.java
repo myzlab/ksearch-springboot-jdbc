@@ -191,6 +191,12 @@ public class KHaving extends KQuery implements KQueryAllowedToCombining {
     }
     
     public KLimit limit(
+        final long count
+    ) {
+        return KLimit.getInstance(this.k, this.kSpecialFunctions, this.kQueryData, count);
+    }
+    
+    public KLimit limit(
         final KOptionalLong kOptionalLong
     ) {
         this.buildHaving();

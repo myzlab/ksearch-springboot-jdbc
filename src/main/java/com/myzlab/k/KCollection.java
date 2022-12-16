@@ -1,5 +1,6 @@
 package com.myzlab.k;
 
+import com.myzlab.k.functions.KRowFunction;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;

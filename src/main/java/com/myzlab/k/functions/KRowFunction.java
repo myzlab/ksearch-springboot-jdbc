@@ -1,4 +1,4 @@
-package com.myzlab.k;
+package com.myzlab.k.functions;
 
 @FunctionalInterface
 public interface KRowFunction<KRow, T> {
