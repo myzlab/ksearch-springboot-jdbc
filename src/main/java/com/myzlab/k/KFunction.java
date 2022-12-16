@@ -3216,6 +3216,22 @@ public class KFunction {
         return applyOneParameterFunction(val(number), "SUM");
     }
     
+    public static KColumn tableNameAlias(
+        final KColumn kColumn
+    ) {
+        final KColumn newKColumn = kColumn.cloneMe();
+        
+        if (newKColumn.kTable != null) {
+            final String content = newKColumn.sb.toString().replaceAll(newKColumn.kTable.alias + ".", newKColumn.kTable.schema + "." + newKColumn.kTable.name + ".");
+            
+            newKColumn.sb.setLength(0);
+            
+            newKColumn.sb.append(content);
+        }
+        
+        return newKColumn;
+    }
+    
     public static KColumn tan(
         final KColumn kColumn
     ) {
@@ -3309,37 +3325,7 @@ public class KFunction {
     public static KTotalCount totalCount() {
         return new KTotalCount();
     }
-    /*
-    public static KColumn toDate(
-        final KColumn kColumn,
-        final String format
-    ) {
-        KUtils.assertNotNull(kColumn, "kColumn");
-        KUtils.assertNotNull(format, "format");
-        
-        final KColumn toDateKColumn = new KColumn(kColumn.sb, kColumn.params, kColumn.operating + 1, true);
-        
-        toDateKColumn.sb.insert(0, "TO_DATE(").append(", ?").append(")");
-        toDateKColumn.params.add(format);
-        
-        return toDateKColumn;
-    }
     
-    public static KValTextField toDate(
-        final KValTextField kValTextField,
-        final String format
-    ) {
-        KUtils.assertNotNull(kValTextField, "kValTextField");
-        KUtils.assertNotNull(format, "format");
-        
-        final KValTextField toDateKValTextField = new KValTextField(kValTextField.sb, kValTextField.params, kValTextField.operating + 1, true);
-        
-        toDateKValTextField.sb.insert(0, "TO_DATE(").append(", ?").append(")");
-        toDateKValTextField.params.add(format);
-        
-        return toDateKValTextField;
-    }
-    */
     public static KColumn toTimestamp(
         final KColumn kColumn,
         final String format

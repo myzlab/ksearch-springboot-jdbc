@@ -65,6 +65,6 @@ public class KInsertIntoOnConflictTargeted extends KQueryInsertInto {
     private void process(
         final String constraint
     ) {
-        this.kQueryInsertIntoData.sb.append(" ON CONSTRAINT ").append(constraint);
+        this.kQueryInsertIntoData.sb.append(" ON CONSTRAINT \"").append(constraint).append("\"");
     }
 }

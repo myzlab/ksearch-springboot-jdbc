@@ -133,6 +133,10 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.excluded(this);
     }
     
+    public KColumn tableNameAlias() {
+        return KFunction.tableNameAlias(this);
+    }
+    
     public KColumn noTableAlias() {
         return KFunction.noTableAlias(this);
     }
