@@ -2,6 +2,8 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.helper.KExceptionHelper;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KUpdate extends KQueryUpdate {
 
@@ -78,7 +80,11 @@ public class KUpdate extends KQueryUpdate {
     ) {
         KUtils.assertNotNull(object, "object");
         
-        return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, new KColumn(new StringBuilder(object.toString()), false));
+        final KColumn kColumnValue = new KColumn(new StringBuilder("?"), new ArrayList() {{
+            add(object);
+        }}, false);
+        
+        return KSetUpdate.getInstance(this.k, this.kQueryUpdateData, kColumn, kColumnValue);
     }
     
     private void process(
