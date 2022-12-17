@@ -56,6 +56,10 @@ public abstract class KBuilder {
         return KSelect.getDistinctInstance(jdbc(), new ArrayList<>(), kQuery, alias);
     }
     
+    public KSelect select1() {
+        return KSelect.getInstance(jdbc(), new ArrayList<>(), KFunction.val(1));
+    }
+    
     public KSelect select(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {

@@ -84,6 +84,10 @@ public class KSpecialBuilder {
         return KSelect.getDistinctInstance(this.k.jdbc(), this.kSpecialFunctions, kQuery, alias);
     }
     
+    public KSelect select1() {
+        return KSelect.getInstance(this.k.jdbc(), this.kSpecialFunctions, KFunction.val(1));
+    }
+    
     public KSelect select(
         final KColumnAllowedToSelect... kColumnsAllowedToSelect
     ) {

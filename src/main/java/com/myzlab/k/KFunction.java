@@ -12,6 +12,7 @@ import com.myzlab.k.optional.KOptionalString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 
 public class KFunction {
 
@@ -456,6 +457,64 @@ public class KFunction {
 //        
 //        return functionKColumn;
 //    }
+    
+    public static void assertExists(
+        final KBuilder k,
+        final KQuery kQuery,
+        final HttpStatus httpStatus,
+        final String message
+    ) {
+        assertExists(k, k.getJdbcTemplateDefaultName(), kQuery, httpStatus, message);
+    }
+    
+    public static void assertExists(
+        final KBuilder k,
+        final String jdbc,
+        final KQuery kQuery,
+        final HttpStatus httpStatus,
+        final String message
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final Boolean exists =
+            k
+            .jdbc(jdbc)
+            .select(existsSelect(kQuery).as("GOD_BLESS_YOU"))
+            .single(Boolean.class);
+        
+        if (!exists) {
+            throw new KException(httpStatus, message);
+        }
+    }
+    
+    public static void assertNotExists(
+        final KBuilder k,
+        final KQuery kQuery,
+        final HttpStatus httpStatus,
+        final String message
+    ) {
+        assertNotExists(k, k.getJdbcTemplateDefaultName(), kQuery, httpStatus, message);
+    }
+    
+    public static void assertNotExists(
+        final KBuilder k,
+        final String jdbc,
+        final KQuery kQuery,
+        final HttpStatus httpStatus,
+        final String message
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final Boolean notExists =
+            k
+            .jdbc(jdbc)
+            .select(not(existsSelect(kQuery)).as("GOD_BLESS_YOU"))
+            .single(Boolean.class);
+        
+        if (!notExists) {
+            throw new KException(httpStatus, message);
+        }
+    }
     
     public static KColumn ascii(
         final KColumn kColumn
@@ -1392,7 +1451,21 @@ public class KFunction {
         return newKColumn;
     }
     
-    public static KCondition exists(
+    public static KColumn existsSelect(
+        final KQuery kQuery
+    ) {
+        KUtils.assertNotNull(kQuery, "kQuery");
+        
+        final KQueryData subQuery = kQuery.generateSubQueryData();
+        
+        final KColumn kColumn = new KColumn(subQuery.sb, subQuery.params, false);
+        
+        kColumn.sb.insert(0, "EXISTS (").append(")");
+        
+        return kColumn;
+    }
+    
+    public static KCondition existsWhere(
         final KQuery kQuery
     ) {
         return KCondition.exists(kQuery);
@@ -2244,6 +2317,16 @@ public class KFunction {
         kCondition.sb.insert(0, "NOT (").append(")");
         
         return kCondition;
+    }
+    
+    public static KColumn not(
+        final KColumn kColumn
+    ) {
+        final KColumn newKColumn = kColumn.cloneMe();
+        
+        newKColumn.sb.insert(0, "NOT (").append(")");
+        
+        return newKColumn;
     }
     
     public static KOptionalLong calculateOffset(
