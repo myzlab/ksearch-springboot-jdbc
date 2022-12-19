@@ -4,7 +4,6 @@ import com.myzlab.k.allowed.KColumnAllowedToGroupBy;
 import com.myzlab.k.allowed.KColumnAllowedToOrderBy;
 import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
-import static com.myzlab.k.KFunction.*;
 import java.sql.ResultSet;
 import java.util.List;
 

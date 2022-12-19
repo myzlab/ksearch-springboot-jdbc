@@ -2,7 +2,6 @@ package com.myzlab.k;
 
 import com.myzlab.k.helper.KExceptionHelper;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +141,7 @@ public abstract class KQuery {
     
     private <T extends KRow> T getKRowNull(
         final Class<T> clazz
-    ) throws SQLException {
+    ) {
         
         final T t;
         

@@ -2,7 +2,6 @@ package com.myzlab.k;
 
 import com.myzlab.k.allowed.KColumnAllowedToSelect;
 import java.util.ArrayList;
-import java.util.List;
 
 public class KWith extends KQuery {
 
