@@ -6,14 +6,21 @@ import com.myzlab.k.allowed.KQueryAllowedToCombining;
 import com.myzlab.k.allowed.KWindowDefinitionAllowedToWindow;
 import com.myzlab.k.helper.KExceptionHelper;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.jdbc.core.SqlTypeValue;
 
@@ -205,8 +212,8 @@ public class KQueryUtils {
                         KSearchNameHelper.generateSetName(kBaseColumn.name),
                         kBaseColumn.type
                     );
-
-                    methodSet.invoke(current, v);
+                    
+                    methodSet.invoke(current, getValueByClass(v, methodSet.getParameterTypes()[0]));
                 } catch (Exception e) {
                     throw KExceptionHelper.internalServerError(e.getMessage());
                 }
@@ -442,6 +449,7 @@ public class KQueryUtils {
     ) {
         KUtils.assertNotNull(n, "n");
         
+        kQueryData.distinctOn = true;
         kQueryData.sb.append("SELECT DISTINCT ON (").append(n).append(")");
     }
     
@@ -733,5 +741,68 @@ public class KQueryUtils {
         }
         
         kQueryData.sb.append(" ONLY");
+    }
+    
+    private static <T> T getValueByClass(
+        final Object v,
+        final Class<T> clazz
+    ) {
+        if (v == null) {
+            return null;
+        }
+        
+        if (clazz == UUID.class) {
+            if (v instanceof String) {
+                return (T) UUID.fromString((String) v);
+            }
+            
+            return (T) v;
+        }
+        
+        if (clazz == Long.class) {
+            if (v instanceof BigInteger) {
+                return (T) new Long(((BigInteger) v).longValue());
+            }
+
+            return (T) v;
+        }
+        
+        if (clazz == Integer.class) {
+            if (v instanceof Short) {
+                return (T) new Integer(((Short) v).intValue());
+            }
+
+            if (v instanceof BigInteger) {
+                return (T) new Long(((BigInteger) v).longValue());
+            }
+        
+            return (T) v;
+        }
+        
+        if (clazz == Double.class) {
+            if (v instanceof BigDecimal) {
+                return (T) new Double(((BigDecimal) v).doubleValue());
+            }
+            
+            return (T) v;
+        }
+        
+        if (clazz == LocalDateTime.class) {
+            if (v instanceof Timestamp) {
+                return (T) ((Timestamp) v).toLocalDateTime();
+            }
+            
+            return (T) v;
+        }
+        
+        if (clazz == LocalDate.class) {
+            if (v instanceof Date) {
+                return (T) ((Date) v).toLocalDate();
+            }
+            
+            return (T) v;
+        }
+        
+        return (T) v;
     }
 }
