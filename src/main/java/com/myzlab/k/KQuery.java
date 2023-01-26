@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class KQuery {
+public abstract class KQuery extends KGenericQuery {
     
     protected KExecutor k;
     protected KQueryData kQueryData;
@@ -156,7 +156,8 @@ public abstract class KQuery {
         return t;
     }
     
-    protected KQueryData generateSubQueryData() {
+    @Override
+    protected KQueryGenericData generateSubQueryData() {
         return this.kQueryData.cloneMe();
     }
 }

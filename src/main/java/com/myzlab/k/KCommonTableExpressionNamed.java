@@ -33,7 +33,7 @@ public class KCommonTableExpressionNamed extends KCommonTableExpression {
     }
     
     public KCommonTableExpressionFilled as(
-        final KQuery kQuery,
+        final KGenericQuery kQuery,
         final String alias
     ) {
         return KCommonTableExpressionFilled.getInstance(kQuery, this.name, alias, this.columns);
