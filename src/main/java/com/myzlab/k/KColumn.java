@@ -126,6 +126,10 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.bitAnd(this);
     }
     
+    public KColumn bitLength() {
+        return KFunction.bitLength(this);
+    }
+    
     public KAggregateFunctionColumn bitOr() {
         return KFunction.bitOr(this);
     }
@@ -140,6 +144,14 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KColumn cardinality() {
         return KFunction.cardinality(this);
+    }
+    
+    public KColumn characterLength() {
+        return KFunction.characterLength(this);
+    }
+    
+    public KColumn charLength() {
+        return KFunction.charLength(this);
     }
     
     public KAggregateFunctionColumn count() {
@@ -170,6 +182,10 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KAggregateFunctionColumn every() {
         return KFunction.every(this);
+    }
+    
+    public KColumn factorial() {
+        return KFunction.factorial(this);
     }
     
     public KColumn grouping() {
@@ -3164,6 +3180,14 @@ public class KColumn extends KBaseColumnCastable implements
         }
         
         return KCondition.nlksw(this, KFunction.val(kOptionalString.get()));
+    }
+    
+    public KColumn octetLength() {
+        return KFunction.octetLength(this);
+    }
+    
+    public KColumn scale() {
+        return KFunction.scale(this);
     }
     
     public KColumn sub(
