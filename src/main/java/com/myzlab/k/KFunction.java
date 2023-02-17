@@ -1796,6 +1796,26 @@ public class KFunction {
         return convertKColumn;
     }
     
+    public static KColumn convertFrom(
+        final KColumn kColumn,
+        final KEncoding srcEncoding
+    ) {
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(srcEncoding, "srcEncoding");
+        
+        return applyTwoParameterFunction(kColumn, new KColumn(new StringBuilder("'" + srcEncoding.toSql() + "'"), true), "CONVERT_FROM");
+    }
+    
+    public static KColumn convertTo(
+        final KColumn kColumn,
+        final KEncoding srcEncoding
+    ) {
+        KUtils.assertNotNull(kColumn, "kColumn");
+        KUtils.assertNotNull(srcEncoding, "srcEncoding");
+        
+        return applyTwoParameterFunction(kColumn, new KColumn(new StringBuilder("'" + srcEncoding.toSql() + "'"), true), "CONVERT_TO");
+    }
+    
     public static KCommonTableExpressionNamed cte(
         final String name
     ) {
