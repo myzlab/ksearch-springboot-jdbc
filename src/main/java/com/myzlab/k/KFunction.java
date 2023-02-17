@@ -1735,7 +1735,7 @@ public class KFunction {
             }
             
             if (!first) {
-                concatKColumn.sb.append(" || ");
+                concatKColumn.sb.append(", ");
             }
             
             if (first) {
@@ -1749,6 +1749,54 @@ public class KFunction {
         concatKColumn.sb.append(")");
         
         return concatKColumn;
+    }
+    
+    public static KColumn concatWs(
+        final String separator,
+        final KBaseColumnCastable... kBaseColumnCastables
+    ) {
+        KUtils.assertNotNullNotEmpty(separator, "separator");
+        KUtils.assertNotNull(kBaseColumnCastables, "kBaseColumnCastables");
+        
+        if (kBaseColumnCastables.length < 2) {
+            throw KExceptionHelper.internalServerError("'CONCAT_WS' function requires at least two kBaseColumnCastables");
+        }
+        
+        final KColumn concatKColumn = new KColumn(false);
+        
+        concatKColumn.sb.append("CONCAT_WS('").append(separator).append("'");
+        
+        for (final KBaseColumnCastable kBaseColumnCastable : kBaseColumnCastables) {
+            if (kBaseColumnCastable == null) {
+                continue;
+            }
+
+            concatKColumn.sb.append(", ").append(kBaseColumnCastable.sb);
+            concatKColumn.params.addAll(kBaseColumnCastable.params);
+        }
+        
+        concatKColumn.sb.append(")");
+        
+        return concatKColumn;
+    }
+    
+    public static KColumn convert(
+        final String value,
+        final KEncoding srcEncoding,
+        final KEncoding destEncoding
+    ) {
+        KUtils.assertNotNull(kColumnArray, "kColumnArray");
+        KUtils.assertNotNull(kColumnPreviousValue, "kColumnPreviousValue");
+        KUtils.assertNotNull(newValue, "newValue");
+        
+        final KColumn arrayReplaceKColumn = new KColumn(kColumnArray.sb, kColumnArray.params, true);
+        
+        arrayReplaceKColumn.sb.insert(0, "ARRAY_REPLACE(").append(", ").append(kColumnPreviousValue.sb).append(", ?)");
+        
+        arrayReplaceKColumn.params.addAll(kColumnPreviousValue.params);
+        arrayReplaceKColumn.params.add(newValue);
+        
+        return arrayReplaceKColumn;
     }
     
     public static KCommonTableExpressionNamed cte(
