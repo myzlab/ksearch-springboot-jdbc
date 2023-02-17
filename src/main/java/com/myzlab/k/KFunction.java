@@ -1762,41 +1762,38 @@ public class KFunction {
             throw KExceptionHelper.internalServerError("'CONCAT_WS' function requires at least two kBaseColumnCastables");
         }
         
-        final KColumn concatKColumn = new KColumn(false);
+        final KColumn concatWsKColumn = new KColumn(false);
         
-        concatKColumn.sb.append("CONCAT_WS('").append(separator).append("'");
+        concatWsKColumn.sb.append("CONCAT_WS('").append(separator).append("'");
         
         for (final KBaseColumnCastable kBaseColumnCastable : kBaseColumnCastables) {
             if (kBaseColumnCastable == null) {
                 continue;
             }
 
-            concatKColumn.sb.append(", ").append(kBaseColumnCastable.sb);
-            concatKColumn.params.addAll(kBaseColumnCastable.params);
+            concatWsKColumn.sb.append(", ").append(kBaseColumnCastable.sb);
+            concatWsKColumn.params.addAll(kBaseColumnCastable.params);
         }
         
-        concatKColumn.sb.append(")");
+        concatWsKColumn.sb.append(")");
         
-        return concatKColumn;
+        return concatWsKColumn;
     }
     
     public static KColumn convert(
-        final String value,
+        final KColumn kColumn,
         final KEncoding srcEncoding,
         final KEncoding destEncoding
     ) {
-        KUtils.assertNotNull(kColumnArray, "kColumnArray");
-        KUtils.assertNotNull(kColumnPreviousValue, "kColumnPreviousValue");
-        KUtils.assertNotNull(newValue, "newValue");
+        KUtils.assertNotNullNotEmpty(kColumn, "kColumn");
+        KUtils.assertNotNull(srcEncoding, "srcEncoding");
+        KUtils.assertNotNull(destEncoding, "destEncoding");
+
+        final KColumn convertKColumn = new KColumn(kColumn.sb, kColumn.params, true);
         
-        final KColumn arrayReplaceKColumn = new KColumn(kColumnArray.sb, kColumnArray.params, true);
+        convertKColumn.sb.insert(0, "CONVERT(").append(", '").append(srcEncoding.toSql()).append("', '").append(destEncoding.toSql()).append("')");
         
-        arrayReplaceKColumn.sb.insert(0, "ARRAY_REPLACE(").append(", ").append(kColumnPreviousValue.sb).append(", ?)");
-        
-        arrayReplaceKColumn.params.addAll(kColumnPreviousValue.params);
-        arrayReplaceKColumn.params.add(newValue);
-        
-        return arrayReplaceKColumn;
+        return convertKColumn;
     }
     
     public static KCommonTableExpressionNamed cte(
