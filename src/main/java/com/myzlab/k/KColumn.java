@@ -1264,6 +1264,12 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.length(this);
     }
     
+    public KColumn length(
+        final KEncoding encoding
+    ) {
+        return KFunction.length(this, encoding);
+    }
+    
     @Override
     public KCondition like(
         final KColumn kColumn
@@ -1702,6 +1708,10 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KAggregateFunctionColumn max() {
         return KFunction.max(this);
+    }
+    
+    public KColumn md5() {
+        return KFunction.md5(this);
     }
     
     public KAggregateFunctionColumn min() {
@@ -3200,10 +3210,6 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.octetLength(this);
     }
     
-    public KColumn scale() {
-        return KFunction.scale(this);
-    }
-    
     public KColumn quoteIdent() {
         return KFunction.quoteIdent(this);
     }
@@ -3214,6 +3220,14 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KColumn quoteNullable() {
         return KFunction.quoteNullable(this);
+    }
+    
+    public KColumn reverse() {
+        return KFunction.reverse(this);
+    }
+    
+    public KColumn scale() {
+        return KFunction.scale(this);
     }
     
     public KStringAggColumn stringAgg(
@@ -3246,6 +3260,10 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KColumn sumDistinct() {
         return KFunction.sumDistinct(this);
+    }
+    
+    public KColumn toHex() {
+        return KFunction.toHex(this);
     }
     
     public KColumn upper() {
