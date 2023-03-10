@@ -1232,4 +1232,7 @@ public class KRow {
         return dirtyProperties;
     }
     
+    public Object getPrimaryKeyValue() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
