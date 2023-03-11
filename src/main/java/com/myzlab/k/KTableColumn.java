@@ -52,6 +52,10 @@ public class KTableColumn extends KColumn implements
         return KFunction.tableNameAlias(this);
     }
     
+    public String getName() {
+        return this.name;
+    }
+    
     @Override
     protected KTableColumn cloneMe() {
         return new KTableColumn(new StringBuilder(this.sb), new ArrayList<>(this.params), this.closed, this.name, this.type, this.kTable);
