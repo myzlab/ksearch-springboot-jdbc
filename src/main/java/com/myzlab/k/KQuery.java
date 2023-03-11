@@ -45,13 +45,13 @@ public abstract class KQuery extends KGenericQuery {
             .getJdbc()
             .query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
                 if (resultSet == null || !resultSet.next()) {
-                    return this.getKRowNull(clazz);
+                    return KQueryUtils.getKRowNull(clazz);
                 }
 
                 final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, paths, clazz);
 
                 if (resultSet.next()) {
-                    return this.getKRowNull(clazz);
+                    return KQueryUtils.getKRowNull(clazz);
                 }
 
                 return result;
@@ -138,23 +138,6 @@ public abstract class KQuery extends KGenericQuery {
 //
 //        return new KRow(o, ref);
 //    }
-    
-    private <T extends KRow> T getKRowNull(
-        final Class<T> clazz
-    ) {
-        
-        final T t;
-        
-        try {
-            t = (T) clazz.newInstance();  
-        } catch (Exception e) {
-            throw KExceptionHelper.internalServerError(e.getMessage());
-        }
-        
-        t.isNull = true;
-
-        return t;
-    }
     
     @Override
     protected KQueryGenericData generateSubQueryData() {
