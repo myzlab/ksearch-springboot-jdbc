@@ -348,7 +348,7 @@ public class KQueryUtils {
                 return mapObject(kQueryGenericData, resultSet, paths, clazz);
             });
         
-        final KCollection kCollection = new KCollection<>(list);
+        final KCollection kCollection = new KCollection<>(clazz, list);
         
         for (KSpecialFunction kSpecialFunction : kSpecialFunctions) {
             kSpecialFunction.executeOnMultipleMapping(k, kCollection);
