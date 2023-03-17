@@ -212,11 +212,6 @@ public class KTotalCount extends KSpecialFunction {
         
         sb.insert(0, "SELECT COUNT(*) FROM (").append(") AS GOD_BLESS_YOU");
         
-//        System.out.println(sb.toString());
-//        System.out.println(this.kQueryData.params);
-//        System.out.println(kQueryGenericData.kEdges);
-//        System.out.println(kQueryGenericData.kNodes);
-        
         final Long totalCount =
             k
             .getJdbc()
@@ -224,8 +219,8 @@ public class KTotalCount extends KSpecialFunction {
                 if (resultSet == null || !resultSet.next()) {
                     return null;
                 }
-
-                return (Long) resultSet.getObject(1);
+                
+                return Long.valueOf(resultSet.getObject(1).toString());
             });
         
         kCollection.addMetadata("totalCount", totalCount);
