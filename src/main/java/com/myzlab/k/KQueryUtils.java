@@ -348,7 +348,7 @@ public class KQueryUtils {
 //        System.out.println(kQueryGenericData.kNodes);
         
         if (k == null || k.getJdbc() == null) {
-             System.err.println("JDBC no provided to KSearch!");
+            System.err.println("JDBC no provided to KSearch!");
             
             return null;
         }

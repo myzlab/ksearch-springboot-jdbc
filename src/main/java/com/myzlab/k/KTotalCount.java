@@ -8,6 +8,22 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class KTotalCount extends KSpecialFunction {
+    
+    private static final String ATTRIBUTE_NAME = "attributeName";
+
+    public KTotalCount() {
+        super();
+        
+        this.extra.put(ATTRIBUTE_NAME, "totalCount");
+    }
+    
+    public KTotalCount(
+        final String attributeName
+    ) {
+        super();
+        
+        this.extra.put(ATTRIBUTE_NAME, attributeName);
+    }
 
     @Override
     protected void onProcessWith(
@@ -223,6 +239,6 @@ public class KTotalCount extends KSpecialFunction {
                 return Long.valueOf(resultSet.getObject(1).toString());
             });
         
-        kCollection.addMetadata("totalCount", totalCount);
+        kCollection.addMetadata(this.extra.get(ATTRIBUTE_NAME).toString(), totalCount);
     }
 }
