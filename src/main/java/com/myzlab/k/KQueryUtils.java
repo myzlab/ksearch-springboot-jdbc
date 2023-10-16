@@ -833,6 +833,14 @@ public class KQueryUtils {
                 return (T) v;
             }
             
+            if (v instanceof Integer) {
+                return (T) new Long(((Integer) v).longValue());
+            }
+            
+            if (v instanceof Short) {
+                return (T) new Long(((Short) v).longValue());
+            }
+            
             return null;
         }
         
