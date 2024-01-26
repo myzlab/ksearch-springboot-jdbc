@@ -914,7 +914,7 @@ public class KFunction {
         final Boolean exists =
             k
             .jdbc(jdbc)
-            .select(exists(kQuery).as("GOD_BLESS_YOU"))
+            .select(exists(kQuery).as("_🕆_GOD_BLESS_YOU_🕆_"))
             .single(Boolean.class);
         
         if (!exists) {
