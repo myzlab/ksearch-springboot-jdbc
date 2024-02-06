@@ -950,13 +950,13 @@ public abstract class KCrudRepository<T extends KRow, Y> {
             .getFirst();
     }
     
-    public int updateById(
+    public int updateByIds(
         final List<T> entities
     ) {
-        return updateById(getK().getJdbcTemplateDefaultName(), entities);
+        return updateByIds(getK().getJdbcTemplateDefaultName(), entities);
     }
     
-    public int updateById(
+    public int updateByIds(
         final String jdbc,
         final List<T> entities
     ) {
@@ -979,14 +979,14 @@ public abstract class KCrudRepository<T extends KRow, Y> {
             .execute();
     }
     
-    public KCollection<T> updateById(
+    public KCollection<T> updateByIds(
         final List<T> entities,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
     ) {
-        return updateById(getK().getJdbcTemplateDefaultName(), entities, kColumnsAllowedToReturning);
+        return updateByIds(getK().getJdbcTemplateDefaultName(), entities, kColumnsAllowedToReturning);
     }
     
-    public KCollection<T> updateById(
+    public KCollection<T> updateByIds(
         final String jdbc,
         final List<T> entities,
         final KColumnAllowedToReturning... kColumnsAllowedToReturning
