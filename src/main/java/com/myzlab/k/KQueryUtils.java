@@ -222,7 +222,7 @@ public class KQueryUtils {
                     
                     methodSet.invoke(current, getValueByClass(v, methodSet.getParameterTypes()[0]));
                 } catch (Exception e) {
-                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type': [" + kBaseColumn.type + "] - 'Value': [" + v + "]", e);
+                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
                     
                     throw KExceptionHelper.internalServerError(e.getMessage());
                 }
@@ -245,7 +245,7 @@ public class KQueryUtils {
 
                             methodSet.invoke(current, internalObject);
                         } catch (Exception e) {
-                            logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type': [" + kBaseColumn.type + "] - 'Value': [" + v + "]", e);
+                            logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
                             
                             throw KExceptionHelper.internalServerError(e.getMessage());
                         }
@@ -253,7 +253,7 @@ public class KQueryUtils {
 
                     current = internalObject;
                 } catch (Exception e) {
-                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type': [" + kBaseColumn.type + "] - 'Value': [" + v + "]", e);
+                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
                     
                     throw KExceptionHelper.internalServerError(e.getMessage());
                 }
@@ -275,6 +275,10 @@ public class KQueryUtils {
                 }
                 
                 if (pGobject.getType().equals("jsonb")) {
+                    return pGobject.getValue();
+                }
+                
+                if (pGobject.getType().equals("tsvector")) {
                     return pGobject.getValue();
                 }
             } else if (v instanceof PgSQLXML) {
