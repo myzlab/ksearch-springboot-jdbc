@@ -79,6 +79,12 @@ public abstract class KQuery extends KGenericQuery {
             });
     }
     
+    protected void executeQuery() {
+        k
+        .getJdbc()
+        .update(this.kQueryData.sb.toString());
+    }
+    
     public KRow single() {
         return this.single(KRow.class);
     }

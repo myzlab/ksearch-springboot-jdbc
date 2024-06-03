@@ -8,6 +8,7 @@ import com.myzlab.k.allowed.KColumnAllowedToSetUpdate;
 import com.myzlab.k.optional.KOptionalKColumn;
 import com.myzlab.k.optional.KOptionalKValTextField;
 import com.myzlab.k.optional.KOptionalString;
+import com.myzlab.k.sql.SqlOperator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,22 +192,22 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.countDistinct(this);
     }
     
-    public KColumn div(
+    public KColumn divide(
         final KColumn kColumn
     ) {
-        return KFunction.div(this, kColumn);
+        return KFunction.divide(this, kColumn);
     }
     
-    public KColumn div(
+    public KColumn divide(
         final KValNumberField kValNumberField
     ) {
-        return KFunction.div(this, kValNumberField);
+        return KFunction.divide(this, kValNumberField);
     }
     
-    public KColumn div(
+    public KColumn divide(
         final Number number
     ) {
-        return KFunction.div(this, number);
+        return KFunction.divide(this, number);
     }
     
     public KAggregateFunctionColumn every() {
@@ -1749,40 +1750,40 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.min(this);
     }
     
-    public KColumn mod(
+    public KColumn modulo(
         final KColumn kColumn
     ) {
-        return KFunction.mod(this, kColumn);
+        return KFunction.modulo(this, kColumn);
     }
     
-    public KColumn mod(
+    public KColumn modulo(
         final KValNumberField kValNumberField
     ) {
-        return KFunction.mod(this, kValNumberField);
+        return KFunction.modulo(this, kValNumberField);
     }
     
-    public KColumn mod(
+    public KColumn modulo(
         final Number number
     ) {
-        return KFunction.mod(this, number);
+        return KFunction.modulo(this, number);
     }
     
-    public KColumn mul(
+    public KColumn multiply(
         final KColumn kColumn
     ) {
-        return KFunction.mul(this, kColumn);
+        return KFunction.multiply(this, kColumn);
     }
     
-    public KColumn mul(
+    public KColumn multiply(
         final KValNumberField kValNumberField
     ) {
-        return KFunction.mul(this, kValNumberField);
+        return KFunction.multiply(this, kValNumberField);
     }
     
-    public KColumn mul(
+    public KColumn multiply(
         final Number number
     ) {
-        return KFunction.mul(this, number);
+        return KFunction.multiply(this, number);
     }
     
     @Override
@@ -3241,6 +3242,20 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.octetLength(this);
     }
     
+    public KColumn op(
+        final SqlOperator sqlOperator,
+        final KBaseColumnCastable kBaseColumnCastable
+    ) {
+        return op(sqlOperator.getSql(), kBaseColumnCastable);
+    }
+    
+    public KColumn op(
+        final String sqlOperator,
+        final KBaseColumnCastable kBaseColumnCastable
+    ) {
+        return KFunction.op(this, sqlOperator, kBaseColumnCastable);
+    }
+    
     public KColumn quoteIdent() {
         return KFunction.quoteIdent(this);
     }
@@ -3277,22 +3292,22 @@ public class KColumn extends KBaseColumnCastable implements
         return KFunction.stringAgg(this, kBaseColumnCastableDelimiter);
     }
     
-    public KColumn sub(
+    public KColumn subtract(
         final KColumn kColumn
     ) {
-        return KFunction.sub(this, kColumn);
+        return KFunction.subtract(this, kColumn);
     }
     
-    public KColumn sub(
+    public KColumn subtract(
         final KValNumberField kValNumberField
     ) {
-        return KFunction.sub(this, kValNumberField);
+        return KFunction.subtract(this, kValNumberField);
     }
     
-    public KColumn sub(
+    public KColumn subtract(
         final Number number
     ) {
-        return KFunction.sub(this, number);
+        return KFunction.subtract(this, number);
     }
     
     public KAggregateFunctionColumn sum() {
@@ -3305,6 +3320,18 @@ public class KColumn extends KBaseColumnCastable implements
     
     public KColumn toHex() {
         return KFunction.toHex(this);
+    }
+    
+    public KColumn trigramSearch(
+        final String value
+    ) {
+        return trigramSearch(KFunction.val(value));
+    }
+    
+    public KColumn trigramSearch(
+        final KValTextField kValTextField
+    ) {
+        return KFunction.op(this, SqlOperator.TRIGRAM_SEARCH, kValTextField);
     }
     
     public KColumn trim() {
