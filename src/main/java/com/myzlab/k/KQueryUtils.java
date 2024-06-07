@@ -67,6 +67,8 @@ public class KQueryUtils {
                 argTypes[i] = Types.VARCHAR;
             } else if (param instanceof Long) {
                 argTypes[i] = Types.BIGINT;
+            } else if (param != null && param.getClass().isArray()) {
+                argTypes[i] = Types.ARRAY;
             } else {
                 argTypes[i] = SqlTypeValue.TYPE_UNKNOWN;
             }
@@ -222,7 +224,7 @@ public class KQueryUtils {
                     
                     methodSet.invoke(current, getValueByClass(v, methodSet.getParameterTypes()[0]));
                 } catch (Exception e) {
-                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
+                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + (v != null ? v.getClass().getName() : "null") + "]", e);
                     
                     throw KExceptionHelper.internalServerError(e.getMessage());
                 }
@@ -245,7 +247,7 @@ public class KQueryUtils {
 
                             methodSet.invoke(current, internalObject);
                         } catch (Exception e) {
-                            logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
+                            logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + (v != null ? v.getClass().getName() : "null") + "]", e);
                             
                             throw KExceptionHelper.internalServerError(e.getMessage());
                         }
@@ -253,7 +255,7 @@ public class KQueryUtils {
 
                     current = internalObject;
                 } catch (Exception e) {
-                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + v.getClass().getName() + "]", e);
+                    logger.error("An error occurred while getting value from KRow object >> 'Name': [" + kBaseColumn.name + "] - 'Type required': [" + kBaseColumn.type + "] - 'Value': [" + v + "] - 'Type value': [" + (v != null ? v.getClass().getName() : "null") + "]", e);
                     
                     throw KExceptionHelper.internalServerError(e.getMessage());
                 }
