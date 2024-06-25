@@ -45,13 +45,13 @@ public abstract class KQuery extends KGenericQuery {
             .getJdbc()
             .query(this.kQueryData.sb.toString(), KQueryUtils.getParams(this.kQueryData), KQueryUtils.getArgTypes(this.kQueryData), (final ResultSet resultSet) -> {
                 if (resultSet == null || !resultSet.next()) {
-                    return KQueryUtils.getKRowNull(clazz);
+                    return KQueryUtils.buildKRowNull(clazz);
                 }
 
                 final T result = KQueryUtils.mapObject(this.kQueryData, resultSet, paths, clazz);
 
                 if (resultSet.next()) {
-                    return KQueryUtils.getKRowNull(clazz);
+                    return KQueryUtils.buildKRowNull(clazz);
                 }
 
                 return result;
