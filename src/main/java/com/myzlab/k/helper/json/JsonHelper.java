@@ -71,10 +71,10 @@ public class JsonHelper {
         }
     }
     
-    public static <T> T fromJson(final String json, final Class<T> typeOfT) {
+    public static <T> T fromJson(final String json, final Class<T> clazz) {
         try {
-            return getObjectMapper().readValue(json, typeOfT);
-        } catch (JsonProcessingException e) {
+            return getGson().fromJson(json, clazz);
+        } catch (JsonSyntaxException e) {
             throw new RuntimeException("Failed to convert JSON to object", e);
         }
     }
